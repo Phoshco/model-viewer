@@ -1,0 +1,5 @@
+Thank you for downloading this camera update!
+
+Make sure to credit MrPolarbear and Atlus when using the camera :)
+
+Tip: If the camera is too high or too low you can multiply the y by 1.x to make it bigger or 0.x to make it smaller (Its more accurate then moving the y bone up or down)
