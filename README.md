@@ -1,6 +1,7 @@
 ## Model Viewer
 
 Implement MMD models using Babylon.js and babylon-mmd as a hobby project.
+(Not finished)
 
 ### https://phoshco.github.io/model-viewer/
 
