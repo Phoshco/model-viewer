@@ -7,8 +7,8 @@ Implement MMD models using Babylon.js and babylon-mmd as a hobby project.
 
 ## Build Settings
 
-- typescript
-- webpack (only resolve html template, typescript, and static files)
+- Typescript
+- Webpack (only resolve html template, typescript, and static files)
 - Babylon.js (with es6 module tree shaking applied)
 - eslint (Babyon.js coding style)
 
