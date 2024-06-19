@@ -13,6 +13,7 @@ import "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 import "babylon-mmd/esm/Loader/pmxLoader";
 // if you want to use .pmd file, uncomment following line.
 // import "babylon-mmd/esm/Loader/pmdLoader";
+import "babylon-mmd/esm/Loader/mmdOutlineRenderer";
 // for play `MmdAnimation` we need to import following two modules.
 import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeCameraAnimation";
 import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeModelAnimation";
@@ -20,7 +21,7 @@ import "@babylonjs/core/Rendering/depthRendererSceneComponent";
 
 // import { MirrorTexture, Plane } from "@babylonjs/core";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
-import type { Engine } from "@babylonjs/core/Engines/engine";
+import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { Layer } from "@babylonjs/core/Layers";
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
@@ -31,7 +32,7 @@ import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imagePro
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
-import type { Mesh } from "@babylonjs/core/Meshes/mesh";
+// import type { Mesh } from "@babylonjs/core/Meshes/mesh";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 import { DepthOfFieldEffectBlurLevel } from "@babylonjs/core/PostProcesses";
@@ -49,15 +50,16 @@ import { SdefInjector } from "babylon-mmd/esm/Loader/sdefInjector";
 // import { VmdLoader } from "babylon-mmd/esm/Loader/vmdLoader";
 import { StreamAudioPlayer } from "babylon-mmd/esm/Runtime/Audio/streamAudioPlayer";
 import { MmdCamera } from "babylon-mmd/esm/Runtime/mmdCamera";
-import { MmdPhysics } from "babylon-mmd/esm/Runtime/mmdPhysics";
+import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
+import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
 import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
 import type { ISceneBuilder } from "./baseRuntime";
 
 export class SceneBuilder implements ISceneBuilder {
-    public async build(canvas: HTMLCanvasElement, engine: Engine): Promise<Scene> {
+    public async build(canvas: HTMLCanvasElement, engine: AbstractEngine): Promise<Scene> {
         // for apply SDEF on shadow, outline, depth rendering
         SdefInjector.OverrideEngineCreateEffect(engine);
 
@@ -115,8 +117,9 @@ export class SceneBuilder implements ISceneBuilder {
         // get bpmx loader and set some configurations.
         const bpmxLoader = SceneLoader.GetPluginForExtension(".bpmx") as BpmxLoader;
         bpmxLoader.loggingEnabled = true;
+        bpmxLoader.preserveSerializationData = true;
         const materialBuilder = bpmxLoader.materialBuilder as MmdStandardMaterialBuilder;
-
+        materialBuilder.deleteTextureBufferAfterLoad = false;
         // if you want override texture loading, uncomment following lines.
         // materialBuilder.loadDiffuseTexture = (): void => { /* do nothing */ };
         // materialBuilder.loadSphereTexture = (): void => { /* do nothing */ };
@@ -198,7 +201,7 @@ export class SceneBuilder implements ISceneBuilder {
         shadowGenerator.frustumEdgeFalloff = 0.1;
 
         // create mmd runtime with physics
-        let mmdRuntime = new MmdRuntime(new MmdPhysics(scene));
+        let mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
         mmdRuntime.loggingEnabled = true;
         mmdRuntime.register(scene);
 
@@ -298,33 +301,15 @@ export class SceneBuilder implements ISceneBuilder {
         let theHeight = 69;
         let boneWorldMatrixCam = new Matrix();
 
-        let modelMesh = loadResults[2].meshes[0] as Mesh;
+        // const { meshes: [modelMesh] } = loadResults[2];
+        // const modelMesh = loadResults[2].meshes[0];
+        // if (!((_mesh: any): _mesh is MmdMesh => true)(modelMesh)) throw new Error("unreachable");
+        let modelMesh = loadResults[2].meshes[0] as MmdMesh;
         modelMesh.parent = mmdRoot;
 
         shadowGenerator.addShadowCaster(modelMesh);
-        modelMesh.receiveShadows = true;
-
-        let mmdModel = mmdRuntime.createMmdModel(modelMesh);
-        const theCharAnimation = loadResults[1] as MmdAnimation;
-        mmdModel.addAnimation(theCharAnimation);
-        mmdModel.setAnimation("motion");
-
-        // for scaling camera to model height
-        let headBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "頭");
-        headBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
-        boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-        theDiff -= mmdCameraRoot.position.y;
-        theHeight = mmdCameraRoot.position.y;
-
-        // make sure directional light follow the model
-        let bodyBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "センター");
-        let boneWorldMatrix = new Matrix();
-
-        scene.onBeforeRenderObservable.add(() => {
-            bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
-            boneWorldMatrix.getTranslationToRef(directionalLight.position);
-            directionalLight.position.y -= 10 * worldScale;
-        });
+        // modelMesh.receiveShadows = true;
+        for (const mesh of modelMesh.metadata.meshes) mesh.receiveShadows = true;
 
         const ground = CreateGround("ground1", { width: 100, height: 100, subdivisions: 2, updatable: false }, scene);
         const shadowOnlyMaterial = ground.material = new ShadowOnlyMaterial("shadowOnly", scene);
@@ -333,6 +318,37 @@ export class SceneBuilder implements ISceneBuilder {
 
         ground.receiveShadows = true;
         ground.parent = mmdRoot;
+
+        let mmdModel = mmdRuntime.createMmdModel(modelMesh);
+        const theCharAnimation = loadResults[1] as MmdAnimation;
+        mmdModel.addAnimation(theCharAnimation);
+        mmdModel.setAnimation("motion");
+
+        // for scaling camera to model height
+        // let headBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "頭");
+        let headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
+        // headBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
+        // headBone!.linkedBone.getRestMatrix().multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
+
+        // make sure directional light follow the model
+        // let bodyBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "センター");
+        let bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
+        let boneWorldMatrix = new Matrix();
+
+        scene.onBeforeRenderObservable.addOnce(() => {
+            headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
+            boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+            // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+            theDiff = theDiff - mmdCameraRoot.position.y;
+            theHeight = mmdCameraRoot.position.y;
+        });
+
+        scene.onBeforeRenderObservable.add(() => {
+            bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+            // bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+            boneWorldMatrix.getTranslationToRef(directionalLight.position);
+            directionalLight.position.y -= 10 * worldScale;
+        });
 
         // const groundMaterial = ground.material = new StandardMaterial("GroundMaterial", scene);
         // groundMaterial.alphaMode = 2;
@@ -413,6 +429,18 @@ export class SceneBuilder implements ISceneBuilder {
         advancedTexture.idealWidth = 1000;
         advancedTexture.idealHeight = 1000;
         advancedTexture.useSmallestIdeal = true;
+
+        const debugblock = new gui.TextBlock();
+        debugblock.widthInPixels = 100;
+        debugblock.heightInPixels = 50;
+        debugblock.left = 0;
+        debugblock.text = `${mmdCameraRoot.position.y}`;
+        debugblock.fontSize = 16;
+        debugblock.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        debugblock.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        debugblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_BOTTOM;
+        debugblock.color = "black";
+        advancedTexture.addControl(debugblock);
 
         const textblock = new gui.TextBlock();
         textblock.widthInPixels = 100;
@@ -934,7 +962,7 @@ export class SceneBuilder implements ISceneBuilder {
             mmdCamera.restoreState();
             mmdRuntime.unregister(scene);
 
-            mmdRuntime = new MmdRuntime(new MmdPhysics(scene));
+            mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
             mmdRuntime.loggingEnabled = true;
             mmdRuntime.register(scene);
 
@@ -971,27 +999,39 @@ export class SceneBuilder implements ISceneBuilder {
             theHeight = 69;
             boneWorldMatrixCam = new Matrix();
 
-            modelMesh = loadResults[0].meshes[0] as Mesh;
+            //var modelMesh = loadResults[0].meshes[0];
+            //if (!((_mesh: any): _mesh is MmdMesh => true)(modelMesh)) throw new Error("unreachable");
+            modelMesh = loadResults[0].meshes[0] as MmdMesh;
             modelMesh.parent = mmdRoot;
 
             shadowGenerator.addShadowCaster(modelMesh);
-            modelMesh.receiveShadows = true;
+            // modelMesh.receiveShadows = true;
+            for (const mesh of modelMesh.metadata.meshes) mesh.receiveShadows = true;
 
             mmdModel = mmdRuntime.createMmdModel(modelMesh);
             mmdModel.addAnimation(theCharAnimation);
             mmdModel.setAnimation("motion");
 
-            headBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "頭");
-            headBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
-            boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-            theDiff -= mmdCameraRoot.position.y;
-            theHeight = mmdCameraRoot.position.y;
+            // headBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "頭");
+            headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
+            // headBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
+            // headBone!.linkedBone.getRestMatrix().multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
 
-            bodyBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "センター");
+            //bodyBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "センター");
+            bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
             boneWorldMatrix = new Matrix();
 
+            scene.onBeforeRenderObservable.addOnce(() => {
+                headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
+                boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                theDiff = theDiff - mmdCameraRoot.position.y;
+                theHeight = mmdCameraRoot.position.y;
+            });
+
             scene.onBeforeRenderObservable.add(() => {
-                bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+                // bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+                bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
                 boneWorldMatrix.getTranslationToRef(directionalLight.position);
                 directionalLight.position.y -= 10 * worldScale;
             });
@@ -1024,9 +1064,12 @@ export class SceneBuilder implements ISceneBuilder {
         // for scaling camera to model height
         {
             mmdCameraRoot.position.x = mmdRoot.position.x;
+            mmdCameraRoot.position.y = mmdRoot.position.y;
             mmdCameraRoot.position.z = mmdRoot.position.z;
             scene.onBeforeAnimationsObservable.add(() => {
                 cameraPos = mmdCamera.position.y / 10;
+                // theHeight;
+                // cameraPos;
                 textblock.text = `${scene.activeCameras![0].name}`;
                 if (cameraPos < theHeight && 0 < cameraPos) {
                     mmdCameraRoot.position.y = 0 - theDiff * (cameraPos / theHeight);
@@ -1035,6 +1078,7 @@ export class SceneBuilder implements ISceneBuilder {
                 } else {
                     mmdCameraRoot.position.y = 0 - theDiff;
                 }
+                debugblock.text = `${mmdCameraRoot.position.y}\n${theHeight}\n${theDiff}`;
                 mmdCamera.parent = mmdCameraRoot;
             });
         }
@@ -1055,7 +1099,9 @@ export class SceneBuilder implements ISceneBuilder {
                 cameraEyePosition
             );
 
-            headBone!.getFinalMatrix().getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition);
+            // headBone!.getFinalMatrix().getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition); // old
+            // headBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam); //old copied from above
+            headBone!.getWorldMatrixToRef(boneWorldMatrixCam).getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition);
 
             defaultPipeline.depthOfField.focusDistance = (Vector3.Dot(headRelativePosition, cameraNormal) / Vector3.Dot(cameraNormal, cameraNormal)) * 1000;
         });
@@ -1105,13 +1151,20 @@ export class SceneBuilder implements ISceneBuilder {
         // Inspector.Show(scene, { });
 
         // webxr experience for AR
-        const webXrExperience = await scene.createDefaultXRExperienceAsync({
-            uiOptions: {
-                sessionMode: "immersive-ar",
-                referenceSpaceType: "local-floor"
-            }
-        });
-        webXrExperience;
+        // const webXrExperience = await scene.createDefaultXRExperienceAsync({
+        //     uiOptions: {
+        //         sessionMode: "immersive-ar",
+        //         referenceSpaceType: "local-floor"
+        //     }
+        // });
+
+        //if (webXrExperience.baseExperience !== undefined) {
+        // post process seems not working on immersive-ar
+        // webXrExperience.baseExperience.sessionManager.onXRFrameObservable.addOnce(() => {
+        //     defaultPipeline.addCamera(webXrExperience.baseExperience.camera);
+        // });
+        //    webXrExperience.baseExperience.sessionManager.worldScalingFactor = 15;
+        //}
         // webXrExperience.baseExperience?.sessionManager.onXRSessionInit.add(() => {
         //     defaultPipeline.addCamera(webXrExperience.baseExperience.camera);
         // });

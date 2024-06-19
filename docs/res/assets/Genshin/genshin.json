@@ -48,6 +48,18 @@
         "pmx": "荒泷一斗.pmx"
     },
     {
+        "_id": 10000080,
+        "name": "Arlecchino",
+        "weaponType": "Polearm",
+        "element": "Pyro",
+        "gender": "Female",
+        "region": "Snezhnaya",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Arlecchino",
+        "image": "Genshin/Arlecchino.png",
+        "pmx": "仆人.pmx"
+    },
+    {
         "_id": 10000066,
         "name": "Baizhu",
         "weaponType": "Catalyst",
@@ -132,6 +144,18 @@
         "pmx": "夏沃蕾.pmx"
     },
     {
+        "_id": 10000079,
+        "name": "Chiori",
+        "weaponType": "Sword",
+        "element": "Geo",
+        "gender": "Female",
+        "region": "Inazuma",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Chiori",
+        "image": "Genshin/Chiori.png",
+        "pmx": "千织.pmx"
+    },
+    {
         "_id": 10000006,
         "name": "Chongyun",
         "weaponType": "Claymore",
@@ -142,6 +166,18 @@
         "directory": "res/chars/Genshin/Chongyun",
         "image": "Genshin/Chongyun.png",
         "pmx": "重云.pmx"
+    },
+    {
+        "_id": 10000081,
+        "name": "Clorinde",
+        "weaponType": "Sword",
+        "element": "Electro",
+        "gender": "Female",
+        "region": "Fontaine",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Clorinde",
+        "image": "Genshin/Clorinde.png",
+        "pmx": "克洛琳德.pmx"
     },
     {
         "_id": 10000051,
@@ -274,6 +310,18 @@
         "directory": "res/chars/Genshin/Furina",
         "image": "Genshin/Furina.png",
         "pmx": "【芙宁娜】.pmx"
+    },
+    {
+        "_id": 10000078,
+        "name": "Gaming",
+        "weaponType": "Claymore",
+        "element": "Pyro",
+        "gender": "Male",
+        "region": "Liyue",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Gaming",
+        "image": "Genshin/Gaming.png",
+        "pmx": "嘉明.pmx"
     },
     {
         "_id": 10000028,
@@ -660,6 +708,18 @@
         "pmx": "早柚.pmx"
     },
     {
+        "_id": 10000082,
+        "name": "Sethos",
+        "weaponType": "Bow",
+        "element": "Electro",
+        "gender": "Male",
+        "region": "Sumeru",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Sethos",
+        "image": "Genshin/Sethos.png",
+        "pmx": "赛索斯.pmx"
+    },
+    {
         "_id": 10000045,
         "name": "Shenhe",
         "weaponType": "Polearm",
@@ -701,7 +761,7 @@
         "weaponType": "Bow",
         "element": "Hydro",
         "gender": "Male",
-        "region": "Fatui",
+        "region": "Snezhnaya",
         "rarity": 5,
         "directory": "res/chars/Genshin/Tartaglia",
         "image": "Genshin/Tartaglia.png",
@@ -800,6 +860,18 @@
         "directory": "res/chars/Genshin/Xiangling",
         "image": "Genshin/Xiangling.png",
         "pmx": "香菱.pmx"
+    },
+    {
+        "_id": 10000077,
+        "name": "Xianyun",
+        "weaponType": "Catalyst",
+        "element": "Anemo",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Xianyun",
+        "image": "Genshin/Xianyun.png",
+        "pmx": "闲云.pmx"
     },
     {
         "_id": 10000029,
