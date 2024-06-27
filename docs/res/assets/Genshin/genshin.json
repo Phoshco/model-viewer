@@ -744,6 +744,18 @@
         "pmx": "鹿野院平藏.pmx"
     },
     {
+        "_id": 10000083,
+        "name": "Sigewinne",
+        "weaponType": "Bow",
+        "element": "Hydro",
+        "gender": "Female",
+        "region": "Fontaine",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Sigewinne",
+        "image": "Genshin/Sigewinne.png",
+        "pmx": "希格雯.pmx"
+    },
+    {
         "_id": 10000013,
         "name": "Sucrose",
         "weaponType": "Catalyst",
