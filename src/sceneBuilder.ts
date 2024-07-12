@@ -141,7 +141,7 @@ export class SceneBuilder implements ISceneBuilder {
         // materialBuilder.loadToonTexture = (): void => { /* do nothing */ };
 
         // if you need outline rendering, comment out following line.
-        materialBuilder.loadOutlineRenderingProperties = (): void => { /* do nothing */ };
+        // materialBuilder.loadOutlineRenderingProperties = (): void => { /* do nothing */ };
 
         const scene = new Scene(engine);
         scene.clearColor = new Color4(1, 1, 1, 1.0);

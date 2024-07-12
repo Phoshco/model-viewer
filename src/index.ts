@@ -13,11 +13,11 @@ window.onload = (): void => {
     const engine = new Engine(canvas, false, {
         preserveDrawingBuffer: false,
         stencil: false,
-        antialias: false,
+        antialias: true, //false
         alpha: false,
         premultipliedAlpha: false,
         powerPreference: "high-performance",
-        doNotHandleTouchAction: true,
+        doNotHandleTouchAction: false, //true
         doNotHandleContextLost: true,
         audioEngine: false
     }, true);
