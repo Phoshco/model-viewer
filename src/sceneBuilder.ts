@@ -6,7 +6,7 @@ import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 import "@babylonjs/core/Helpers/sceneHelpers";
 import "@babylonjs/core/Materials/Node/Blocks";
 // if your model has .tga texture, uncomment following line.
-// import "@babylonjs/core/Materials/Textures/Loaders/tgaTextureLoader";
+import "@babylonjs/core/Materials/Textures/Loaders/tgaTextureLoader";
 // for load .bpmx file, we need to import following module.
 import "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 // if you want to use .pmx file, uncomment following line.
@@ -55,7 +55,9 @@ import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
 import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 
+import extraCharDatas from "../res/assets/extras.json";
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
+import hsrCharDatas from "../res/assets/HSR/hsr.json";
 import type { ISceneBuilder } from "./baseRuntime";
 
 export class SceneBuilder implements ISceneBuilder {
@@ -64,21 +66,34 @@ export class SceneBuilder implements ISceneBuilder {
         SdefInjector.OverrideEngineCreateEffect(engine);
 
         // character json
-        interface GenshinCharData {
+        interface BaseCharData {
             "_id": number;
             "name": string;
             "weaponType": string;
             "element": string;
             "gender": string;
-            "region": string;
             "rarity": number;
             "directory": string;
             "image": string;
             "pmx": string;
         }
 
+        interface GenshinCharData extends BaseCharData {
+            "region": string;
+        }
+
+        interface HSRCharData extends BaseCharData {
+        }
+
+        interface ExtraCharData extends BaseCharData {
+        }
+
+        const extraDataArray = extraCharDatas as ExtraCharData[];
         const charDataArray = genshinCharDatas as GenshinCharData[];
+        const hsrCharDataArray = hsrCharDatas as HSRCharData[];
         charDataArray.sort((a, b) => b._id - a._id);
+        hsrCharDataArray.sort((a, b) => b._id - a._id);
+
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
         };
@@ -201,7 +216,14 @@ export class SceneBuilder implements ISceneBuilder {
         shadowGenerator.frustumEdgeFalloff = 0.1;
 
         // create mmd runtime with physics
-        let mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
+        let mmdRuntime: MmdRuntime;
+        const physicsModeOn = false;
+
+        if (!physicsModeOn) {
+            mmdRuntime = new MmdRuntime(scene);
+        } else {
+            mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
+        }
         mmdRuntime.loggingEnabled = true;
         mmdRuntime.register(scene);
 
@@ -252,7 +274,8 @@ export class SceneBuilder implements ISceneBuilder {
 
         // model
         let chosenCharName = "Hu Tao";
-        let chosenChar = findCharByName(charDataArray, chosenCharName);
+        let chosenChar: BaseCharData | undefined;
+        chosenChar = findCharByName(charDataArray, chosenCharName);
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
             promises.push(SceneLoader.ImportMeshAsync(
                 undefined,
@@ -335,7 +358,7 @@ export class SceneBuilder implements ISceneBuilder {
         let bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
         let boneWorldMatrix = new Matrix();
 
-        scene.onBeforeRenderObservable.addOnce(() => {
+        scene.onBeforeDrawPhaseObservable.addOnce(() => {
             headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
             boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
             // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
@@ -441,6 +464,7 @@ export class SceneBuilder implements ISceneBuilder {
         debugblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_BOTTOM;
         debugblock.color = "black";
         advancedTexture.addControl(debugblock);
+        debugblock.isVisible = false;
 
         const textblock = new gui.TextBlock();
         textblock.widthInPixels = 100;
@@ -530,25 +554,35 @@ export class SceneBuilder implements ISceneBuilder {
         othersButton.cornerRadiusX = othersButton.cornerRadiusY = 15;
         topBar.addControl(othersButton);
 
+        // CURRENT STATE
         let tabMode = "Genshin";
         let sortModeAscending = false;
-        let sortModeKey: keyof GenshinCharData = "_id";
+        let sortModeKey: keyof BaseCharData;
 
         const genshinFilter: { key: keyof GenshinCharData; value: string }[] = [
             { key: "_id", value: "10000" }
         ];
-        let filteredArray = filterBy(charDataArray, genshinFilter);
+        const hsrFilter: { key: keyof HSRCharData; value: string }[] = [
+            { key: "_id", value: "10000" }
+        ];
+        let filteredArray: BaseCharData[];
+        filteredArray = filterBy(charDataArray, genshinFilter);
+        sortModeKey = "_id";
 
         genshinButton.onPointerClickObservable.add(function() {
             if (tabMode != "Genshin") {
                 genshinButton.background = "rgb(64,68,70)";
-                hideGenshinElements();
                 if (tabMode == "HSR") {
                     hsrButton.background = charPanel.background;
+                    hideHSRElements();
                 } else {
                     othersButton.background = charPanel.background;
                 }
                 tabMode = "Genshin";
+                filteredArray = filterBy(charDataArray, genshinFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                hideGenshinElements();
+                generateGrid(filteredArray);
             }
         });
         hsrButton.onPointerClickObservable.add(function() {
@@ -561,6 +595,10 @@ export class SceneBuilder implements ISceneBuilder {
                     othersButton.background = charPanel.background;
                 }
                 tabMode = "HSR";
+                filteredArray = filterBy(hsrCharDataArray, hsrFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                hideHSRElements();
+                generateGrid(filteredArray);
             }
         });
         othersButton.onPointerClickObservable.add(function() {
@@ -569,10 +607,12 @@ export class SceneBuilder implements ISceneBuilder {
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
                     hideGenshinElements();
-                } else {
+                } else if (tabMode == "HSR") {
+                    hideHSRElements();
                     hsrButton.background = charPanel.background;
                 }
                 tabMode = "Others";
+                sortModeKey = "_id";
             }
         });
 
@@ -616,15 +656,38 @@ export class SceneBuilder implements ISceneBuilder {
             if (sortModeChanger.textBlock != null) {
                 if (sortModeKey == "_id") {
                     sortModeKey = "name";
+                    hsrSortModeChanger.image!.source = "res/assets/release.png";
                     sortModeChanger.textBlock.text = " Name ";
                 } else {
                     sortModeKey = "_id";
+                    hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
                     sortModeChanger.textBlock.text = " Release ";
                 }
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
                 generateGrid(filteredArray);
             }
         });
+
+        const hsrSortModeChanger = gui.Button.CreateImageOnlyButton("but", "res/assets/release.png");
+        hsrSortModeChanger.height = "40px";
+        hsrSortModeChanger.width = "40px";
+        hsrSortModeChanger.left = -278;
+        hsrSortModeChanger.thickness = 0;
+        filterBar.addControl(hsrSortModeChanger);
+        hsrSortModeChanger.onPointerClickObservable.add(() => {
+            if (sortModeKey == "_id") {
+                sortModeKey = "name";
+                hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
+                sortModeChanger.textBlock!.text = " Name ";
+            } else {
+                sortModeKey = "_id";
+                hsrSortModeChanger.image!.source = "res/assets/release.png";
+                sortModeChanger.textBlock!.text = " Release ";
+            }
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+        hsrSortModeChanger.isVisible = false;
 
         const fourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/rarity_4.png");
         fourStarImage.height = "40px";
@@ -688,6 +751,40 @@ export class SceneBuilder implements ISceneBuilder {
             generateGrid(filteredArray);
         });
 
+        // 5star+tp -> 5star+bg -> 4star+bg -> 5star+tp
+        const hsrStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/rarity_5.png");
+        hsrStarImage.height = "40px";
+        hsrStarImage.width = "40px";
+        hsrStarImage.left = -238;
+        hsrStarImage.thickness = 0;
+        hsrStarImage.cornerRadius = 5;
+        filterBar.addControl(hsrStarImage);
+        hsrStarImage.isVisible = false;
+        hsrStarImage.onPointerClickObservable.add(function() {
+            const index = hsrFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (hsrFilter[index].value == "4") {
+                    hsrFilter.splice(index, 1);
+                    hsrStarImage.background = "rgba(0,0,0,0)";
+                    hsrStarImage.image!.source = "res/assets/HSR/rarity_5.png";
+                } else {
+                    hsrFilter[index].value = "4";
+                    hsrStarImage.background = charPanel.background;
+                    hsrStarImage.image!.source = "res/assets/HSR/rarity_4.png";
+                }
+            } else {
+                const newPush: { key: keyof HSRCharData; value: string } = {
+                    key: "rarity",
+                    value: "5"
+                };
+                hsrFilter.push(newPush);
+                hsrStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(hsrCharDataArray, hsrFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
         function checkIfInFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof GenshinCharData): void {
             const index = genshinFilter.findIndex(obj => obj.key === theKey);
             if (index !== -1) { // Object with the key exists
@@ -714,6 +811,241 @@ export class SceneBuilder implements ISceneBuilder {
             filteredArray = filterBy(charDataArray, genshinFilter);
             filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
             generateGrid(filteredArray);
+        }
+
+        function checkIfInHSRFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof HSRCharData): void {
+            const index = hsrFilter.findIndex(obj => obj.key === theKey);
+            if (index !== -1) { // Object with the key exists
+                if (hsrFilter[index].value == theObjType) {
+                    hsrFilter.splice(index, 1);
+                    buttonObj.background = "rgba(0,0,0,0)";
+                } else {
+                    hsrFilter[index].value = theObjType;
+                    if (theKey.toString() == "element") {
+                        offHSRElementBG();
+                    } else {
+                        offPathBG();
+                    }
+                    buttonObj.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof HSRCharData; value: string } = {
+                    key: theKey,
+                    value: theObjType
+                };
+                hsrFilter.push(newPush);
+                buttonObj.background = charPanel.background;
+            }
+            filteredArray = filterBy(hsrCharDataArray, hsrFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        }
+
+        const fireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_fire.png");
+        fireImage.height = "40px";
+        fireImage.width = "40px";
+        fireImage.left = -188;
+        fireImage.thickness = 0;
+        fireImage.cornerRadius = 5;
+        fireImage.isVisible = false;
+        filterBar.addControl(fireImage);
+        fireImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(fireImage, "Fire", "element");
+        });
+
+        const iceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_ice.png");
+        iceImage.height = "40px";
+        iceImage.width = "40px";
+        iceImage.left = -148;
+        iceImage.thickness = 0;
+        iceImage.cornerRadius = 5;
+        iceImage.isVisible = false;
+        filterBar.addControl(iceImage);
+        iceImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(iceImage, "Ice", "element");
+        });
+
+        const imaginaryImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_imaginary.png");
+        imaginaryImage.height = "40px";
+        imaginaryImage.width = "40px";
+        imaginaryImage.left = -108;
+        imaginaryImage.thickness = 0;
+        imaginaryImage.cornerRadius = 5;
+        imaginaryImage.isVisible = false;
+        filterBar.addControl(imaginaryImage);
+        imaginaryImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(imaginaryImage, "Imaginary", "element");
+        });
+
+        const lightningImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_lightning.png");
+        lightningImage.height = "40px";
+        lightningImage.width = "40px";
+        lightningImage.left = -68;
+        lightningImage.thickness = 0;
+        lightningImage.cornerRadius = 5;
+        lightningImage.isVisible = false;
+        filterBar.addControl(lightningImage);
+        lightningImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(lightningImage, "Lightning", "element");
+        });
+
+        const physicalImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_physical.png");
+        physicalImage.height = "40px";
+        physicalImage.width = "40px";
+        physicalImage.left = -28;
+        physicalImage.thickness = 0;
+        physicalImage.cornerRadius = 5;
+        physicalImage.isVisible = false;
+        filterBar.addControl(physicalImage);
+        physicalImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(physicalImage, "Physical", "element");
+        });
+
+        const quantumImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_quantum.png");
+        quantumImage.height = "40px";
+        quantumImage.width = "40px";
+        quantumImage.left = 12;
+        quantumImage.thickness = 0;
+        quantumImage.cornerRadius = 5;
+        quantumImage.isVisible = false;
+        filterBar.addControl(quantumImage);
+        quantumImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(quantumImage, "Quantum", "element");
+        });
+
+        const windImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_wind.png");
+        windImage.height = "40px";
+        windImage.width = "40px";
+        windImage.left = 52;
+        windImage.thickness = 0;
+        windImage.cornerRadius = 5;
+        windImage.isVisible = false;
+        filterBar.addControl(windImage);
+        windImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(windImage, "Wind", "element");
+        });
+
+        const abundanceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_abundance.png");
+        abundanceImage.height = "40px";
+        abundanceImage.width = "40px";
+        abundanceImage.left = 92;
+        abundanceImage.thickness = 0;
+        abundanceImage.cornerRadius = 5;
+        abundanceImage.isVisible = false;
+        filterBar.addControl(abundanceImage);
+        abundanceImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(abundanceImage, "Abundance", "weaponType");
+        });
+
+        const destructionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_destruction.png");
+        destructionImage.height = "40px";
+        destructionImage.width = "40px";
+        destructionImage.left = 132;
+        destructionImage.thickness = 0;
+        destructionImage.cornerRadius = 5;
+        destructionImage.isVisible = false;
+        filterBar.addControl(destructionImage);
+        destructionImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(destructionImage, "Destruction", "weaponType");
+        });
+
+        const eruditionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_erudition.png");
+        eruditionImage.height = "40px";
+        eruditionImage.width = "40px";
+        eruditionImage.left = 172;
+        eruditionImage.thickness = 0;
+        eruditionImage.cornerRadius = 5;
+        eruditionImage.isVisible = false;
+        filterBar.addControl(eruditionImage);
+        eruditionImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(eruditionImage, "Erudition", "weaponType");
+        });
+
+        const harmonyImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_harmony.png");
+        harmonyImage.height = "40px";
+        harmonyImage.width = "40px";
+        harmonyImage.left = 212;
+        harmonyImage.thickness = 0;
+        harmonyImage.cornerRadius = 5;
+        harmonyImage.isVisible = false;
+        filterBar.addControl(harmonyImage);
+        harmonyImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(harmonyImage, "Harmony", "weaponType");
+        });
+
+        const huntImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_hunt.png");
+        huntImage.height = "40px";
+        huntImage.width = "40px";
+        huntImage.left = 252;
+        huntImage.thickness = 0;
+        huntImage.cornerRadius = 5;
+        huntImage.isVisible = false;
+        filterBar.addControl(huntImage);
+        huntImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(huntImage, "Hunt", "weaponType");
+        });
+
+        const nihilityImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_nihility.png");
+        nihilityImage.height = "40px";
+        nihilityImage.width = "40px";
+        nihilityImage.left = 292;
+        nihilityImage.thickness = 0;
+        nihilityImage.cornerRadius = 5;
+        nihilityImage.isVisible = false;
+        filterBar.addControl(nihilityImage);
+        nihilityImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(nihilityImage, "Nihility", "weaponType");
+        });
+
+        const preservationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_preservation.png");
+        preservationImage.height = "40px";
+        preservationImage.width = "40px";
+        preservationImage.left = 332;
+        preservationImage.thickness = 0;
+        preservationImage.cornerRadius = 5;
+        preservationImage.isVisible = false;
+        filterBar.addControl(preservationImage);
+        preservationImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(preservationImage, "Preservation", "weaponType");
+        });
+
+        function hideHSRElements(): void {
+            fireImage.isVisible = !fireImage.isVisible;
+            iceImage.isVisible = !iceImage.isVisible;
+            imaginaryImage.isVisible = !imaginaryImage.isVisible;
+            lightningImage.isVisible = !lightningImage.isVisible;
+            physicalImage.isVisible = !physicalImage.isVisible;
+            quantumImage.isVisible = !quantumImage.isVisible;
+            windImage.isVisible = !windImage.isVisible;
+            abundanceImage.isVisible = !abundanceImage.isVisible;
+            destructionImage.isVisible = !destructionImage.isVisible;
+            eruditionImage.isVisible = !eruditionImage.isVisible;
+            harmonyImage.isVisible = !harmonyImage.isVisible;
+            huntImage.isVisible = !huntImage.isVisible;
+            nihilityImage.isVisible = !nihilityImage.isVisible;
+            preservationImage.isVisible = !preservationImage.isVisible;
+            hsrSortModeChanger.isVisible = !hsrSortModeChanger.isVisible;
+            hsrStarImage.isVisible = !hsrStarImage.isVisible;
+        }
+
+        function offHSRElementBG(): void {
+            fireImage.background = "rgba(0,0,0,0)";
+            iceImage.background = "rgba(0,0,0,0)";
+            imaginaryImage.background = "rgba(0,0,0,0)";
+            lightningImage.background = "rgba(0,0,0,0)";
+            physicalImage.background = "rgba(0,0,0,0)";
+            quantumImage.background = "rgba(0,0,0,0)";
+            windImage.background = "rgba(0,0,0,0)";
+        }
+
+        function offPathBG(): void {
+            abundanceImage.background = "rgba(0,0,0,0)";
+            destructionImage.background = "rgba(0,0,0,0)";
+            eruditionImage.background = "rgba(0,0,0,0)";
+            harmonyImage.background = "rgba(0,0,0,0)";
+            huntImage.background = "rgba(0,0,0,0)";
+            nihilityImage.background = "rgba(0,0,0,0)";
+            preservationImage.background = "rgba(0,0,0,0)";
         }
 
         const anemoImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_anemo.png");
@@ -863,6 +1195,7 @@ export class SceneBuilder implements ISceneBuilder {
             bowImage.isVisible = !bowImage.isVisible;
             claymoreImage.isVisible = !claymoreImage.isVisible;
             poleImage.isVisible = !poleImage.isVisible;
+            sortModeChanger.isVisible = !sortModeChanger.isVisible;
         }
 
         function offElementBG(): void {
@@ -916,7 +1249,27 @@ export class SceneBuilder implements ISceneBuilder {
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < 5; j++) {
                     if (charIndex > dataArray.length - 1) {
-                        const charButton = gui.Button.CreateImageOnlyButton("but", "https://static.wikia.nocookie.net/gensin-impact/images/f/f8/Icon_Emoji_Paimon%27s_Paintings_02_Qiqi_1.png");
+                        let charButton: gui.Button;
+                        extraDataArray;
+                        if (tabMode == "Genshin") {
+                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/Genshin/Paimon.png");
+                            charButton.onPointerClickObservable.add(async function() {
+                                charPanel.isVisible = !charPanel.isVisible;
+                                if (chosenCharName != "Paimon") {
+                                    await changeCharacter("Paimon");
+                                }
+                            });
+                        } else if (tabMode == "HSR") {
+                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/HSR/Pom-Pom.png");
+                            charButton.onPointerClickObservable.add(async function() {
+                                charPanel.isVisible = !charPanel.isVisible;
+                                if (chosenCharName != "Pom-Pom") {
+                                    await changeCharacter("Pom-Pom");
+                                }
+                            });
+                        } else {
+                            charButton = gui.Button.CreateImageOnlyButton("but", "https://static.wikia.nocookie.net/gensin-impact/images/f/f8/Icon_Emoji_Paimon%27s_Paintings_02_Qiqi_1.png");
+                        }
                         charButton.thickness = 0;
                         grid.addControl(charButton, i, j);
                     } else {
@@ -962,7 +1315,11 @@ export class SceneBuilder implements ISceneBuilder {
             mmdCamera.restoreState();
             mmdRuntime.unregister(scene);
 
-            mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
+            if (!physicsModeOn) {
+                mmdRuntime = new MmdRuntime(scene);
+            } else {
+                mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
+            }
             mmdRuntime.loggingEnabled = true;
             mmdRuntime.register(scene);
 
@@ -979,7 +1336,14 @@ export class SceneBuilder implements ISceneBuilder {
             engine.displayLoadingUI();
             promises = [];
             loadingTexts = [];
-            chosenChar = findCharByName(charDataArray, chosenCharName);
+
+            if (chosenCharName == "Paimon") {
+                chosenChar = findCharByName(extraDataArray, chosenCharName);
+            } else if (chosenCharName == "Pom-Pom") {
+                chosenChar = findCharByName(extraDataArray, chosenCharName);
+            } else {
+                chosenChar = findCharByName(tabMode === "Genshin" ? charDataArray : hsrCharDataArray, chosenCharName);
+            }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
                 promises.push(SceneLoader.ImportMeshAsync(
                     undefined,
@@ -1021,7 +1385,8 @@ export class SceneBuilder implements ISceneBuilder {
             bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
             boneWorldMatrix = new Matrix();
 
-            scene.onBeforeRenderObservable.addOnce(() => {
+            // onBeforeRenderObservable
+            scene.onBeforeDrawPhaseObservable.addOnce(() => {
                 headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
                 boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
                 // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
