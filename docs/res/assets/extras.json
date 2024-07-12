@@ -1,0 +1,24 @@
+[
+    {
+        "_id": 10000000,
+        "name": "Paimon",
+        "weaponType": "Others",
+        "element": "Others",
+        "gender": "Others",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Paimon",
+        "image": "Genshin/Paimon.png",
+        "pmx": "派蒙1.0.pmx"
+    },
+	{
+        "_id": 10000001,
+        "name": "Pom-Pom",
+        "weaponType": "Others",
+        "element": "Others",
+        "gender": "Others",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Pom-Pom",
+        "image": "HSR/Pom-Pom.png",
+        "pmx": "Pom-Pom.pmx"
+    }
+]
