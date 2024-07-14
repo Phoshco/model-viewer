@@ -20,5 +20,16 @@
         "directory": "res/chars/HSR/Pom-Pom",
         "image": "HSR/Pom-Pom.png",
         "pmx": "Pom-Pom.pmx"
+    },
+    {
+        "_id": 10000002,
+        "name": "Bangboo",
+        "weaponType": "Others",
+        "element": "Others",
+        "gender": "Others",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Bangboo",
+        "image": "ZZZ/Bangboo.png",
+        "pmx": "Bangboo.pmx"
     }
 ]

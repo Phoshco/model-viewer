@@ -28,6 +28,7 @@ import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
 import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
+import { Material } from "@babylonjs/core/Materials/material";
 // import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -43,6 +44,7 @@ import havokPhysics from "@babylonjs/havok";
 // import { Inspector } from "@babylonjs/inspector";
 import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMaterial";
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
+import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
 import type { MmdStandardMaterialBuilder } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
 import type { BpmxLoader } from "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 import { BvmdLoader } from "babylon-mmd/esm/Loader/Optimized/bvmdLoader";
@@ -58,6 +60,7 @@ import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl"
 import extraCharDatas from "../res/assets/extras.json";
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
+import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
 
 export class SceneBuilder implements ISceneBuilder {
@@ -85,14 +88,20 @@ export class SceneBuilder implements ISceneBuilder {
         interface HSRCharData extends BaseCharData {
         }
 
+        interface ZZZCharData extends BaseCharData {
+            "region": string;
+        }
+
         interface ExtraCharData extends BaseCharData {
         }
 
         const extraDataArray = extraCharDatas as ExtraCharData[];
         const charDataArray = genshinCharDatas as GenshinCharData[];
         const hsrCharDataArray = hsrCharDatas as HSRCharData[];
+        const zzzCharDataArray = zzzCharDatas as ZZZCharData[];
         charDataArray.sort((a, b) => b._id - a._id);
         hsrCharDataArray.sort((a, b) => b._id - a._id);
+        zzzCharDataArray.sort((a, b) => b._id - a._id);
 
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
@@ -135,6 +144,17 @@ export class SceneBuilder implements ISceneBuilder {
         bpmxLoader.preserveSerializationData = true;
         const materialBuilder = bpmxLoader.materialBuilder as MmdStandardMaterialBuilder;
         materialBuilder.deleteTextureBufferAfterLoad = false;
+
+        materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
+            material.forceDepthWrite = true;
+            material.useAlphaFromDiffuseTexture = true;
+            if (material.diffuseTexture !== null) material.diffuseTexture.hasAlpha = true;
+
+            if (material.transparencyMode === Material.MATERIAL_ALPHABLEND) {
+                material.transparencyMode = Material.MATERIAL_ALPHATESTANDBLEND;
+                material.alphaCutOff = 0.01;
+            }
+        };
         // if you want override texture loading, uncomment following lines.
         // materialBuilder.loadDiffuseTexture = (): void => { /* do nothing */ };
         // materialBuilder.loadSphereTexture = (): void => { /* do nothing */ };
@@ -543,16 +563,16 @@ export class SceneBuilder implements ISceneBuilder {
         hsrButton.cornerRadiusX = hsrButton.cornerRadiusY = 15;
         topBar.addControl(hsrButton);
 
-        const othersButton = gui.Button.CreateSimpleButton("but", "Others");
-        othersButton.width = "233px";
-        othersButton.height = "50px";
-        othersButton.color = "white";
-        othersButton.background = charPanel.background;
-        othersButton.thickness = 0;
-        othersButton.left = 233;
-        othersButton.top = -25;
-        othersButton.cornerRadiusX = othersButton.cornerRadiusY = 15;
-        topBar.addControl(othersButton);
+        const zzzButton = gui.Button.CreateSimpleButton("but", "Zenless Zone Zero");
+        zzzButton.width = "233px";
+        zzzButton.height = "50px";
+        zzzButton.color = "white";
+        zzzButton.background = charPanel.background;
+        zzzButton.thickness = 0;
+        zzzButton.left = 233;
+        zzzButton.top = -25;
+        zzzButton.cornerRadiusX = zzzButton.cornerRadiusY = 15;
+        topBar.addControl(zzzButton);
 
         // CURRENT STATE
         let tabMode = "Genshin";
@@ -563,6 +583,9 @@ export class SceneBuilder implements ISceneBuilder {
             { key: "_id", value: "10000" }
         ];
         const hsrFilter: { key: keyof HSRCharData; value: string }[] = [
+            { key: "_id", value: "10000" }
+        ];
+        const zzzFilter: { key: keyof ZZZCharData; value: string }[] = [
             { key: "_id", value: "10000" }
         ];
         let filteredArray: BaseCharData[];
@@ -576,7 +599,8 @@ export class SceneBuilder implements ISceneBuilder {
                     hsrButton.background = charPanel.background;
                     hideHSRElements();
                 } else {
-                    othersButton.background = charPanel.background;
+                    zzzButton.background = charPanel.background;
+                    hideZZZElements();
                 }
                 tabMode = "Genshin";
                 filteredArray = filterBy(charDataArray, genshinFilter);
@@ -592,7 +616,8 @@ export class SceneBuilder implements ISceneBuilder {
                     genshinButton.background = charPanel.background;
                     hideGenshinElements();
                 } else {
-                    othersButton.background = charPanel.background;
+                    zzzButton.background = charPanel.background;
+                    hideZZZElements();
                 }
                 tabMode = "HSR";
                 filteredArray = filterBy(hsrCharDataArray, hsrFilter);
@@ -601,9 +626,9 @@ export class SceneBuilder implements ISceneBuilder {
                 generateGrid(filteredArray);
             }
         });
-        othersButton.onPointerClickObservable.add(function() {
-            if (tabMode != "Others") {
-                othersButton.background = "rgb(64,68,70)";
+        zzzButton.onPointerClickObservable.add(function() {
+            if (tabMode != "ZZZ") {
+                zzzButton.background = "rgb(64,68,70)";
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
                     hideGenshinElements();
@@ -611,8 +636,11 @@ export class SceneBuilder implements ISceneBuilder {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
                 }
-                tabMode = "Others";
-                sortModeKey = "_id";
+                tabMode = "ZZZ";
+                filteredArray = filterBy(zzzCharDataArray, zzzFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                hideZZZElements();
+                generateGrid(filteredArray);
             }
         });
 
@@ -785,6 +813,70 @@ export class SceneBuilder implements ISceneBuilder {
             generateGrid(filteredArray);
         });
 
+        const zzzFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_AgentRank_A.png");
+        zzzFourStarImage.height = "40px";
+        zzzFourStarImage.width = "40px";
+        zzzFourStarImage.left = -188;
+        zzzFourStarImage.thickness = 0;
+        zzzFourStarImage.cornerRadius = 5;
+        filterBar.addControl(zzzFourStarImage);
+        zzzFourStarImage.isVisible = false;
+        zzzFourStarImage.onPointerClickObservable.add(function() {
+            const index = zzzFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (zzzFilter[index].value == "4") {
+                    zzzFilter.splice(index, 1);
+                    zzzFourStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    zzzFilter[index].value = "4";
+                    fiveStarImage.background = "rgba(0,0,0,0)";
+                    zzzFourStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof ZZZCharData; value: string } = {
+                    key: "rarity",
+                    value: "4"
+                };
+                zzzFilter.push(newPush);
+                zzzFourStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(zzzCharDataArray, zzzFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
+        const zzzFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_AgentRank_S.png");
+        zzzFiveStarImage.height = "40px";
+        zzzFiveStarImage.width = "40px";
+        zzzFiveStarImage.left = -148;
+        zzzFiveStarImage.thickness = 0;
+        zzzFiveStarImage.cornerRadius = 5;
+        filterBar.addControl(zzzFiveStarImage);
+        zzzFiveStarImage.isVisible = false;
+        zzzFiveStarImage.onPointerClickObservable.add(function() {
+            const index = zzzFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (zzzFilter[index].value == "5") {
+                    zzzFilter.splice(index, 1);
+                    zzzFiveStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    zzzFilter[index].value = "5";
+                    zzzFourStarImage.background = "rgba(0,0,0,0)";
+                    zzzFiveStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof ZZZCharData; value: string } = {
+                    key: "rarity",
+                    value: "5"
+                };
+                zzzFilter.push(newPush);
+                zzzFiveStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(zzzCharDataArray, zzzFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
         function checkIfInFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof GenshinCharData): void {
             const index = genshinFilter.findIndex(obj => obj.key === theKey);
             if (index !== -1) { // Object with the key exists
@@ -837,6 +929,34 @@ export class SceneBuilder implements ISceneBuilder {
                 buttonObj.background = charPanel.background;
             }
             filteredArray = filterBy(hsrCharDataArray, hsrFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        }
+
+        function checkIfInZZZFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof ZZZCharData): void {
+            const index = zzzFilter.findIndex(obj => obj.key === theKey);
+            if (index !== -1) { // Object with the key exists
+                if (zzzFilter[index].value == theObjType) {
+                    zzzFilter.splice(index, 1);
+                    buttonObj.background = "rgba(0,0,0,0)";
+                } else {
+                    zzzFilter[index].value = theObjType;
+                    if (theKey.toString() == "element") {
+                        offZZZElementBG();
+                    } else {
+                        offStyleBG();
+                    }
+                    buttonObj.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof ZZZCharData; value: string } = {
+                    key: theKey,
+                    value: theObjType
+                };
+                zzzFilter.push(newPush);
+                buttonObj.background = charPanel.background;
+            }
+            filteredArray = filterBy(zzzCharDataArray, zzzFilter);
             filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
             generateGrid(filteredArray);
         }
@@ -1216,6 +1336,158 @@ export class SceneBuilder implements ISceneBuilder {
             poleImage.background = "rgba(0,0,0,0)";
         }
 
+        const electricImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Electric.png");
+        electricImage.height = "40px";
+        electricImage.width = "40px";
+        electricImage.left = -68;
+        electricImage.thickness = 0;
+        electricImage.cornerRadius = 5;
+        electricImage.isVisible = false;
+        filterBar.addControl(electricImage);
+        electricImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(electricImage, "Electric", "element");
+        });
+
+        const etherImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Ether.png");
+        etherImage.height = "40px";
+        etherImage.width = "40px";
+        etherImage.left = -28;
+        etherImage.thickness = 0;
+        etherImage.cornerRadius = 5;
+        etherImage.isVisible = false;
+        filterBar.addControl(etherImage);
+        etherImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(etherImage, "Ether", "element");
+        });
+
+        const zzzFireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Fire.png");
+        zzzFireImage.height = "40px";
+        zzzFireImage.width = "40px";
+        zzzFireImage.left = 12;
+        zzzFireImage.thickness = 0;
+        zzzFireImage.cornerRadius = 5;
+        zzzFireImage.isVisible = false;
+        filterBar.addControl(zzzFireImage);
+        zzzFireImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(zzzFireImage, "Fire", "element");
+        });
+
+        const zzzIceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Ice.png");
+        zzzIceImage.height = "40px";
+        zzzIceImage.width = "40px";
+        zzzIceImage.left = 52;
+        zzzIceImage.thickness = 0;
+        zzzIceImage.cornerRadius = 5;
+        zzzIceImage.isVisible = false;
+        filterBar.addControl(zzzIceImage);
+        zzzIceImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(zzzIceImage, "Ice", "element");
+        });
+
+        const zzzPhyscialImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Physical.png");
+        zzzPhyscialImage.height = "40px";
+        zzzPhyscialImage.width = "40px";
+        zzzPhyscialImage.left = 92;
+        zzzPhyscialImage.thickness = 0;
+        zzzPhyscialImage.cornerRadius = 5;
+        zzzPhyscialImage.isVisible = false;
+        filterBar.addControl(zzzPhyscialImage);
+        zzzPhyscialImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(zzzPhyscialImage, "Physical", "element");
+        });
+
+        const anomalyImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Anomaly.png");
+        anomalyImage.height = "40px";
+        anomalyImage.width = "40px";
+        anomalyImage.left = 132;
+        anomalyImage.thickness = 0;
+        anomalyImage.cornerRadius = 5;
+        anomalyImage.isVisible = false;
+        filterBar.addControl(anomalyImage);
+        anomalyImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(anomalyImage, "Anomaly", "weaponType");
+        });
+
+        const attackImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Attack.png");
+        attackImage.height = "40px";
+        attackImage.width = "40px";
+        attackImage.left = 172;
+        attackImage.thickness = 0;
+        attackImage.cornerRadius = 5;
+        attackImage.isVisible = false;
+        filterBar.addControl(attackImage);
+        attackImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(attackImage, "Attack", "weaponType");
+        });
+
+        const defenseImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Defense.png");
+        defenseImage.height = "40px";
+        defenseImage.width = "40px";
+        defenseImage.left = 212;
+        defenseImage.thickness = 0;
+        defenseImage.cornerRadius = 5;
+        defenseImage.isVisible = false;
+        filterBar.addControl(defenseImage);
+        defenseImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(defenseImage, "Defense", "weaponType");
+        });
+
+        const stunImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Stun.png");
+        stunImage.height = "40px";
+        stunImage.width = "40px";
+        stunImage.left = 252;
+        stunImage.thickness = 0;
+        stunImage.cornerRadius = 5;
+        stunImage.isVisible = false;
+        filterBar.addControl(stunImage);
+        stunImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(stunImage, "Stun", "weaponType");
+        });
+
+        const supportImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Support.png");
+        supportImage.height = "40px";
+        supportImage.width = "40px";
+        supportImage.left = 292;
+        supportImage.thickness = 0;
+        supportImage.cornerRadius = 5;
+        supportImage.isVisible = false;
+        filterBar.addControl(supportImage);
+        supportImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(supportImage, "Support", "weaponType");
+        });
+
+        function hideZZZElements(): void {
+            zzzFourStarImage.isVisible = !zzzFourStarImage.isVisible;
+            zzzFiveStarImage.isVisible = !zzzFiveStarImage.isVisible;
+            electricImage.isVisible = !electricImage.isVisible;
+            etherImage.isVisible = !etherImage.isVisible;
+            zzzFireImage.isVisible = !zzzFireImage.isVisible;
+            zzzIceImage.isVisible = !zzzIceImage.isVisible;
+            zzzPhyscialImage.isVisible = !zzzPhyscialImage.isVisible;
+            anomalyImage.isVisible = !anomalyImage.isVisible;
+            attackImage.isVisible = !attackImage.isVisible;
+            defenseImage.isVisible = !defenseImage.isVisible;
+            stunImage.isVisible = !stunImage.isVisible;
+            supportImage.isVisible = !supportImage.isVisible;
+            sortModeChanger.isVisible = !sortModeChanger.isVisible;
+        }
+
+        function offZZZElementBG(): void {
+            electricImage.background = "rgba(0,0,0,0)";
+            etherImage.background = "rgba(0,0,0,0)";
+            zzzFireImage.background = "rgba(0,0,0,0)";
+            zzzIceImage.background = "rgba(0,0,0,0)";
+            zzzPhyscialImage.background = "rgba(0,0,0,0)";
+        }
+
+        function offStyleBG(): void {
+            anomalyImage.background = "rgba(0,0,0,0)";
+            attackImage.background = "rgba(0,0,0,0)";
+            defenseImage.background = "rgba(0,0,0,0)";
+            stunImage.background = "rgba(0,0,0,0)";
+            supportImage.background = "rgba(0,0,0,0)";
+        }
+
         const myScrollViewer = new gui.ScrollViewer("name");
         myScrollViewer.thickness = 0;
         panel.addControl(myScrollViewer);
@@ -1268,7 +1540,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else {
-                            charButton = gui.Button.CreateImageOnlyButton("but", "https://static.wikia.nocookie.net/gensin-impact/images/f/f8/Icon_Emoji_Paimon%27s_Paintings_02_Qiqi_1.png");
+                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/ZZZ/Bangboo.png");
                         }
                         charButton.thickness = 0;
                         grid.addControl(charButton, i, j);
@@ -1342,7 +1614,13 @@ export class SceneBuilder implements ISceneBuilder {
             } else if (chosenCharName == "Pom-Pom") {
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
             } else {
-                chosenChar = findCharByName(tabMode === "Genshin" ? charDataArray : hsrCharDataArray, chosenCharName);
+                chosenChar = findCharByName(
+                    tabMode === "Genshin" ? charDataArray :
+                        tabMode === "HSR" ? hsrCharDataArray :
+                            tabMode === "ZZZ" ? zzzCharDataArray :
+                                [],
+                    chosenCharName
+                );
             }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
                 promises.push(SceneLoader.ImportMeshAsync(

@@ -2,8 +2,8 @@
 	{
         "_id": 10000001,
         "name": "Stelle",
-        "weaponType": "Destruction",
-        "element": "Physical",
+        "weaponType": "Universal",
+        "element": "Universal",
         "gender": "Female",
         "rarity": 5,
         "directory": "res/chars/HSR/Stelle",
@@ -13,8 +13,8 @@
     {
         "_id": 10000002,
         "name": "Caelus",
-        "weaponType": "Destruction",
-        "element": "Physical",
+        "weaponType": "Universal",
+        "element": "Universal",
         "gender": "Male",
         "rarity": 5,
         "directory": "res/chars/HSR/Caelus",
