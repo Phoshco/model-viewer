@@ -59,6 +59,7 @@ import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl"
 
 import extraCharDatas from "../res/assets/extras.json";
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
+import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
@@ -97,9 +98,11 @@ export class SceneBuilder implements ISceneBuilder {
 
         const extraDataArray = extraCharDatas as ExtraCharData[];
         const charDataArray = genshinCharDatas as GenshinCharData[];
+        const genshinSkinDataArray = genshinSkinCharDatas as GenshinCharData[];
         const hsrCharDataArray = hsrCharDatas as HSRCharData[];
         const zzzCharDataArray = zzzCharDatas as ZZZCharData[];
         charDataArray.sort((a, b) => b._id - a._id);
+        genshinSkinDataArray.sort((a, b) => b._id - a._id);
         hsrCharDataArray.sort((a, b) => b._id - a._id);
         zzzCharDataArray.sort((a, b) => b._id - a._id);
 
@@ -293,6 +296,7 @@ export class SceneBuilder implements ISceneBuilder {
         );
 
         // model
+        let prevCharName: string;
         let chosenCharName = "Hu Tao";
         let chosenChar: BaseCharData | undefined;
         chosenChar = findCharByName(charDataArray, chosenCharName);
@@ -477,7 +481,7 @@ export class SceneBuilder implements ISceneBuilder {
         debugblock.widthInPixels = 100;
         debugblock.heightInPixels = 50;
         debugblock.left = 0;
-        debugblock.text = `${mmdCameraRoot.position.y}`;
+        debugblock.text = "0"; // `${mmdCameraRoot.position.y}`;
         debugblock.fontSize = 16;
         debugblock.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         debugblock.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
@@ -498,7 +502,7 @@ export class SceneBuilder implements ISceneBuilder {
         textblock.color = "black";
         advancedTexture.addControl(textblock);
 
-        const showButton = gui.Button.CreateImageOnlyButton("but", "https://cdn-icons-png.flaticon.com/512/10613/10613684.png");
+        const showButton = gui.Button.CreateImageOnlyButton("but", "res/assets/menu.png");
         showButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         showButton.left = "10px";
         showButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
@@ -507,6 +511,30 @@ export class SceneBuilder implements ISceneBuilder {
         showButton.height = "50px";
         showButton.thickness = 0;
         advancedTexture.addControl(showButton);
+
+        let skinButton = new gui.Button();
+        function createSkinButton(visibility: boolean = false, nextSkinMode?: boolean, name?: string): void {
+            skinButton.dispose();
+            skinButton = new gui.Button();
+            skinButton = gui.Button.CreateImageOnlyButton("but", "res/assets/alter.png");
+            skinButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            skinButton.left = "10px";
+            skinButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+            skinButton.top = "60px";
+            skinButton.width = "50px";
+            skinButton.height = "50px";
+            skinButton.thickness = 0;
+            advancedTexture.addControl(skinButton);
+            skinButton.isVisible = visibility;
+
+            if (nextSkinMode != undefined && name) {
+                skinButton.onPointerClickObservable.addOnce(async function() {
+                    changeCharacter(name);
+                    skinMode = nextSkinMode;
+                });
+            }
+        }
+        let skinMode = false;
 
         showButton.onPointerClickObservable.add(function() {
             charPanel.isVisible = !charPanel.isVisible;
@@ -1579,7 +1607,10 @@ export class SceneBuilder implements ISceneBuilder {
                 return;
             }
             mmdRuntime.pauseAnimation();
+            prevCharName = chosenCharName;
             chosenCharName = nextCharacter;
+            skinButton.isVisible = false;
+
             mmdRuntime.destroyMmdModel(mmdModel);
             modelMesh.dispose(false, true);
             mmdPlayerControl.dispose();
@@ -1605,15 +1636,43 @@ export class SceneBuilder implements ISceneBuilder {
             mmdPlayerControl = new MmdPlayerControl(scene, mmdRuntime, audioPlayer);
             mmdPlayerControl.showPlayerControl();
 
-            engine.displayLoadingUI();
-            promises = [];
-            loadingTexts = [];
-
             if (chosenCharName == "Paimon") {
+                skinMode = false;
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
+                await createCharacter(chosenChar);
             } else if (chosenCharName == "Pom-Pom") {
+                skinMode = false;
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
+                await createCharacter(chosenChar);
+            } else if (tabMode == "Genshin") {
+                const skinChar = findCharByName(genshinSkinDataArray, chosenCharName);
+                if (prevCharName == chosenCharName) {
+                    if (skinChar && !skinMode) { // normal to skin (button is to change back to normal)
+                        skinMode = true;
+                        chosenChar = skinChar;
+                        await createCharacter(chosenChar);
+                        // debugblock.text = debugblock.text + "a";
+                        createSkinButton(true, false, skinChar.name);
+                    } else if (skinChar && skinMode) { // skin to normal (button to change to skin)
+                        skinMode = false;
+                        chosenChar = findCharByName(charDataArray, chosenCharName);
+                        await createCharacter(chosenChar);
+                        // debugblock.text = debugblock.text + "b";
+                        createSkinButton(true, true, skinChar.name);
+                    }
+                } else {
+                    skinMode = false;
+                    chosenChar = findCharByName(charDataArray, chosenCharName);
+                    await createCharacter(chosenChar);
+                    if (skinChar) {
+                        // debugblock.text = debugblock.text + "c";
+                        createSkinButton(true, true, skinChar.name);
+                    } else {
+                        // debugblock.text = debugblock.text + "d";
+                    }
+                }
             } else {
+                skinMode = false;
                 chosenChar = findCharByName(
                     tabMode === "Genshin" ? charDataArray :
                         tabMode === "HSR" ? hsrCharDataArray :
@@ -1621,7 +1680,16 @@ export class SceneBuilder implements ISceneBuilder {
                                 [],
                     chosenCharName
                 );
+                await createCharacter(chosenChar);
             }
+        }
+
+        async function createCharacter(chosenChar?: BaseCharData|undefined): Promise<void> {
+            engine.displayLoadingUI();
+            skinButton.isEnabled = false;
+            promises = [];
+            loadingTexts = [];
+
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
                 promises.push(SceneLoader.ImportMeshAsync(
                     undefined,
@@ -1634,7 +1702,9 @@ export class SceneBuilder implements ISceneBuilder {
                 throw new Error("Chosen character or its properties are undefined");
             }
             loadResults = await Promise.all(promises);
-            scene.onAfterRenderObservable.addOnce(() => engine.hideLoadingUI());
+            scene.onAfterRenderObservable.addOnce(() => {
+                engine.hideLoadingUI();
+            });
             scene.activeCameras = [stillCamera, guiCam];
 
             theDiff = 1.66;
@@ -1703,7 +1773,6 @@ export class SceneBuilder implements ISceneBuilder {
             });
         }
 
-
         // for scaling camera to model height
         {
             mmdCameraRoot.position.x = mmdRoot.position.x;
@@ -1721,7 +1790,7 @@ export class SceneBuilder implements ISceneBuilder {
                 } else {
                     mmdCameraRoot.position.y = 0 - theDiff;
                 }
-                debugblock.text = `${mmdCameraRoot.position.y}\n${theHeight}\n${theDiff}`;
+                // debugblock.text = `${mmdCameraRoot.position.y}\n${theHeight}\n${theDiff}`;
                 mmdCamera.parent = mmdCameraRoot;
             });
         }

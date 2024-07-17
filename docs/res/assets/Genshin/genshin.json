@@ -79,7 +79,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Barbara",
+        "directory": "res/chars/Genshin/Barbara/Barbara",
         "image": "Genshin/Barbara.png",
         "pmx": "芭芭拉.pmx"
     },
@@ -223,7 +223,7 @@
         "gender": "Male",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Diluc",
+        "directory": "res/chars/Genshin/Diluc/Diluc",
         "image": "Genshin/Diluc.png",
         "pmx": "迪卢克.pmx"
     },
@@ -283,7 +283,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Fischl",
+        "directory": "res/chars/Genshin/Fischl/Fischl",
         "image": "Genshin/Fischl.png",
         "pmx": "菲谢尔.pmx"
     },
@@ -331,7 +331,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Ganyu",
+        "directory": "res/chars/Genshin/Ganyu/Ganyu",
         "image": "Genshin/Ganyu.png",
         "pmx": "甘雨.pmx"
     },
@@ -343,7 +343,7 @@
         "gender": "Male",
         "region": "Inazuma",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Gorou",
+        "directory": "res/chars/Genshin/Gorou/Gorou",
         "image": "Genshin/Gorou.png",
         "pmx": "五郎.pmx"
     },
@@ -367,7 +367,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Jean",
+        "directory": "res/chars/Genshin/Jean/Jean",
         "image": "Genshin/Jean.png",
         "pmx": "琴.pmx"
     },
@@ -391,7 +391,7 @@
         "gender": "Male",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Kaeya",
+        "directory": "res/chars/Genshin/Kaeya/Kaeya",
         "image": "Genshin/Kaeya.png",
         "pmx": "凯亚.pmx"
     },
@@ -403,7 +403,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Kamisato Ayaka",
+        "directory": "res/chars/Genshin/Kamisato Ayaka/Kamisato Ayaka",
         "image": "Genshin/Kamisato Ayaka.png",
         "pmx": "神里绫华.pmx"
     },
@@ -439,7 +439,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Keqing",
+        "directory": "res/chars/Genshin/Keqing/Keqing",
         "image": "Genshin/Keqing.png",
         "pmx": "刻晴.pmx"
     },
@@ -451,7 +451,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Kirara",
+        "directory": "res/chars/Genshin/Kirara/Kirara",
         "image": "Genshin/Kirara.png",
         "pmx": "绮良良.pmx"
     },
@@ -463,7 +463,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Klee",
+        "directory": "res/chars/Genshin/Klee/Klee",
         "image": "Genshin/Klee.png",
         "pmx": "可莉.pmx"
     },
@@ -511,7 +511,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Lisa",
+        "directory": "res/chars/Genshin/Lisa/Lisa",
         "image": "Genshin/Lisa.png",
         "pmx": "丽莎.pmx"
     },
@@ -523,7 +523,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Lynette",
+        "directory": "res/chars/Genshin/Lynette/Lynette",
         "image": "Genshin/Lynette.png",
         "pmx": "【琳妮特】.pmx"
     },
@@ -535,7 +535,7 @@
         "gender": "Male",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Lyney",
+        "directory": "res/chars/Genshin/Lyney/Lyney",
         "image": "Genshin/Lyney.png",
         "pmx": "林尼.pmx"
     },
@@ -559,7 +559,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Mona",
+        "directory": "res/chars/Genshin/Mona/Mona",
         "image": "Genshin/Mona.png",
         "pmx": "莫娜.pmx"
     },
@@ -607,7 +607,7 @@
         "gender": "Female",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Nilou",
+        "directory": "res/chars/Genshin/Nilou/Nilou",
         "image": "Genshin/Nilou.png",
         "pmx": "妮露.pmx"
     },
@@ -619,7 +619,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Ningguang",
+        "directory": "res/chars/Genshin/Ningguang/Ningguang",
         "image": "Genshin/Ningguang.png",
         "pmx": "凝光.pmx"
     },
@@ -727,7 +727,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Shenhe",
+        "directory": "res/chars/Genshin/Shenhe/Shenhe",
         "image": "Genshin/Shenhe.png",
         "pmx": "申鹤.pmx"
     },
@@ -905,7 +905,7 @@
         "gender": "Male",
         "region": "Liyue",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Xingqiu",
+        "directory": "res/chars/Genshin/Xingqiu/Xingqiu",
         "image": "Genshin/Xingqiu.png",
         "pmx": "行秋.pmx"
     },
