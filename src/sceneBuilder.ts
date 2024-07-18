@@ -606,6 +606,53 @@ export class SceneBuilder implements ISceneBuilder {
         charPanel.color = "black";
         advancedTexture.addControl(charPanel);
         charPanel.isVisible = false;
+        charPanel.onIsVisibleChangedObservable.add(()=>{
+            if (!charPanel.isVisible) {
+                stillCamera.attachControl(canvas, false);
+                camera.attachControl(canvas, false);
+            }
+        });
+        charPanel.onPointerEnterObservable.add(function() {
+            stillCamera.detachControl();
+            camera.detachControl();
+        });
+        charPanel.onPointerOutObservable.add(function() {
+            stillCamera.attachControl(canvas, false);
+            camera.attachControl(canvas, false);
+        });
+
+        // Code for click outside charPanel behaviour
+        let charPanelDown = false;
+        charPanel.onPointerDownObservable.add(()=>{
+            charPanelDown = true;
+        });
+        charPanel.onPointerUpObservable.add(()=>{
+            setTimeout(() => {
+                charPanelDown = false;
+            }, 100);
+        });
+        // Variable to keep track of click timeout timer
+        let clickStartTimer: number | undefined = undefined;
+        // Bool to determine if click will delete or not
+        let isAbleToDelete = true;
+        // If the user clicks, start a timer.  If the timer finishes, prevent user from deleting clicked object
+        scene.onPointerDown = (): void => {
+            if (!charPanelDown) {
+                clickStartTimer = window.setTimeout(() => {
+                    isAbleToDelete = false;
+                }, 100); // Wait 100 ms before considering this a click
+            }
+        };
+        // When user let's go of mouse button, clear the timer, if it never finished, delete the object
+        scene.onPointerUp = (): void => {
+            if (!charPanelDown) {
+                window.clearTimeout(clickStartTimer);
+                if (isAbleToDelete) {
+                    charPanel.isVisible = false;
+                }
+                isAbleToDelete = true;
+            }
+        };
 
         const containStack = new gui.Rectangle();
         containStack.width = "700px";
