@@ -29,6 +29,7 @@ import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator"
 import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
 import { Material } from "@babylonjs/core/Materials/material";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
 // import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -468,6 +469,42 @@ export class SceneBuilder implements ISceneBuilder {
 
         const layer = new Layer("", "res/stages/hoyo.png", scene, true, new Color4(1, 1, 1, 1));
         // layer.layerMask = 0x10000000;
+        const light_bg = new Texture("res/stages/hoyo.png", scene, true);
+        const dark_bg = new Texture("res/stages/hoyo_dark.png", scene, true);
+        let bg_bool = false;
+        layer.texture = light_bg;
+
+        const resizeObserver = new ResizeObserver(() => {
+            const canvasAspectRatio = canvas.width / canvas.height;
+            if (canvasAspectRatio > 1) {
+                layer.scale.y = canvasAspectRatio;
+                layer.scale.x = 1;
+
+                light_bg.uScale = 1;
+                light_bg.vScale = 1 / layer.scale.y;
+                light_bg.uOffset = 0;
+                light_bg.vOffset = (1 - light_bg.vScale) * 0.5;
+
+                dark_bg.uScale = 1;
+                dark_bg.vScale = 1 / layer.scale.y;
+                dark_bg.uOffset = 0;
+                dark_bg.vOffset = (1 - dark_bg.vScale) * 0.5;
+            } else {
+                layer.scale.y = 1;
+                layer.scale.x = 1 / canvasAspectRatio;
+
+                light_bg.uScale = 1 / layer.scale.x;
+                light_bg.vScale = 1;
+                light_bg.uOffset = (1 - light_bg.uScale) * 0.5;
+                light_bg.vOffset = 0;
+
+                dark_bg.uScale = 1 / layer.scale.x;
+                dark_bg.vScale = 1;
+                dark_bg.uOffset = (1 - dark_bg.uScale) * 0.5;
+                dark_bg.vOffset = 0;
+            }
+        });
+        resizeObserver.observe(canvas);
         layer.render;
 
         // GUI
@@ -512,6 +549,29 @@ export class SceneBuilder implements ISceneBuilder {
         showButton.thickness = 0;
         advancedTexture.addControl(showButton);
 
+        showButton.onPointerClickObservable.add(function() {
+            charPanel.isVisible = !charPanel.isVisible;
+        });
+
+        const darkButton = gui.Button.CreateImageOnlyButton("but", "res/assets/dark_mode.png");
+        darkButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        darkButton.left = "60px";
+        darkButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        darkButton.top = "10px";
+        darkButton.width = "50px";
+        darkButton.height = "50px";
+        darkButton.thickness = 0;
+        advancedTexture.addControl(darkButton);
+        darkButton.onPointerClickObservable.add(function() {
+            if (bg_bool) {
+                layer.texture = light_bg;
+            } else {
+                layer.texture = dark_bg;
+            }
+            layer.render;
+            bg_bool = !bg_bool;
+        });
+
         let skinButton = new gui.Button();
         function createSkinButton(visibility: boolean = false, nextSkinMode?: boolean, name?: string): void {
             skinButton.dispose();
@@ -528,6 +588,7 @@ export class SceneBuilder implements ISceneBuilder {
             skinButton.isVisible = visibility;
 
             if (nextSkinMode != undefined && name) {
+                skinButton.isEnabled = false;
                 skinButton.onPointerClickObservable.addOnce(async function() {
                     changeCharacter(name);
                     skinMode = nextSkinMode;
@@ -535,10 +596,6 @@ export class SceneBuilder implements ISceneBuilder {
             }
         }
         let skinMode = false;
-
-        showButton.onPointerClickObservable.add(function() {
-            charPanel.isVisible = !charPanel.isVisible;
-        });
 
         const charPanel = new gui.Rectangle();
         charPanel.width = "720px";
@@ -1687,6 +1744,7 @@ export class SceneBuilder implements ISceneBuilder {
         async function createCharacter(chosenChar?: BaseCharData|undefined): Promise<void> {
             engine.displayLoadingUI();
             skinButton.isEnabled = false;
+            showButton.isEnabled = false;
             promises = [];
             loadingTexts = [];
 
@@ -1704,6 +1762,10 @@ export class SceneBuilder implements ISceneBuilder {
             loadResults = await Promise.all(promises);
             scene.onAfterRenderObservable.addOnce(() => {
                 engine.hideLoadingUI();
+                setTimeout(() => {
+                    skinButton.isEnabled = true;
+                    showButton.isEnabled = true;
+                }, 1500);
             });
             scene.activeCameras = [stillCamera, guiCam];
 
