@@ -19,6 +19,7 @@ import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeCameraAnimation";
 import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeModelAnimation";
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
 
+import type { IPointerEvent } from "@babylonjs/core";
 // import { MirrorTexture, Plane } from "@babylonjs/core";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
@@ -45,9 +46,10 @@ import havokPhysics from "@babylonjs/havok";
 // import { Inspector } from "@babylonjs/inspector";
 import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMaterial";
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
+import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
 import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
-import type { MmdStandardMaterialBuilder } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
-import type { BpmxLoader } from "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
+import { MmdStandardMaterialBuilder } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
+// import type { BpmxLoader } from "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 import { BvmdLoader } from "babylon-mmd/esm/Loader/Optimized/bvmdLoader";
 import { SdefInjector } from "babylon-mmd/esm/Loader/sdefInjector";
 // import { VmdLoader } from "babylon-mmd/esm/Loader/vmdLoader";
@@ -66,6 +68,28 @@ import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
 
 export class SceneBuilder implements ISceneBuilder {
+    // private readonly _loaders: MmdModelLoader<any, any, any>[];
+
+    // public constructor() {
+    //     const materialBuilder = new MmdStandardMaterialBuilder();
+    //     materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
+    //         material.forceDepthWrite = true;
+    //         material.useAlphaFromDiffuseTexture = true;
+    //         if (material.diffuseTexture !== null) material.diffuseTexture.hasAlpha = true;
+
+    //         if (material.transparencyMode === Material.MATERIAL_ALPHABLEND) {
+    //             material.transparencyMode = Material.MATERIAL_ALPHATESTANDBLEND;
+    //             material.alphaCutOff = 0.01;
+    //         }
+    //     };
+
+    //     const loaders = this._loaders = [".pmx", ".bpmx"].map((ext) => SceneLoader.GetPluginForExtension(ext)) as MmdModelLoader<any, any, any>[];
+    //     for (const loader of loaders) {
+    //         loader.loggingEnabled = true;
+    //         loader.materialBuilder = materialBuilder;
+    //     }
+    // }
+
     public async build(canvas: HTMLCanvasElement, engine: AbstractEngine): Promise<Scene> {
         // for apply SDEF on shadow, outline, depth rendering
         SdefInjector.OverrideEngineCreateEffect(engine);
@@ -142,13 +166,13 @@ export class SceneBuilder implements ISceneBuilder {
             });
         }
 
-        // get bpmx loader and set some configurations.
-        const bpmxLoader = SceneLoader.GetPluginForExtension(".bpmx") as BpmxLoader;
-        bpmxLoader.loggingEnabled = true;
-        bpmxLoader.preserveSerializationData = true;
-        const materialBuilder = bpmxLoader.materialBuilder as MmdStandardMaterialBuilder;
-        materialBuilder.deleteTextureBufferAfterLoad = false;
+        let isMobile = false;
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            isMobile = true;
+        }
 
+        ///////////////
+        const materialBuilder = new MmdStandardMaterialBuilder();
         materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
             material.forceDepthWrite = true;
             material.useAlphaFromDiffuseTexture = true;
@@ -159,6 +183,13 @@ export class SceneBuilder implements ISceneBuilder {
                 material.alphaCutOff = 0.01;
             }
         };
+
+        const loaders = [".pmx", ".bpmx"].map((ext) => SceneLoader.GetPluginForExtension(ext)) as MmdModelLoader<any, any, any>[];
+        for (const loader of loaders) {
+            loader.loggingEnabled = true;
+            loader.materialBuilder = materialBuilder;
+        }
+
         // if you want override texture loading, uncomment following lines.
         // materialBuilder.loadDiffuseTexture = (): void => { /* do nothing */ };
         // materialBuilder.loadSphereTexture = (): void => { /* do nothing */ };
@@ -301,6 +332,9 @@ export class SceneBuilder implements ISceneBuilder {
         let chosenCharName = "Hu Tao";
         let chosenChar: BaseCharData | undefined;
         chosenChar = findCharByName(charDataArray, chosenCharName);
+        let extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
+        let theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
+        theLoader;
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
             promises.push(SceneLoader.ImportMeshAsync(
                 undefined,
@@ -518,7 +552,7 @@ export class SceneBuilder implements ISceneBuilder {
         debugblock.widthInPixels = 100;
         debugblock.heightInPixels = 50;
         debugblock.left = 0;
-        debugblock.text = "0"; // `${mmdCameraRoot.position.y}`;
+        debugblock.text = "lol"; // `${mmdCameraRoot.position.y}`;
         debugblock.fontSize = 16;
         debugblock.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         debugblock.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
@@ -597,7 +631,7 @@ export class SceneBuilder implements ISceneBuilder {
         }
         let skinMode = false;
 
-        const charPanel = new gui.Rectangle();
+        const charPanel = new gui.Rectangle("charPanel");
         charPanel.width = "720px";
         charPanel.height = "920px";
         charPanel.background = "rgb(44,48,50)";
@@ -635,16 +669,16 @@ export class SceneBuilder implements ISceneBuilder {
         let clickStartTimer: number | undefined = undefined;
         // Bool to determine if click will delete or not
         let isAbleToDelete = true;
-        // If the user clicks, start a timer.  If the timer finishes, prevent user from deleting clicked object
-        scene.onPointerDown = (): void => {
+        // If the user clicks, start a timer.  If the timer finishes, prevent user from able to close panel
+        function scenePointerDownCharPanel(): void {
             if (!charPanelDown) {
                 clickStartTimer = window.setTimeout(() => {
                     isAbleToDelete = false;
                 }, 100); // Wait 100 ms before considering this a click
             }
-        };
-        // When user let's go of mouse button, clear the timer, if it never finished, delete the object
-        scene.onPointerUp = (): void => {
+        }
+        // When user let's go of mouse button, clear the timer, if it never finished, close panel
+        function scenePointerUpCharPanel(): void {
             if (!charPanelDown) {
                 window.clearTimeout(clickStartTimer);
                 if (isAbleToDelete) {
@@ -652,7 +686,7 @@ export class SceneBuilder implements ISceneBuilder {
                 }
                 isAbleToDelete = true;
             }
-        };
+        }
 
         const containStack = new gui.Rectangle();
         containStack.width = "700px";
@@ -1620,9 +1654,42 @@ export class SceneBuilder implements ISceneBuilder {
             supportImage.background = "rgba(0,0,0,0)";
         }
 
-        const myScrollViewer = new gui.ScrollViewer("name");
+        const myScrollViewer = new gui.ScrollViewer("scrollName");
         myScrollViewer.thickness = 0;
         panel.addControl(myScrollViewer);
+        // For mobile scrolling
+        let allow_pointer_events_be_captured_by_scroll_viewer = false;
+        myScrollViewer.onPointerDownObservable.add(() => {
+            allow_pointer_events_be_captured_by_scroll_viewer = true;
+        });
+        myScrollViewer.onPointerUpObservable.add(() => {
+            allow_pointer_events_be_captured_by_scroll_viewer = false;
+        });
+
+        let y_down: number | undefined = undefined;
+        let vertical_scroll_start: number | undefined = undefined;
+        function onPointerDownSroll(evt: IPointerEvent): void {
+            if (!allow_pointer_events_be_captured_by_scroll_viewer) return;
+            y_down = evt.offsetY;
+            vertical_scroll_start = myScrollViewer.verticalBar.value;
+        }
+
+        function onPointerMoveScroll(evt: IPointerEvent): void {
+            if (!allow_pointer_events_be_captured_by_scroll_viewer) return;
+            if (y_down === undefined) return;
+            if (vertical_scroll_start === undefined) return;
+            let y_diff = evt.offsetY - y_down;
+            if (isMobile) {
+                y_diff = y_diff * 3;
+            }
+            const y_ratio = y_diff / (grid.heightInPixels - myScrollViewer.heightInPixels);
+            myScrollViewer.verticalBar.value = vertical_scroll_start - y_ratio;
+        }
+
+        function onPointerUpScroll(): void {
+            if (!allow_pointer_events_be_captured_by_scroll_viewer) return;
+            y_down = undefined;
+        }
 
         let grid = new gui.Grid();
         let rows = 10;
@@ -1675,13 +1742,15 @@ export class SceneBuilder implements ISceneBuilder {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/ZZZ/Bangboo.png");
                         }
                         charButton.thickness = 0;
+                        charButton.paddingBottom = charButton.paddingLeft = charButton.paddingRight = charButton.paddingTop = 5;
+                        charButton.cornerRadius = 10;
                         grid.addControl(charButton, i, j);
                     } else {
                         const selChar = dataArray[charIndex];
                         const theBG = new gui.Rectangle();
                         theBG.cornerRadius = 10;
                         theBG.thickness = 0;
-                        theBG.paddingBottom = theBG.paddingTop = theBG.paddingRight = theBG.paddingLeft = 4;
+                        theBG.paddingBottom = theBG.paddingTop = theBG.paddingRight = theBG.paddingLeft = 5;
                         theBG.background = "rgb(123,92,144)";
                         if (selChar.rarity == 5) {
                             theBG.background = "rgb(146,109,69)";
@@ -1794,7 +1863,8 @@ export class SceneBuilder implements ISceneBuilder {
             showButton.isEnabled = false;
             promises = [];
             loadingTexts = [];
-
+            extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
+            theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
                 promises.push(SceneLoader.ImportMeshAsync(
                     undefined,
@@ -1967,6 +2037,24 @@ export class SceneBuilder implements ISceneBuilder {
             }
         }
         document.body.addEventListener("keydown", handleKeyDown);
+
+        function handlePointerDown(evt: IPointerEvent): void {
+            scenePointerDownCharPanel();
+            onPointerDownSroll(evt);
+        }
+        scene.onPointerDown = handlePointerDown;
+
+        function handlePointerUp(evt: IPointerEvent): void {
+            scenePointerUpCharPanel();
+            evt;
+            onPointerUpScroll();
+        }
+        scene.onPointerUp = handlePointerUp;
+
+        function handlePointerMove(evt: IPointerEvent): void {
+            onPointerMoveScroll(evt);
+        }
+        scene.onPointerMove = handlePointerMove;
 
         // if you want to use inspector, uncomment following line.
         // Inspector.Show(scene, { });
