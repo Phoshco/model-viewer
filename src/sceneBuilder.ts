@@ -58,7 +58,6 @@ import { MmdCamera } from "babylon-mmd/esm/Runtime/mmdCamera";
 import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
-import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 
 import extraCharDatas from "../res/assets/extras.json";
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
@@ -66,6 +65,8 @@ import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
+// import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
+import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
 
 export class SceneBuilder implements ISceneBuilder {
     // private readonly _loaders: MmdModelLoader<any, any, any>[];
@@ -166,10 +167,12 @@ export class SceneBuilder implements ISceneBuilder {
             });
         }
 
-        let isMobile = false;
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            isMobile = true;
-        }
+        const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        //     isMobile = true;
+        // } else {
+        //     isMobile = false;
+        // }
 
         ///////////////
         const materialBuilder = new MmdStandardMaterialBuilder();
@@ -230,12 +233,8 @@ export class SceneBuilder implements ISceneBuilder {
         camera.zoomToMouseLocation = true;
         camera.wheelDeltaPercentage = 0.1;
         if (isMobile) {
-            // camera.angularSensibilityX = 5; // default: 1 (higher is slower)
-            // camera.angularSensibilityY = 0.5; // default: 1 (higher is slower)
-            camera.pinchDeltaPercentage = 0.002; // default: 0
-            // camera.pinchPrecision = 10000;
+            camera.pinchDeltaPercentage = 0.002;
         }
-        // camera.wheelPrecision = 100;
         camera.layerMask = 1;
 
         const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
@@ -248,12 +247,8 @@ export class SceneBuilder implements ISceneBuilder {
         stillCamera.zoomToMouseLocation = true;
         stillCamera.wheelDeltaPercentage = 0.1;
         if (isMobile) {
-            // stillCamera.angularSensibilityX = 5; // default: 1 (higher is slower)
-            // camera.angularSensibilityY = 0.5; // default: 1 (higher is slower)
-            stillCamera.pinchDeltaPercentage = 0.002; // default: 0
-            // camera.pinchPrecision = 10000;
+            stillCamera.pinchDeltaPercentage = 0.002;
         }
-        // stillCamera.wheelPrecision = 100;
         stillCamera.layerMask = 1;
 
         // const guiCam = new ArcRotateCamera("guiCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
@@ -301,7 +296,7 @@ export class SceneBuilder implements ISceneBuilder {
         const modelMotionFile = "res/cam_motion/Specialist (Never End ver.)/mmd_Specialist_motion.bvmd";
 
         // set audio player
-        let audioPlayer = new StreamAudioPlayer(scene);
+        const audioPlayer = new StreamAudioPlayer(scene);
         audioPlayer.preservesPitch = false;
         // song
         audioPlayer.source = audioPlayerFile;
@@ -309,11 +304,11 @@ export class SceneBuilder implements ISceneBuilder {
 
         // play before loading. this will cause the audio to play first before all assets are loaded.
         // playing the audio first can help ease the user's patience
-        mmdRuntime.playAnimation();
-        mmdRuntime.pauseAnimation();
+        // mmdRuntime.playAnimation();
+        // mmdRuntime.pauseAnimation();
 
         // create youtube like player control
-        let mmdPlayerControl = new MmdPlayerControl(scene, mmdRuntime, audioPlayer);
+        let mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
         mmdPlayerControl.showPlayerControl();
 
         // show loading screen
@@ -566,14 +561,14 @@ export class SceneBuilder implements ISceneBuilder {
         debugblock.widthInPixels = 100;
         debugblock.heightInPixels = 50;
         debugblock.left = 0;
-        debugblock.text = "lol"; // `${mmdCameraRoot.position.y}`;
+        debugblock.text = mmdPlayerControl._isMobile.toString(); // `${mmdCameraRoot.position.y}`;
         debugblock.fontSize = 16;
         debugblock.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         debugblock.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
         debugblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_BOTTOM;
         debugblock.color = "black";
         advancedTexture.addControl(debugblock);
-        debugblock.isVisible = false;
+        debugblock.isVisible = true;
 
         const textblock = new gui.TextBlock();
         textblock.widthInPixels = 100;
@@ -1789,11 +1784,22 @@ export class SceneBuilder implements ISceneBuilder {
 
         generateGrid(filteredArray);
 
+        const previousModelState = {
+            wasAnimationPlaying: false,
+            previousSeekTimeFrame: 0,
+            wasMuted: false
+        };
+
         async function changeCharacter(nextCharacter?: string): Promise<void> {
             if (!nextCharacter) {
                 return;
             }
+            if (mmdRuntime.isAnimationPlaying) {
+                previousModelState.wasAnimationPlaying = true;
+            }
             mmdRuntime.pauseAnimation();
+            // audioPlayer.dispose();
+            previousModelState.previousSeekTimeFrame = mmdRuntime.currentFrameTime;
             prevCharName = chosenCharName;
             chosenCharName = nextCharacter;
             skinButton.isVisible = false;
@@ -1813,14 +1819,14 @@ export class SceneBuilder implements ISceneBuilder {
             mmdRuntime.loggingEnabled = true;
             mmdRuntime.register(scene);
 
-            audioPlayer = new StreamAudioPlayer(scene);
-            audioPlayer.preservesPitch = false;
-            audioPlayer.source = audioPlayerFile;
+            // audioPlayer = new StreamAudioPlayer(scene);
+            // audioPlayer.preservesPitch = false;
+            // audioPlayer.source = audioPlayerFile;
             mmdRuntime.setAudioPlayer(audioPlayer);
-            mmdRuntime.playAnimation();
-            mmdRuntime.pauseAnimation();
+            // mmdRuntime.playAnimation();
+            // mmdRuntime.pauseAnimation();
 
-            mmdPlayerControl = new MmdPlayerControl(scene, mmdRuntime, audioPlayer);
+            mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
             mmdPlayerControl.showPlayerControl();
 
             if (chosenCharName == "Paimon") {
@@ -1869,6 +1875,17 @@ export class SceneBuilder implements ISceneBuilder {
                 );
                 await createCharacter(chosenChar);
             }
+            resumePlayback();
+        }
+
+        function resumePlayback(): void {
+            if (previousModelState.wasAnimationPlaying) {
+                mmdRuntime.seekAnimation(previousModelState.previousSeekTimeFrame, true);
+                previousModelState.wasAnimationPlaying = false;
+                if (!mmdRuntime.isAnimationPlaying) {
+                    mmdRuntime.playAnimation();
+                }
+            }
         }
 
         async function createCharacter(chosenChar?: BaseCharData|undefined): Promise<void> {
@@ -1898,7 +1915,7 @@ export class SceneBuilder implements ISceneBuilder {
                     showButton.isEnabled = true;
                 }, 1500);
             });
-            scene.activeCameras = [stillCamera, guiCam];
+            // scene.activeCameras = [stillCamera, guiCam];
 
             theDiff = 1.66;
             theHeight = 69;
@@ -1931,6 +1948,8 @@ export class SceneBuilder implements ISceneBuilder {
                 headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
                 boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
                 // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                mmdCameraRoot.position.z = 1;
+                mmdCameraRoot.position.x = 0;
                 theDiff = theDiff - mmdCameraRoot.position.y;
                 theHeight = mmdCameraRoot.position.y;
             });
@@ -1962,7 +1981,7 @@ export class SceneBuilder implements ISceneBuilder {
                 scene.skipPointerUpPicking = true;
                 scene.skipFrustumClipping = true;
                 scene.blockMaterialDirtyMechanism = true;
-                audioPlayer.mute();
+                // audioPlayer.mute();
             });
         }
 
@@ -2040,7 +2059,9 @@ export class SceneBuilder implements ISceneBuilder {
                 e.preventDefault();
                 if (scene.activeCameras![0] === stillCamera) {
                     defaultPipeline.depthOfFieldEnabled = false; //true
-                    scene.activeCameras![0] = mmdCamera;
+                    if (!mmdRuntime.isAnimationPlaying) {
+                        scene.activeCameras![0] = mmdCamera;
+                    }
                     textblock.text = `${scene.activeCameras![0].name}`;
                 }
                 if (mmdRuntime.isAnimationPlaying) {
