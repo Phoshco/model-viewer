@@ -229,6 +229,13 @@ export class SceneBuilder implements ISceneBuilder {
         camera.speed = 4 * worldScale;
         camera.zoomToMouseLocation = true;
         camera.wheelDeltaPercentage = 0.1;
+        if (isMobile) {
+            // camera.angularSensibilityX = 5; // default: 1 (higher is slower)
+            // camera.angularSensibilityY = 0.5; // default: 1 (higher is slower)
+            camera.pinchDeltaPercentage = 0.002; // default: 0
+            // camera.pinchPrecision = 10000;
+        }
+        // camera.wheelPrecision = 100;
         camera.layerMask = 1;
 
         const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
@@ -240,6 +247,13 @@ export class SceneBuilder implements ISceneBuilder {
         stillCamera.speed = 4 * worldScale;
         stillCamera.zoomToMouseLocation = true;
         stillCamera.wheelDeltaPercentage = 0.1;
+        if (isMobile) {
+            // stillCamera.angularSensibilityX = 5; // default: 1 (higher is slower)
+            // camera.angularSensibilityY = 0.5; // default: 1 (higher is slower)
+            stillCamera.pinchDeltaPercentage = 0.002; // default: 0
+            // camera.pinchPrecision = 10000;
+        }
+        // stillCamera.wheelPrecision = 100;
         stillCamera.layerMask = 1;
 
         // const guiCam = new ArcRotateCamera("guiCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
