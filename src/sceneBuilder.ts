@@ -65,6 +65,7 @@ import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
+import { CustomLoadingScreen } from "./CustomLoadingScreen";
 // import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
 
@@ -175,6 +176,12 @@ export class SceneBuilder implements ISceneBuilder {
         const scene = new Scene(engine);
         scene.clearColor = new Color4(1, 1, 1, 1.0);
 
+        const advancedTexture = gui.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        advancedTexture.layer!.layerMask = 0x10000000;
+        advancedTexture.idealWidth = 1000;
+        advancedTexture.idealHeight = 1000;
+        advancedTexture.useSmallestIdeal = true;
+
         // scaling for WebXR
         const worldScale = 0.09;
 
@@ -283,12 +290,14 @@ export class SceneBuilder implements ISceneBuilder {
         mmdPlayerControl.showPlayerControl();
 
         // show loading screen
+        const customLoadingScreen = new CustomLoadingScreen(canvas);
+        engine.loadingScreen = customLoadingScreen;
         engine.displayLoadingUI();
 
         let loadingTexts: string[] = [];
         const updateLoadingText = (updateIndex: number, text: string): void => {
             loadingTexts[updateIndex] = text;
-            engine.loadingUIText = "<br/><br/><br/><br/>" + loadingTexts.join("<br/><br/>");
+            customLoadingScreen.loadingTextDiv.innerHTML = "<br/><br/><br/><br/>" + loadingTexts.join("<br/><br/>");
         };
 
         let promises: Promise<any>[] = [];
@@ -350,6 +359,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         // hide loading screen
         scene.onAfterRenderObservable.addOnce(() => engine.hideLoadingUI());
+        // scene.onAfterRenderObservable.addOnce(() => hideLoadingScreen());
         scene.activeCameras = [stillCamera, guiCam];
 
         {
@@ -522,11 +532,6 @@ export class SceneBuilder implements ISceneBuilder {
         layer.render;
 
         // GUI
-        const advancedTexture = gui.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        advancedTexture.layer!.layerMask = 0x10000000;
-        advancedTexture.idealWidth = 1000;
-        advancedTexture.idealHeight = 1000;
-        advancedTexture.useSmallestIdeal = true;
 
         const debugblock = new gui.TextBlock();
         debugblock.widthInPixels = 100;
@@ -1874,6 +1879,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         async function createCharacter(chosenChar?: BaseCharData|undefined): Promise<void> {
             engine.displayLoadingUI();
+            // showLoadingScreen();
             skinButton.isEnabled = false;
             showButton.isEnabled = false;
             promises = [];
@@ -1894,6 +1900,7 @@ export class SceneBuilder implements ISceneBuilder {
             loadResults = await Promise.all(promises);
             scene.onAfterRenderObservable.addOnce(() => {
                 engine.hideLoadingUI();
+                // hideLoadingScreen();
                 setTimeout(() => {
                     skinButton.isEnabled = true;
                     showButton.isEnabled = true;
