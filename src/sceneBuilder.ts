@@ -168,11 +168,6 @@ export class SceneBuilder implements ISceneBuilder {
         }
 
         const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        //     isMobile = true;
-        // } else {
-        //     isMobile = false;
-        // }
 
         ///////////////
         const materialBuilder = new MmdStandardMaterialBuilder();
@@ -568,7 +563,7 @@ export class SceneBuilder implements ISceneBuilder {
         debugblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_BOTTOM;
         debugblock.color = "black";
         advancedTexture.addControl(debugblock);
-        debugblock.isVisible = true;
+        debugblock.isVisible = false;
 
         const textblock = new gui.TextBlock();
         textblock.widthInPixels = 100;
@@ -1885,6 +1880,8 @@ export class SceneBuilder implements ISceneBuilder {
                 if (!mmdRuntime.isAnimationPlaying) {
                     mmdRuntime.playAnimation();
                 }
+            } else {
+                scene.activeCameras![0] = stillCamera;
             }
         }
 
