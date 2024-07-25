@@ -1004,5 +1004,52 @@
         "directory": "res/chars/Genshin/Zhongli",
         "image": "Genshin/Zhongli.png",
         "pmx": "钟离.pmx"
+    },
+	{
+        "_id": 10000084,
+        "name": "Emilie",
+        "weaponType": "Polearm",
+        "element": "Dendro",
+        "gender": "Female",
+        "region": "Fontaine",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Emilie",
+        "image": "Genshin/Emilie.png",
+        "pmx": "艾梅莉埃.pmx"
+    },
+	{
+        "_id": 10000086,
+        "name": "Kinich",
+        "weaponType": "Claymore",
+        "element": "Dendro",
+        "gender": "Male",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Kinich",
+        "image": "Genshin/Kinich.png",
+        "pmx": "基尼奇.pmx"
+    },
+	{
+        "_id": 10000099,
+        "name": "Mavuika",
+        "weaponType": "Sword",
+        "element": "Pyro",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Mavuika",
+        "image": "Genshin/Mavuika.png",
+        "pmx": "玛薇卡.pmx"
+    },
+    {
+        "_id": 1000000,
+        "name": "Skirk",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Skirk",
+        "image": "Genshin/Skirk.png",
+        "pmx": "丝柯克.pmx"
     }
 ]
