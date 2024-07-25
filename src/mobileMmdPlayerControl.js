@@ -214,7 +214,8 @@ export class mobileMmdPlayerControl extends MmdPlayerControl {
                         fullscreenButton.style.color = "white";
                         fullscreenButton.style.backgroundColor = "rgba(0, 0, 0, 0)";
                         fullscreenButton.style.fontSize = "20px";
-                        fullscreenButton.innerText = "🗖";
+                        fullscreenButton.innerHTML = '<img src="res/assets/maximise.png" alt="Fullscreen" style="width: 100%; height: 100%;">';
+                        // fullscreenButton.innerText = "🗖";
                         fullscreenButton.onclick = () => {
                             if (ownerDocument.fullscreenElement)
                                 ownerDocument.exitFullscreen();

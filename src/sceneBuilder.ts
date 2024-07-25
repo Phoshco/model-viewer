@@ -69,28 +69,6 @@ import type { ISceneBuilder } from "./baseRuntime";
 import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
 
 export class SceneBuilder implements ISceneBuilder {
-    // private readonly _loaders: MmdModelLoader<any, any, any>[];
-
-    // public constructor() {
-    //     const materialBuilder = new MmdStandardMaterialBuilder();
-    //     materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
-    //         material.forceDepthWrite = true;
-    //         material.useAlphaFromDiffuseTexture = true;
-    //         if (material.diffuseTexture !== null) material.diffuseTexture.hasAlpha = true;
-
-    //         if (material.transparencyMode === Material.MATERIAL_ALPHABLEND) {
-    //             material.transparencyMode = Material.MATERIAL_ALPHATESTANDBLEND;
-    //             material.alphaCutOff = 0.01;
-    //         }
-    //     };
-
-    //     const loaders = this._loaders = [".pmx", ".bpmx"].map((ext) => SceneLoader.GetPluginForExtension(ext)) as MmdModelLoader<any, any, any>[];
-    //     for (const loader of loaders) {
-    //         loader.loggingEnabled = true;
-    //         loader.materialBuilder = materialBuilder;
-    //     }
-    // }
-
     public async build(canvas: HTMLCanvasElement, engine: AbstractEngine): Promise<Scene> {
         // for apply SDEF on shadow, outline, depth rendering
         SdefInjector.OverrideEngineCreateEffect(engine);
@@ -135,9 +113,7 @@ export class SceneBuilder implements ISceneBuilder {
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
         };
-        // function filterBy<T extends { _id: number }>(dataArray: T[], filter: string): T[] {
-        //     return dataArray.filter((data) => data._id.toString().startsWith(filter));
-        // }
+
         function filterBy<T>(
             dataArray: T[],
             filters: { key: keyof T; value: string }[]
@@ -212,14 +188,14 @@ export class SceneBuilder implements ISceneBuilder {
 
         // mmd camera for play mmd camera animation
         const mmdCamera = new MmdCamera("mmdCamera", new Vector3(0, 10, 0), scene);
-        mmdCamera.maxZ = 1000;
+        mmdCamera.maxZ = 100;
         mmdCamera.minZ = 1;
         mmdCamera.parent = mmdRoot;
         mmdCamera.layerMask = 1;
 
         const defCamPos = new Vector3(0, 10, -20).scaleInPlace(worldScale);
         const camera = new ArcRotateCamera("arcRotateCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
-        camera.maxZ = 1000;
+        camera.maxZ = 100;
         camera.minZ = 0.1;
         camera.setPosition(defCamPos);
         camera.attachControl(canvas, false);
@@ -233,7 +209,7 @@ export class SceneBuilder implements ISceneBuilder {
         camera.layerMask = 1;
 
         const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
-        stillCamera.maxZ = 1000;
+        stillCamera.maxZ = 100;
         stillCamera.minZ = 0.1;
         stillCamera.setPosition(defCamPos);
         stillCamera.attachControl(canvas, false);
@@ -576,6 +552,7 @@ export class SceneBuilder implements ISceneBuilder {
         textblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
         textblock.color = "black";
         advancedTexture.addControl(textblock);
+        textblock.isVisible = false;
 
         const showButton = gui.Button.CreateImageOnlyButton("but", "res/assets/menu.png");
         showButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
@@ -589,6 +566,9 @@ export class SceneBuilder implements ISceneBuilder {
 
         showButton.onPointerClickObservable.add(function() {
             charPanel.isVisible = !charPanel.isVisible;
+            if (showButton.isVisible) {
+                mmdPlayerControl.hidePlayerControl();
+            }
         });
 
         const darkButton = gui.Button.CreateImageOnlyButton("but", "res/assets/dark_mode.png");
@@ -630,6 +610,9 @@ export class SceneBuilder implements ISceneBuilder {
                 skinButton.onPointerClickObservable.addOnce(async function() {
                     changeCharacter(name);
                     skinMode = nextSkinMode;
+                    if (charPanel.isVisible) {
+                        charPanel.isVisible = false;
+                    }
                 });
             }
         }
@@ -1758,6 +1741,8 @@ export class SceneBuilder implements ISceneBuilder {
                         theBG.background = "rgb(123,92,144)";
                         if (selChar.rarity == 5) {
                             theBG.background = "rgb(146,109,69)";
+                        } else if (selChar.rarity == 6) {
+                            theBG.background = "rgb(192,79,85)";
                         }
                         grid.addControl(theBG, i, j);
                         const charButton = gui.Button.CreateImageOnlyButton("but", `res/charsPNG/${selChar.image}`);
@@ -1881,6 +1866,8 @@ export class SceneBuilder implements ISceneBuilder {
                     mmdRuntime.playAnimation();
                 }
             } else {
+                stillCamera.target = new Vector3(0, 10 * worldScale, 1);
+                stillCamera.setPosition(defCamPos);
                 scene.activeCameras![0] = stillCamera;
             }
         }
