@@ -31,7 +31,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Amber",
+        "directory": "res/chars/Genshin/Amber/Amber",
         "image": "Genshin/Amber.png",
         "pmx": "安柏.pmx"
     },
@@ -187,7 +187,7 @@
         "gender": "Female",
         "region": "Sumeru",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Collei",
+        "directory": "res/chars/Genshin/Collei/Collei",
         "image": "Genshin/Collei.png",
         "pmx": "柯莱.pmx"
     },
@@ -259,7 +259,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Eula",
+        "directory": "res/chars/Genshin/Eula/Eula",
         "image": "Genshin/Eula.png",
         "pmx": "优菈.pmx"
     },
@@ -415,7 +415,7 @@
         "gender": "Male",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Kamisato Ayato",
+        "directory": "res/chars/Genshin/Kamisato Ayato/Kamisato Ayato",
         "image": "Genshin/Kamisato Ayato.png",
         "pmx": "神里绫人.pmx"
     },
@@ -643,7 +643,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Qiqi",
+        "directory": "res/chars/Genshin/Qiqi/Qiqi",
         "image": "Genshin/Qiqi.png",
         "pmx": "七七.pmx"
     },
@@ -799,7 +799,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Tighnari",
+        "directory": "res/chars/Genshin/Tighnari/Tighnari",
         "image": "Genshin/Tighnari.png",
         "pmx": "提纳里.pmx"
     },

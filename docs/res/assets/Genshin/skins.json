@@ -55,7 +55,19 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Ganyu/Skin",
+        "directory": "res/chars/Genshin/Ganyu/Skin1",
+        "image": "Genshin/Ganyu.png",
+        "pmx": "甘雨.pmx"
+    },
+	{
+        "_id": 10000928,
+        "name": "Ganyu",
+        "weaponType": "Bow",
+        "element": "Cryo",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Ganyu/Skin2",
         "image": "Genshin/Ganyu.png",
         "pmx": "甘雨.pmx"
     },
@@ -211,7 +223,19 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Shenhe/Skin",
+        "directory": "res/chars/Genshin/Shenhe/Skin1",
+        "image": "Genshin/Shenhe.png",
+        "pmx": "申鹤.pmx"
+    },
+	{
+        "_id": 10000945,
+        "name": "Shenhe",
+        "weaponType": "Polearm",
+        "element": "Cryo",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Shenhe/Skin2",
         "image": "Genshin/Shenhe.png",
         "pmx": "申鹤.pmx"
     },
@@ -226,5 +250,89 @@
         "directory": "res/chars/Genshin/Xingqiu/Skin",
         "image": "Genshin/Xingqiu.png",
         "pmx": "行秋.pmx"
+    },
+	{
+        "_id": 1000002,
+        "name": "Amber",
+        "weaponType": "Bow",
+        "element": "Pyro",
+        "gender": "Female",
+        "region": "Mondstadt",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Amber/Skin1",
+        "image": "Genshin/Amber.png",
+        "pmx": "安柏.pmx"
+    },
+	{
+        "_id": 10000033,
+        "name": "Eula",
+        "weaponType": "Claymore",
+        "element": "Cryo",
+        "gender": "Female",
+        "region": "Mondstadt",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Eula/Skin1",
+        "image": "Genshin/Eula.png",
+        "pmx": "优菈.pmx"
+    },
+	{
+        "_id": 10000935,
+        "name": "Kamisato Ayaka",
+        "weaponType": "Sword",
+        "element": "Cryo",
+        "gender": "Female",
+        "region": "Inazuma",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Kamisato Ayaka/Skin2",
+        "image": "Genshin/Kamisato Ayaka.png",
+        "pmx": "神里绫华.pmx"
+    },
+	{
+        "_id": 10000047,
+        "name": "Kamisato Ayato",
+        "weaponType": "Sword",
+        "element": "Hydro",
+        "gender": "Male",
+        "region": "Inazuma",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Kamisato Ayato/Skin1",
+        "image": "Genshin/Kamisato Ayato.png",
+        "pmx": "神里绫人.pmx"
+    },
+	{
+        "_id": 10000051,
+        "name": "Collei",
+        "weaponType": "Bow",
+        "element": "Dendro",
+        "gender": "Female",
+        "region": "Sumeru",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Collei/Skin1",
+        "image": "Genshin/Collei.png",
+        "pmx": "柯莱.pmx"
+    },
+	{
+        "_id": 10000052,
+        "name": "Tighnari",
+        "weaponType": "Bow",
+        "element": "Dendro",
+        "gender": "Male",
+        "region": "Sumeru",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Tighnari/Skin1",
+        "image": "Genshin/Tighnari.png",
+        "pmx": "提纳里.pmx"
+    },
+	{
+        "_id": 10000020,
+        "name": "Qiqi",
+        "weaponType": "Sword",
+        "element": "Cryo",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Qiqi/Skin1",
+        "image": "Genshin/Qiqi.png",
+        "pmx": "七七.pmx"
     }
 ]

@@ -115,6 +115,10 @@ export class SceneBuilder implements ISceneBuilder {
             return jsonData.find((item) => item.name === nameToFind);
         };
 
+        const findAllCharsByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T[] | undefined => {
+            return sortBy(jsonData.filter((item) => item.name === nameToFind), "name", false);
+        };
+
         function filterBy<T>(
             dataArray: T[],
             filters: { key: keyof T; value: string }[]
@@ -537,14 +541,14 @@ export class SceneBuilder implements ISceneBuilder {
         debugblock.widthInPixels = 100;
         debugblock.heightInPixels = 50;
         debugblock.left = 0;
-        debugblock.text = mmdPlayerControl._isMobile.toString(); // `${mmdCameraRoot.position.y}`;
+        debugblock.text = "lol"; // `${mmdCameraRoot.position.y}`;
         debugblock.fontSize = 16;
         debugblock.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         debugblock.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
         debugblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_BOTTOM;
         debugblock.color = "black";
         advancedTexture.addControl(debugblock);
-        debugblock.isVisible = false;
+        debugblock.isVisible = true;
 
         const textblock = new gui.TextBlock();
         textblock.widthInPixels = 100;
@@ -1732,6 +1736,12 @@ export class SceneBuilder implements ISceneBuilder {
                             });
                         } else {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/ZZZ/Bangboo.png");
+                            charButton.onPointerClickObservable.add(async function() {
+                                charPanel.isVisible = !charPanel.isVisible;
+                                if (chosenCharName != "Bangboo") {
+                                    await changeCharacter("Bangboo");
+                                }
+                            });
                         }
                         charButton.thickness = 0;
                         charButton.paddingBottom = charButton.paddingLeft = charButton.paddingRight = charButton.paddingTop = 5;
@@ -1814,37 +1824,60 @@ export class SceneBuilder implements ISceneBuilder {
             mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
             mmdPlayerControl.showPlayerControl();
 
-            if (chosenCharName == "Paimon") {
-                skinMode = false;
-                chosenChar = findCharByName(extraDataArray, chosenCharName);
-                await createCharacter(chosenChar);
-            } else if (chosenCharName == "Pom-Pom") {
+            if (chosenCharName == "Paimon" || chosenCharName == "Pom-Pom" || chosenCharName == "Bangboo") {
                 skinMode = false;
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
                 await createCharacter(chosenChar);
             } else if (tabMode == "Genshin") {
-                const skinChar = findCharByName(genshinSkinDataArray, chosenCharName);
+                const skinChars = findAllCharsByName(genshinSkinDataArray, chosenCharName);
                 if (prevCharName == chosenCharName) {
-                    if (skinChar && !skinMode) { // normal to skin (button is to change back to normal)
+                    if (skinChars && !skinMode) { // normal to skin (button is to change back to normal)
+                        chosenChar = skinChars[0];
                         skinMode = true;
-                        chosenChar = skinChar;
                         await createCharacter(chosenChar);
-                        // debugblock.text = debugblock.text + "a";
-                        createSkinButton(true, false, skinChar.name);
-                    } else if (skinChar && skinMode) { // skin to normal (button to change to skin)
+
+                        let isNextSkin = false;
+                        if (skinChars.length > 1) {
+                            isNextSkin = true;
+                        }
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars && skinMode && skinChars.length > 1) { // skin to skin if more than 1 skin
+                        let isNextSkin = true;
+                        let prevI: number = 0;
+                        for (let i = 0; i < skinChars.length; i++) {
+                            if (chosenChar!._id === skinChars[i]._id) {
+                                prevI = i;
+                                // debugblock.text = prevI.toString(); // debugblock.text + "a";
+                            }
+                        }
+                        const temp = (prevI + 1) % skinChars.length;
+                        if (temp == skinChars.length - 1) {
+                            isNextSkin = false;
+                        }
+                        if (prevI == skinChars.length - 1) {
+                            chosenChar = findCharByName(charDataArray, chosenCharName);
+                            skinMode = false;
+                        } else {
+                            chosenChar = skinChars[temp];
+                            skinMode = true;
+                        }
+                        await createCharacter(chosenChar);
+                        // debugblock.text = debugblock.text + "e";
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars && skinMode) { // skin to normal (button to change to skin)
                         skinMode = false;
                         chosenChar = findCharByName(charDataArray, chosenCharName);
                         await createCharacter(chosenChar);
                         // debugblock.text = debugblock.text + "b";
-                        createSkinButton(true, true, skinChar.name);
+                        createSkinButton(true, true, chosenChar!.name);
                     }
                 } else {
                     skinMode = false;
                     chosenChar = findCharByName(charDataArray, chosenCharName);
                     await createCharacter(chosenChar);
-                    if (skinChar) {
+                    if (skinChars) {
                         // debugblock.text = debugblock.text + "c";
-                        createSkinButton(true, true, skinChar.name);
+                        createSkinButton(true, true, chosenChar!.name);
                     } else {
                         // debugblock.text = debugblock.text + "d";
                     }
