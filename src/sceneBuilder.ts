@@ -592,18 +592,32 @@ export class SceneBuilder implements ISceneBuilder {
         darkButton.onPointerClickObservable.add(function() {
             if (bg_bool) {
                 layer.texture = light_bg;
+                darkButton.image!.source = "res/assets/dark_mode.png";
+                if (skinButton != undefined) {
+                    skinButton.image!.source = "res/assets/alter.png";
+                }
             } else {
                 layer.texture = dark_bg;
+                darkButton.image!.source = "res/assets/light_mode.png";
+                if (skinButton != undefined) {
+                    debugblock.text = "dmode";
+                    skinButton.image!.source = "res/assets/alter_light.png";
+                }
             }
             layer.render;
             bg_bool = !bg_bool;
         });
 
-        let skinButton = new gui.Button();
+        let skinButton: gui.Button;
         function createSkinButton(visibility: boolean = false, nextSkinMode?: boolean, name?: string): void {
-            skinButton.dispose();
+            if (skinButton != undefined) {
+                skinButton.dispose();
+            }
             skinButton = new gui.Button();
             skinButton = gui.Button.CreateImageOnlyButton("but", "res/assets/alter.png");
+            if (bg_bool) {
+                skinButton.image!.source = "res/assets/alter_light.png";
+            }
             skinButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
             skinButton.left = "10px";
             skinButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
@@ -1797,8 +1811,9 @@ export class SceneBuilder implements ISceneBuilder {
             previousModelState.previousSeekTimeFrame = mmdRuntime.currentFrameTime;
             prevCharName = chosenCharName;
             chosenCharName = nextCharacter;
-            skinButton.isVisible = false;
-
+            if (skinButton != undefined) {
+                skinButton.isVisible = false;
+            }
             mmdRuntime.destroyMmdModel(mmdModel);
             modelMesh.dispose(false, true);
             mmdPlayerControl.dispose();
@@ -1831,40 +1846,40 @@ export class SceneBuilder implements ISceneBuilder {
             } else if (tabMode == "Genshin") {
                 const skinChars = findAllCharsByName(genshinSkinDataArray, chosenCharName);
                 if (prevCharName == chosenCharName) {
-                    if (skinChars && !skinMode) { // normal to skin (button is to change back to normal)
-                        chosenChar = skinChars[0];
+                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
+                        chosenChar = skinChars![0];
                         skinMode = true;
                         await createCharacter(chosenChar);
 
                         let isNextSkin = false;
-                        if (skinChars.length > 1) {
+                        if (skinChars!.length > 1) {
                             isNextSkin = true;
                         }
                         createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars && skinMode && skinChars.length > 1) { // skin to skin if more than 1 skin
+                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
                         let isNextSkin = true;
                         let prevI: number = 0;
-                        for (let i = 0; i < skinChars.length; i++) {
-                            if (chosenChar!._id === skinChars[i]._id) {
+                        for (let i = 0; i < skinChars!.length; i++) {
+                            if (chosenChar!._id === skinChars![i]._id) {
                                 prevI = i;
                                 // debugblock.text = prevI.toString(); // debugblock.text + "a";
                             }
                         }
-                        const temp = (prevI + 1) % skinChars.length;
-                        if (temp == skinChars.length - 1) {
+                        const temp = (prevI + 1) % skinChars!.length;
+                        if (temp == skinChars!.length - 1) {
                             isNextSkin = false;
                         }
-                        if (prevI == skinChars.length - 1) {
+                        if (prevI == skinChars!.length - 1) {
                             chosenChar = findCharByName(charDataArray, chosenCharName);
                             skinMode = false;
                         } else {
-                            chosenChar = skinChars[temp];
+                            chosenChar = skinChars![temp];
                             skinMode = true;
                         }
                         await createCharacter(chosenChar);
                         // debugblock.text = debugblock.text + "e";
                         createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars && skinMode) { // skin to normal (button to change to skin)
+                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
                         skinMode = false;
                         chosenChar = findCharByName(charDataArray, chosenCharName);
                         await createCharacter(chosenChar);
@@ -1875,7 +1890,7 @@ export class SceneBuilder implements ISceneBuilder {
                     skinMode = false;
                     chosenChar = findCharByName(charDataArray, chosenCharName);
                     await createCharacter(chosenChar);
-                    if (skinChars) {
+                    if (skinChars!.length > 0) {
                         // debugblock.text = debugblock.text + "c";
                         createSkinButton(true, true, chosenChar!.name);
                     } else {
@@ -1913,7 +1928,9 @@ export class SceneBuilder implements ISceneBuilder {
         async function createCharacter(chosenChar?: BaseCharData|undefined): Promise<void> {
             engine.displayLoadingUI();
             // showLoadingScreen();
-            skinButton.isEnabled = false;
+            if (skinButton != undefined) {
+                skinButton.isEnabled = false;
+            }
             showButton.isEnabled = false;
             promises = [];
             loadingTexts = [];
@@ -1935,7 +1952,9 @@ export class SceneBuilder implements ISceneBuilder {
                 engine.hideLoadingUI();
                 // hideLoadingScreen();
                 setTimeout(() => {
-                    skinButton.isEnabled = true;
+                    if (skinButton != undefined) {
+                        skinButton.isEnabled = true;
+                    }
                     showButton.isEnabled = true;
                 }, 1500);
             });
