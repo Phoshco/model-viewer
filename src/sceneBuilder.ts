@@ -178,7 +178,13 @@ export class SceneBuilder implements ISceneBuilder {
         // materialBuilder.loadOutlineRenderingProperties = (): void => { /* do nothing */ };
 
         const scene = new Scene(engine);
-        scene.clearColor = new Color4(1, 1, 1, 1.0);
+        let bg_bool = false;
+        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            bg_bool = true;
+            scene.clearColor = new Color4(0.001, 0.001, 0.001, 1.0);
+        } else {
+            scene.clearColor = new Color4(1, 1, 1, 1.0);
+        }
 
         const advancedTexture = gui.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         advancedTexture.layer!.layerMask = 0x10000000;
@@ -499,8 +505,9 @@ export class SceneBuilder implements ISceneBuilder {
         // layer.layerMask = 0x10000000;
         const light_bg = new Texture("res/stages/hoyo.png", scene, true);
         const dark_bg = new Texture("res/stages/hoyo_dark.png", scene, true);
-        let bg_bool = false;
-        layer.texture = light_bg;
+        if (bg_bool) {
+            layer.texture = dark_bg;
+        }
 
         const resizeObserver = new ResizeObserver(() => {
             const canvasAspectRatio = canvas.width / canvas.height;
@@ -548,7 +555,7 @@ export class SceneBuilder implements ISceneBuilder {
         debugblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_BOTTOM;
         debugblock.color = "black";
         advancedTexture.addControl(debugblock);
-        debugblock.isVisible = true;
+        debugblock.isVisible = false;
 
         const textblock = new gui.TextBlock();
         textblock.widthInPixels = 100;
@@ -578,34 +585,6 @@ export class SceneBuilder implements ISceneBuilder {
             if (showButton.isVisible) {
                 mmdPlayerControl.hidePlayerControl();
             }
-        });
-
-        const darkButton = gui.Button.CreateImageOnlyButton("but", "res/assets/dark_mode.png");
-        darkButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        darkButton.left = "60px";
-        darkButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
-        darkButton.top = "10px";
-        darkButton.width = "50px";
-        darkButton.height = "50px";
-        darkButton.thickness = 0;
-        advancedTexture.addControl(darkButton);
-        darkButton.onPointerClickObservable.add(function() {
-            if (bg_bool) {
-                layer.texture = light_bg;
-                darkButton.image!.source = "res/assets/dark_mode.png";
-                if (skinButton != undefined) {
-                    skinButton.image!.source = "res/assets/alter.png";
-                }
-            } else {
-                layer.texture = dark_bg;
-                darkButton.image!.source = "res/assets/light_mode.png";
-                if (skinButton != undefined) {
-                    debugblock.text = "dmode";
-                    skinButton.image!.source = "res/assets/alter_light.png";
-                }
-            }
-            layer.render;
-            bg_bool = !bg_bool;
         });
 
         let skinButton: gui.Button;
@@ -640,6 +619,38 @@ export class SceneBuilder implements ISceneBuilder {
             }
         }
         let skinMode = false;
+
+        const darkButton = gui.Button.CreateImageOnlyButton("but", "res/assets/dark_mode.png");
+        if (!bg_bool) {
+            darkButton.image!.source = "res/assets/light_mode.png";
+        }
+        darkButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        darkButton.left = "60px";
+        darkButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        darkButton.top = "10px";
+        darkButton.width = "50px";
+        darkButton.height = "50px";
+        darkButton.thickness = 0;
+        advancedTexture.addControl(darkButton);
+        function changeDarkMode(): void {
+            if (bg_bool) {
+                scene.clearColor = new Color4(1, 1, 1, 1.0);
+                layer.texture = light_bg;
+                darkButton.image!.source = "res/assets/dark_mode.png";
+                if (skinButton != undefined) {
+                    skinButton.image!.source = "res/assets/alter.png";
+                }
+            } else {
+                layer.texture = dark_bg;
+                darkButton.image!.source = "res/assets/light_mode.png";
+                if (skinButton != undefined) {
+                    skinButton.image!.source = "res/assets/alter_light.png";
+                }
+            }
+            layer.render;
+            bg_bool = !bg_bool;
+        }
+        darkButton.onPointerClickObservable.add(changeDarkMode);
 
         const charPanel = new gui.Rectangle("charPanel");
         charPanel.width = "720px";
