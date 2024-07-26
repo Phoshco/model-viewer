@@ -82,7 +82,14 @@ export class CustomLoadingScreen {
         const svgSupport = !!window.SVGSVGElement;
         // Loading img
         const imgBack = new Image();
-        imgBack.src = "res/assets/paimon_load.gif";
+        const loadingImgs = [
+           "paimon_load",
+           "kururin",
+           "guinaifen",
+           "furina",
+           "bangboo"
+        ]
+        imgBack.src = "res/assets/loads/" + loadingImgs[Math.floor(Math.random() * loadingImgs.length)] + ".gif";
         
         imgBack.style.width = "150px";
         imgBack.style.gridColumn = "1";
