@@ -621,7 +621,7 @@ export class SceneBuilder implements ISceneBuilder {
         let skinMode = false;
 
         const darkButton = gui.Button.CreateImageOnlyButton("but", "res/assets/dark_mode.png");
-        if (!bg_bool) {
+        if (bg_bool) {
             darkButton.image!.source = "res/assets/light_mode.png";
         }
         darkButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
