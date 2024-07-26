@@ -149,7 +149,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/March 7th",
+        "directory": "res/chars/HSR/March 7th (Preservation)",
         "image": "HSR/March 7th.png",
         "pmx": "三月七 1.0.pmx"
     },
@@ -570,5 +570,38 @@
         "directory": "res/chars/HSR/Jade",
         "image": "HSR/Jade.png",
         "pmx": "星穹铁道—翡翠.pmx"
+    },
+    {
+        "_id": 10000053,
+        "name": "March 7th",
+        "weaponType": "The Hunt",
+        "element": "Imaginary",
+        "gender": "Female",
+        "rarity": 4,
+        "directory": "res/chars/HSR/March 7th/March 7th (The Hunt)",
+        "image": "HSR/March 7th (The Hunt).png",
+        "pmx": "三月七 1.2.pmx"
+    },
+    {
+        "_id": 10000054,
+        "name": "Yunli",
+        "weaponType": "Destruction",
+        "element": "Physical",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Yunli",
+        "image": "HSR/Yunli.png",
+        "pmx": "云璃1.0.pmx"
+    },
+    {
+        "_id": 10000055,
+        "name": "Jiaoqiu",
+        "weaponType": "Nihility",
+        "element": "Fire",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Jiaoqiu",
+        "image": "HSR/Jiaoqiu.png",
+        "pmx": "星穹铁道—椒丘.pmx"
     }
 ]
