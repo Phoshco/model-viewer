@@ -580,7 +580,7 @@
         "rarity": 4,
         "directory": "res/chars/HSR/March 7th/March 7th (The Hunt)",
         "image": "HSR/March 7th (The Hunt).png",
-        "pmx": "三月七 1.2.pmx"
+        "pmx": "星穹铁道—三月七3.pmx"
     },
     {
         "_id": 10000054,
@@ -591,7 +591,7 @@
         "rarity": 5,
         "directory": "res/chars/HSR/Yunli",
         "image": "HSR/Yunli.png",
-        "pmx": "云璃1.0.pmx"
+        "pmx": "星穹铁道—云璃2.pmx"
     },
     {
         "_id": 10000055,
@@ -602,6 +602,17 @@
         "rarity": 5,
         "directory": "res/chars/HSR/Jiaoqiu",
         "image": "HSR/Jiaoqiu.png",
-        "pmx": "星穹铁道—椒丘.pmx"
+        "pmx": "星穹铁道—椒丘2.pmx"
+    },
+    {
+        "_id": 10000056,
+        "name": "Moze",
+        "weaponType": "The Hunt",
+        "element": "Lightning",
+        "gender": "Male",
+        "rarity": 4,
+        "directory": "res/chars/HSR/Moze",
+        "image": "HSR/Moze.png",
+        "pmx": "貘泽.pmx"
     }
 ]

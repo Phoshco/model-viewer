@@ -83,6 +83,18 @@
         "image": "Genshin/Jean.png",
         "pmx": "琴.pmx"
     },
+	{
+        "_id": 10000917,
+        "name": "Jean",
+        "weaponType": "Sword",
+        "element": "Anemo",
+        "gender": "Female",
+        "region": "Mondstadt",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Jean/Skin1",
+        "image": "Genshin/Jean.png",
+        "pmx": "琴闲替衣装.pmx"
+    },
     {
         "_id": 10000008,
         "name": "Kaeya",
@@ -262,6 +274,18 @@
         "directory": "res/chars/Genshin/Amber/Skin1",
         "image": "Genshin/Amber.png",
         "pmx": "安柏.pmx"
+    },
+	{
+        "_id": 1000902,
+        "name": "Amber",
+        "weaponType": "Bow",
+        "element": "Pyro",
+        "gender": "Female",
+        "region": "Mondstadt",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Amber/Skin2",
+        "image": "Genshin/Amber.png",
+        "pmx": "安柏闲替衣装.pmx"
     },
 	{
         "_id": 10000033,
