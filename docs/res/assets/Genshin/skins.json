@@ -358,5 +358,17 @@
         "directory": "res/chars/Genshin/Qiqi/Skin1",
         "image": "Genshin/Qiqi.png",
         "pmx": "七七.pmx"
+    },
+    {
+        "_id": 10000042,
+        "name": "Gorou",
+        "weaponType": "Bow",
+        "element": "Geo",
+        "gender": "Male",
+        "region": "Inazuma",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Gorou/Miss Hina",
+        "image": "Genshin/Gorou.png",
+        "pmx": "五郎.pmx"
     }
 ]
