@@ -63,6 +63,7 @@ import extraCharDatas from "../res/assets/extras.json";
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
 import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
+import hsrSkinCharDatas from "../res/assets/HSR/skins.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
 import { CustomLoadingScreen } from "./CustomLoadingScreen";
@@ -104,15 +105,21 @@ export class SceneBuilder implements ISceneBuilder {
         const extraDataArray = extraCharDatas as ExtraCharData[];
         const charDataArray = genshinCharDatas as GenshinCharData[];
         const genshinSkinDataArray = genshinSkinCharDatas as GenshinCharData[];
+        const hsrSkinDataArray = hsrSkinCharDatas as HSRCharData[];
         const hsrCharDataArray = hsrCharDatas as HSRCharData[];
         const zzzCharDataArray = zzzCharDatas as ZZZCharData[];
         charDataArray.sort((a, b) => b._id - a._id);
         genshinSkinDataArray.sort((a, b) => b._id - a._id);
+        hsrSkinDataArray.sort((a, b) => b._id - a._id);
         hsrCharDataArray.sort((a, b) => b._id - a._id);
         zzzCharDataArray.sort((a, b) => b._id - a._id);
 
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
+        };
+
+        const findCharById = <T extends { _id: number }>(jsonData: T[], idToFind: number): T | undefined => {
+            return jsonData.find((item) => item._id === idToFind);
         };
 
         const findAllCharsByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T[] | undefined => {
@@ -328,6 +335,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         // model
         let prevCharName: string;
+        let prevCharId: number;
         let chosenCharName = "Hu Tao";
         let chosenChar: BaseCharData | undefined;
         chosenChar = findCharByName(charDataArray, chosenCharName);
@@ -1793,7 +1801,9 @@ export class SceneBuilder implements ISceneBuilder {
                         charButton.onPointerClickObservable.add(async function() {
                             charPanel.isVisible = !charPanel.isVisible;
                             if (chosenCharName != selChar.name) {
-                                await changeCharacter(selChar.name);
+                                await changeCharacter(selChar.name, selChar._id);
+                            } else if (prevCharId != selChar._id && skinMode != true) {
+                                await changeCharacter(selChar.name, selChar._id);
                             }
                         });
                         charIndex += 1;
@@ -1810,7 +1820,7 @@ export class SceneBuilder implements ISceneBuilder {
             wasMuted: false
         };
 
-        async function changeCharacter(nextCharacter?: string): Promise<void> {
+        async function changeCharacter(nextCharacter?: string, nextId?: number): Promise<void> {
             if (!nextCharacter) {
                 return;
             }
@@ -1908,6 +1918,60 @@ export class SceneBuilder implements ISceneBuilder {
                         // debugblock.text = debugblock.text + "d";
                     }
                 }
+            } else if (tabMode == "HSR") {
+                const skinChars = findAllCharsByName(hsrSkinDataArray, chosenCharName);
+                if (prevCharName == chosenCharName && prevCharId == chosenChar?._id) {
+                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
+                        chosenChar = skinChars![0];
+                        skinMode = true;
+                        await createCharacter(chosenChar);
+
+                        let isNextSkin = false;
+                        if (skinChars!.length > 1) {
+                            isNextSkin = true;
+                        }
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
+                        let isNextSkin = true;
+                        let prevI: number = 0;
+                        for (let i = 0; i < skinChars!.length; i++) {
+                            if (chosenChar!._id === skinChars![i]._id) {
+                                prevI = i;
+                                // debugblock.text = prevI.toString(); // debugblock.text + "a";
+                            }
+                        }
+                        const temp = (prevI + 1) % skinChars!.length;
+                        if (temp == skinChars!.length - 1) {
+                            isNextSkin = false;
+                        }
+                        if (prevI == skinChars!.length - 1) {
+                            chosenChar = findCharByName(hsrCharDataArray, chosenCharName);
+                            skinMode = false;
+                        } else {
+                            chosenChar = skinChars![temp];
+                            skinMode = true;
+                        }
+                        await createCharacter(chosenChar);
+                        // debugblock.text = debugblock.text + "e";
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
+                        skinMode = false;
+                        chosenChar = findCharByName(hsrCharDataArray, chosenCharName);
+                        await createCharacter(chosenChar);
+                        // debugblock.text = debugblock.text + "b";
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                } else {
+                    skinMode = false;
+                    chosenChar = findCharById(hsrCharDataArray, nextId!);
+                    await createCharacter(chosenChar);
+                    if (skinChars!.length > 0) {
+                        // debugblock.text = debugblock.text + "c";
+                        createSkinButton(true, true, chosenChar!.name);
+                    } else {
+                        // debugblock.text = debugblock.text + "d";
+                    }
+                }
             } else {
                 skinMode = false;
                 chosenChar = findCharByName(
@@ -1945,6 +2009,7 @@ export class SceneBuilder implements ISceneBuilder {
             showButton.isEnabled = false;
             promises = [];
             loadingTexts = [];
+            prevCharId = chosenChar!._id;
             extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
             theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {

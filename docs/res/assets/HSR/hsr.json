@@ -149,7 +149,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/March 7th (Preservation)",
+        "directory": "res/chars/HSR/March 7th/March 7th (Preservation)",
         "image": "HSR/March 7th.png",
         "pmx": "三月七 1.0.pmx"
     },
@@ -573,7 +573,7 @@
     },
     {
         "_id": 10000053,
-        "name": "March 7th",
+        "name": "March 7th (The Hunt)",
         "weaponType": "The Hunt",
         "element": "Imaginary",
         "gender": "Female",

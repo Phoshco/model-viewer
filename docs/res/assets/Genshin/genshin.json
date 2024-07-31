@@ -307,7 +307,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Furina",
+        "directory": "res/chars/Genshin/Furina/Furina",
         "image": "Genshin/Furina.png",
         "pmx": "【芙宁娜】.pmx"
     },

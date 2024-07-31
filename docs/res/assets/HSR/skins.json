@@ -1,0 +1,13 @@
+[
+    {
+        "_id": 10000014,
+        "name": "March 7th",
+        "weaponType": "Preservation",
+        "element": "Ice",
+        "gender": "Female",
+        "rarity": 4,
+        "directory": "res/chars/HSR/March 7th/Skin1",
+        "image": "HSR/March 7th.png",
+        "pmx": "三月七.pmx"
+    }
+]

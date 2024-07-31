@@ -36,6 +36,18 @@
         "pmx": "菲谢尔.pmx"
     },
     {
+        "_id": 10000974,
+        "name": "Furina",
+        "weaponType": "Sword",
+        "element": "Hydro",
+        "gender": "Female",
+        "region": "Fontaine",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Furina/Furina",
+        "image": "Genshin/Furina.png",
+        "pmx": "【芙宁娜_荒】.pmx"
+    },
+	{
         "_id": 10000074,
         "name": "Furina",
         "weaponType": "Sword",
@@ -43,9 +55,9 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Furina",
+        "directory": "res/chars/Genshin/Furina/Focalors",
         "image": "Genshin/Furina.png",
-        "pmx": "【芙宁娜_荒】.pmx"
+        "pmx": "芙卡洛斯.pmx"
     },
     {
         "_id": 10000028,
