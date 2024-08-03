@@ -226,5 +226,53 @@
         "directory": "res/chars/ZZZ/Zhu Yuan",
         "image": "ZZZ/Zhu Yuan.png",
         "pmx": "朱鸢.pmx"
+    },
+    {
+        "_id": 10000019,
+        "name": "Qingyi",
+        "weaponType": "Stun",
+        "element": "Electric",
+        "gender": "Female",
+        "region": "Criminal Investigation Special Response Team",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Qingyi",
+        "image": "ZZZ/Qingyi.png",
+        "pmx": "Qingyi.pmx"
+    },
+    {
+        "_id": 10000020,
+        "name": "Jane Doe",
+        "weaponType": "Anomaly",
+        "element": "Physical",
+        "gender": "Female",
+        "region": "Faction Unknown",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Jane Doe",
+        "image": "ZZZ/Jane Doe.png",
+        "pmx": "朱鸢.pmx"
+    },
+    {
+        "_id": 10000021,
+        "name": "Seth Lowell",
+        "weaponType": "Defense",
+        "element": "Electric",
+        "gender": "Male",
+        "region": "Criminal Investigation Special Response Team",
+        "rarity": 4,
+        "directory": "res/chars/ZZZ/Seth Lowell",
+        "image": "ZZZ/Seth Lowell.png",
+        "pmx": "Seth 配布.pmx"
+    },
+    {
+        "_id": 10000022,
+        "name": "Hoshimi Miyabi",
+        "weaponType": "Support",
+        "element": "Ice",
+        "gender": "Female",
+        "region": "Section 6",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Hoshimi Miyabi",
+        "image": "ZZZ/Hoshimi Miyabi.png",
+        "pmx": "Hoshimi Miyabi.bpmx"
     }
 ]
