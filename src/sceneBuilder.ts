@@ -648,17 +648,37 @@ export class SceneBuilder implements ISceneBuilder {
                 if (skinButton != undefined) {
                     skinButton.image!.source = "res/assets/alter.png";
                 }
+                charNameText.color = "black";
             } else {
                 layer.texture = dark_bg;
                 darkButton.image!.source = "res/assets/light_mode.png";
                 if (skinButton != undefined) {
                     skinButton.image!.source = "res/assets/alter_light.png";
                 }
+                charNameText.color = "white";
             }
             layer.render;
             bg_bool = !bg_bool;
         }
         darkButton.onPointerClickObservable.add(changeDarkMode);
+
+        const charNameText = new gui.TextBlock();
+        // charNameText.widthInPixels = 100;
+        charNameText.heightInPixels = 50;
+        charNameText.left = "120px";
+        charNameText.top = "10px";
+        charNameText.text = chosenCharName;
+        charNameText.fontSize = 20;
+        charNameText.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        charNameText.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        charNameText.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        if (bg_bool) {
+            charNameText.color = "white";
+        } else {
+            charNameText.color = "black";
+        }
+        advancedTexture.addControl(charNameText);
+        charNameText.isVisible = true;
 
         const charPanel = new gui.Rectangle("charPanel");
         charPanel.width = "720px";
@@ -1832,6 +1852,7 @@ export class SceneBuilder implements ISceneBuilder {
             previousModelState.previousSeekTimeFrame = mmdRuntime.currentFrameTime;
             prevCharName = chosenCharName;
             chosenCharName = nextCharacter;
+            charNameText.text = chosenCharName;
             if (skinButton != undefined) {
                 skinButton.isVisible = false;
             }
