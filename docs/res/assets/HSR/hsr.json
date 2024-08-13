@@ -614,5 +614,16 @@
         "directory": "res/chars/HSR/Moze",
         "image": "HSR/Moze.png",
         "pmx": "貘泽.pmx"
+    },
+    {
+        "_id": 1000000,
+        "name": "Sunday",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Sunday",
+        "image": "HSR/Sunday.png",
+        "pmx": "星穹铁道—星期日.pmx"
     }
 ]
