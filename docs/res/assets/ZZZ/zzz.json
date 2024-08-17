@@ -145,14 +145,14 @@
     },
     {
         "_id": 10000012,
-        "name": "Nekomiya",
+        "name": "Nekomata",
         "weaponType": "Attack",
         "element": "Physical",
         "gender": "Female",
         "region": "Cunning Hares",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Nekomiya",
-        "image": "ZZZ/Nekomiya.png",
+        "directory": "res/chars/ZZZ/Nekomata",
+        "image": "ZZZ/Nekomata.png",
         "pmx": "猫又.pmx"
     },
     {
@@ -249,7 +249,7 @@
         "rarity": 5,
         "directory": "res/chars/ZZZ/Jane Doe",
         "image": "ZZZ/Jane Doe.png",
-        "pmx": "朱鸢.pmx"
+        "pmx": "简v1.pmx"
     },
     {
         "_id": 10000021,

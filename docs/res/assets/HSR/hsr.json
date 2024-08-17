@@ -615,6 +615,17 @@
         "image": "HSR/Moze.png",
         "pmx": "貘泽.pmx"
     },
+	{
+        "_id": 10000057,
+        "name": "Feixiao",
+        "weaponType": "The Hunt",
+        "element": "Wind",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Feixiao",
+        "image": "HSR/Feixiao.png",
+        "pmx": "飞霄2.0.pmx"
+    },
     {
         "_id": 1000000,
         "name": "Sunday",
