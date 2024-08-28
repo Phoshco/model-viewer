@@ -1018,6 +1018,18 @@
         "pmx": "艾梅莉埃.pmx"
     },
 	{
+        "_id": 10000085,
+        "name": "Kachina",
+        "weaponType": "Polearm",
+        "element": "Geo",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Kachina",
+        "image": "Genshin/Kachina.png",
+        "pmx": "卡齐娜.pmx"
+    },
+	{
         "_id": 10000086,
         "name": "Kinich",
         "weaponType": "Claymore",
@@ -1028,6 +1040,18 @@
         "directory": "res/chars/Genshin/Kinich",
         "image": "Genshin/Kinich.png",
         "pmx": "基尼奇.pmx"
+    },
+	{
+        "_id": 10000087,
+        "name": "Mualani",
+        "weaponType": "Catalyst",
+        "element": "Hydro",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Mualani",
+        "image": "Genshin/Mualani.png",
+        "pmx": "玛拉妮.pmx"
     },
 	{
         "_id": 10000099,
