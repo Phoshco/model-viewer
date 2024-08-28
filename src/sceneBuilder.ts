@@ -20,6 +20,7 @@ import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeModelAnimation";
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
 
 import type { IPointerEvent } from "@babylonjs/core";
+import { VideoTexture } from "@babylonjs/core";
 // import { MirrorTexture, Plane } from "@babylonjs/core";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
@@ -59,6 +60,9 @@ import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
 
+// import ammo from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
+// import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
+// import { MmdAmmoPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoPhysics";
 import extraCharDatas from "../res/assets/extras.json";
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
 import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
@@ -227,6 +231,8 @@ export class SceneBuilder implements ISceneBuilder {
         camera.speed = 4 * worldScale;
         camera.zoomToMouseLocation = true;
         camera.wheelDeltaPercentage = 0.1;
+        camera.upperRadiusLimit = 100 * worldScale;
+        camera.lowerRadiusLimit = 1 * worldScale;
         if (isMobile) {
             camera.pinchDeltaPercentage = 0.002;
         }
@@ -241,6 +247,8 @@ export class SceneBuilder implements ISceneBuilder {
         stillCamera.speed = 4 * worldScale;
         stillCamera.zoomToMouseLocation = true;
         stillCamera.wheelDeltaPercentage = 0.1;
+        stillCamera.upperRadiusLimit = 100 * worldScale;
+        stillCamera.lowerRadiusLimit = 1 * worldScale;
         if (isMobile) {
             stillCamera.pinchDeltaPercentage = 0.002;
         }
@@ -366,9 +374,13 @@ export class SceneBuilder implements ISceneBuilder {
         // physics
         promises.push((async(): Promise<void> => {
             updateLoadingText(2, "Loading physics engine...");
-            const havokInstance = await havokPhysics();
-            const havokPlugin = new HavokPlugin(true, havokInstance);
-            scene.enablePhysics(new Vector3(0, -98 * worldScale, 0), havokPlugin);
+            const physicsInstance = await havokPhysics();
+            const physicsPlugin = new HavokPlugin(true, physicsInstance);
+            // const physicsInstance = await ammo();
+            // const physicsPlugin = new MmdAmmoJSPlugin(true, physicsInstance);
+            if (physicsModeOn) {
+                scene.enablePhysics(new Vector3(0, -98 * worldScale, 0), physicsPlugin);
+            }
             updateLoadingText(2, "Loading physics engine... Done");
         })());
 
@@ -411,8 +423,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         let mmdModel = mmdRuntime.createMmdModel(modelMesh);
         const theCharAnimation = loadResults[1] as MmdAnimation;
-        mmdModel.addAnimation(theCharAnimation);
-        mmdModel.setAnimation("motion");
+
 
         // for scaling camera to model height
         // let headBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "頭");
@@ -425,20 +436,24 @@ export class SceneBuilder implements ISceneBuilder {
         let bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
         let boneWorldMatrix = new Matrix();
 
-        scene.onBeforeDrawPhaseObservable.addOnce(() => {
-            headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
-            boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-            // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-            theDiff = theDiff - mmdCameraRoot.position.y;
-            theHeight = mmdCameraRoot.position.y;
-        });
+        if (headBone != undefined && bodyBone != undefined) {
+            mmdModel.addAnimation(theCharAnimation);
+            mmdModel.setAnimation("motion");
+            scene.onBeforeDrawPhaseObservable.addOnce(() => {
+                headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
+                boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                theDiff = theDiff - mmdCameraRoot.position.y;
+                theHeight = mmdCameraRoot.position.y;
+            });
 
-        scene.onBeforeRenderObservable.add(() => {
-            bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
-            // bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
-            boneWorldMatrix.getTranslationToRef(directionalLight.position);
-            directionalLight.position.y -= 10 * worldScale;
-        });
+            scene.onBeforeRenderObservable.add(() => {
+                bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+                // bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+                boneWorldMatrix.getTranslationToRef(directionalLight.position);
+                directionalLight.position.y -= 10 * worldScale;
+            });
+        }
 
         // const groundMaterial = ground.material = new StandardMaterial("GroundMaterial", scene);
         // groundMaterial.alphaMode = 2;
@@ -513,6 +528,19 @@ export class SceneBuilder implements ISceneBuilder {
         // layer.layerMask = 0x10000000;
         const light_bg = new Texture("res/stages/hoyo.png", scene, true);
         const dark_bg = new Texture("res/stages/hoyo_dark.png", scene, true);
+        const pyro_bg = new VideoTexture("pyro", "res/stages/Genshin/Pyro.mp4", scene, true);
+        // const anemo_bg = new VideoTexture("anemo", "res/stages/Genshin/Anemo.mp4", scene, true);
+        // const hydro_bg = new VideoTexture("hydro", "res/stages/Genshin/Hydro.mp4", scene, true);
+        // const cryo_bg = new VideoTexture("cryo", "res/stages/Genshin/Cryo.mp4", scene, true);
+        // const dendro_bg = new VideoTexture("dendro", "res/stages/Genshin/Dendro.mp4", scene, true);
+        // const electro_bg = new VideoTexture("electro", "res/stages/Genshin/Electro.mp4", scene, true);
+        // const geo_bg = new VideoTexture("geo", "res/stages/Genshin/Geo.mp4", scene, true);
+        // if (bg_bool && isMobile) {
+        //     layer.texture = dark_bg;
+        // } else if (bg_bool && !isMobile) {
+        //     layer.texture = anemo_bg;
+        // }
+        pyro_bg;
         if (bg_bool) {
             layer.texture = dark_bg;
         }
@@ -2071,8 +2099,7 @@ export class SceneBuilder implements ISceneBuilder {
             for (const mesh of modelMesh.metadata.meshes) mesh.receiveShadows = true;
 
             mmdModel = mmdRuntime.createMmdModel(modelMesh);
-            mmdModel.addAnimation(theCharAnimation);
-            mmdModel.setAnimation("motion");
+
 
             // headBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "頭");
             headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
@@ -2083,23 +2110,27 @@ export class SceneBuilder implements ISceneBuilder {
             bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
             boneWorldMatrix = new Matrix();
 
-            // onBeforeRenderObservable
-            scene.onBeforeDrawPhaseObservable.addOnce(() => {
-                headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
-                boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-                // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-                mmdCameraRoot.position.z = 1;
-                mmdCameraRoot.position.x = 0;
-                theDiff = theDiff - mmdCameraRoot.position.y;
-                theHeight = mmdCameraRoot.position.y;
-            });
+            if (headBone != undefined && bodyBone != undefined) {
+                mmdModel.addAnimation(theCharAnimation);
+                mmdModel.setAnimation("motion");
+                // onBeforeRenderObservable
+                scene.onBeforeDrawPhaseObservable.addOnce(() => {
+                    headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
+                    boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                    // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                    mmdCameraRoot.position.z = 1;
+                    mmdCameraRoot.position.x = 0;
+                    theDiff = theDiff - mmdCameraRoot.position.y;
+                    theHeight = mmdCameraRoot.position.y;
+                });
 
-            scene.onBeforeRenderObservable.add(() => {
-                // bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
-                bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
-                boneWorldMatrix.getTranslationToRef(directionalLight.position);
-                directionalLight.position.y -= 10 * worldScale;
-            });
+                scene.onBeforeRenderObservable.add(() => {
+                    // bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+                    bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
+                    boneWorldMatrix.getTranslationToRef(directionalLight.position);
+                    directionalLight.position.y -= 10 * worldScale;
+                });
+            }
 
             mmdRuntime.setCamera(mmdCamera);
             mmdCamera.setAnimation("motion");
@@ -2163,9 +2194,11 @@ export class SceneBuilder implements ISceneBuilder {
                 cameraEyePosition
             );
 
-            // headBone!.getFinalMatrix().getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition); // old
-            // headBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam); //old copied from above
-            headBone!.getWorldMatrixToRef(boneWorldMatrixCam).getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition);
+            if (headBone != undefined && bodyBone != undefined) {
+                // headBone!.getFinalMatrix().getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition); // old
+                // headBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam); //old copied from above
+                headBone!.getWorldMatrixToRef(boneWorldMatrixCam).getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition);
+            }
 
             defaultPipeline.depthOfField.focusDistance = (Vector3.Dot(headRelativePosition, cameraNormal) / Vector3.Dot(cameraNormal, cameraNormal)) * 1000;
         });
