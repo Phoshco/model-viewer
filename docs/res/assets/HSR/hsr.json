@@ -626,6 +626,17 @@
         "image": "HSR/Feixiao.png",
         "pmx": "飞霄2.0.pmx"
     },
+	{
+        "_id": 10000058,
+        "name": "Lingsha",
+        "weaponType": "Abundance",
+        "element": "Fire",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Lingsha",
+        "image": "HSR/Lingsha.png",
+        "pmx": "霊砂.pmx"
+    },
     {
         "_id": 1000000,
         "name": "Sunday",
