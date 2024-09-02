@@ -1067,6 +1067,17 @@
     },
     {
         "_id": 1000000,
+        "name": "Guizhong",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Guizhong",
+        "image": "Genshin/Guizhong.png",
+        "pmx": "FC式-归终.pmx"
+    },
+    {
+        "_id": 1000001,
         "name": "Skirk",
         "weaponType": "Universal",
         "element": "Universal",
