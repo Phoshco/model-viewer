@@ -9,5 +9,16 @@
         "directory": "res/chars/HSR/March 7th/Skin1",
         "image": "HSR/March 7th.png",
         "pmx": "三月七.pmx"
+    },
+	{
+        "_id": 10000057,
+        "name": "Feixiao",
+        "weaponType": "The Hunt",
+        "element": "Wind",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Feixiao/Nocape",
+        "image": "HSR/Feixiao.png",
+        "pmx": "星穹铁道—飞霄（无外套）.pmx"
     }
 ]

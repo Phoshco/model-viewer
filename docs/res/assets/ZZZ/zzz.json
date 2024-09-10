@@ -249,7 +249,7 @@
         "rarity": 5,
         "directory": "res/chars/ZZZ/Jane Doe",
         "image": "ZZZ/Jane Doe.png",
-        "pmx": "简v1.pmx"
+        "pmx": "简.pmx"
     },
     {
         "_id": 10000021,
@@ -261,7 +261,7 @@
         "rarity": 4,
         "directory": "res/chars/ZZZ/Seth Lowell",
         "image": "ZZZ/Seth Lowell.png",
-        "pmx": "Seth 配布.pmx"
+        "pmx": "赛斯.pmx"
     },
     {
         "_id": 10000022,

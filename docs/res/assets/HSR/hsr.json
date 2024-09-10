@@ -622,7 +622,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Feixiao",
+        "directory": "res/chars/HSR/Feixiao/Feixiao",
         "image": "HSR/Feixiao.png",
         "pmx": "飞霄2.0.pmx"
     },
