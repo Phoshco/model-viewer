@@ -1086,5 +1086,16 @@
         "directory": "res/chars/Genshin/Skirk",
         "image": "Genshin/Skirk.png",
         "pmx": "丝柯克.pmx"
+    },
+    {
+        "_id": 1000002,
+        "name": "Capitano",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Capitano",
+        "image": "Genshin/Capitano.png",
+        "pmx": "Capitano.pmx"
     }
 ]
