@@ -274,5 +274,17 @@
         "directory": "res/chars/ZZZ/Hoshimi Miyabi",
         "image": "ZZZ/Hoshimi Miyabi.png",
         "pmx": "Hoshimi Miyabi.bpmx"
+    },
+    {
+        "_id": 1000000,
+        "name": "Tsukishiro Yanagi",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Section 6",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Tsukishiro Yanagi",
+        "image": "ZZZ/Tsukishiro Yanagi.png",
+        "pmx": "柳.pmx"
     }
 ]
