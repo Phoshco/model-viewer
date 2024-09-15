@@ -10,6 +10,17 @@
         "image": "HSR/March 7th.png",
         "pmx": "三月七.pmx"
     },
+    {
+        "_id": 10000046,
+        "name": "Acheron",
+        "weaponType": "Nihility",
+        "element": "Lightning",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Acheron/Acheron - Red Form",
+        "image": "HSR/Acheron.png",
+        "pmx": "星穹铁道—黄泉（轴修复）.pmx"
+    },
 	{
         "_id": 10000057,
         "name": "Feixiao",
