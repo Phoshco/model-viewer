@@ -1031,18 +1031,6 @@
     },
 	{
         "_id": 10000086,
-        "name": "Kinich",
-        "weaponType": "Claymore",
-        "element": "Dendro",
-        "gender": "Male",
-        "region": "Natlan",
-        "rarity": 5,
-        "directory": "res/chars/Genshin/Kinich",
-        "image": "Genshin/Kinich.png",
-        "pmx": "基尼奇.pmx"
-    },
-	{
-        "_id": 10000087,
         "name": "Mualani",
         "weaponType": "Catalyst",
         "element": "Hydro",
@@ -1052,6 +1040,18 @@
         "directory": "res/chars/Genshin/Mualani",
         "image": "Genshin/Mualani.png",
         "pmx": "玛拉妮.pmx"
+    },
+	{
+        "_id": 10000087,
+        "name": "Kinich",
+        "weaponType": "Claymore",
+        "element": "Dendro",
+        "gender": "Male",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Kinich",
+        "image": "Genshin/Kinich.png",
+        "pmx": "基尼奇.pmx"
     },
 	{
         "_id": 10000099,
@@ -1097,5 +1097,16 @@
         "directory": "res/chars/Genshin/Capitano",
         "image": "Genshin/Capitano.png",
         "pmx": "Capitano.pmx"
+    },
+    {
+        "_id": 1000003,
+        "name": "Dottore",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Dottore",
+        "image": "Genshin/Dottore.png",
+        "pmx": "Dottore Model.pmx"
     }
 ]

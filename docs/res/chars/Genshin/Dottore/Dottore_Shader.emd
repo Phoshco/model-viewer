@@ -1,0 +1,20 @@
+[Info]
+Version = 2
+
+[Effect]
+Obj = none
+Obj[0] = Fx\material_hair.fx
+Obj[1] = Fx\material_body.fx
+Obj[6] = Fx\material_body.fx
+Obj[7] = Fx\material_body.fx
+Obj[8] = Fx\material_body.fx
+Obj[9] = Fx\material_hair.fx
+Obj[10] = Fx\material_body.fx
+Obj[11] = Fx\material_body.fx
+Obj[12] = Fx\material_body.fx
+Obj[13] = Fx\material_body.fx
+Obj[14] = Fx\material_body.fx
+Obj[15] = Fx\material_hair.fx
+Obj[16] = Fx\material_body.fx
+Obj[17] = Fx\material_body.fx
+
