@@ -263,8 +263,20 @@
         "image": "ZZZ/Seth Lowell.png",
         "pmx": "赛斯.pmx"
     },
-    {
+	{
         "_id": 10000022,
+        "name": "Caesar King",
+        "weaponType": "Defense",
+        "element": "Physical",
+        "gender": "Female",
+        "region": "Sons of Calydon",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Caesar King",
+        "image": "ZZZ/Caesar King.png",
+        "pmx": "凯撒.pmx"
+    },
+    {
+        "_id": 10000024,
         "name": "Hoshimi Miyabi",
         "weaponType": "Support",
         "element": "Ice",
