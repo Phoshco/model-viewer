@@ -275,8 +275,20 @@
         "image": "ZZZ/Caesar King.png",
         "pmx": "凯撒.pmx"
     },
-    {
+	{
         "_id": 10000024,
+        "name": "Lighter",
+        "weaponType": "Stun",
+        "element": "Fire",
+        "gender": "Male",
+        "region": "Sons of Calydon",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Lighter",
+        "image": "ZZZ/Lighter.png",
+        "pmx": "莱特.pmx"
+    },
+    {
+        "_id": 10000025,
         "name": "Hoshimi Miyabi",
         "weaponType": "Support",
         "element": "Ice",

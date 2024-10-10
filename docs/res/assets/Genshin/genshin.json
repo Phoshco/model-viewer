@@ -1054,6 +1054,30 @@
         "pmx": "基尼奇.pmx"
     },
 	{
+        "_id": 10000088,
+        "name": "Xilonen",
+        "weaponType": "Sword",
+        "element": "Geo",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Xilonen",
+        "image": "Genshin/Xilonen.png",
+        "pmx": "希诺宁.pmx"
+    },
+	{
+        "_id": 10000090,
+        "name": "Citlali",
+        "weaponType": "Catalyst",
+        "element": "Cryo",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Citlali",
+        "image": "Genshin/Citlali.png",
+        "pmx": "茜特拉莉.pmx"
+    },
+	{
         "_id": 10000099,
         "name": "Mavuika",
         "weaponType": "Sword",
