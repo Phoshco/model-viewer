@@ -276,6 +276,18 @@
         "pmx": "凯撒.pmx"
     },
 	{
+        "_id": 10000023,
+        "name": "Burnice White",
+        "weaponType": "Anomaly",
+        "element": "Fire",
+        "gender": "Female",
+        "region": "Sons of Calydon",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Burnice White",
+        "image": "ZZZ/Burnice White.png",
+        "pmx": "柏妮思.pmx"
+    },
+	{
         "_id": 10000024,
         "name": "Lighter",
         "weaponType": "Stun",
@@ -302,8 +314,8 @@
     {
         "_id": 1000000,
         "name": "Tsukishiro Yanagi",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Anomaly",
+        "element": "Electric",
         "gender": "Female",
         "region": "Section 6",
         "rarity": 6,

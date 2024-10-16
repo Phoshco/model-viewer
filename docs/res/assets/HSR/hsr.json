@@ -638,12 +638,12 @@
         "pmx": "霊砂.pmx"
     },
     {
-        "_id": 1000000,
+        "_id": 10000060,
         "name": "Sunday",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Harmony",
+        "element": "Imaginary",
         "gender": "Male",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/HSR/Sunday",
         "image": "HSR/Sunday.png",
         "pmx": "星穹铁道—星期日.pmx"
