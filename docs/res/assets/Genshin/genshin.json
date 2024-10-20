@@ -1066,6 +1066,18 @@
         "pmx": "希诺宁.pmx"
     },
 	{
+        "_id": 10000089,
+        "name": "Ororon",
+        "weaponType": "Bow",
+        "element": "Electro",
+        "gender": "Male",
+        "region": "Natlan",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Ororon",
+        "image": "Genshin/Ororon.png",
+        "pmx": "Ororon.pmx"
+    },
+	{
         "_id": 10000091,
         "name": "Citlali",
         "weaponType": "Catalyst",
