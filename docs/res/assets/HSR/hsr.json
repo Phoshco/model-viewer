@@ -637,6 +637,17 @@
         "image": "HSR/Lingsha.png",
         "pmx": "霊砂.pmx"
     },
+	{
+        "_id": 10000059,
+        "name": "Rappa",
+        "weaponType": "Erudition",
+        "element": "Imaginary",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Rappa",
+        "image": "HSR/Rappa.png",
+        "pmx": "星穹铁道—乱破.pmx"
+    },
     {
         "_id": 10000060,
         "name": "Sunday",
