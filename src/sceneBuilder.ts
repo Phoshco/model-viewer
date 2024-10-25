@@ -148,13 +148,25 @@ export class SceneBuilder implements ISceneBuilder {
             sortAscending: boolean = true
         ): T[] {
             return dataArray.slice().sort((a, b) => {
-                const valueA = String(a[sortByKey]);
-                const valueB = String(b[sortByKey]);
+                // const valueA = String(a[sortByKey]);
+                // const valueB = String(b[sortByKey]);
 
-                if (sortAscending) {
-                    return valueA.localeCompare(valueB);
+                // if (sortAscending) {
+                //     return valueA.localeCompare(valueB);
+                // } else {
+                //     return valueB.localeCompare(valueA);
+                // }
+                const valueA = a[sortByKey];
+                const valueB = b[sortByKey];
+
+                if (typeof valueA === "number" && typeof valueB === "number") {
+                    // Numerical comparison
+                    return sortAscending ? valueA - valueB : valueB - valueA;
                 } else {
-                    return valueB.localeCompare(valueA);
+                    // String comparison (converts values to strings if not already)
+                    const strA = String(valueA);
+                    const strB = String(valueB);
+                    return sortAscending ? strB.localeCompare(strA) : strA.localeCompare(strB);
                 }
             });
         }
