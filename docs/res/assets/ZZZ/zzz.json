@@ -289,6 +289,18 @@
     },
 	{
         "_id": 10000024,
+        "name": "Tsukishiro Yanagi",
+        "weaponType": "Anomaly",
+        "element": "Electric",
+        "gender": "Female",
+        "region": "Section 6",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Tsukishiro Yanagi",
+        "image": "ZZZ/Tsukishiro Yanagi.png",
+        "pmx": "柳.pmx"
+    },
+	{
+        "_id": 10000025,
         "name": "Lighter",
         "weaponType": "Stun",
         "element": "Fire",
@@ -300,27 +312,15 @@
         "pmx": "莱特.pmx"
     },
     {
-        "_id": 10000025,
-        "name": "Hoshimi Miyabi",
+        "_id": 1000000,
+		"name": "Hoshimi Miyabi",
         "weaponType": "Support",
         "element": "Ice",
         "gender": "Female",
         "region": "Section 6",
-        "rarity": 5,
+        "rarity": 6,
         "directory": "res/chars/ZZZ/Hoshimi Miyabi",
         "image": "ZZZ/Hoshimi Miyabi.png",
         "pmx": "Hoshimi Miyabi.bpmx"
-    },
-    {
-        "_id": 1000000,
-        "name": "Tsukishiro Yanagi",
-        "weaponType": "Anomaly",
-        "element": "Electric",
-        "gender": "Female",
-        "region": "Section 6",
-        "rarity": 6,
-        "directory": "res/chars/ZZZ/Tsukishiro Yanagi",
-        "image": "ZZZ/Tsukishiro Yanagi.png",
-        "pmx": "柳.pmx"
     }
 ]
