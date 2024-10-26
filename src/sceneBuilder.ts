@@ -46,6 +46,9 @@ import * as gui from "@babylonjs/gui";
 import havokPhysics from "@babylonjs/havok";
 // import { Inspector } from "@babylonjs/inspector";
 import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMaterial";
+// import type { MmdWasmInstance } from "babylon-mmd";
+// import { getMmdWasmInstance } from "babylon-mmd";
+// import { MmdWasmAnimation, MmdWasmInstanceTypeSPR, MmdWasmPhysics, MmdWasmRuntime } from "babylon-mmd";
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
 import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
 import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
@@ -295,14 +298,18 @@ export class SceneBuilder implements ISceneBuilder {
         shadowGenerator.frustumEdgeFalloff = 0.1;
 
         // create mmd runtime with physics
-        let mmdRuntime: MmdRuntime;
+        let mmdRuntime: MmdRuntime;// | MmdWasmRuntime;
+        // let wasmInstance: MmdWasmInstance;
         const physicsModeOn = false;
 
-        if (!physicsModeOn) {
-            mmdRuntime = new MmdRuntime(scene);
-        } else {
-            mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
-        }
+        // if (!physicsModeOn) {
+        //     mmdRuntime = new MmdRuntime(scene);
+        // } else {
+        //     wasmInstance = await getMmdWasmInstance(new MmdWasmInstanceTypeSPR());
+        //     mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene));
+        //     mmdRuntime.physics!.createGroundModel?.([0]); // create ground model to physics world 0
+        // }
+        mmdRuntime = new MmdRuntime(scene);
         mmdRuntime.loggingEnabled = true;
         mmdRuntime.register(scene);
 
@@ -388,11 +395,12 @@ export class SceneBuilder implements ISceneBuilder {
             updateLoadingText(2, "Loading physics engine...");
             const physicsInstance = await havokPhysics();
             const physicsPlugin = new HavokPlugin(true, physicsInstance);
+            physicsPlugin;
             // const physicsInstance = await ammo();
             // const physicsPlugin = new MmdAmmoJSPlugin(true, physicsInstance);
-            if (physicsModeOn) {
-                scene.enablePhysics(new Vector3(0, -98 * worldScale, 0), physicsPlugin);
-            }
+            // if (physicsModeOn) {
+            //     scene.enablePhysics(new Vector3(0, -98 * worldScale, 0), physicsPlugin);
+            // }
             updateLoadingText(2, "Loading physics engine... Done");
         })());
 
@@ -434,8 +442,10 @@ export class SceneBuilder implements ISceneBuilder {
         ground.parent = mmdRoot;
 
         let mmdModel = mmdRuntime.createMmdModel(modelMesh);
+        // const theCharAnimation = physicsModeOn
+        //     ? new MmdWasmAnimation(loadResults[1], wasmInstance!, scene)
+        //     : (loadResults[1] as MmdAnimation);
         const theCharAnimation = loadResults[1] as MmdAnimation;
-
 
         // for scaling camera to model height
         // let headBone = modelMesh.skeleton!.bones.find((bone) => bone.name === "頭");
@@ -618,13 +628,15 @@ export class SceneBuilder implements ISceneBuilder {
         advancedTexture.addControl(textblock);
         textblock.isVisible = false;
 
+        const iconWidthHeight = isMobile ? "100px" : "50px";
+
         const showButton = gui.Button.CreateImageOnlyButton("but", "res/assets/menu.png");
         showButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         showButton.left = "10px";
         showButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
         showButton.top = "10px";
-        showButton.width = "50px";
-        showButton.height = "50px";
+        showButton.width = iconWidthHeight;
+        showButton.height = iconWidthHeight;
         showButton.thickness = 0;
         advancedTexture.addControl(showButton);
 
@@ -648,9 +660,9 @@ export class SceneBuilder implements ISceneBuilder {
             skinButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
             skinButton.left = "10px";
             skinButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
-            skinButton.top = "60px";
-            skinButton.width = "50px";
-            skinButton.height = "50px";
+            skinButton.top = isMobile ? "110px" : "60px";
+            skinButton.width = iconWidthHeight;
+            skinButton.height = iconWidthHeight;
             skinButton.thickness = 0;
             advancedTexture.addControl(skinButton);
             skinButton.isVisible = visibility;
@@ -673,11 +685,11 @@ export class SceneBuilder implements ISceneBuilder {
             darkButton.image!.source = "res/assets/light_mode.png";
         }
         darkButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        darkButton.left = "60px";
+        darkButton.left = isMobile ? "110px" : "60px";
         darkButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
         darkButton.top = "10px";
-        darkButton.width = "50px";
-        darkButton.height = "50px";
+        darkButton.width = iconWidthHeight;
+        darkButton.height = iconWidthHeight;
         darkButton.thickness = 0;
         advancedTexture.addControl(darkButton);
         function changeDarkMode(): void {
@@ -704,11 +716,11 @@ export class SceneBuilder implements ISceneBuilder {
 
         const charNameText = new gui.TextBlock();
         // charNameText.widthInPixels = 100;
-        charNameText.heightInPixels = 50;
-        charNameText.left = "120px";
+        charNameText.heightInPixels = isMobile ? 100 : 50;
+        charNameText.left = isMobile ? "220px" : "120px";
         charNameText.top = "10px";
         charNameText.text = chosenCharName;
-        charNameText.fontSize = 20;
+        charNameText.fontSize = isMobile ? 40 : 20;
         charNameText.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         charNameText.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         charNameText.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
@@ -1896,7 +1908,7 @@ export class SceneBuilder implements ISceneBuilder {
             if (skinButton != undefined) {
                 skinButton.isVisible = false;
             }
-            mmdRuntime.destroyMmdModel(mmdModel);
+            // mmdRuntime.destroyMmdModel(mmdModel);
             modelMesh.dispose(false, true);
             mmdPlayerControl.dispose();
             // mmdCamera.removeAnimation(0);
