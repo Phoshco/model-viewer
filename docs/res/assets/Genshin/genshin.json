@@ -1101,6 +1101,18 @@
         "image": "Genshin/Mavuika.png",
         "pmx": "玛薇卡.pmx"
     },
+	{
+        "_id": 10000100,
+        "name": "Iansan",
+        "weaponType": "Polearm",
+        "element": "Electro",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Iansan",
+        "image": "Genshin/Iansan.png",
+        "pmx": "Iansan.pmx"
+    },
     {
         "_id": 1000000,
         "name": "Guizhong",
