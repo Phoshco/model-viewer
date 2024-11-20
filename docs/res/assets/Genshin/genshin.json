@@ -1078,6 +1078,18 @@
         "pmx": "Ororon.pmx"
     },
 	{
+        "_id": 10000090,
+        "name": "Chasca",
+        "weaponType": "Bow",
+        "element": "Anemo",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Chasca",
+        "image": "Genshin/Chasca.png",
+        "pmx": "恰斯卡.pmx"
+    },
+	{
         "_id": 10000091,
         "name": "Citlali",
         "weaponType": "Catalyst",

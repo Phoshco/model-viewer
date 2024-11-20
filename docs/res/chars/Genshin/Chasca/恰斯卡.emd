@@ -1,0 +1,7 @@
+[Info]
+Version = 3
+
+[Effect]
+Obj = none
+Obj[16] = normalmap\body1.fx
+
