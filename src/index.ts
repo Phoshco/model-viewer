@@ -86,7 +86,7 @@ window.onload = (): void => {
         item = fullPath.slice(1).replace(/\/$/, "") || ""; // Get the item after the last "/"
         console.log(item);
     } else if (isOnline) {
-
+    // {
         // Online case: handle URLs that include subfolders like "model-viewer" or "docs"
         // Check if the URL contains any of the online base paths
         for (const base of onlineBasePaths) {

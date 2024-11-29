@@ -65,7 +65,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         hot: true,
         watchFiles: ["src/**/*"],
         historyApiFallback: {
-            index: "./src/index.html",  // Ensures that all non-root paths load the index.html
+            index: "/",  // This makes sure that all routes (like /itemA) return index.html
         },
     },
     mode: env.production ? "production" : "development"
