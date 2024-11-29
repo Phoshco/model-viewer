@@ -20,7 +20,7 @@ import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeModelAnimation";
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
 
 import type { IPointerEvent } from "@babylonjs/core";
-import { VideoTexture } from "@babylonjs/core";
+// import { VideoTexture } from "@babylonjs/core";
 // import { MirrorTexture, Plane } from "@babylonjs/core";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
@@ -78,7 +78,7 @@ import { CustomLoadingScreen } from "./CustomLoadingScreen";
 import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
 
 export class SceneBuilder implements ISceneBuilder {
-    public async build(canvas: HTMLCanvasElement, engine: AbstractEngine): Promise<Scene> {
+    public async build(canvas: HTMLCanvasElement, engine: AbstractEngine, item: string): Promise<Scene> {
         // for apply SDEF on shadow, outline, depth rendering
         SdefInjector.OverrideEngineCreateEffect(engine);
 
@@ -124,6 +124,51 @@ export class SceneBuilder implements ISceneBuilder {
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
         };
+
+        // const findFirstCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
+        //     const normalize = (str: string): string =>
+        //         str.toLowerCase().replace(/[^a-z]/g, "");
+
+        //     const normalizedTarget = normalize(nameToFind);
+
+        //     const foundItem = jsonData.find((item) => normalize(item.name) === normalizedTarget);
+        //     if (foundItem) return foundItem;
+
+        //     // If no match, search for "Hu Tao"
+        //     return jsonData.find((item) => normalize(item.name) === "hutao");
+        // };
+        const findFirstCharByName = <T extends { name: string }>(
+            jsonData: T[][],
+            nameToFind: string
+        ): [T | undefined, string] => {
+            const normalize = (str: string): string =>
+                str.toLowerCase().replace(/[^a-z]/g, "");
+
+            const normalizedTarget = normalize(nameToFind);
+            let foundItem: T | undefined;
+            // Loop through each sub-array to find the matching name
+            for (let i = 0; i < jsonData.length; i++) {
+                foundItem = jsonData[i].find(
+                    (item) => normalize(item.name) === normalizedTarget
+                );
+                let tabMode: string;
+                if (i == 0) {
+                    tabMode = "Genshin";
+                } else if (i == 1) {
+                    tabMode = "HSR";
+                } else {
+                    tabMode = "ZZZ";
+                }
+                if (foundItem) return [foundItem, tabMode];
+            }
+
+            // If no match, search for "Hu Tao" in the first sub-array
+            const fallbackItem = jsonData[0].find(
+                (item) => normalize(item.name) === "hutao"
+            );
+            return [fallbackItem, "Genshin"];
+        };
+
 
         const findCharById = <T extends { _id: number }>(jsonData: T[], idToFind: number): T | undefined => {
             return jsonData.find((item) => item._id === idToFind);
@@ -363,9 +408,16 @@ export class SceneBuilder implements ISceneBuilder {
         // model
         let prevCharName: string;
         let prevCharId: number;
-        let chosenCharName = "Hu Tao";
+        let chosenCharName = item;
         let chosenChar: BaseCharData | undefined;
-        chosenChar = findCharByName(charDataArray, chosenCharName);
+        let tabMode = "Genshin";
+        let firstTabMode = tabMode;
+        const charDataArrayArray = [charDataArray, hsrCharDataArray, zzzCharDataArray];
+        [chosenChar, firstTabMode] = findFirstCharByName(charDataArrayArray, chosenCharName);
+        chosenCharName = chosenChar!.name;
+
+        // console.log("CHOSEN CHAR NAME: " + chosenCharName);
+        // tabMode = "Genshin";
         let extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
         let theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
         theLoader;
@@ -496,6 +548,10 @@ export class SceneBuilder implements ISceneBuilder {
         scene.onAfterRenderObservable.addOnce(() => {
             scene.freezeMaterials();
 
+            if (skinButton != undefined) {
+                skinButton.isEnabled = true;
+            }
+
             const meshes = scene.meshes;
             for (let i = 0, len = meshes.length; i < len; ++i) {
                 const mesh = meshes[i];
@@ -550,7 +606,7 @@ export class SceneBuilder implements ISceneBuilder {
         // layer.layerMask = 0x10000000;
         const light_bg = new Texture("res/stages/hoyo.png", scene, true);
         const dark_bg = new Texture("res/stages/hoyo_dark.png", scene, true);
-        const pyro_bg = new VideoTexture("pyro", "res/stages/Genshin/Pyro.mp4", scene, true);
+        // const pyro_bg = new VideoTexture("pyro", "res/stages/Genshin/Pyro.mp4", scene, true);
         // const anemo_bg = new VideoTexture("anemo", "res/stages/Genshin/Anemo.mp4", scene, true);
         // const hydro_bg = new VideoTexture("hydro", "res/stages/Genshin/Hydro.mp4", scene, true);
         // const cryo_bg = new VideoTexture("cryo", "res/stages/Genshin/Cryo.mp4", scene, true);
@@ -562,7 +618,7 @@ export class SceneBuilder implements ISceneBuilder {
         // } else if (bg_bool && !isMobile) {
         //     layer.texture = anemo_bg;
         // }
-        pyro_bg;
+        // pyro_bg;
         if (bg_bool) {
             layer.texture = dark_bg;
         }
@@ -842,7 +898,6 @@ export class SceneBuilder implements ISceneBuilder {
         topBar.addControl(zzzButton);
 
         // CURRENT STATE
-        let tabMode = "Genshin";
         let sortModeAscending = false;
         let sortModeKey: keyof BaseCharData;
 
@@ -859,7 +914,7 @@ export class SceneBuilder implements ISceneBuilder {
         filteredArray = filterBy(charDataArray, genshinFilter);
         sortModeKey = "_id";
 
-        genshinButton.onPointerClickObservable.add(function() {
+        function handleGenshinTabSwitch(): void {
             if (tabMode != "Genshin") {
                 genshinButton.background = "rgb(64,68,70)";
                 if (tabMode == "HSR") {
@@ -875,8 +930,12 @@ export class SceneBuilder implements ISceneBuilder {
                 hideGenshinElements();
                 generateGrid(filteredArray);
             }
+        }
+        genshinButton.onPointerClickObservable.add(function() {
+            handleGenshinTabSwitch();
         });
-        hsrButton.onPointerClickObservable.add(function() {
+
+        function handleHSRTabSwitch(): void {
             if (tabMode != "HSR") {
                 hsrButton.background = "rgb(64,68,70)";
                 if (tabMode == "Genshin") {
@@ -892,8 +951,12 @@ export class SceneBuilder implements ISceneBuilder {
                 hideHSRElements();
                 generateGrid(filteredArray);
             }
+        }
+        hsrButton.onPointerClickObservable.add(function() {
+            handleHSRTabSwitch();
         });
-        zzzButton.onPointerClickObservable.add(function() {
+
+        function handleZZZTabSwitch(): void {
             if (tabMode != "ZZZ") {
                 zzzButton.background = "rgb(64,68,70)";
                 if (tabMode == "Genshin") {
@@ -909,6 +972,9 @@ export class SceneBuilder implements ISceneBuilder {
                 hideZZZElements();
                 generateGrid(filteredArray);
             }
+        }
+        zzzButton.onPointerClickObservable.add(function() {
+            handleZZZTabSwitch();
         });
 
         const filterBar = new gui.Rectangle();
@@ -2287,6 +2353,27 @@ export class SceneBuilder implements ISceneBuilder {
             onPointerMoveScroll(evt);
         }
         scene.onPointerMove = handlePointerMove;
+
+        if (firstTabMode == "Genshin") {
+            const skinChars = findAllCharsByName(genshinSkinDataArray, chosenCharName);
+            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
+                chosenChar = skinChars![0];
+                skinMode = false;
+
+                createSkinButton(true, true, chosenChar!.name);
+            }
+        } else if (firstTabMode == "HSR") {
+            handleHSRTabSwitch();
+            const skinChars = findAllCharsByName(hsrSkinDataArray, chosenCharName);
+            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
+                chosenChar = skinChars![0];
+                skinMode = false;
+
+                createSkinButton(true, true, chosenChar!.name);
+            }
+        } else if (firstTabMode == "ZZZ") {
+            handleZZZTabSwitch();
+        }
 
         // if you want to use inspector, uncomment following line.
         // Inspector.Show(scene, { });

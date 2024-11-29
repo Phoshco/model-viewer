@@ -24,9 +24,21 @@ window.onload = (): void => {
         audioEngine: false
     }, true);
 
+    // Capture the path from the URL
+    const path = window.location.pathname.slice(1).replace(/\/$/, ""); // Removes leading '/'
+    // Remove trailing slash if exists
+    // Optionally process path (e.g., remove trailing slashes, handle specific cases)
+
+    const item = path || "";
+
+    // Redirect to root
+    if (path) {
+        window.history.replaceState(null, "", "/"); // Avoids a full reload
+    }
+
     BaseRuntime.Create({
         canvas,
         engine,
         sceneBuilder: new SceneBuilder()
-    }).then(runtime => runtime.run());
+    }, item).then(runtime => runtime.run());
 };
