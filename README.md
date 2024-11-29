@@ -17,3 +17,7 @@ Implement MMD models using Babylon.js and babylon-mmd as a hobby project.
 - Run it with `npm i` & `npm start`
 - It will do the eslint fix for you on save
 - All code is written in sceneBuilder.ts
+
+
+## Route handling
+url/charactername
