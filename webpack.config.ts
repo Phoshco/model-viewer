@@ -10,7 +10,8 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
     output: {
         path: path.join(__dirname, "/docs"),
         filename: "[name].bundle.js",
-        clean: true
+        clean: true,
+        publicPath: "/",
     },
     optimization: {
         minimize: env.production
@@ -63,7 +64,9 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         },
         hot: true,
         watchFiles: ["src/**/*"],
-        historyApiFallback: true,
+        historyApiFallback: {
+            index: "./src/index.html",  // Ensures that all non-root paths load the index.html
+        },
     },
     mode: env.production ? "production" : "development"
 });
