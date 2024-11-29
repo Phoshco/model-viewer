@@ -11,7 +11,6 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         path: path.join(__dirname, "/docs"),
         filename: "[name].bundle.js",
         clean: true,
-        publicPath: "/",
     },
     optimization: {
         minimize: env.production
