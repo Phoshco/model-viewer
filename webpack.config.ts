@@ -11,6 +11,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         path: path.join(__dirname, "/docs"),
         filename: "[name].bundle.js",
         clean: true,
+        publicPath: "/"
     },
     optimization: {
         minimize: env.production
@@ -69,7 +70,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         hot: true,
         watchFiles: ["src/**/*"],
         historyApiFallback: {
-            index: path.join("/model-viewer", "/docs"),
+            index: "/index.html",
         },
     },
     mode: env.production ? "production" : "development"
