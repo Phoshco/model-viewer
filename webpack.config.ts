@@ -41,7 +41,12 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
     },
     plugins: [
         new htmlWebpackPlugin({
-            template: "./src/index.html"
+            template: "./src/index.html",
+            filename: "index.html"
+        }),
+        new htmlWebpackPlugin({
+            template: "./src/index.html",
+            filename: "404.html"
         }),
         new eslintPlugin({
             extensions: ["ts", "tsx"],
