@@ -69,7 +69,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         hot: true,
         watchFiles: ["src/**/*"],
         historyApiFallback: {
-            index: path.join(__dirname, "/docs", "/index.html"),  // This makes sure that all routes (like /itemA) return index.html
+            index: path.join("/model-viewer", "/docs"),
         },
     },
     mode: env.production ? "production" : "development"
