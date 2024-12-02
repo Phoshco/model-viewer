@@ -40,6 +40,7 @@
         "@babylonjs/inspector": "^7.28.0",
         "@babylonjs/loaders": "^7.28.0",
         "@babylonjs/materials": "^7.28.0",
-        "babylon-mmd": "^0.56.2"
+        "babylon-mmd": "^0.56.2",
+        "counterapi": "^1.103.0"
     }
 }

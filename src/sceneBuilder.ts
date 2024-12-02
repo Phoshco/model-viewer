@@ -62,6 +62,7 @@ import { MmdCamera } from "babylon-mmd/esm/Runtime/mmdCamera";
 import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
+import {CounterAPI} from "counterapi";
 
 // import ammo from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
 // import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
@@ -109,6 +110,7 @@ export class SceneBuilder implements ISceneBuilder {
         interface ExtraCharData extends BaseCharData {
         }
 
+        const counter = new CounterAPI();
         const extraDataArray = extraCharDatas as ExtraCharData[];
         const charDataArray = genshinCharDatas as GenshinCharData[];
         const genshinSkinDataArray = genshinSkinCharDatas as GenshinCharData[];
@@ -568,6 +570,9 @@ export class SceneBuilder implements ISceneBuilder {
             scene.skipFrustumClipping = true;
             scene.blockMaterialDirtyMechanism = true;
             audioPlayer.mute();
+            counter.up("phoshco", "hoyo").then((res) => {
+                console.log(res);
+            });
         });
 
         // if you want ground collision, uncomment following lines.
