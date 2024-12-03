@@ -7,12 +7,12 @@
 ###
 
 <div align="center">
-  <img height="300" src="banner.jpeg?raw=true"/>
+  <img src="banner.jpeg?raw=true" style="max-width: 70%; height: auto;"/>
 </div>
 
 ### https://phoshco.github.io/model-viewer/
 
-Implement MMD models using Babylon.js and babylon-mmd as a hobby project.
+Implement MMD models using Babylon.js and <a href="https://github.com/noname0310/babylon-mmd/">babylon-mmd</a> as a hobby project.
 (Ongoing)
 
 ## Build Settings
@@ -30,7 +30,7 @@ Implement MMD models using Babylon.js and babylon-mmd as a hobby project.
 
 
 ## Route handling
-https://phoshco.github.io/model-viewer/*charactername*
+https://phoshco.github.io/model-viewer/charactername
 
 - *charactername* is the name of the target character.
 - *charactername* is case-insensitive. Periods and whitespaces in names are removed.

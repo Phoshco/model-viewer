@@ -689,6 +689,21 @@ export class SceneBuilder implements ISceneBuilder {
         advancedTexture.addControl(textblock);
         textblock.isVisible = false;
 
+        const disclaimerText = new gui.TextBlock();
+        disclaimerText.resizeToFit = true;
+        disclaimerText.top = 0;
+        disclaimerText.left = 0;
+        disclaimerText.paddingTop = 10;
+        disclaimerText.paddingRight = 10;
+        disclaimerText.text = "Double click / tap to change camera mode.";
+        disclaimerText.fontSize = isMobile ? 26 : 16;
+        disclaimerText.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_CENTER;
+        disclaimerText.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        disclaimerText.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        disclaimerText.color = "grey";
+        advancedTexture.addControl(disclaimerText);
+        disclaimerText.isVisible = true;
+
         const iconWidthHeight = isMobile ? "100px" : "50px";
 
         const showButton = gui.Button.CreateImageOnlyButton("but", "res/assets/menu.png");
