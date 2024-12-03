@@ -46,7 +46,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
             filename: "index.html"
         }),
         new htmlWebpackPlugin({
-            template: "./src/index.html",
+            template: "./src/404.html",
             filename: "404.html"
         }),
         new eslintPlugin({
