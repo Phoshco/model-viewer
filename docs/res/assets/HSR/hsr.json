@@ -657,7 +657,18 @@
         "rarity": 5,
         "directory": "res/chars/HSR/Sunday",
         "image": "HSR/Sunday.png",
-        "pmx": "星穹铁道—星期日.pmx"
+        "pmx": "星穹铁道—星期日2.pmx"
+    },
+	{
+        "_id": 10000061,
+        "name": "Fugue",
+        "weaponType": "Nihility",
+        "element": "Fire",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Fugue",
+        "image": "HSR/Fugue.png",
+        "pmx": "星穹铁道—忘归人.pmx"
     },
     {
         "_id": 1000001,
