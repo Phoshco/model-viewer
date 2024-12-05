@@ -382,5 +382,29 @@
         "directory": "res/chars/Genshin/Gorou/Miss Hina",
         "image": "Genshin/Gorou.png",
         "pmx": "五郎.pmx"
+    },
+	{
+        "_id": 10000083,
+        "name": "Sigewinne",
+        "weaponType": "Bow",
+        "element": "Hydro",
+        "gender": "Female",
+        "region": "Fontaine",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Sigewinne/Luckin",
+        "image": "Genshin/Sigewinne.png",
+        "pmx": "希格雯.pmx"
+    },
+	{
+        "_id": 10000081,
+        "name": "Clorinde",
+        "weaponType": "Sword",
+        "element": "Electro",
+        "gender": "Female",
+        "region": "Fontaine",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Clorinde/Luckin",
+        "image": "Genshin/Clorinde.png",
+        "pmx": "克洛琳德.pmx"
     }
 ]

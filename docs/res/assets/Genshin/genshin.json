@@ -175,7 +175,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Clorinde",
+        "directory": "res/chars/Genshin/Clorinde/Clorinde",
         "image": "Genshin/Clorinde.png",
         "pmx": "克洛琳德.pmx"
     },
@@ -751,7 +751,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Sigewinne",
+        "directory": "res/chars/Genshin/Sigewinne/Sigewinne",
         "image": "Genshin/Sigewinne.png",
         "pmx": "希格雯.pmx"
     },
