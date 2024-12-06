@@ -14,7 +14,42 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         publicPath: ""
     },
     optimization: {
-        minimize: env.production
+        minimize: env.production,
+        splitChunks: {
+            chunks: "all",
+            cacheGroups: {
+                glslShaders: {
+                    test: (module: { type: string; resource: string | undefined }): boolean => {
+                        if (module.resource === undefined) {
+                            return false;
+                        }
+                        const resource = module.resource.replace(/\\/g, "/");
+                        if (resource.includes("Shaders/")) {
+                            return true;
+                        }
+                        return false;
+                    },
+                    name: "glslShaders",
+                    chunks: "async",
+                    enforce: true
+                },
+                wgslShaders: {
+                    test: (module: { type: string; resource: string | undefined }): boolean => {
+                        if (module.resource === undefined) {
+                            return false;
+                        }
+                        const resource = module.resource.replace(/\\/g, "/");
+                        if (resource.includes("ShadersWGSL/")) {
+                            return true;
+                        }
+                        return false;
+                    },
+                    name: "wgslShaders",
+                    chunks: "async",
+                    enforce: true
+                }
+            }
+        }
     },
     cache: true,
     module: {
@@ -22,6 +57,12 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
             {
                 test: /\.tsx?$/,
                 loader: "ts-loader"
+            },
+            {
+                test: /\.m?js$/,
+                resolve: {
+                    fullySpecified: false
+                }
             },
             {
                 test: /\.html$/,
@@ -52,7 +93,8 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         new eslintPlugin({
             extensions: ["ts", "tsx"],
             fix: true,
-            cache: true
+            cache: true,
+            configType: "flat"
         }),
         new copyWebpackPlugin({
             patterns: [
@@ -72,6 +114,16 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         historyApiFallback: {
             index: "/index.html",
         },
+        server: "https",
+        headers: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            "Cross-Origin-Opener-Policy": "same-origin",
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            "Cross-Origin-Embedder-Policy": "require-corp"
+        }
     },
+    ignoreWarnings: [
+        (warning): boolean => warning.message.includes("Circular dependency between chunks with runtime")
+    ],
     mode: env.production ? "production" : "development"
 });
