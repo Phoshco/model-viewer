@@ -55,7 +55,7 @@ import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMa
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
 // import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
 import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
-import { MmdStandardMaterialBuilder } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
+import { MmdStandardMaterialBuilder, MmdStandardMaterialRenderMethod } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
 // import type { BpmxLoader } from "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 import { BvmdLoader } from "babylon-mmd/esm/Loader/Optimized/bvmdLoader";
 import { registerDxBmpTextureLoader } from "babylon-mmd/esm/Loader/registerDxBmpTextureLoader";
@@ -230,6 +230,7 @@ export class SceneBuilder implements ISceneBuilder {
         ///////////////
         registerDxBmpTextureLoader();
         const materialBuilder = new MmdStandardMaterialBuilder();
+        materialBuilder.renderMethod = MmdStandardMaterialRenderMethod.DepthWriteAlphaBlending;
         materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
             material.forceDepthWrite = true;
             const diffuseTexture = material.diffuseTexture;
