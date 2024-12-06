@@ -18,6 +18,8 @@ import "babylon-mmd/esm/Loader/mmdOutlineRenderer";
 import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeCameraAnimation";
 import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeModelAnimation";
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
+import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.fragment";
+import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.vertex";
 
 import type { IPointerEvent } from "@babylonjs/core";
 // import { VideoTexture } from "@babylonjs/core";
@@ -28,7 +30,8 @@ import { Layer } from "@babylonjs/core/Layers";
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
-import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
+// import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
+import { loadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
 import { Material } from "@babylonjs/core/Materials/material";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
@@ -50,11 +53,12 @@ import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMa
 // import { getMmdWasmInstance } from "babylon-mmd";
 // import { MmdWasmAnimation, MmdWasmInstanceTypeSPR, MmdWasmPhysics, MmdWasmRuntime } from "babylon-mmd";
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
-import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
+// import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
 import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
 import { MmdStandardMaterialBuilder } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
 // import type { BpmxLoader } from "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 import { BvmdLoader } from "babylon-mmd/esm/Loader/Optimized/bvmdLoader";
+import { registerDxBmpTextureLoader } from "babylon-mmd/esm/Loader/registerDxBmpTextureLoader";
 import { SdefInjector } from "babylon-mmd/esm/Loader/sdefInjector";
 // import { VmdLoader } from "babylon-mmd/esm/Loader/vmdLoader";
 import { StreamAudioPlayer } from "babylon-mmd/esm/Runtime/Audio/streamAudioPlayer";
@@ -224,11 +228,17 @@ export class SceneBuilder implements ISceneBuilder {
         const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         ///////////////
+        registerDxBmpTextureLoader();
         const materialBuilder = new MmdStandardMaterialBuilder();
         materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
             material.forceDepthWrite = true;
-            material.useAlphaFromDiffuseTexture = true;
-            if (material.diffuseTexture !== null) material.diffuseTexture.hasAlpha = true;
+            const diffuseTexture = material.diffuseTexture;
+            if (diffuseTexture) {
+                diffuseTexture.hasAlpha = true;
+                material.useAlphaFromDiffuseTexture = true;
+            }
+            // material.useAlphaFromDiffuseTexture = true;
+            // if (material.diffuseTexture !== null) material.diffuseTexture.hasAlpha = true;
 
             if (material.transparencyMode === Material.MATERIAL_ALPHABLEND) {
                 material.transparencyMode = Material.MATERIAL_ALPHATESTANDBLEND;
@@ -236,11 +246,11 @@ export class SceneBuilder implements ISceneBuilder {
             }
         };
 
-        const loaders = [".pmx", ".bpmx"].map((ext) => SceneLoader.GetPluginForExtension(ext)) as MmdModelLoader<any, any, any>[];
-        for (const loader of loaders) {
-            loader.loggingEnabled = true;
-            loader.materialBuilder = materialBuilder;
-        }
+        // const loaders = [".pmx", ".bpmx"].map((ext) => SceneLoader.GetPluginForExtension(ext)) as MmdModelLoader<any, any, any>[];
+        // for (const loader of loaders) {
+        //     loader.loggingEnabled = true;
+        //     loader.materialBuilder = materialBuilder;
+        // }
 
         // if you want override texture loading, uncomment following lines.
         // materialBuilder.loadDiffuseTexture = (): void => { /* do nothing */ };
@@ -420,17 +430,31 @@ export class SceneBuilder implements ISceneBuilder {
 
         // console.log("CHOSEN CHAR NAME: " + chosenCharName);
         // tabMode = "Genshin";
-        let extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
-        let theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
-        theLoader;
+        // let extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
+        // let theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
+        // theLoader;
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
-            promises.push(SceneLoader.ImportMeshAsync(
-                undefined,
-                chosenChar.directory + "/",
-                chosenChar.pmx,
+            promises.push(loadAssetContainerAsync(
+                chosenChar.directory + "/" + chosenChar.pmx,
                 scene,
-                (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)
-            ));
+                {
+                    onProgress: (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),
+                    pluginOptions: {
+                        mmdmodel: {
+                            loggingEnabled: true,
+                            materialBuilder: materialBuilder
+                        }
+                    }
+                }
+            )
+            );
+            // promises.push(SceneLoader.ImportMeshAsync(
+            //     undefined,
+            //     chosenChar.directory + "/",
+            //     chosenChar.pmx,
+            //     scene,
+            //     (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)
+            // ));
         } else {
             throw new Error("Chosen character or its properties are undefined");
         }
@@ -480,7 +504,11 @@ export class SceneBuilder implements ISceneBuilder {
         // const { meshes: [modelMesh] } = loadResults[2];
         // const modelMesh = loadResults[2].meshes[0];
         // if (!((_mesh: any): _mesh is MmdMesh => true)(modelMesh)) throw new Error("unreachable");
-        let modelMesh = loadResults[2].meshes[0] as MmdMesh;
+
+        let characterModelPromiseRes = loadResults[2];
+        characterModelPromiseRes.addAllToScene();
+        // let modelMesh = loadResults[2].meshes[0] as MmdMesh;
+        let modelMesh = characterModelPromiseRes.rootNodes[0] as MmdMesh;
         modelMesh.parent = mmdRoot;
 
         shadowGenerator.addShadowCaster(modelMesh);
@@ -2169,16 +2197,30 @@ export class SceneBuilder implements ISceneBuilder {
             promises = [];
             loadingTexts = [];
             prevCharId = chosenChar!._id;
-            extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
-            theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
+            // extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
+            // theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
-                promises.push(SceneLoader.ImportMeshAsync(
-                    undefined,
-                    chosenChar.directory + "/",
-                    chosenChar.pmx,
+                promises.push(loadAssetContainerAsync(
+                    chosenChar.directory + "/" + chosenChar.pmx,
                     scene,
-                    (event) => updateLoadingText(0, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)
-                ));
+                    {
+                        onProgress: (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),
+                        pluginOptions: {
+                            mmdmodel: {
+                                loggingEnabled: true,
+                                materialBuilder: materialBuilder
+                            }
+                        }
+                    }
+                )
+                );
+                // promises.push(SceneLoader.ImportMeshAsync(
+                //     undefined,
+                //     chosenChar.directory + "/",
+                //     chosenChar.pmx,
+                //     scene,
+                //     (event) => updateLoadingText(0, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)
+                // ));
             } else {
                 throw new Error("Chosen character or its properties are undefined");
             }
@@ -2201,7 +2243,10 @@ export class SceneBuilder implements ISceneBuilder {
 
             //var modelMesh = loadResults[0].meshes[0];
             //if (!((_mesh: any): _mesh is MmdMesh => true)(modelMesh)) throw new Error("unreachable");
-            modelMesh = loadResults[0].meshes[0] as MmdMesh;
+            characterModelPromiseRes = loadResults[0];
+            characterModelPromiseRes.addAllToScene();
+            // modelMesh = loadResults[0].meshes[0] as MmdMesh;
+            modelMesh = characterModelPromiseRes.rootNodes[0] as MmdMesh;
             modelMesh.parent = mmdRoot;
 
             shadowGenerator.addShadowCaster(modelMesh);
