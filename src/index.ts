@@ -16,7 +16,7 @@ window.onload = (): void => {
         preserveDrawingBuffer: false,
         stencil: false,
         antialias: true, //false
-        alpha: true,
+        alpha: false,
         premultipliedAlpha: false,
         powerPreference: "high-performance",
         doNotHandleTouchAction: false, //true
