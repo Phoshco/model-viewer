@@ -1323,7 +1323,7 @@ export class SceneBuilder implements ISceneBuilder {
         searchBar.thickness = 0;
         filterBar2.addControl(searchBar);
 
-        const searchTextbox = new gui.InputTextArea();
+        const searchTextbox = new gui.InputText();
         searchTextbox.placeholderText = "Search all characters...";
         searchTextbox.placeholderColor = "rgb(64,68,70)";
         searchTextbox.thickness = 0;
