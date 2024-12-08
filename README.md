@@ -34,7 +34,7 @@ https://phoshco.github.io/model-viewer/charactername
 
 - *charactername* is the name of the target character.
 - *charactername* is case-insensitive. Periods and whitespaces in names are removed.
-- Future enhancements might include more relaxed passing of *charactername* for easier search/access (eg *kaedeharakazuha* to just *kazuha*).
+- [New feature] More relaxed passing of *charactername* for easier search/access (eg *kaedeharakazuha* to just *kazuha*).
 
 Example for route handling for certain characters with multiple words in their names:
 

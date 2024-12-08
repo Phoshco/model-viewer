@@ -1,6 +1,6 @@
 [
     {
-        "_id": 10000003,
+        "id": 10000003,
         "name": "Barbara",
         "weaponType": "Catalyst",
         "element": "Hydro",
@@ -12,7 +12,7 @@
         "pmx": "芭芭拉.pmx"
     },
     {
-        "_id": 10000016,
+        "id": 10000016,
         "name": "Diluc",
         "weaponType": "Claymore",
         "element": "Pyro",
@@ -24,7 +24,7 @@
         "pmx": "迪卢克.pmx"
     },
     {
-        "_id": 10000007,
+        "id": 10000007,
         "name": "Fischl",
         "weaponType": "Bow",
         "element": "Electro",
@@ -36,7 +36,7 @@
         "pmx": "菲谢尔.pmx"
     },
     {
-        "_id": 10000974,
+        "id": 10000974,
         "name": "Furina",
         "weaponType": "Sword",
         "element": "Hydro",
@@ -48,7 +48,7 @@
         "pmx": "【芙宁娜_荒】.pmx"
     },
 	{
-        "_id": 10000074,
+        "id": 10000074,
         "name": "Furina",
         "weaponType": "Sword",
         "element": "Hydro",
@@ -60,7 +60,7 @@
         "pmx": "芙卡洛斯.pmx"
     },
     {
-        "_id": 10000028,
+        "id": 10000028,
         "name": "Ganyu",
         "weaponType": "Bow",
         "element": "Cryo",
@@ -72,7 +72,7 @@
         "pmx": "甘雨.pmx"
     },
 	{
-        "_id": 10000928,
+        "id": 10000928,
         "name": "Ganyu",
         "weaponType": "Bow",
         "element": "Cryo",
@@ -84,7 +84,7 @@
         "pmx": "甘雨.pmx"
     },
     {
-        "_id": 10000017,
+        "id": 10000017,
         "name": "Jean",
         "weaponType": "Sword",
         "element": "Anemo",
@@ -96,7 +96,7 @@
         "pmx": "琴.pmx"
     },
 	{
-        "_id": 10000917,
+        "id": 10000917,
         "name": "Jean",
         "weaponType": "Sword",
         "element": "Anemo",
@@ -108,7 +108,7 @@
         "pmx": "琴闲替衣装.pmx"
     },
     {
-        "_id": 10000008,
+        "id": 10000008,
         "name": "Kaeya",
         "weaponType": "Sword",
         "element": "Cryo",
@@ -120,7 +120,7 @@
         "pmx": "凯亚.pmx"
     },
     {
-        "_id": 10000035,
+        "id": 10000035,
         "name": "Kamisato Ayaka",
         "weaponType": "Sword",
         "element": "Cryo",
@@ -132,7 +132,7 @@
         "pmx": "神里绫华.pmx"
     },
     {
-        "_id": 10000018,
+        "id": 10000018,
         "name": "Keqing",
         "weaponType": "Sword",
         "element": "Electro",
@@ -144,7 +144,7 @@
         "pmx": "刻晴.pmx"
     },
     {
-        "_id": 10000067,
+        "id": 10000067,
         "name": "Kirara",
         "weaponType": "Sword",
         "element": "Dendro",
@@ -156,7 +156,7 @@
         "pmx": "绮良良.pmx"
     },
     {
-        "_id": 10000022,
+        "id": 10000022,
         "name": "Klee",
         "weaponType": "Catalyst",
         "element": "Pyro",
@@ -168,7 +168,7 @@
         "pmx": "可莉.pmx"
     },
     {
-        "_id": 10000009,
+        "id": 10000009,
         "name": "Lisa",
         "weaponType": "Catalyst",
         "element": "Electro",
@@ -180,7 +180,7 @@
         "pmx": "丽莎.pmx"
     },
     {
-        "_id": 10000068,
+        "id": 10000068,
         "name": "Lynette",
         "weaponType": "Sword",
         "element": "Anemo",
@@ -192,7 +192,7 @@
         "pmx": "【琳妮特】.pmx"
     },
     {
-        "_id": 10000069,
+        "id": 10000069,
         "name": "Lyney",
         "weaponType": "Bow",
         "element": "Pyro",
@@ -204,7 +204,7 @@
         "pmx": "林尼.pmx"
     },
     {
-        "_id": 10000019,
+        "id": 10000019,
         "name": "Mona",
         "weaponType": "Catalyst",
         "element": "Hydro",
@@ -216,7 +216,7 @@
         "pmx": "莫娜.pmx"
     },
     {
-        "_id": 10000056,
+        "id": 10000056,
         "name": "Nilou",
         "weaponType": "Sword",
         "element": "Hydro",
@@ -228,7 +228,7 @@
         "pmx": "妮露.pmx"
     },
     {
-        "_id": 10000010,
+        "id": 10000010,
         "name": "Ningguang",
         "weaponType": "Catalyst",
         "element": "Geo",
@@ -240,7 +240,7 @@
         "pmx": "凝光.pmx"
     },
     {
-        "_id": 10000045,
+        "id": 10000045,
         "name": "Shenhe",
         "weaponType": "Polearm",
         "element": "Cryo",
@@ -252,7 +252,7 @@
         "pmx": "申鹤.pmx"
     },
 	{
-        "_id": 10000945,
+        "id": 10000945,
         "name": "Shenhe",
         "weaponType": "Polearm",
         "element": "Cryo",
@@ -264,7 +264,7 @@
         "pmx": "申鹤.pmx"
     },
     {
-        "_id": 10000015,
+        "id": 10000015,
         "name": "Xingqiu",
         "weaponType": "Sword",
         "element": "Hydro",
@@ -276,7 +276,7 @@
         "pmx": "行秋.pmx"
     },
 	{
-        "_id": 1000002,
+        "id": 10000002,
         "name": "Amber",
         "weaponType": "Bow",
         "element": "Pyro",
@@ -288,7 +288,7 @@
         "pmx": "安柏.pmx"
     },
 	{
-        "_id": 1000902,
+        "id": 10000902,
         "name": "Amber",
         "weaponType": "Bow",
         "element": "Pyro",
@@ -300,7 +300,7 @@
         "pmx": "安柏闲替衣装.pmx"
     },
 	{
-        "_id": 10000033,
+        "id": 10000033,
         "name": "Eula",
         "weaponType": "Claymore",
         "element": "Cryo",
@@ -312,7 +312,7 @@
         "pmx": "优菈.pmx"
     },
 	{
-        "_id": 10000935,
+        "id": 10000935,
         "name": "Kamisato Ayaka",
         "weaponType": "Sword",
         "element": "Cryo",
@@ -324,7 +324,7 @@
         "pmx": "神里绫华.pmx"
     },
 	{
-        "_id": 10000047,
+        "id": 10000047,
         "name": "Kamisato Ayato",
         "weaponType": "Sword",
         "element": "Hydro",
@@ -336,7 +336,7 @@
         "pmx": "神里绫人.pmx"
     },
 	{
-        "_id": 10000051,
+        "id": 10000051,
         "name": "Collei",
         "weaponType": "Bow",
         "element": "Dendro",
@@ -348,7 +348,7 @@
         "pmx": "柯莱.pmx"
     },
 	{
-        "_id": 10000052,
+        "id": 10000052,
         "name": "Tighnari",
         "weaponType": "Bow",
         "element": "Dendro",
@@ -360,7 +360,7 @@
         "pmx": "提纳里.pmx"
     },
 	{
-        "_id": 10000020,
+        "id": 10000020,
         "name": "Qiqi",
         "weaponType": "Sword",
         "element": "Cryo",
@@ -372,7 +372,7 @@
         "pmx": "七七.pmx"
     },
     {
-        "_id": 10000042,
+        "id": 10000042,
         "name": "Gorou",
         "weaponType": "Bow",
         "element": "Geo",
@@ -384,7 +384,7 @@
         "pmx": "五郎.pmx"
     },
 	{
-        "_id": 10000083,
+        "id": 10000083,
         "name": "Sigewinne",
         "weaponType": "Bow",
         "element": "Hydro",
@@ -396,7 +396,7 @@
         "pmx": "希格雯.pmx"
     },
 	{
-        "_id": 10000081,
+        "id": 10000081,
         "name": "Clorinde",
         "weaponType": "Sword",
         "element": "Electro",

@@ -16,47 +16,13 @@ window.onload = (): void => {
         preserveDrawingBuffer: false,
         stencil: false,
         antialias: true, //false
-        alpha: false,
+        alpha: true,
         premultipliedAlpha: false,
         powerPreference: "high-performance",
         doNotHandleTouchAction: false, //true
         doNotHandleContextLost: true,
         audioEngine: false
     }, true);
-
-    // // Capture the path from the URL
-    // const path = window.location.pathname.slice(1).replace(/\/$/, ""); // Removes leading '/'
-    // // Remove trailing slash if exists
-    // // Optionally process path (e.g., remove trailing slashes, handle specific cases)
-
-    // const item = path || "";
-
-    // // Redirect to root
-    // if (path) {
-    //     window.history.replaceState(null, "", "/"); // Avoids a full reload
-    // }
-
-    // // Capture the full path from the URL
-    // let fullPath = window.location.pathname;
-    // if (!fullPath.endsWith("/")) {
-    //     fullPath += "/";
-    // }
-
-    // const lastSlashIndex = fullPath.lastIndexOf("/");
-
-    // // Extract the base path (everything before the item name)
-    // const basePath = fullPath.substring(0, fullPath.lastIndexOf("/", lastSlashIndex - 1)) || "/"; // Will default to "/" if there's no base path
-
-    // // Extract the item name (the part after the last "/")
-    // const item = fullPath.slice(basePath.length + 1).replace(/\/$/, "") || ""; // Get the item name
-
-    // // Redirect to the base path (without the item name)
-    // if (item) {
-    //     window.history.replaceState(null, "", basePath); // Redirect to the base path without the item
-    // }
-
-
-
 
     // Capture the full path from the URL
     let fullPath = window.location.pathname;

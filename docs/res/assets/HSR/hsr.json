@@ -1,6 +1,6 @@
 [
 	{
-        "_id": 10000001,
+        "id": 20000001,
         "name": "Stelle",
         "weaponType": "Universal",
         "element": "Universal",
@@ -11,7 +11,7 @@
         "pmx": "女主1.0.pmx"
     },
     {
-        "_id": 10000002,
+        "id": 20000002,
         "name": "Caelus",
         "weaponType": "Universal",
         "element": "Universal",
@@ -22,7 +22,7 @@
         "pmx": "男主1.0.pmx"
     },
     {
-        "_id": 10000003,
+        "id": 20000003,
         "name": "Arlan",
         "weaponType": "Destruction",
         "element": "Lightning",
@@ -33,7 +33,7 @@
         "pmx": "阿兰1.0.pmx"
     },
     {
-        "_id": 10000004,
+        "id": 20000004,
         "name": "Asta",
         "weaponType": "Harmony",
         "element": "Fire",
@@ -44,7 +44,7 @@
         "pmx": "星穹铁道—艾丝妲160.pmx"
     },
     {
-        "_id": 10000005,
+        "id": 20000005,
         "name": "Bailu",
         "weaponType": "Abundance",
         "element": "Lightning",
@@ -55,7 +55,7 @@
         "pmx": "白露1.0.pmx"
     },
     {
-        "_id": 10000006,
+        "id": 20000006,
         "name": "Bronya",
         "weaponType": "Harmony",
         "element": "Wind",
@@ -66,7 +66,7 @@
         "pmx": "布洛妮娅 1.0.pmx"
     },
     {
-        "_id": 10000007,
+        "id": 20000007,
         "name": "Clara",
         "weaponType": "Destruction",
         "element": "Physical",
@@ -77,7 +77,7 @@
         "pmx": "克拉拉.pmx"
     },
     {
-        "_id": 10000008,
+        "id": 20000008,
         "name": "Dan Heng",
         "weaponType": "The Hunt",
         "element": "Wind",
@@ -88,7 +88,7 @@
         "pmx": "丹恒.pmx"
     },
     {
-        "_id": 10000009,
+        "id": 20000009,
         "name": "Gepard",
         "weaponType": "Preservation",
         "element": "Ice",
@@ -99,7 +99,7 @@
         "pmx": "杰帕德.pmx"
     },
     {
-        "_id": 10000010,
+        "id": 20000010,
         "name": "Herta",
         "weaponType": "Erudition",
         "element": "Ice",
@@ -110,7 +110,7 @@
         "pmx": "黑塔.pmx"
     },
     {
-        "_id": 10000011,
+        "id": 20000011,
         "name": "Himeko",
         "weaponType": "Erudition",
         "element": "Fire",
@@ -121,7 +121,7 @@
         "pmx": "姬子2.0.pmx"
     },
     {
-        "_id": 10000012,
+        "id": 20000012,
         "name": "Hook",
         "weaponType": "Destruction",
         "element": "Fire",
@@ -132,7 +132,7 @@
         "pmx": "虎克.pmx"
     },
     {
-        "_id": 10000013,
+        "id": 20000013,
         "name": "Jing Yuan",
         "weaponType": "Erudition",
         "element": "Lightning",
@@ -143,7 +143,7 @@
         "pmx": "景元.pmx"
     },
     {
-        "_id": 10000014,
+        "id": 20000014,
         "name": "March 7th",
         "weaponType": "Preservation",
         "element": "Ice",
@@ -154,7 +154,7 @@
         "pmx": "三月七 1.0.pmx"
     },
     {
-        "_id": 10000015,
+        "id": 20000015,
         "name": "Natasha",
         "weaponType": "Abundance",
         "element": "Physical",
@@ -165,7 +165,7 @@
         "pmx": "娜塔莎1.0.pmx"
     },
     {
-        "_id": 10000016,
+        "id": 20000016,
         "name": "Pela",
         "weaponType": "Nihility",
         "element": "Ice",
@@ -176,7 +176,7 @@
         "pmx": "佩拉.pmx"
     },
     {
-        "_id": 10000017,
+        "id": 20000017,
         "name": "Qingque",
         "weaponType": "Erudition",
         "element": "Quantum",
@@ -187,7 +187,7 @@
         "pmx": "青雀（分桦）.pmx"
     },
     {
-        "_id": 10000018,
+        "id": 20000018,
         "name": "Sampo",
         "weaponType": "Nihility",
         "element": "Wind",
@@ -198,7 +198,7 @@
         "pmx": "╔ú▓⌐.pmx"
     },
     {
-        "_id": 10000019,
+        "id": 20000019,
         "name": "Seele",
         "weaponType": "The Hunt",
         "element": "Quantum",
@@ -209,7 +209,7 @@
         "pmx": "希儿.pmx"
     },
     {
-        "_id": 10000020,
+        "id": 20000020,
         "name": "Serval",
         "weaponType": "Erudition",
         "element": "Lightning",
@@ -220,7 +220,7 @@
         "pmx": "希露瓦1.0.pmx"
     },
     {
-        "_id": 10000021,
+        "id": 20000021,
         "name": "Sushang",
         "weaponType": "The Hunt",
         "element": "Physical",
@@ -231,7 +231,7 @@
         "pmx": "李素裳1.0.pmx"
     },
     {
-        "_id": 10000022,
+        "id": 20000022,
         "name": "Tingyun",
         "weaponType": "Harmony",
         "element": "Lightning",
@@ -242,7 +242,7 @@
         "pmx": "停云.pmx"
     },
 	{
-        "_id": 10000023,
+        "id": 20000023,
         "name": "Welt",
         "weaponType": "Nihility",
         "element": "Imaginary",
@@ -253,7 +253,7 @@
         "pmx": "瓦尔特·杨.pmx"
     },
     {
-        "_id": 10000024,
+        "id": 20000024,
         "name": "Yanqing",
         "weaponType": "The Hunt",
         "element": "Ice",
@@ -264,7 +264,7 @@
         "pmx": "彦卿1.0.pmx"
     },
     {
-        "_id": 10000025,
+        "id": 20000025,
         "name": "Luocha",
         "weaponType": "Abundance",
         "element": "Imaginary",
@@ -275,7 +275,7 @@
         "pmx": "罗刹.pmx"
     },
     {
-        "_id": 10000026,
+        "id": 20000026,
         "name": "Silver Wolf",
         "weaponType": "Nihility",
         "element": "Quantum",
@@ -286,7 +286,7 @@
         "pmx": "银狼.pmx"
     },
     {
-        "_id": 10000027,
+        "id": 20000027,
         "name": "Yukong",
         "weaponType": "Harmony",
         "element": "Imaginary",
@@ -297,7 +297,7 @@
         "pmx": "星穹铁道—驭空（改5）.pmx"
     },
     {
-        "_id": 10000028,
+        "id": 20000028,
         "name": "Blade",
         "weaponType": "Destruction",
         "element": "Wind",
@@ -308,7 +308,7 @@
         "pmx": "刃1.0.pmx"
     },
     {
-        "_id": 10000029,
+        "id": 20000029,
         "name": "Kafka",
         "weaponType": "Nihility",
         "element": "Lightning",
@@ -319,7 +319,7 @@
         "pmx": "卡芙卡.pmx"
     },
     {
-        "_id": 10000030,
+        "id": 20000030,
         "name": "Luka",
         "weaponType": "Nihility",
         "element": "Physical",
@@ -330,7 +330,7 @@
         "pmx": "卢卡（改.pmx"
     },
     {
-        "_id": 10000031,
+        "id": 20000031,
         "name": "Imbibitor Lunae",
         "weaponType": "Destruction",
         "element": "Imaginary",
@@ -341,7 +341,7 @@
         "pmx": "星穹铁道—饮月君1708.pmx"
     },
 	{
-        "_id": 10000032,
+        "id": 20000032,
         "name": "Fu Xuan",
         "weaponType": "Preservation",
         "element": "Quantum",
@@ -352,7 +352,7 @@
         "pmx": "符玄（鞋+发饰补差145cm）(目修).pmx"
     },
     {
-        "_id": 10000033,
+        "id": 20000033,
         "name": "Lynx",
         "weaponType": "Abundance",
         "element": "Quantum",
@@ -363,7 +363,7 @@
         "pmx": "┴ß┐╔2.0.pmx"
     },
     {
-        "_id": 10000034,
+        "id": 20000034,
         "name": "Guinaifen",
         "weaponType": "Nihility",
         "element": "Fire",
@@ -374,7 +374,7 @@
         "pmx": "星穹铁道—桂乃芬.pmx"
     },
     {
-        "_id": 10000035,
+        "id": 20000035,
         "name": "Jingliu",
         "weaponType": "Destruction",
         "element": "Ice",
@@ -385,7 +385,7 @@
         "pmx": "镜流2.0.pmx"
     },
     {
-        "_id": 10000036,
+        "id": 20000036,
         "name": "Topaz and Numby",
         "weaponType": "The Hunt",
         "element": "Fire",
@@ -396,7 +396,7 @@
         "pmx": "═╨┼┴.pmx"
     },
     {
-        "_id": 10000037,
+        "id": 20000037,
         "name": "Argenti",
         "weaponType": "Erudition",
         "element": "Physical",
@@ -407,7 +407,7 @@
         "pmx": "星穹铁道—银枝3.pmx"
     },
     {
-        "_id": 10000038,
+        "id": 20000038,
         "name": "Hanya",
         "weaponType": "Harmony",
         "element": "Physical",
@@ -418,7 +418,7 @@
         "pmx": "║«╤╗3.0.pmx"
     },
     {
-        "_id": 10000039,
+        "id": 20000039,
         "name": "Huohuo",
         "weaponType": "Abundance",
         "element": "Wind",
@@ -429,7 +429,7 @@
         "pmx": "▐╜▐╜4.0.pmx"
     },
     {
-        "_id": 10000040,
+        "id": 20000040,
         "name": "Dr. Ratio",
         "weaponType": "The Hunt",
         "element": "Imaginary",
@@ -440,7 +440,7 @@
         "pmx": "星穹铁道—真理医生2.pmx"
     },
     {
-        "_id": 10000041,
+        "id": 20000041,
         "name": "Ruan Mei",
         "weaponType": "Harmony",
         "element": "Ice",
@@ -451,7 +451,7 @@
         "pmx": "╚εíñ├╖1.0.pmx"
     },
     {
-        "_id": 10000042,
+        "id": 20000042,
         "name": "Xueyi",
         "weaponType": "Destruction",
         "element": "Quantum",
@@ -462,7 +462,7 @@
         "pmx": "雪衣1.0.pmx"
     },
 	{
-        "_id": 10000043,
+        "id": 20000043,
         "name": "Black Swan",
         "weaponType": "Nihility",
         "element": "Wind",
@@ -473,7 +473,7 @@
         "pmx": "星穹铁道—黑天鹅（优化）.pmx"
     },
     {
-        "_id": 10000044,
+        "id": 20000044,
         "name": "Misha",
         "weaponType": "Destruction",
         "element": "Ice",
@@ -484,7 +484,7 @@
         "pmx": "星穹铁道—米沙.pmx"
     },
     {
-        "_id": 10000045,
+        "id": 20000045,
         "name": "Sparkle",
         "weaponType": "Harmony",
         "element": "Quantum",
@@ -495,7 +495,7 @@
         "pmx": "╗¿╗≡3.0.pmx"
     },
     {
-        "_id": 10000046,
+        "id": 20000046,
         "name": "Acheron",
         "weaponType": "Nihility",
         "element": "Lightning",
@@ -506,7 +506,7 @@
         "pmx": "星穹铁道—黄泉（轴修复）.pmx"
     },
     {
-        "_id": 10000047,
+        "id": 20000047,
         "name": "Aventurine",
         "weaponType": "Preservation",
         "element": "Imaginary",
@@ -517,7 +517,7 @@
         "pmx": "星穹铁道—砂金9.pmx"
     },
     {
-        "_id": 10000048,
+        "id": 20000048,
         "name": "Gallagher",
         "weaponType": "Abundance",
         "element": "Fire",
@@ -528,7 +528,7 @@
         "pmx": "星穹铁道—加拉赫.pmx"
     },
     {
-        "_id": 10000049,
+        "id": 20000049,
         "name": "Boothill",
         "weaponType": "The Hunt",
         "element": "Physical",
@@ -539,7 +539,7 @@
         "pmx": "星穹铁道—波提欧2.pmx"
     },
     {
-        "_id": 10000050,
+        "id": 20000050,
         "name": "Robin",
         "weaponType": "Harmony",
         "element": "Physical",
@@ -550,7 +550,7 @@
         "pmx": "星穹铁道—知更鸟（改）.pmx"
     },
     {
-        "_id": 10000051,
+        "id": 20000051,
         "name": "Firefly",
         "weaponType": "Destruction",
         "element": "Fire",
@@ -561,7 +561,7 @@
         "pmx": "流萤3.0.pmx"
     },
     {
-        "_id": 10000052,
+        "id": 20000052,
         "name": "Jade",
         "weaponType": "Erudition",
         "element": "Quantum",
@@ -572,7 +572,7 @@
         "pmx": "星穹铁道—翡翠.pmx"
     },
     {
-        "_id": 10000053,
+        "id": 20000053,
         "name": "March 7th (The Hunt)",
         "weaponType": "The Hunt",
         "element": "Imaginary",
@@ -583,7 +583,7 @@
         "pmx": "星穹铁道—三月七3.pmx"
     },
     {
-        "_id": 10000054,
+        "id": 20000054,
         "name": "Yunli",
         "weaponType": "Destruction",
         "element": "Physical",
@@ -594,7 +594,7 @@
         "pmx": "星穹铁道—云璃2.pmx"
     },
     {
-        "_id": 10000055,
+        "id": 20000055,
         "name": "Jiaoqiu",
         "weaponType": "Nihility",
         "element": "Fire",
@@ -605,7 +605,7 @@
         "pmx": "星穹铁道—椒丘2.pmx"
     },
     {
-        "_id": 10000056,
+        "id": 20000056,
         "name": "Moze",
         "weaponType": "The Hunt",
         "element": "Lightning",
@@ -616,7 +616,7 @@
         "pmx": "貘泽.pmx"
     },
 	{
-        "_id": 10000057,
+        "id": 20000057,
         "name": "Feixiao",
         "weaponType": "The Hunt",
         "element": "Wind",
@@ -627,7 +627,7 @@
         "pmx": "飞霄2.0.pmx"
     },
 	{
-        "_id": 10000058,
+        "id": 20000058,
         "name": "Lingsha",
         "weaponType": "Abundance",
         "element": "Fire",
@@ -638,7 +638,7 @@
         "pmx": "霊砂.pmx"
     },
 	{
-        "_id": 10000059,
+        "id": 20000059,
         "name": "Rappa",
         "weaponType": "Erudition",
         "element": "Imaginary",
@@ -649,7 +649,7 @@
         "pmx": "星穹铁道—乱破.pmx"
     },
     {
-        "_id": 10000060,
+        "id": 20000060,
         "name": "Sunday",
         "weaponType": "Harmony",
         "element": "Imaginary",
@@ -660,7 +660,7 @@
         "pmx": "星穹铁道—星期日2.pmx"
     },
 	{
-        "_id": 10000061,
+        "id": 20000061,
         "name": "Fugue",
         "weaponType": "Nihility",
         "element": "Fire",
@@ -671,7 +671,7 @@
         "pmx": "星穹铁道—忘归人.pmx"
     },
     {
-        "_id": 1000001,
+        "id": 2000001,
         "name": "Mr. Reca",
         "weaponType": "Universal",
         "element": "Universal",

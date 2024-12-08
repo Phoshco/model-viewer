@@ -1,6 +1,6 @@
 [
     {
-        "_id": 10000000,
+        "id": 30000000,
         "name": "Belle",
         "weaponType": "Universal",
         "element": "Universal",
@@ -12,7 +12,7 @@
         "pmx": "铃.pmx"
     },
     {
-        "_id": 10000001,
+        "id": 30000001,
         "name": "Wise",
         "weaponType": "Universal",
         "element": "Universal",
@@ -24,7 +24,7 @@
         "pmx": "哲.pmx"
     },
     {
-        "_id": 10000002,
+        "id": 30000002,
         "name": "Rina",
         "weaponType": "Support",
         "element": "Electric",
@@ -36,7 +36,7 @@
         "pmx": "亚历山德丽娜.bpmx"
     },
     {
-        "_id": 10000003,
+        "id": 30000003,
         "name": "Anby",
         "weaponType": "Stun",
         "element": "Electric",
@@ -48,7 +48,7 @@
         "pmx": "安比.pmx"
     },
     {
-        "_id": 10000004,
+        "id": 30000004,
         "name": "Anton",
         "weaponType": "Attack",
         "element": "Electric",
@@ -60,7 +60,7 @@
         "pmx": "安东.pmx"
     },
     {
-        "_id": 10000005,
+        "id": 30000005,
         "name": "Ben",
         "weaponType": "Defense",
         "element": "Fire",
@@ -72,7 +72,7 @@
         "pmx": "本.bpmx"
     },
     {
-        "_id": 10000006,
+        "id": 30000006,
         "name": "Billy",
         "weaponType": "Attack",
         "element": "Physical",
@@ -84,7 +84,7 @@
         "pmx": "比利.pmx"
     },
     {
-        "_id": 10000007,
+        "id": 30000007,
         "name": "Corin",
         "weaponType": "Attack",
         "element": "Physical",
@@ -96,7 +96,7 @@
         "pmx": "可琳.pmx"
     },
     {
-        "_id": 10000008,
+        "id": 30000008,
         "name": "Ellen",
         "weaponType": "Attack",
         "element": "Ice",
@@ -108,7 +108,7 @@
         "pmx": "艾莲.pmx"
     },
     {
-        "_id": 10000009,
+        "id": 30000009,
         "name": "Grace",
         "weaponType": "Anomaly",
         "element": "Electric",
@@ -120,7 +120,7 @@
         "pmx": "格莉丝.pmx"
     },
     {
-        "_id": 10000010,
+        "id": 30000010,
         "name": "Koleda",
         "weaponType": "Stun",
         "element": "Fire",
@@ -132,7 +132,7 @@
         "pmx": "珂雷妲.pmx"
     },
     {
-        "_id": 10000011,
+        "id": 30000011,
         "name": "Lucy",
         "weaponType": "Support",
         "element": "Fire",
@@ -144,7 +144,7 @@
         "pmx": "露西_帽.pmx"
     },
     {
-        "_id": 10000012,
+        "id": 30000012,
         "name": "Nekomata",
         "weaponType": "Attack",
         "element": "Physical",
@@ -156,7 +156,7 @@
         "pmx": "猫又.pmx"
     },
     {
-        "_id": 10000013,
+        "id": 30000013,
         "name": "Nicole",
         "weaponType": "Support",
         "element": "Ether",
@@ -168,7 +168,7 @@
         "pmx": "妮可.pmx"
     },
     {
-        "_id": 10000014,
+        "id": 30000014,
         "name": "Piper",
         "weaponType": "Anomaly",
         "element": "Physical",
@@ -180,7 +180,7 @@
         "pmx": "派派.pmx"
     },
     {
-        "_id": 10000015,
+        "id": 30000015,
         "name": "Soldier 11",
         "weaponType": "Attack",
         "element": "Fire",
@@ -192,7 +192,7 @@
         "pmx": "11号.pmx"
     },
     {
-        "_id": 10000016,
+        "id": 30000016,
         "name": "Soukaku",
         "weaponType": "Support",
         "element": "Ice",
@@ -204,7 +204,7 @@
         "pmx": "苍角.pmx"
     },
     {
-        "_id": 10000017,
+        "id": 30000017,
         "name": "Lycaon",
         "weaponType": "Stun",
         "element": "Ice",
@@ -216,7 +216,7 @@
         "pmx": "莱卡恩.pmx"
     },
     {
-        "_id": 10000018,
+        "id": 30000018,
         "name": "Zhu Yuan",
         "weaponType": "Attack",
         "element": "Ether",
@@ -228,7 +228,7 @@
         "pmx": "朱鸢.pmx"
     },
     {
-        "_id": 10000019,
+        "id": 30000019,
         "name": "Qingyi",
         "weaponType": "Stun",
         "element": "Electric",
@@ -240,7 +240,7 @@
         "pmx": "Qingyi.pmx"
     },
     {
-        "_id": 10000020,
+        "id": 30000020,
         "name": "Jane Doe",
         "weaponType": "Anomaly",
         "element": "Physical",
@@ -252,7 +252,7 @@
         "pmx": "简.pmx"
     },
     {
-        "_id": 10000021,
+        "id": 30000021,
         "name": "Seth Lowell",
         "weaponType": "Defense",
         "element": "Electric",
@@ -264,7 +264,7 @@
         "pmx": "赛斯.pmx"
     },
 	{
-        "_id": 10000022,
+        "id": 30000022,
         "name": "Caesar King",
         "weaponType": "Defense",
         "element": "Physical",
@@ -276,7 +276,7 @@
         "pmx": "凯撒.pmx"
     },
 	{
-        "_id": 10000023,
+        "id": 30000023,
         "name": "Burnice White",
         "weaponType": "Anomaly",
         "element": "Fire",
@@ -288,7 +288,7 @@
         "pmx": "柏妮思.pmx"
     },
 	{
-        "_id": 10000024,
+        "id": 30000024,
         "name": "Tsukishiro Yanagi",
         "weaponType": "Anomaly",
         "element": "Electric",
@@ -300,7 +300,7 @@
         "pmx": "柳.pmx"
     },
 	{
-        "_id": 10000025,
+        "id": 30000025,
         "name": "Lighter",
         "weaponType": "Stun",
         "element": "Fire",
@@ -312,7 +312,7 @@
         "pmx": "莱特.pmx"
     },
     {
-        "_id": 1000000,
+        "id": 3000000,
 		"name": "Hoshimi Miyabi",
         "weaponType": "Support",
         "element": "Ice",

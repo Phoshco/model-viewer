@@ -1,6 +1,6 @@
 [
     {
-        "_id": 10000000,
+        "id": 10000000,
         "name": "Paimon",
         "weaponType": "Others",
         "element": "Others",
@@ -11,7 +11,7 @@
         "pmx": "派蒙1.0.pmx"
     },
 	{
-        "_id": 10000001,
+        "id": 10000001,
         "name": "Pom-Pom",
         "weaponType": "Others",
         "element": "Others",
@@ -22,7 +22,7 @@
         "pmx": "Pom-Pom.pmx"
     },
     {
-        "_id": 10000002,
+        "id": 10000002,
         "name": "Bangboo",
         "weaponType": "Others",
         "element": "Others",

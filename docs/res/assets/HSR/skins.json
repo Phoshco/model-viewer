@@ -1,6 +1,6 @@
 [
     {
-        "_id": 10000014,
+        "id": 20000014,
         "name": "March 7th",
         "weaponType": "Preservation",
         "element": "Ice",
@@ -11,7 +11,7 @@
         "pmx": "三月七.pmx"
     },
     {
-        "_id": 10000046,
+        "id": 20000046,
         "name": "Acheron",
         "weaponType": "Nihility",
         "element": "Lightning",
@@ -22,7 +22,7 @@
         "pmx": "星穹铁道—黄泉（轴修复）.pmx"
     },
 	{
-        "_id": 10000057,
+        "id": 20000057,
         "name": "Feixiao",
         "weaponType": "The Hunt",
         "element": "Wind",

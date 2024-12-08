@@ -67,6 +67,7 @@ import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
 import {CounterAPI} from "counterapi";
+import miniSearch from "minisearch";
 
 // import ammo from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
 // import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
@@ -89,7 +90,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         // character json
         interface BaseCharData {
-            "_id": number;
+            "id": number;
             "name": string;
             "weaponType": string;
             "element": string;
@@ -121,63 +122,103 @@ export class SceneBuilder implements ISceneBuilder {
         const hsrSkinDataArray = hsrSkinCharDatas as HSRCharData[];
         const hsrCharDataArray = hsrCharDatas as HSRCharData[];
         const zzzCharDataArray = zzzCharDatas as ZZZCharData[];
-        charDataArray.sort((a, b) => b._id - a._id);
-        genshinSkinDataArray.sort((a, b) => b._id - a._id);
-        hsrSkinDataArray.sort((a, b) => b._id - a._id);
-        hsrCharDataArray.sort((a, b) => b._id - a._id);
-        zzzCharDataArray.sort((a, b) => b._id - a._id);
+        charDataArray.sort((a, b) => b.id - a.id);
+        genshinSkinDataArray.sort((a, b) => b.id - a.id);
+        hsrSkinDataArray.sort((a, b) => b.id - a.id);
+        hsrCharDataArray.sort((a, b) => b.id - a.id);
+        zzzCharDataArray.sort((a, b) => b.id - a.id);
 
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
         };
 
-        // const findFirstCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
+        type AllCharData = GenshinCharData | HSRCharData | ZZZCharData;
+        const allCharDataArray: AllCharData[] = [
+            ...charDataArray,
+            ...hsrCharDataArray,
+            ...zzzCharDataArray
+        ];
+        const miniSearchInstance = new miniSearch({
+            fields: ["name"], // fields to index for full-text search
+            storeFields: ["id", "name"], // fields to return with search results
+            searchOptions: {
+                fuzzy: 0.2,
+                prefix: true
+            }
+        });
+        miniSearchInstance.addAll(allCharDataArray);
+
+        const findFirstCharByName = (
+            nameToFind: string
+        ): [BaseCharData | undefined, string] => {
+
+            const normalize = (str: string): string =>
+                str.toLowerCase().replace(/[^a-z]/g, "");
+
+            const getFirstDigit = (num: number): number => {
+                const str = Math.abs(num).toString(); // Convert to string and handle negative numbers
+                return parseInt(str[0], 10); // Extract the first digit and convert to a number
+            };
+
+            const normalizedTarget = normalize(nameToFind);
+            const results = miniSearchInstance.search(normalizedTarget);
+            console.log(results);
+            let fallbackItem: BaseCharData | undefined;
+            let tabMode: string;
+            if (results.length > 0) {
+                const tabById = getFirstDigit(results[0].id);
+                if (tabById == 1) {
+                    fallbackItem = findCharByName(charDataArray, results[0].name);
+                    tabMode = "Genshin";
+                } else if (tabById == 2) {
+                    fallbackItem = findCharByName(hsrCharDataArray, results[0].name);
+                    tabMode = "HSR";
+                } else {
+                    fallbackItem = findCharByName(zzzCharDataArray, results[0].name);
+                    tabMode = "ZZZ";
+                }
+            } else {
+                fallbackItem = findCharByName(charDataArray, "Hu Tao");
+                tabMode = "Genshin";
+            }
+            return [fallbackItem, tabMode];
+        };
+
+        // const findFirstCharByName = <T extends { name: string }>(
+        //     jsonData: T[][],
+        //     nameToFind: string
+        // ): [T | undefined, string] => {
         //     const normalize = (str: string): string =>
         //         str.toLowerCase().replace(/[^a-z]/g, "");
 
         //     const normalizedTarget = normalize(nameToFind);
+        //     let foundItem: T | undefined;
+        //     // Loop through each sub-array to find the matching name
+        //     for (let i = 0; i < jsonData.length; i++) {
+        //         foundItem = jsonData[i].find(
+        //             (item) => normalize(item.name) === normalizedTarget
+        //         );
+        //         let tabMode: string;
+        //         if (i == 0) {
+        //             tabMode = "Genshin";
+        //         } else if (i == 1) {
+        //             tabMode = "HSR";
+        //         } else {
+        //             tabMode = "ZZZ";
+        //         }
+        //         if (foundItem) return [foundItem, tabMode];
+        //     }
 
-        //     const foundItem = jsonData.find((item) => normalize(item.name) === normalizedTarget);
-        //     if (foundItem) return foundItem;
-
-        //     // If no match, search for "Hu Tao"
-        //     return jsonData.find((item) => normalize(item.name) === "hutao");
+        //     // If no match, search for "Hu Tao" in the first sub-array
+        //     const fallbackItem = jsonData[0].find(
+        //         (item) => normalize(item.name) === "hutao"
+        //     );
+        //     return [fallbackItem, "Genshin"];
         // };
-        const findFirstCharByName = <T extends { name: string }>(
-            jsonData: T[][],
-            nameToFind: string
-        ): [T | undefined, string] => {
-            const normalize = (str: string): string =>
-                str.toLowerCase().replace(/[^a-z]/g, "");
-
-            const normalizedTarget = normalize(nameToFind);
-            let foundItem: T | undefined;
-            // Loop through each sub-array to find the matching name
-            for (let i = 0; i < jsonData.length; i++) {
-                foundItem = jsonData[i].find(
-                    (item) => normalize(item.name) === normalizedTarget
-                );
-                let tabMode: string;
-                if (i == 0) {
-                    tabMode = "Genshin";
-                } else if (i == 1) {
-                    tabMode = "HSR";
-                } else {
-                    tabMode = "ZZZ";
-                }
-                if (foundItem) return [foundItem, tabMode];
-            }
-
-            // If no match, search for "Hu Tao" in the first sub-array
-            const fallbackItem = jsonData[0].find(
-                (item) => normalize(item.name) === "hutao"
-            );
-            return [fallbackItem, "Genshin"];
-        };
 
 
-        const findCharById = <T extends { _id: number }>(jsonData: T[], idToFind: number): T | undefined => {
-            return jsonData.find((item) => item._id === idToFind);
+        const findCharById = <T extends { id: number }>(jsonData: T[], idToFind: number): T | undefined => {
+            return jsonData.find((item) => item.id === idToFind);
         };
 
         const findAllCharsByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T[] | undefined => {
@@ -425,8 +466,8 @@ export class SceneBuilder implements ISceneBuilder {
         let chosenChar: BaseCharData | undefined;
         let tabMode = "Genshin";
         let firstTabMode = tabMode;
-        const charDataArrayArray = [charDataArray, hsrCharDataArray, zzzCharDataArray];
-        [chosenChar, firstTabMode] = findFirstCharByName(charDataArrayArray, chosenCharName);
+        // const charDataArrayArray = [charDataArray, hsrCharDataArray, zzzCharDataArray];
+        [chosenChar, firstTabMode] = findFirstCharByName(chosenCharName);
         chosenCharName = chosenChar!.name;
 
         // console.log("CHOSEN CHAR NAME: " + chosenCharName);
@@ -951,17 +992,17 @@ export class SceneBuilder implements ISceneBuilder {
         let sortModeKey: keyof BaseCharData;
 
         const genshinFilter: { key: keyof GenshinCharData; value: string }[] = [
-            { key: "_id", value: "10000" }
+            { key: "id", value: "1000" }
         ];
         const hsrFilter: { key: keyof HSRCharData; value: string }[] = [
-            { key: "_id", value: "10000" }
+            { key: "id", value: "2000" }
         ];
         const zzzFilter: { key: keyof ZZZCharData; value: string }[] = [
-            { key: "_id", value: "10000" }
+            { key: "id", value: "3000" }
         ];
         let filteredArray: BaseCharData[];
         filteredArray = filterBy(charDataArray, genshinFilter);
-        sortModeKey = "_id";
+        sortModeKey = "id";
 
         function handleGenshinTabSwitch(): void {
             if (tabMode != "Genshin") {
@@ -1064,12 +1105,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(sortModeChanger);
         sortModeChanger.onPointerClickObservable.add(() => {
             if (sortModeChanger.textBlock != null) {
-                if (sortModeKey == "_id") {
+                if (sortModeKey == "id") {
                     sortModeKey = "name";
                     hsrSortModeChanger.image!.source = "res/assets/release.png";
                     sortModeChanger.textBlock.text = " Name ";
                 } else {
-                    sortModeKey = "_id";
+                    sortModeKey = "id";
                     hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
                     sortModeChanger.textBlock.text = " Release ";
                 }
@@ -1085,12 +1126,12 @@ export class SceneBuilder implements ISceneBuilder {
         hsrSortModeChanger.thickness = 0;
         filterBar.addControl(hsrSortModeChanger);
         hsrSortModeChanger.onPointerClickObservable.add(() => {
-            if (sortModeKey == "_id") {
+            if (sortModeKey == "id") {
                 sortModeKey = "name";
                 hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
                 sortModeChanger.textBlock!.text = " Name ";
             } else {
-                sortModeKey = "_id";
+                sortModeKey = "id";
                 hsrSortModeChanger.image!.source = "res/assets/release.png";
                 sortModeChanger.textBlock!.text = " Release ";
             }
@@ -1910,7 +1951,7 @@ export class SceneBuilder implements ISceneBuilder {
         let grid = new gui.Grid();
         let rows = 10;
 
-        function generateGrid<T extends {_id: number, name: string, rarity: number, image: string}>(
+        function generateGrid<T extends {id: number, name: string, rarity: number, image: string}>(
             dataArray: T[]
         ): void {
             grid.dispose();
@@ -1988,9 +2029,9 @@ export class SceneBuilder implements ISceneBuilder {
                         charButton.onPointerClickObservable.add(async function() {
                             charPanel.isVisible = !charPanel.isVisible;
                             if (chosenCharName != selChar.name) {
-                                await changeCharacter(selChar.name, selChar._id);
-                            } else if (prevCharId != selChar._id && skinMode != true) {
-                                await changeCharacter(selChar.name, selChar._id);
+                                await changeCharacter(selChar.name, selChar.id);
+                            } else if (prevCharId != selChar.id && skinMode != true) {
+                                await changeCharacter(selChar.name, selChar.id);
                             }
                         });
                         charIndex += 1;
@@ -2069,7 +2110,7 @@ export class SceneBuilder implements ISceneBuilder {
                         let isNextSkin = true;
                         let prevI: number = 0;
                         for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!._id === skinChars![i]._id) {
+                            if (chosenChar!.id === skinChars![i].id) {
                                 prevI = i;
                                 // debugblock.text = prevI.toString(); // debugblock.text + "a";
                             }
@@ -2108,7 +2149,7 @@ export class SceneBuilder implements ISceneBuilder {
                 }
             } else if (tabMode == "HSR") {
                 const skinChars = findAllCharsByName(hsrSkinDataArray, chosenCharName);
-                if (prevCharName == chosenCharName && prevCharId == chosenChar?._id) {
+                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
                     if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
                         chosenChar = skinChars![0];
                         skinMode = true;
@@ -2123,7 +2164,7 @@ export class SceneBuilder implements ISceneBuilder {
                         let isNextSkin = true;
                         let prevI: number = 0;
                         for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!._id === skinChars![i]._id) {
+                            if (chosenChar!.id === skinChars![i].id) {
                                 prevI = i;
                                 // debugblock.text = prevI.toString(); // debugblock.text + "a";
                             }
@@ -2197,7 +2238,7 @@ export class SceneBuilder implements ISceneBuilder {
             showButton.isEnabled = false;
             promises = [];
             loadingTexts = [];
-            prevCharId = chosenChar!._id;
+            prevCharId = chosenChar!.id;
             // extension = chosenChar!.pmx.substring(chosenChar!.pmx.lastIndexOf("."));
             // theLoader = loaders.find(loader => loader && Object.keys(loader.extensions).includes(extension));
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
