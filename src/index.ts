@@ -7,7 +7,7 @@ window.onload = (): void => {
     const canvas = document.createElement("canvas");
     canvas.style.width = "100%";
     canvas.style.height = "100%";
-    // canvas.style.display = "block";
+    canvas.style.display = "block";
     canvas.style.border = "none";
     canvas.style.outline = "none";
     document.body.appendChild(canvas);

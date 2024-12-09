@@ -42,7 +42,7 @@ import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 // import type { Mesh } from "@babylonjs/core/Meshes/mesh";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
-import { DepthOfFieldEffectBlurLevel } from "@babylonjs/core/PostProcesses";
+// import { DepthOfFieldEffectBlurLevel } from "@babylonjs/core/PostProcesses";
 import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
 import { Scene } from "@babylonjs/core/scene";
 import * as gui from "@babylonjs/gui";
@@ -572,8 +572,8 @@ export class SceneBuilder implements ISceneBuilder {
 
         const defaultPipeline = new DefaultRenderingPipeline("default", true, scene, [mmdCamera, camera, stillCamera]);
         defaultPipeline.samples = 4;
-        defaultPipeline.bloomEnabled = true;
-        defaultPipeline.bloomScale = 10;
+        // defaultPipeline.bloomEnabled = true; (Fucker is the culprit slowing everything down)
+        // defaultPipeline.bloomScale = 10;
         defaultPipeline.chromaticAberrationEnabled = true;
         defaultPipeline.chromaticAberration.aberrationAmount = 1;
         // defaultPipeline.depthOfFieldEnabled = true;
@@ -589,9 +589,9 @@ export class SceneBuilder implements ISceneBuilder {
         defaultPipeline.imageProcessing.vignetteEnabled = true;
 
         defaultPipeline.depthOfFieldEnabled = false;
-        defaultPipeline.depthOfFieldBlurLevel = DepthOfFieldEffectBlurLevel.Medium;
-        defaultPipeline.depthOfField.fStop = 0.05;
-        defaultPipeline.depthOfField.focalLength = 20;
+        // defaultPipeline.depthOfFieldBlurLevel = DepthOfFieldEffectBlurLevel.Medium;
+        // defaultPipeline.depthOfField.fStop = 0.05;
+        // defaultPipeline.depthOfField.focalLength = 20;
 
         let cameraPos = 69;
 
@@ -684,7 +684,7 @@ export class SceneBuilder implements ISceneBuilder {
         disclaimerText.paddingTop = 10;
         disclaimerText.paddingRight = 10;
         disclaimerText.text = "Double click / tap to change camera mode.";
-        disclaimerText.fontSize = isMobile ? 26 : 16;
+        disclaimerText.fontSize = isMobile ? 25 : 16;
         disclaimerText.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_CENTER;
         disclaimerText.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
         disclaimerText.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
@@ -2469,7 +2469,7 @@ export class SceneBuilder implements ISceneBuilder {
                 headBone!.getWorldMatrixToRef(boneWorldMatrixCam).getTranslationToRef(headRelativePosition).subtractToRef(cameraEyePosition, headRelativePosition);
             }
 
-            defaultPipeline.depthOfField.focusDistance = (Vector3.Dot(headRelativePosition, cameraNormal) / Vector3.Dot(cameraNormal, cameraNormal)) * 1000;
+            // defaultPipeline.depthOfField.focusDistance = (Vector3.Dot(headRelativePosition, cameraNormal) / Vector3.Dot(cameraNormal, cameraNormal)) * 1000;
         });
 
         // switch camera when double click
