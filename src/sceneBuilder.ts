@@ -1314,6 +1314,16 @@ export class SceneBuilder implements ISceneBuilder {
             generateGrid(filteredArray);
         }
 
+        const hoverCharName = new gui.TextBlock();
+        hoverCharName.width = "150px";
+        hoverCharName.height = "40px";
+        hoverCharName.color = "white";
+        hoverCharName.left = -48;
+        hoverCharName.text = "";
+        hoverCharName.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        // hoverCharName.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        filterBar.addControl(hoverCharName);
+
         const searchBar = new gui.Rectangle();
         searchBar.width = "300px";
         searchBar.height = "40px";
@@ -1393,7 +1403,7 @@ export class SceneBuilder implements ISceneBuilder {
         const fireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_fire.png");
         fireImage.height = "40px";
         fireImage.width = "40px";
-        fireImage.left = 12;
+        fireImage.left = 52;
         fireImage.thickness = 0;
         fireImage.cornerRadius = 5;
         fireImage.isVisible = false;
@@ -1405,7 +1415,7 @@ export class SceneBuilder implements ISceneBuilder {
         const iceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_ice.png");
         iceImage.height = "40px";
         iceImage.width = "40px";
-        iceImage.left = 52;
+        iceImage.left = 92;
         iceImage.thickness = 0;
         iceImage.cornerRadius = 5;
         iceImage.isVisible = false;
@@ -1417,7 +1427,7 @@ export class SceneBuilder implements ISceneBuilder {
         const imaginaryImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_imaginary.png");
         imaginaryImage.height = "40px";
         imaginaryImage.width = "40px";
-        imaginaryImage.left = 92;
+        imaginaryImage.left = 132;
         imaginaryImage.thickness = 0;
         imaginaryImage.cornerRadius = 5;
         imaginaryImage.isVisible = false;
@@ -1429,7 +1439,7 @@ export class SceneBuilder implements ISceneBuilder {
         const lightningImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_lightning.png");
         lightningImage.height = "40px";
         lightningImage.width = "40px";
-        lightningImage.left = 132;
+        lightningImage.left = 172;
         lightningImage.thickness = 0;
         lightningImage.cornerRadius = 5;
         lightningImage.isVisible = false;
@@ -1441,7 +1451,7 @@ export class SceneBuilder implements ISceneBuilder {
         const physicalImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_physical.png");
         physicalImage.height = "40px";
         physicalImage.width = "40px";
-        physicalImage.left = 172;
+        physicalImage.left = 212;
         physicalImage.thickness = 0;
         physicalImage.cornerRadius = 5;
         physicalImage.isVisible = false;
@@ -1453,7 +1463,7 @@ export class SceneBuilder implements ISceneBuilder {
         const quantumImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_quantum.png");
         quantumImage.height = "40px";
         quantumImage.width = "40px";
-        quantumImage.left = 212;
+        quantumImage.left = 252;
         quantumImage.thickness = 0;
         quantumImage.cornerRadius = 5;
         quantumImage.isVisible = false;
@@ -1465,7 +1475,7 @@ export class SceneBuilder implements ISceneBuilder {
         const windImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_wind.png");
         windImage.height = "40px";
         windImage.width = "40px";
-        windImage.left = 252;
+        windImage.left = 292;
         windImage.thickness = 0;
         windImage.cornerRadius = 5;
         windImage.isVisible = false;
@@ -2103,6 +2113,12 @@ export class SceneBuilder implements ISceneBuilder {
                         charButton.cornerRadius = 10;
                         charButton.paddingBottom = charButton.paddingTop = charButton.paddingRight = charButton.paddingLeft = 4;
                         grid.addControl(charButton, i, j);
+                        charButton.onPointerEnterObservable.add(function() {
+                            hoverCharName.text = selChar.name;
+                        });
+                        charButton.onPointerOutObservable.add(function() {
+                            hoverCharName.text = "";
+                        });
                         charButton.onPointerClickObservable.add(async function() {
                             charPanel.isVisible = !charPanel.isVisible;
                             if (chosenCharName != selChar.name) {
@@ -2481,7 +2497,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         // pause animation using spacebar
         function handleKeyDown(e: KeyboardEvent): void {
-            if (e.code === "Space") {
+            if (e.code === "Space" && !charPanel.isVisible) {
                 e.preventDefault();
                 if (scene.activeCameras![0] === stillCamera) {
                     defaultPipeline.depthOfFieldEnabled = false; //true
