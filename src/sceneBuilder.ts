@@ -1411,6 +1411,12 @@ export class SceneBuilder implements ISceneBuilder {
         fireImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(fireImage, "Fire", "element");
         });
+        fireImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Fire";
+        });
+        fireImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const iceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_ice.png");
         iceImage.height = "40px";
@@ -1422,6 +1428,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(iceImage);
         iceImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(iceImage, "Ice", "element");
+        });
+        iceImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Ice";
+        });
+        iceImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const imaginaryImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_imaginary.png");
@@ -1435,6 +1447,12 @@ export class SceneBuilder implements ISceneBuilder {
         imaginaryImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(imaginaryImage, "Imaginary", "element");
         });
+        imaginaryImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Imaginary";
+        });
+        imaginaryImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const lightningImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_lightning.png");
         lightningImage.height = "40px";
@@ -1446,6 +1464,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(lightningImage);
         lightningImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(lightningImage, "Lightning", "element");
+        });
+        lightningImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Lightning";
+        });
+        lightningImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const physicalImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_physical.png");
@@ -1459,6 +1483,12 @@ export class SceneBuilder implements ISceneBuilder {
         physicalImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(physicalImage, "Physical", "element");
         });
+        physicalImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Physical";
+        });
+        physicalImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const quantumImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_quantum.png");
         quantumImage.height = "40px";
@@ -1470,6 +1500,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(quantumImage);
         quantumImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(quantumImage, "Quantum", "element");
+        });
+        quantumImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Quantum";
+        });
+        quantumImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const windImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_wind.png");
@@ -1483,6 +1519,12 @@ export class SceneBuilder implements ISceneBuilder {
         windImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(windImage, "Wind", "element");
         });
+        windImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Wind";
+        });
+        windImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const abundanceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_abundance.png");
         abundanceImage.height = "40px";
@@ -1494,6 +1536,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(abundanceImage);
         abundanceImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(abundanceImage, "Abundance", "weaponType");
+        });
+        abundanceImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Abundance";
+        });
+        abundanceImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const destructionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_destruction.png");
@@ -1507,6 +1555,12 @@ export class SceneBuilder implements ISceneBuilder {
         destructionImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(destructionImage, "Destruction", "weaponType");
         });
+        destructionImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Destruction";
+        });
+        destructionImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const eruditionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_erudition.png");
         eruditionImage.height = "40px";
@@ -1518,6 +1572,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(eruditionImage);
         eruditionImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(eruditionImage, "Erudition", "weaponType");
+        });
+        eruditionImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Erudition";
+        });
+        eruditionImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const harmonyImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_harmony.png");
@@ -1531,6 +1591,12 @@ export class SceneBuilder implements ISceneBuilder {
         harmonyImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(harmonyImage, "Harmony", "weaponType");
         });
+        harmonyImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Harmony";
+        });
+        harmonyImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const huntImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_hunt.png");
         huntImage.height = "40px";
@@ -1542,6 +1608,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(huntImage);
         huntImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(huntImage, "Hunt", "weaponType");
+        });
+        huntImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Hunt";
+        });
+        huntImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const nihilityImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_nihility.png");
@@ -1555,6 +1627,12 @@ export class SceneBuilder implements ISceneBuilder {
         nihilityImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(nihilityImage, "Nihility", "weaponType");
         });
+        nihilityImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Nihility";
+        });
+        nihilityImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const preservationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_preservation.png");
         preservationImage.height = "40px";
@@ -1567,6 +1645,12 @@ export class SceneBuilder implements ISceneBuilder {
         preservationImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(preservationImage, "Preservation", "weaponType");
         });
+        preservationImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Preservation";
+        });
+        preservationImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const remembranceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_remembrance.png");
         remembranceImage.height = "40px";
@@ -1578,6 +1662,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(remembranceImage);
         remembranceImage.onPointerClickObservable.add(function() {
             checkIfInHSRFilter(remembranceImage, "Remembrance", "weaponType");
+        });
+        remembranceImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Remembrance";
+        });
+        remembranceImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         function hideHSRElements(): void {
@@ -1652,6 +1742,12 @@ export class SceneBuilder implements ISceneBuilder {
         anemoImage.onPointerClickObservable.add(function() {
             checkIfInFilter(anemoImage, "Anemo", "element");
         });
+        anemoImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Anemo";
+        });
+        anemoImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const geoImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_geo.png");
         geoImage.height = "40px";
@@ -1662,6 +1758,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(geoImage);
         geoImage.onPointerClickObservable.add(function() {
             checkIfInFilter(geoImage, "Geo", "element");
+        });
+        geoImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Geo";
+        });
+        geoImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const electroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_electro.png");
@@ -1674,6 +1776,12 @@ export class SceneBuilder implements ISceneBuilder {
         electroImage.onPointerClickObservable.add(function() {
             checkIfInFilter(electroImage, "Electro", "element");
         });
+        electroImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Electro";
+        });
+        electroImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const dendroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_dendro.png");
         dendroImage.height = "40px";
@@ -1684,6 +1792,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(dendroImage);
         dendroImage.onPointerClickObservable.add(function() {
             checkIfInFilter(dendroImage, "Dendro", "element");
+        });
+        dendroImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Dendro";
+        });
+        dendroImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const hydroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_hydro.png");
@@ -1696,6 +1810,12 @@ export class SceneBuilder implements ISceneBuilder {
         hydroImage.onPointerClickObservable.add(function() {
             checkIfInFilter(hydroImage, "Hydro", "element");
         });
+        hydroImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Hydro";
+        });
+        hydroImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const pyroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_pyro.png");
         pyroImage.height = "40px";
@@ -1706,6 +1826,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(pyroImage);
         pyroImage.onPointerClickObservable.add(function() {
             checkIfInFilter(pyroImage, "Pyro", "element");
+        });
+        pyroImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Pyro";
+        });
+        pyroImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const cryoImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_cryo.png");
@@ -1718,6 +1844,12 @@ export class SceneBuilder implements ISceneBuilder {
         cryoImage.onPointerClickObservable.add(function() {
             checkIfInFilter(cryoImage, "Cryo", "element");
         });
+        cryoImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Cryo";
+        });
+        cryoImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const swordImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Sword.png");
         swordImage.height = "40px";
@@ -1728,6 +1860,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(swordImage);
         swordImage.onPointerClickObservable.add(function() {
             checkIfInFilter(swordImage, "Sword", "weaponType");
+        });
+        swordImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Sword";
+        });
+        swordImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const catalystImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Catalyst.png");
@@ -1740,6 +1878,12 @@ export class SceneBuilder implements ISceneBuilder {
         catalystImage.onPointerClickObservable.add(function() {
             checkIfInFilter(catalystImage, "Catalyst", "weaponType");
         });
+        catalystImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Catalyst";
+        });
+        catalystImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const bowImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Bow.png");
         bowImage.height = "40px";
@@ -1750,6 +1894,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(bowImage);
         bowImage.onPointerClickObservable.add(function() {
             checkIfInFilter(bowImage, "Bow", "weaponType");
+        });
+        bowImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Bow";
+        });
+        bowImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const claymoreImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Claymore.png");
@@ -1762,6 +1912,12 @@ export class SceneBuilder implements ISceneBuilder {
         claymoreImage.onPointerClickObservable.add(function() {
             checkIfInFilter(claymoreImage, "Claymore", "weaponType");
         });
+        claymoreImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Claymore";
+        });
+        claymoreImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const poleImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Pole.png");
         poleImage.height = "40px";
@@ -1772,6 +1928,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(poleImage);
         poleImage.onPointerClickObservable.add(function() {
             checkIfInFilter(poleImage, "Polearm", "weaponType");
+        });
+        poleImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Polearm";
+        });
+        poleImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         function hideGenshinElements(): void {
@@ -1839,6 +2001,12 @@ export class SceneBuilder implements ISceneBuilder {
         electricImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(electricImage, "Electric", "element");
         });
+        electricImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Electric";
+        });
+        electricImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const etherImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Ether.png");
         etherImage.height = "40px";
@@ -1850,6 +2018,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(etherImage);
         etherImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(etherImage, "Ether", "element");
+        });
+        etherImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Ether";
+        });
+        etherImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const zzzFireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Fire.png");
@@ -1863,6 +2037,12 @@ export class SceneBuilder implements ISceneBuilder {
         zzzFireImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(zzzFireImage, "Fire", "element");
         });
+        zzzFireImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Fire";
+        });
+        zzzFireImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const zzzIceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Ice.png");
         zzzIceImage.height = "40px";
@@ -1874,6 +2054,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.addControl(zzzIceImage);
         zzzIceImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(zzzIceImage, "Ice", "element");
+        });
+        zzzIceImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Ice";
+        });
+        zzzIceImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const zzzPhyscialImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Physical.png");
@@ -1887,6 +2073,12 @@ export class SceneBuilder implements ISceneBuilder {
         zzzPhyscialImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(zzzPhyscialImage, "Physical", "element");
         });
+        zzzPhyscialImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Physical";
+        });
+        zzzPhyscialImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const anomalyImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Anomaly.png");
         anomalyImage.height = "40px";
@@ -1898,6 +2090,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(anomalyImage);
         anomalyImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(anomalyImage, "Anomaly", "weaponType");
+        });
+        anomalyImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Anomaly";
+        });
+        anomalyImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const attackImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Attack.png");
@@ -1911,6 +2109,12 @@ export class SceneBuilder implements ISceneBuilder {
         attackImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(attackImage, "Attack", "weaponType");
         });
+        attackImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Attack";
+        });
+        attackImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const defenseImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Defense.png");
         defenseImage.height = "40px";
@@ -1922,6 +2126,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(defenseImage);
         defenseImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(defenseImage, "Defense", "weaponType");
+        });
+        defenseImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Defense";
+        });
+        defenseImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const stunImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Stun.png");
@@ -1935,6 +2145,12 @@ export class SceneBuilder implements ISceneBuilder {
         stunImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(stunImage, "Stun", "weaponType");
         });
+        stunImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Stun";
+        });
+        stunImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
 
         const supportImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Support.png");
         supportImage.height = "40px";
@@ -1946,6 +2162,12 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.addControl(supportImage);
         supportImage.onPointerClickObservable.add(function() {
             checkIfInZZZFilter(supportImage, "Support", "weaponType");
+        });
+        supportImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Support";
+        });
+        supportImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         function hideZZZElements(): void {
