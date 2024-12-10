@@ -796,6 +796,7 @@ export class SceneBuilder implements ISceneBuilder {
         advancedTexture.addControl(charNameText);
         charNameText.isVisible = true;
 
+        let isMouseInPanel = false;
         const charPanel = new gui.Rectangle("charPanel");
         charPanel.width = "720px";
         charPanel.height = "920px";
@@ -814,10 +815,12 @@ export class SceneBuilder implements ISceneBuilder {
         charPanel.onPointerEnterObservable.add(function() {
             stillCamera.detachControl();
             camera.detachControl();
+            isMouseInPanel = true;
         });
         charPanel.onPointerOutObservable.add(function() {
             stillCamera.attachControl(canvas, false);
             camera.attachControl(canvas, false);
+            isMouseInPanel = false;
         });
 
         // Code for click outside charPanel behaviour
@@ -2697,6 +2700,10 @@ export class SceneBuilder implements ISceneBuilder {
         // switch camera when double click
         let lastClickTime = -Infinity;
         canvas.onclick = (): void => {
+            if (isMouseInPanel) {
+                lastClickTime = -Infinity;
+                return;
+            }
             const currentTime = performance.now();
             if (300 < currentTime - lastClickTime) {
                 lastClickTime = currentTime;

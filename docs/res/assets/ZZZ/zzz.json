@@ -312,13 +312,13 @@
         "pmx": "莱特.pmx"
     },
     {
-        "id": 3000000,
+        "id": 30000027,
 		"name": "Hoshimi Miyabi",
-        "weaponType": "Support",
+        "weaponType": "Anomaly",
         "element": "Ice",
         "gender": "Female",
         "region": "Section 6",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/ZZZ/Hoshimi Miyabi",
         "image": "ZZZ/Hoshimi Miyabi.png",
         "pmx": "Hoshimi Miyabi.bpmx"
