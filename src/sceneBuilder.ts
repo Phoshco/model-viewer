@@ -87,6 +87,7 @@ export class SceneBuilder implements ISceneBuilder {
     public async build(canvas: HTMLCanvasElement, engine: AbstractEngine, item: string): Promise<Scene> {
         // for apply SDEF on shadow, outline, depth rendering
         SdefInjector.OverrideEngineCreateEffect(engine);
+        const isLocal = window.location.hostname.includes("localhost");
 
         // character json
         interface BaseCharData {
@@ -176,6 +177,14 @@ export class SceneBuilder implements ISceneBuilder {
                 } else {
                     fallbackItem = findCharByName(zzzCharDataArray, results[0].name);
                     tabMode = "ZZZ";
+                }
+                if (!isLocal) {
+                    counter.up("phoshco", fallbackItem!.name).then((res) => {
+                        console.log(res);
+                    })
+                        .catch((error) => {
+                            console.error("Error occurred:", error);
+                        });
                 }
             } else {
                 fallbackItem = findCharByName(charDataArray, "Hu Tao");
@@ -431,7 +440,6 @@ export class SceneBuilder implements ISceneBuilder {
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
 
-
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
             promises.push(loadAssetContainerAsync(
                 chosenChar.directory + "/" + chosenChar.pmx,
@@ -558,9 +566,14 @@ export class SceneBuilder implements ISceneBuilder {
             scene.skipFrustumClipping = true;
             scene.blockMaterialDirtyMechanism = true;
             audioPlayer.mute();
-            counter.up("phoshco", "hoyo").then((res) => {
-                console.log(res);
-            });
+            if (!isLocal) {
+                counter.up("phoshco", "hoyo").then((res) => {
+                    console.log(res);
+                })
+                    .catch((error) => {
+                        console.error("Error occurred:", error);
+                    });
+            }
         });
 
         // if you want ground collision, uncomment following lines.
@@ -2651,6 +2664,14 @@ export class SceneBuilder implements ISceneBuilder {
                 scene.skipFrustumClipping = true;
                 scene.blockMaterialDirtyMechanism = true;
                 // audioPlayer.mute();
+                if (!isLocal) {
+                    counter.up("phoshco", chosenChar.name).then((res) => {
+                        console.log(res);
+                    })
+                        .catch((error) => {
+                            console.error("Error occurred:", error);
+                        });
+                }
             });
         }
 
