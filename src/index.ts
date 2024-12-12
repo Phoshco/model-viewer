@@ -35,7 +35,7 @@ window.onload = (): void => {
 
     // Check for substrings to differentiate between local and online paths
     const isLocal = window.location.hostname.includes("localhost");
-    console.log(isLocal);
+    // console.log(isLocal);
     const isOnline = window.location.hostname.includes("github.io");
 
     // Define potential subfolders for online URLs
@@ -48,9 +48,9 @@ window.onload = (): void => {
     // Local case: assume the URL format ends directly with the item
     if (isLocal) {
         basePath = "/"; // If no base path, default to root
-        console.log(basePath);
+        // console.log(basePath);
         item = fullPath.slice(1).replace(/\/$/, "") || ""; // Get the item after the last "/"
-        console.log(item);
+        console.log("Local: " + item);
     } else if (isOnline) {
     // {
         // Online case: handle URLs that include subfolders like "model-viewer" or "docs"
@@ -60,9 +60,9 @@ window.onload = (): void => {
                 // Extract the base path and item, considering the folder structure
                 const baseIndex = fullPath.indexOf(base) + base.length;
                 basePath = fullPath.substring(0, fullPath.lastIndexOf("/"));
-                console.log(basePath);
+                // console.log(basePath);
                 item = fullPath.slice(baseIndex + 1).replace(/\/$/, "") || "";
-                console.log(item);
+                console.log("Online: " + item);
                 break;
             }
         }
