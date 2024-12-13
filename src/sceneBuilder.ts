@@ -821,6 +821,7 @@ export class SceneBuilder implements ISceneBuilder {
         charPanel.isVisible = false;
         charPanel.onIsVisibleChangedObservable.add(()=>{
             if (!charPanel.isVisible) {
+                isMouseInPanel = false;
                 stillCamera.attachControl(canvas, false);
                 camera.attachControl(canvas, false);
             }
@@ -2722,7 +2723,6 @@ export class SceneBuilder implements ISceneBuilder {
         let lastClickTime = -Infinity;
         canvas.onclick = (): void => {
             if (isMouseInPanel) {
-                lastClickTime = -Infinity;
                 return;
             }
             const currentTime = performance.now();
@@ -2730,7 +2730,6 @@ export class SceneBuilder implements ISceneBuilder {
                 lastClickTime = currentTime;
                 return;
             }
-
             lastClickTime = -Infinity;
 
             if (scene.activeCameras![0] === mmdCamera) {

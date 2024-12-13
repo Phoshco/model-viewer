@@ -1127,6 +1127,39 @@
     },
     {
         "id": 1000000,
+        "name": "Unknown God",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Unknown God",
+        "image": "Genshin/Unknown God.png",
+        "pmx": "Unknown God.pmx"
+    },
+    {
+        "id": 1000001,
+        "name": "Katheryne",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Katheryne",
+        "image": "Genshin/Katheryne.png",
+        "pmx": "Katheryne.pmx"
+    },
+    {
+        "id": 1000002,
+        "name": "La Signora",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/La Signora",
+        "image": "Genshin/La Signora.png",
+        "pmx": "La Signora.pmx"
+    },
+    {
+        "id": 1000003,
         "name": "Guizhong",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1137,7 +1170,18 @@
         "pmx": "FC式-归终.pmx"
     },
     {
-        "id": 1000001,
+        "id": 1000004,
+        "name": "Dottore",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Dottore",
+        "image": "Genshin/Dottore.png",
+        "pmx": "Dottore Model.pmx"
+    },
+	{
+        "id": 1000005,
         "name": "Skirk",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1147,8 +1191,8 @@
         "image": "Genshin/Skirk.png",
         "pmx": "丝柯克.pmx"
     },
-    {
-        "id": 1000002,
+	{
+        "id": 1000006,
         "name": "Capitano",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1157,16 +1201,5 @@
         "directory": "res/chars/Genshin/Capitano",
         "image": "Genshin/Capitano.png",
         "pmx": "Capitano.pmx"
-    },
-    {
-        "id": 1000003,
-        "name": "Dottore",
-        "weaponType": "Universal",
-        "element": "Universal",
-        "gender": "Male",
-        "rarity": 6,
-        "directory": "res/chars/Genshin/Dottore",
-        "image": "Genshin/Dottore.png",
-        "pmx": "Dottore Model.pmx"
     }
 ]
