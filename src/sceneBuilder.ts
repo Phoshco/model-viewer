@@ -463,7 +463,7 @@ export class SceneBuilder implements ISceneBuilder {
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
         charScreenElement = chosenChar!.element;
-        if (firstTabMode != "Genshin") {
+        if (firstTabMode != "Genshin" || chosenChar!.element == "Universal") {
             charScreenMode = false;
         }
 
@@ -865,7 +865,7 @@ export class SceneBuilder implements ISceneBuilder {
         charScreenModeButton.height = iconWidthHeight;
         charScreenModeButton.thickness = 0;
         advancedTexture.addControl(charScreenModeButton);
-        if (firstTabMode != "Genshin") {
+        if (firstTabMode != "Genshin" || chosenChar.element == "Universal") {
             charScreenModeButton.isVisible = false;
         }
         charScreenModeButton.onPointerClickObservable.add(function() {
@@ -2683,7 +2683,7 @@ export class SceneBuilder implements ISceneBuilder {
             } else {
                 throw new Error("Chosen character or its properties are undefined");
             }
-            if (tabMode != "Genshin") {
+            if (tabMode != "Genshin" || chosenChar.element == "Universal") {
                 charScreenMode = false;
                 charScreenModeButton.isVisible = false;
             } else {
