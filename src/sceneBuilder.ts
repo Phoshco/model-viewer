@@ -22,8 +22,9 @@ import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.fragment";
 import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.vertex";
 
 import type { IPointerEvent } from "@babylonjs/core";
+// import { CubeTexture } from "@babylonjs/core";
 // import { VideoTexture } from "@babylonjs/core";
-// import { MirrorTexture, Plane } from "@babylonjs/core";
+import { MirrorTexture, Plane } from "@babylonjs/core";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { Layer } from "@babylonjs/core/Layers";
@@ -34,12 +35,12 @@ import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator"
 import { loadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
 import { Material } from "@babylonjs/core/Materials/material";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
-// import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector";
+// import { MeshBuilder } from "@babylonjs/core/Meshes";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
-// import type { Mesh } from "@babylonjs/core/Meshes/mesh";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 // import { DepthOfFieldEffectBlurLevel } from "@babylonjs/core/PostProcesses";
@@ -274,6 +275,22 @@ export class SceneBuilder implements ISceneBuilder {
             }
         };
 
+        const materialBuilderSt = new MmdStandardMaterialBuilder();
+        materialBuilderSt.renderMethod = MmdStandardMaterialRenderMethod.DepthWriteAlphaBlending;
+        materialBuilderSt.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
+            material.forceDepthWrite = true;
+            const diffuseTexture = material.diffuseTexture;
+            material.specularColor = Color3.Black();
+            if (diffuseTexture) {
+                diffuseTexture.hasAlpha = true;
+                material.useAlphaFromDiffuseTexture = true;
+            }
+            if (material.transparencyMode === Material.MATERIAL_ALPHABLEND) {
+                material.transparencyMode = Material.MATERIAL_ALPHATESTANDBLEND;
+                material.alphaCutOff = 0.01;
+            }
+        };
+
         // if you need outline rendering, comment out following line.
         // materialBuilder.loadOutlineRenderingProperties = (): void => { /* do nothing */ };
 
@@ -305,8 +322,8 @@ export class SceneBuilder implements ISceneBuilder {
 
         // mmd camera for play mmd camera animation
         const mmdCamera = new MmdCamera("mmdCamera", new Vector3(0, 10, 0), scene);
-        mmdCamera.maxZ = 100;
-        mmdCamera.minZ = 1;
+        mmdCamera.maxZ = 5000;
+        mmdCamera.minZ = 0.1;
         mmdCamera.parent = mmdRoot;
         mmdCamera.layerMask = 1;
 
@@ -387,9 +404,13 @@ export class SceneBuilder implements ISceneBuilder {
         mmdRuntime.loggingEnabled = true;
         mmdRuntime.register(scene);
 
-        const audioPlayerFile = "res/cam_motion/Specialist (Never End ver.)/music001.mp3";
-        const camMotionFile = "res/cam_motion/Specialist (Never End ver.)/CameraMAIN2.bvmd";
-        const modelMotionFile = "res/cam_motion/Specialist (Never End ver.)/mmd_Specialist_motion.bvmd";
+        // const audioPlayerFile = "res/cam_motion/Specialist (Never End ver.)/music001.mp3";
+        // const camMotionFile = "res/cam_motion/Specialist (Never End ver.)/CameraMAIN2.bvmd";
+        // const modelMotionFile = "res/cam_motion/Specialist (Never End ver.)/mmd_Specialist_motion.bvmd";
+
+        const audioPlayerFile = "res/cam_motion/Classic/MMDClassic.mp3";
+        const camMotionFile = "res/cam_motion/Classic/MMDClassicCamera.bvmd";
+        const modelMotionFile = "res/cam_motion/Classic/MMDClassicMotion.bvmd";
 
         // set audio player
         const audioPlayer = new StreamAudioPlayer(scene);
@@ -429,6 +450,8 @@ export class SceneBuilder implements ISceneBuilder {
             (event) => updateLoadingText(1, `Loading motion... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`))
         );
 
+        let charScreenMode = true;
+        let charScreenElement = "Pyro";
         // model
         let prevCharName: string;
         let prevCharId: number;
@@ -439,6 +462,10 @@ export class SceneBuilder implements ISceneBuilder {
         [chosenChar, firstTabMode] = findFirstCharByName(chosenCharName);
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
+        charScreenElement = chosenChar!.element;
+        if (firstTabMode != "Genshin") {
+            charScreenMode = false;
+        }
 
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
             promises.push(loadAssetContainerAsync(
@@ -459,23 +486,40 @@ export class SceneBuilder implements ISceneBuilder {
             throw new Error("Chosen character or its properties are undefined");
         }
 
-        // stage
-        // promises.push(SceneLoader.ImportMeshAsync(
-        //     undefined,
-        //     "res/stages/Cathedral/",
-        //     "m.pmx",
-        //     scene,
-        //     (event) => updateLoadingText(3, `Loading stage... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)
-        // ));
-
         // physics
         promises.push((async(): Promise<void> => {
-            updateLoadingText(2, "Loading physics engine...");
+            updateLoadingText(3, "Loading physics engine...");
             const physicsInstance = await havokPhysics();
             const physicsPlugin = new HavokPlugin(true, physicsInstance);
             physicsPlugin;
-            updateLoadingText(2, "Loading physics engine... Done");
+            updateLoadingText(3, "Loading physics engine... Done");
         })());
+
+        // stage
+        // promises.push(SceneLoader.ImportMeshAsync(
+        //     undefined,
+        //     "res/stages/GenshinCharacterSphere/",
+        //     "CharacterSphere_Anemo.pmx",
+        //     scene,
+        //     (event) => updateLoadingText(4, `Loading stage... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)
+        // ));
+
+        if (charScreenMode) {
+            promises.push(loadAssetContainerAsync(
+                "res/stages/GenshinCharacterSphere" + "/" + "CharacterSphere_" + charScreenElement + "V.pmx",
+                scene,
+                {
+                    onProgress: (event) => updateLoadingText(4, `Loading stage... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),
+                    pluginOptions: {
+                        mmdmodel: {
+                            loggingEnabled: true,
+                            materialBuilder: materialBuilderSt
+                        }
+                    }
+                }
+            )
+            );
+        }
 
         // wait for all promises. parallel loading is faster than sequential loading.
         let loadResults = await Promise.all(promises);
@@ -493,14 +537,35 @@ export class SceneBuilder implements ISceneBuilder {
         let modelMesh = characterModelPromiseRes.rootNodes[0] as MmdMesh;
         modelMesh.parent = mmdRoot;
 
+        let modelMeshSt: MmdMesh;
+        if (charScreenMode) {
+            const characterModelPromiseResSt = loadResults[4];
+            characterModelPromiseResSt.addAllToScene();
+            modelMeshSt = characterModelPromiseResSt.rootNodes[0] as MmdMesh;
+            modelMeshSt.parent = mmdRoot;
+        }
+
         shadowGenerator.addShadowCaster(modelMesh);
         // modelMesh.receiveShadows = true;
         for (const mesh of modelMesh.metadata.meshes) mesh.receiveShadows = true;
 
-        const ground = CreateGround("ground1", { width: 100, height: 100, subdivisions: 2, updatable: false }, scene);
-        const shadowOnlyMaterial = ground.material = new ShadowOnlyMaterial("shadowOnly", scene);
+        const ground = CreateGround("ground1", { width: 50, height: 50, subdivisions: 2, updatable: false }, scene);
+
+        ground.receiveShadows = true;
+        const groundMaterial = new StandardMaterial("GroundMaterial", scene);
+        groundMaterial.diffuseColor = new Color3(0.14, 0.14, 0.14);
+        groundMaterial.specularPower = 128;
+        const groundReflectionTexture = groundMaterial.reflectionTexture = new MirrorTexture("MirrorTexture", 50, scene, true);
+        groundReflectionTexture.mirrorPlane = Plane.FromPositionAndNormal(ground.position, ground.getFacetNormal(0).scale(-1));
+        groundReflectionTexture.renderList = [...modelMesh.metadata.meshes];
+        groundReflectionTexture.level = 0.45;
+        groundReflectionTexture.adaptiveBlurKernel = 16;
+        // ground.material = groundMaterial;
+
+        const shadowOnlyMaterial = new ShadowOnlyMaterial("shadowOnly", scene);
         shadowOnlyMaterial.activeLight = directionalLight;
         shadowOnlyMaterial.alpha = 0.4;
+        ground.material = shadowOnlyMaterial;
 
         ground.receiveShadows = true;
         ground.parent = mmdRoot;
@@ -735,7 +800,7 @@ export class SceneBuilder implements ISceneBuilder {
                 skinButton.image!.source = "res/assets/alter_light.png";
             }
             skinButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-            skinButton.left = "10px";
+            skinButton.left = isMobile ? "110px" : "60px";
             skinButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
             skinButton.top = isMobile ? "110px" : "60px";
             skinButton.width = iconWidthHeight;
@@ -790,6 +855,27 @@ export class SceneBuilder implements ISceneBuilder {
             bg_bool = !bg_bool;
         }
         darkButton.onPointerClickObservable.add(changeDarkMode);
+
+        const charScreenModeButton = gui.Button.CreateImageOnlyButton("but", "res/assets/paimon.png");
+        charScreenModeButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        charScreenModeButton.left = "10px";
+        charScreenModeButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        charScreenModeButton.top = isMobile ? "110px" : "60px";
+        charScreenModeButton.width = iconWidthHeight;
+        charScreenModeButton.height = iconWidthHeight;
+        charScreenModeButton.thickness = 0;
+        advancedTexture.addControl(charScreenModeButton);
+        if (firstTabMode != "Genshin") {
+            charScreenModeButton.isVisible = false;
+        }
+        charScreenModeButton.onPointerClickObservable.add(function() {
+            if (charScreenMode) {
+                modelMeshSt.setEnabled(false);
+            } else if (tabMode == "Genshin" && !charScreenMode) {
+                modelMeshSt.setEnabled(true);
+            }
+            charScreenMode = !charScreenMode;
+        });
 
         const charNameText = new gui.TextBlock();
         // charNameText.widthInPixels = 100;
@@ -2398,6 +2484,9 @@ export class SceneBuilder implements ISceneBuilder {
             }
             // mmdRuntime.destroyMmdModel(mmdModel);
             modelMesh.dispose(false, true);
+            if (modelMeshSt) {
+                modelMeshSt.dispose(false, true);
+            }
             mmdPlayerControl.dispose();
             // mmdCamera.removeAnimation(0);
             mmdCamera.restoreState();
@@ -2594,6 +2683,31 @@ export class SceneBuilder implements ISceneBuilder {
             } else {
                 throw new Error("Chosen character or its properties are undefined");
             }
+            if (tabMode != "Genshin") {
+                charScreenMode = false;
+                charScreenModeButton.isVisible = false;
+            } else {
+                charScreenMode = true;
+                charScreenElement = chosenChar.element;
+                charScreenModeButton.isVisible = true;
+            }
+
+            if (charScreenMode) {
+                promises.push(loadAssetContainerAsync(
+                    "res/stages/GenshinCharacterSphere" + "/" + "CharacterSphere_" + charScreenElement + "V.pmx",
+                    scene,
+                    {
+                        onProgress: (event) => updateLoadingText(3, `Loading stage... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),
+                        pluginOptions: {
+                            mmdmodel: {
+                                loggingEnabled: true,
+                                materialBuilder: materialBuilderSt
+                            }
+                        }
+                    }
+                )
+                );
+            }
             loadResults = await Promise.all(promises);
             scene.onAfterRenderObservable.addOnce(() => {
                 engine.hideLoadingUI();
@@ -2606,6 +2720,13 @@ export class SceneBuilder implements ISceneBuilder {
                 }, 1500);
             });
             // scene.activeCameras = [stillCamera, guiCam];
+
+            if (charScreenMode) {
+                const characterModelPromiseResSt = loadResults[1];
+                characterModelPromiseResSt.addAllToScene();
+                modelMeshSt = characterModelPromiseResSt.rootNodes[0] as MmdMesh;
+                modelMeshSt.parent = mmdRoot;
+            }
 
             theDiff = 1.66;
             theHeight = 69;
