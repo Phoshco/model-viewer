@@ -680,5 +680,16 @@
         "directory": "res/chars/HSR/Mr. Reca",
         "image": "HSR/Mr. Reca.png",
         "pmx": "芮克七代.pmx"
+    },
+    {
+        "id": 2000002,
+        "name": "Cocolia",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Cocolia",
+        "image": "HSR/Cocolia.png",
+        "pmx": "可可利亚.pmx"
     }
 ]
