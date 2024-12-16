@@ -66,13 +66,14 @@ import { StreamAudioPlayer } from "babylon-mmd/esm/Runtime/Audio/streamAudioPlay
 import { MmdCamera } from "babylon-mmd/esm/Runtime/mmdCamera";
 import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
+// import ammoPhysics from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
+// import ammo from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
+// import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
+// import { MmdAmmoPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoPhysics";
 import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
 import {CounterAPI} from "counterapi";
 import miniSearch from "minisearch";
 
-// import ammo from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
-// import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
-// import { MmdAmmoPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoPhysics";
 import extraCharDatas from "../res/assets/extras.json";
 import genshinCharDatas from "../res/assets/Genshin/genshin.json";
 import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
@@ -393,14 +394,12 @@ export class SceneBuilder implements ISceneBuilder {
         // let wasmInstance: MmdWasmInstance;
         const physicsModeOn = false;
 
-        // if (!physicsModeOn) {
-        //     mmdRuntime = new MmdRuntime(scene);
-        // } else {
-        //     wasmInstance = await getMmdWasmInstance(new MmdWasmInstanceTypeSPR());
-        //     mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene));
-        //     mmdRuntime.physics!.createGroundModel?.([0]); // create ground model to physics world 0
-        // }
-        mmdRuntime = new MmdRuntime(scene);
+        if (!physicsModeOn) {
+            mmdRuntime = new MmdRuntime(scene);
+        } else {
+            mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
+        }
+        //mmdRuntime = new MmdRuntime(scene);
         mmdRuntime.loggingEnabled = true;
         mmdRuntime.register(scene);
 
@@ -463,7 +462,7 @@ export class SceneBuilder implements ISceneBuilder {
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
         charScreenElement = chosenChar!.element;
-        if (firstTabMode != "Genshin" || chosenChar!.element == "Universal") {
+        if (firstTabMode != "Genshin") {
             charScreenMode = false;
         }
 
@@ -492,6 +491,9 @@ export class SceneBuilder implements ISceneBuilder {
             const physicsInstance = await havokPhysics();
             const physicsPlugin = new HavokPlugin(true, physicsInstance);
             physicsPlugin;
+            // const physicsInstance = await ammoPhysics();
+            // const physicsPlugin = new MmdAmmoJSPlugin(true, physicsInstance);
+            // scene.enablePhysics(new Vector3(0, -98, 0), physicsPlugin);
             updateLoadingText(3, "Loading physics engine... Done");
         })());
 
@@ -865,7 +867,7 @@ export class SceneBuilder implements ISceneBuilder {
         charScreenModeButton.height = iconWidthHeight;
         charScreenModeButton.thickness = 0;
         advancedTexture.addControl(charScreenModeButton);
-        if (firstTabMode != "Genshin" || chosenChar.element == "Universal") {
+        if (firstTabMode != "Genshin") {
             charScreenModeButton.isVisible = false;
         }
         charScreenModeButton.onPointerClickObservable.add(function() {
@@ -2683,7 +2685,7 @@ export class SceneBuilder implements ISceneBuilder {
             } else {
                 throw new Error("Chosen character or its properties are undefined");
             }
-            if (tabMode != "Genshin" || chosenChar.element == "Universal") {
+            if (tabMode != "Genshin") {// || chosenChar.element == "Universal") {
                 charScreenMode = false;
                 charScreenModeButton.isVisible = false;
             } else {
