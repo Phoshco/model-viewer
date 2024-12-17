@@ -31,5 +31,16 @@
         "directory": "res/chars/ZZZ/Bangboo",
         "image": "ZZZ/Bangboo.png",
         "pmx": "邦布.pmx"
+    },
+    {
+        "id": 10000003,
+        "name": "Abby",
+        "weaponType": "Others",
+        "element": "Universal",
+        "gender": "Others",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Abby",
+        "image": "WuWa/Abby.png",
+        "pmx": "Abby.pmx"
     }
 ]

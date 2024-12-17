@@ -79,6 +79,7 @@ import genshinCharDatas from "../res/assets/Genshin/genshin.json";
 import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
 import hsrSkinCharDatas from "../res/assets/HSR/skins.json";
+import wuwaCharDatas from "../res/assets/WuWa/wuwa.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
 import { CustomLoadingScreen } from "./CustomLoadingScreen";
@@ -115,6 +116,9 @@ export class SceneBuilder implements ISceneBuilder {
             "region": string;
         }
 
+        interface WuwaCharData extends BaseCharData {
+        }
+
         interface ExtraCharData extends BaseCharData {
         }
 
@@ -122,14 +126,16 @@ export class SceneBuilder implements ISceneBuilder {
         const extraDataArray = extraCharDatas as ExtraCharData[];
         const charDataArray = genshinCharDatas as GenshinCharData[];
         const genshinSkinDataArray = genshinSkinCharDatas as GenshinCharData[];
-        const hsrSkinDataArray = hsrSkinCharDatas as HSRCharData[];
         const hsrCharDataArray = hsrCharDatas as HSRCharData[];
+        const hsrSkinDataArray = hsrSkinCharDatas as HSRCharData[];
         const zzzCharDataArray = zzzCharDatas as ZZZCharData[];
+        const wuwaCharDataArray = wuwaCharDatas as WuwaCharData[];
         charDataArray.sort((a, b) => b.id - a.id);
         genshinSkinDataArray.sort((a, b) => b.id - a.id);
         hsrSkinDataArray.sort((a, b) => b.id - a.id);
         hsrCharDataArray.sort((a, b) => b.id - a.id);
         zzzCharDataArray.sort((a, b) => b.id - a.id);
+        wuwaCharDataArray.sort((a, b) => b.id - a.id);
 
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
@@ -139,7 +145,8 @@ export class SceneBuilder implements ISceneBuilder {
         const allCharDataArray: AllCharData[] = [
             ...charDataArray,
             ...hsrCharDataArray,
-            ...zzzCharDataArray
+            ...zzzCharDataArray,
+            ...wuwaCharDataArray
         ];
         const miniSearchInstance = new miniSearch({
             fields: ["name"], // fields to index for full-text search
@@ -176,9 +183,12 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabById == 2) {
                     fallbackItem = findCharByName(hsrCharDataArray, results[0].name);
                     tabMode = "HSR";
-                } else {
+                } else if (tabById == 3) {
                     fallbackItem = findCharByName(zzzCharDataArray, results[0].name);
                     tabMode = "ZZZ";
+                } else {
+                    fallbackItem = findCharByName(wuwaCharDataArray, results[0].name);
+                    tabMode = "WuWa";
                 }
                 if (!isLocal) {
                     counter.up("phoshco", fallbackItem!.name).then((res) => {
@@ -208,8 +218,10 @@ export class SceneBuilder implements ISceneBuilder {
                     fallbackItem.push(findCharByName(charDataArray, results[i].name)!);
                 } else if (tabById == 2) {
                     fallbackItem.push(findCharByName(hsrCharDataArray, results[i].name)!);
-                } else {
+                } else if (tabById == 3) {
                     fallbackItem.push(findCharByName(zzzCharDataArray, results[i].name)!);
+                } else {
+                    fallbackItem.push(findCharByName(wuwaCharDataArray, results[i].name)!);
                 }
             }
             // console.log(fallbackItem);
@@ -462,8 +474,11 @@ export class SceneBuilder implements ISceneBuilder {
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
         charScreenElement = chosenChar!.element;
-        if (firstTabMode != "Genshin") {
+        if (firstTabMode != "Genshin" && firstTabMode != "WuWa") {
             charScreenMode = false;
+        }
+        if (firstTabMode != "Genshin") {
+            charScreenElement = "Universal";
         }
 
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
@@ -1026,6 +1041,9 @@ export class SceneBuilder implements ISceneBuilder {
         const zzzFilter: { key: keyof ZZZCharData; value: string }[] = [
             { key: "id", value: "3000" }
         ];
+        const wuwaFilter: { key: keyof WuwaCharData; value: string }[] = [
+            { key: "id", value: "4000" }
+        ];
         let filteredArray: BaseCharData[];
         filteredArray = filterBy(charDataArray, genshinFilter);
         sortModeKey = "id";
@@ -1036,9 +1054,11 @@ export class SceneBuilder implements ISceneBuilder {
                 if (tabMode == "HSR") {
                     hsrButton.background = charPanel.background;
                     hideHSRElements();
-                } else {
+                } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
+                } else {
+                    hideWuwaElements();
                 }
                 tabMode = "Genshin";
                 filteredArray = filterBy(charDataArray, genshinFilter);
@@ -1057,9 +1077,11 @@ export class SceneBuilder implements ISceneBuilder {
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
                     hideGenshinElements();
-                } else {
+                } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
+                } else {
+                    hideWuwaElements();
                 }
                 tabMode = "HSR";
                 filteredArray = filterBy(hsrCharDataArray, hsrFilter);
@@ -1081,6 +1103,8 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabMode == "HSR") {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
+                } else {
+                    hideWuwaElements();
                 }
                 tabMode = "ZZZ";
                 filteredArray = filterBy(zzzCharDataArray, zzzFilter);
@@ -1109,6 +1133,116 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.background = "rgb(64,68,70)";
         filterBar2.cornerRadiusW = filterBar2.cornerRadiusZ = 15;
         topBar.addControl(filterBar2);
+
+        const hoverCharName = new gui.TextBlock();
+        hoverCharName.width = "150px";
+        hoverCharName.height = "40px";
+        hoverCharName.color = "white";
+        hoverCharName.left = -48;
+        hoverCharName.text = "";
+        hoverCharName.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        // hoverCharName.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        filterBar.addControl(hoverCharName);
+
+        const searchBar = new gui.Rectangle();
+        searchBar.width = "300px";
+        searchBar.height = "40px";
+        searchBar.background = charPanel.background;
+        searchBar.cornerRadius = 15;
+        searchBar.left = -190;
+        searchBar.thickness = 0;
+        filterBar2.addControl(searchBar);
+
+        const searchTextbox = new gui.InputText();
+        searchTextbox.placeholderText = "Search all characters...";
+        searchTextbox.placeholderColor = "rgb(64,68,70)";
+        searchTextbox.thickness = 0;
+        searchTextbox.background = searchBar.background;
+        searchTextbox.width = "220px";
+        searchTextbox.color = "white";
+        searchTextbox.focusedBackground = searchTextbox.background;
+        searchTextbox.promptMessage = "Search for character:";
+        searchBar.addControl(searchTextbox);
+        let searchTextboxPrevTab = "None";
+        let searchCharArray: BaseCharData[];
+        searchTextbox.onTextChangedObservable.add(function() {
+            if (searchTextbox.text == "") {
+                genshinButton.isEnabled = true;
+                hsrButton.isEnabled = true;
+                zzzButton.isEnabled = true;
+                sortImage.isVisible = true;
+                if (searchTextboxPrevTab == "Genshin") {
+                    handleGenshinTabSwitch();
+                } else if (searchTextboxPrevTab == "HSR") {
+                    handleHSRTabSwitch();
+                } else if (searchTextboxPrevTab == "ZZZ") {
+                    handleZZZTabSwitch();
+                } else if (searchTextboxPrevTab == "WuWa") {
+                    handleWuwaTabSwitch();
+                }
+                searchTextboxPrevTab = "None";
+            } else {
+                if (searchTextboxPrevTab == "None") {
+                    searchTextboxPrevTab = tabMode;
+                    sortImage.isVisible = false;
+                    genshinButton.background = charPanel.background;
+                    genshinButton.isEnabled = false;
+                    hsrButton.background = charPanel.background;
+                    hsrButton.isEnabled = false;
+                    zzzButton.background = charPanel.background;
+                    zzzButton.isEnabled = false;
+                    hideGenshinElements();
+                    hideHSRElements();
+                    hideZZZElements();
+                    hideWuwaElements();
+                }
+                tabMode = "None";
+                searchCharArray = searchCharFunction(searchTextbox.text);
+                generateGrid(searchCharArray);
+            }
+        });
+
+        const searchImage = gui.Button.CreateImageOnlyButton("but", "res/assets/search.png");
+        searchImage.height = "40px";
+        searchImage.width = "40px";
+        searchImage.left = -130;
+        searchImage.thickness = 0;
+        searchImage.cornerRadius = 5;
+        searchBar.addControl(searchImage);
+
+        function handleWuwaTabSwitch(): void {
+            if (tabMode != "WuWa") {
+                if (tabMode == "Genshin") {
+                    genshinButton.background = charPanel.background;
+                    hideGenshinElements();
+                } else if (tabMode == "HSR") {
+                    hideHSRElements();
+                    hsrButton.background = charPanel.background;
+                } else if (tabMode == "ZZZ") {
+                    zzzButton.background = charPanel.background;
+                    hideZZZElements();
+                }
+                tabMode = "WuWa";
+                filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                showAllWuwaElements();
+                generateGrid(filteredArray);
+            }
+        }
+        searchImage.onPointerClickObservable.add(function() {
+            handleWuwaTabSwitch();
+        });
+
+        const clearTextImage = gui.Button.CreateImageOnlyButton("but", "res/assets/clear.png");
+        clearTextImage.height = "40px";
+        clearTextImage.width = "40px";
+        clearTextImage.left = 130;
+        clearTextImage.thickness = 0;
+        clearTextImage.cornerRadius = 5;
+        searchBar.addControl(clearTextImage);
+        clearTextImage.onPointerClickObservable.add(function() {
+            searchTextbox.text = "";
+        });
 
         const sortImage = gui.Button.CreateImageOnlyButton("but", "res/assets/descending.png");
         sortImage.height = "40px";
@@ -1287,7 +1421,7 @@ export class SceneBuilder implements ISceneBuilder {
                     zzzFourStarImage.background = "rgba(0,0,0,0)";
                 } else {
                     zzzFilter[index].value = "4";
-                    fiveStarImage.background = "rgba(0,0,0,0)";
+                    zzzFiveStarImage.background = "rgba(0,0,0,0)";
                     zzzFourStarImage.background = charPanel.background;
                 }
             } else {
@@ -1331,6 +1465,70 @@ export class SceneBuilder implements ISceneBuilder {
                 zzzFiveStarImage.background = charPanel.background;
             }
             filteredArray = filterBy(zzzCharDataArray, zzzFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
+        const wuwaFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/rarity_4.png");
+        wuwaFourStarImage.height = "40px";
+        wuwaFourStarImage.width = "40px";
+        wuwaFourStarImage.left = -188;
+        wuwaFourStarImage.thickness = 0;
+        wuwaFourStarImage.cornerRadius = 5;
+        filterBar.addControl(wuwaFourStarImage);
+        wuwaFourStarImage.isVisible = false;
+        wuwaFourStarImage.onPointerClickObservable.add(function() {
+            const index = wuwaFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (wuwaFilter[index].value == "4") {
+                    wuwaFilter.splice(index, 1);
+                    wuwaFourStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    wuwaFilter[index].value = "4";
+                    wuwaFiveStarImage.background = "rgba(0,0,0,0)";
+                    wuwaFourStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof WuwaCharData; value: string } = {
+                    key: "rarity",
+                    value: "4"
+                };
+                wuwaFilter.push(newPush);
+                wuwaFourStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
+        const wuwaFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/rarity_5.png");
+        wuwaFiveStarImage.height = "40px";
+        wuwaFiveStarImage.width = "40px";
+        wuwaFiveStarImage.left = -148;
+        wuwaFiveStarImage.thickness = 0;
+        wuwaFiveStarImage.cornerRadius = 5;
+        filterBar.addControl(wuwaFiveStarImage);
+        wuwaFiveStarImage.isVisible = false;
+        wuwaFiveStarImage.onPointerClickObservable.add(function() {
+            const index = wuwaFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (wuwaFilter[index].value == "5") {
+                    wuwaFilter.splice(index, 1);
+                    wuwaFiveStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    wuwaFilter[index].value = "5";
+                    wuwaFourStarImage.background = "rgba(0,0,0,0)";
+                    wuwaFiveStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof WuwaCharData; value: string } = {
+                    key: "rarity",
+                    value: "5"
+                };
+                wuwaFilter.push(newPush);
+                wuwaFiveStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
             filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
             generateGrid(filteredArray);
         });
@@ -1419,91 +1617,33 @@ export class SceneBuilder implements ISceneBuilder {
             generateGrid(filteredArray);
         }
 
-        const hoverCharName = new gui.TextBlock();
-        hoverCharName.width = "150px";
-        hoverCharName.height = "40px";
-        hoverCharName.color = "white";
-        hoverCharName.left = -48;
-        hoverCharName.text = "";
-        hoverCharName.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        // hoverCharName.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        filterBar.addControl(hoverCharName);
-
-        const searchBar = new gui.Rectangle();
-        searchBar.width = "300px";
-        searchBar.height = "40px";
-        searchBar.background = charPanel.background;
-        searchBar.cornerRadius = 15;
-        searchBar.left = -190;
-        searchBar.thickness = 0;
-        filterBar2.addControl(searchBar);
-
-        const searchTextbox = new gui.InputText();
-        searchTextbox.placeholderText = "Search all characters...";
-        searchTextbox.placeholderColor = "rgb(64,68,70)";
-        searchTextbox.thickness = 0;
-        searchTextbox.background = searchBar.background;
-        searchTextbox.width = "220px";
-        searchTextbox.color = "white";
-        searchTextbox.focusedBackground = searchTextbox.background;
-        searchTextbox.promptMessage = "Search for character:";
-        searchBar.addControl(searchTextbox);
-        let searchTextboxPrevTab = "None";
-        let searchCharArray: BaseCharData[];
-        searchTextbox.onTextChangedObservable.add(function() {
-            if (searchTextbox.text == "") {
-                genshinButton.isEnabled = true;
-                hsrButton.isEnabled = true;
-                zzzButton.isEnabled = true;
-                sortImage.isVisible = true;
-                if (searchTextboxPrevTab == "Genshin") {
-                    handleGenshinTabSwitch();
-                } else if (searchTextboxPrevTab == "HSR") {
-                    handleHSRTabSwitch();
-                } else if (searchTextboxPrevTab == "ZZZ") {
-                    handleZZZTabSwitch();
+        function checkIfInWuwaFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof WuwaCharData): void {
+            const index = wuwaFilter.findIndex(obj => obj.key === theKey);
+            if (index !== -1) { // Object with the key exists
+                if (wuwaFilter[index].value == theObjType) {
+                    wuwaFilter.splice(index, 1);
+                    buttonObj.background = "rgba(0,0,0,0)";
+                } else {
+                    wuwaFilter[index].value = theObjType;
+                    if (theKey.toString() == "element") {
+                        offWuwaElementBG();
+                    } else {
+                        offWuwaWeaponBG();
+                    }
+                    buttonObj.background = charPanel.background;
                 }
-                searchTextboxPrevTab = "None";
             } else {
-                if (searchTextboxPrevTab == "None") {
-                    searchTextboxPrevTab = tabMode;
-                    sortImage.isVisible = false;
-                    genshinButton.background = charPanel.background;
-                    genshinButton.isEnabled = false;
-                    hsrButton.background = charPanel.background;
-                    hsrButton.isEnabled = false;
-                    zzzButton.background = charPanel.background;
-                    zzzButton.isEnabled = false;
-                    hideGenshinElements();
-                    hideHSRElements();
-                    hideZZZElements();
-                }
-                tabMode = "None";
-                searchCharArray = searchCharFunction(searchTextbox.text);
-                generateGrid(searchCharArray);
+                const newPush: { key: keyof WuwaCharData; value: string } = {
+                    key: theKey,
+                    value: theObjType
+                };
+                wuwaFilter.push(newPush);
+                buttonObj.background = charPanel.background;
             }
-        });
-
-        const searchImage = gui.Button.CreateImageOnlyButton("but", "res/assets/search.png");
-        searchImage.height = "40px";
-        searchImage.width = "40px";
-        searchImage.left = -130;
-        searchImage.thickness = 0;
-        searchImage.cornerRadius = 5;
-        searchBar.addControl(searchImage);
-        // searchImage.onPointerClickObservable.add(function() {
-        // });
-
-        const clearTextImage = gui.Button.CreateImageOnlyButton("but", "res/assets/clear.png");
-        clearTextImage.height = "40px";
-        clearTextImage.width = "40px";
-        clearTextImage.left = 130;
-        clearTextImage.thickness = 0;
-        clearTextImage.cornerRadius = 5;
-        searchBar.addControl(clearTextImage);
-        clearTextImage.onPointerClickObservable.add(function() {
-            searchTextbox.text = "";
-        });
+            filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        }
 
         const fireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_fire.png");
         fireImage.height = "40px";
@@ -2323,6 +2463,244 @@ export class SceneBuilder implements ISceneBuilder {
             supportImage.background = "rgba(0,0,0,0)";
         }
 
+        const aeroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Aero.png");
+        aeroImage.height = "40px";
+        aeroImage.width = "40px";
+        aeroImage.left = 52;
+        aeroImage.thickness = 0;
+        aeroImage.cornerRadius = 5;
+        filterBar.addControl(aeroImage);
+        aeroImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(aeroImage, "Aero", "element");
+        });
+        aeroImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Aero";
+        });
+        aeroImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const spectroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Spectro.png");
+        spectroImage.height = "40px";
+        spectroImage.width = "40px";
+        spectroImage.left = 92;
+        spectroImage.thickness = 0;
+        spectroImage.cornerRadius = 5;
+        filterBar.addControl(spectroImage);
+        spectroImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(spectroImage, "Spectro", "element");
+        });
+        spectroImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Spectro";
+        });
+        spectroImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const electroWuwaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Electro.png");
+        electroWuwaImage.height = "40px";
+        electroWuwaImage.width = "40px";
+        electroWuwaImage.left = 132;
+        electroWuwaImage.thickness = 0;
+        electroWuwaImage.cornerRadius = 5;
+        filterBar.addControl(electroWuwaImage);
+        electroWuwaImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(electroWuwaImage, "Electro", "element");
+        });
+        electroWuwaImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Electro";
+        });
+        electroWuwaImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const havocImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Havoc.png");
+        havocImage.height = "40px";
+        havocImage.width = "40px";
+        havocImage.left = 172;
+        havocImage.thickness = 0;
+        havocImage.cornerRadius = 5;
+        filterBar.addControl(havocImage);
+        havocImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(havocImage, "Havoc", "element");
+        });
+        havocImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Havoc";
+        });
+        havocImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const glacioImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Glacio.png");
+        glacioImage.height = "40px";
+        glacioImage.width = "40px";
+        glacioImage.left = 212;
+        glacioImage.thickness = 0;
+        glacioImage.cornerRadius = 5;
+        filterBar.addControl(glacioImage);
+        glacioImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(glacioImage, "Glacio", "element");
+        });
+        glacioImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Glacio";
+        });
+        glacioImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const fusionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Fusion.png");
+        fusionImage.height = "40px";
+        fusionImage.width = "40px";
+        fusionImage.left = 252;
+        fusionImage.thickness = 0;
+        fusionImage.cornerRadius = 5;
+        filterBar.addControl(fusionImage);
+        fusionImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(fusionImage, "Fusion", "element");
+        });
+        fusionImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Fusion";
+        });
+        fusionImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const swordWuwaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Sword_Icon.png");
+        swordWuwaImage.height = "40px";
+        swordWuwaImage.width = "40px";
+        swordWuwaImage.left = 92;
+        swordWuwaImage.thickness = 0;
+        swordWuwaImage.cornerRadius = 5;
+        filterBar2.addControl(swordWuwaImage);
+        swordWuwaImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(swordWuwaImage, "Sword", "weaponType");
+        });
+        swordWuwaImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Sword";
+        });
+        swordWuwaImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const rectifierImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Rectifier_Icon.png");
+        rectifierImage.height = "40px";
+        rectifierImage.width = "40px";
+        rectifierImage.left = 132;
+        rectifierImage.thickness = 0;
+        rectifierImage.cornerRadius = 5;
+        filterBar2.addControl(rectifierImage);
+        rectifierImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(rectifierImage, "Rectifier", "weaponType");
+        });
+        rectifierImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Rectifier";
+        });
+        rectifierImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const pistolsImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Pistols_Icon.png");
+        pistolsImage.height = "40px";
+        pistolsImage.width = "40px";
+        pistolsImage.left = 172;
+        pistolsImage.thickness = 0;
+        pistolsImage.cornerRadius = 5;
+        filterBar2.addControl(pistolsImage);
+        pistolsImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(pistolsImage, "Pistols", "weaponType");
+        });
+        pistolsImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Pistols";
+        });
+        pistolsImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const gauntletsImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Gauntlets_Icon.png");
+        gauntletsImage.height = "40px";
+        gauntletsImage.width = "40px";
+        gauntletsImage.left = 212;
+        gauntletsImage.thickness = 0;
+        gauntletsImage.cornerRadius = 5;
+        filterBar2.addControl(gauntletsImage);
+        gauntletsImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(gauntletsImage, "Gauntlets", "weaponType");
+        });
+        gauntletsImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Gauntlets";
+        });
+        gauntletsImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const broadbladeImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Broadblade_Icon.png");
+        broadbladeImage.height = "40px";
+        broadbladeImage.width = "40px";
+        broadbladeImage.left = 252;
+        broadbladeImage.thickness = 0;
+        broadbladeImage.cornerRadius = 5;
+        filterBar2.addControl(broadbladeImage);
+        broadbladeImage.onPointerClickObservable.add(function() {
+            checkIfInWuwaFilter(broadbladeImage, "Broadblade", "weaponType");
+        });
+        broadbladeImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Broadblade";
+        });
+        broadbladeImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        function hideWuwaElements(): void {
+            wuwaFourStarImage.isVisible = false;
+            wuwaFiveStarImage.isVisible = false;
+            aeroImage.isVisible = false;
+            spectroImage.isVisible = false;
+            electroWuwaImage.isVisible = false;
+            havocImage.isVisible = false;
+            glacioImage.isVisible = false;
+            fusionImage.isVisible = false;
+            swordWuwaImage.isVisible = false;
+            rectifierImage.isVisible = false;
+            pistolsImage.isVisible = false;
+            gauntletsImage.isVisible = false;
+            broadbladeImage.isVisible = false;
+            sortModeChanger.isVisible = false;
+        }
+
+        function showAllWuwaElements(): void {
+            wuwaFourStarImage.isVisible = true;
+            wuwaFiveStarImage.isVisible = true;
+            aeroImage.isVisible = true;
+            spectroImage.isVisible = true;
+            electroWuwaImage.isVisible = true;
+            havocImage.isVisible = true;
+            glacioImage.isVisible = true;
+            fusionImage.isVisible = true;
+            swordWuwaImage.isVisible = true;
+            rectifierImage.isVisible = true;
+            pistolsImage.isVisible = true;
+            gauntletsImage.isVisible = true;
+            broadbladeImage.isVisible = true;
+            sortModeChanger.isVisible = true;
+        }
+
+        function offWuwaElementBG(): void {
+            aeroImage.background = "rgba(0,0,0,0)";
+            spectroImage.background = "rgba(0,0,0,0)";
+            electroWuwaImage.background = "rgba(0,0,0,0)";
+            havocImage.background = "rgba(0,0,0,0)";
+            glacioImage.background = "rgba(0,0,0,0)";
+            fusionImage.background = "rgba(0,0,0,0)";
+        }
+
+        function offWuwaWeaponBG(): void {
+            swordWuwaImage.background = "rgba(0,0,0,0)";
+            rectifierImage.background = "rgba(0,0,0,0)";
+            pistolsImage.background = "rgba(0,0,0,0)";
+            gauntletsImage.background = "rgba(0,0,0,0)";
+            broadbladeImage.background = "rgba(0,0,0,0)";
+        }
+
         const myScrollViewer = new gui.ScrollViewer("scrollName");
         myScrollViewer.cornerRadiusX = 15;
         myScrollViewer.cornerRadiusY = 15;
@@ -2409,12 +2787,20 @@ export class SceneBuilder implements ISceneBuilder {
                                     await changeCharacter("Pom-Pom");
                                 }
                             });
-                        } else {
+                        } else if (tabMode == "ZZZ") {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/ZZZ/Bangboo.png");
                             charButton.onPointerClickObservable.add(async function() {
                                 charPanel.isVisible = !charPanel.isVisible;
                                 if (chosenCharName != "Bangboo") {
                                     await changeCharacter("Bangboo");
+                                }
+                            });
+                        } else {
+                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/WuWa/Abby.png");
+                            charButton.onPointerClickObservable.add(async function() {
+                                charPanel.isVisible = !charPanel.isVisible;
+                                if (chosenCharName != "Abby") {
+                                    await changeCharacter("Abby");
                                 }
                             });
                         }
@@ -2517,7 +2903,7 @@ export class SceneBuilder implements ISceneBuilder {
                 firstDigit = getFirstDigit(nextId!);
             }
 
-            if (chosenCharName == "Paimon" || chosenCharName == "Pom-Pom" || chosenCharName == "Bangboo") {
+            if (chosenCharName == "Paimon" || chosenCharName == "Pom-Pom" || chosenCharName == "Bangboo" || chosenCharName == "Abby") {
                 skinMode = false;
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
                 await createCharacter(chosenChar);
@@ -2635,7 +3021,8 @@ export class SceneBuilder implements ISceneBuilder {
                     (tabMode === "Genshin" || firstDigit === 1) ? charDataArray :
                         (tabMode === "HSR" || firstDigit === 2) ? hsrCharDataArray :
                             (tabMode === "ZZZ" || firstDigit === 3) ? zzzCharDataArray :
-                                [],
+                                (tabMode === "WuWa" || firstDigit === 4) ? wuwaCharDataArray :
+                                    [],
                     chosenCharName
                 );
                 await createCharacter(chosenChar);
@@ -2692,6 +3079,10 @@ export class SceneBuilder implements ISceneBuilder {
                 charScreenMode = true;
                 charScreenElement = chosenChar.element;
                 charScreenModeButton.isVisible = true;
+            }
+            if (tabMode == "WuWa") {
+                charScreenMode = true;
+                charScreenElement = "Universal";
             }
 
             if (charScreenMode) {
@@ -2924,6 +3315,8 @@ export class SceneBuilder implements ISceneBuilder {
             }
         } else if (firstTabMode == "ZZZ") {
             handleZZZTabSwitch();
+        } else if (firstTabMode == "WuWa") {
+            handleWuwaTabSwitch();
         }
 
         // if you want to use inspector, uncomment following line.
