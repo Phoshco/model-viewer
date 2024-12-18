@@ -311,6 +311,18 @@
         "image": "ZZZ/Lighter.png",
         "pmx": "莱特.pmx"
     },
+	{
+        "id": 30000026,
+        "name": "Harumasa",
+        "weaponType": "Attack",
+        "element": "Electric",
+        "gender": "Male",
+        "region": "Section 6",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Harumasa",
+        "image": "ZZZ/Harumasa.png",
+        "pmx": "Harumasa.pmx"
+    },
     {
         "id": 30000027,
 		"name": "Hoshimi Miyabi",

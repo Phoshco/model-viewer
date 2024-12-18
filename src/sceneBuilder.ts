@@ -1153,6 +1153,37 @@ export class SceneBuilder implements ISceneBuilder {
         searchBar.thickness = 0;
         filterBar2.addControl(searchBar);
 
+        const searchImage = gui.Button.CreateImageOnlyButton("but", "res/assets/search.png");
+        searchImage.height = "40px";
+        searchImage.width = "40px";
+        searchImage.left = -130;
+        searchImage.thickness = 0;
+        searchImage.cornerRadius = 5;
+        searchBar.addControl(searchImage);
+
+        function handleWuwaTabSwitch(): void {
+            if (tabMode != "WuWa") {
+                if (tabMode == "Genshin") {
+                    genshinButton.background = charPanel.background;
+                    hideGenshinElements();
+                } else if (tabMode == "HSR") {
+                    hideHSRElements();
+                    hsrButton.background = charPanel.background;
+                } else if (tabMode == "ZZZ") {
+                    zzzButton.background = charPanel.background;
+                    hideZZZElements();
+                }
+                tabMode = "WuWa";
+                filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                showAllWuwaElements();
+                generateGrid(filteredArray);
+            }
+        }
+        searchImage.onPointerClickObservable.add(function() {
+            handleWuwaTabSwitch();
+        });
+
         const searchTextbox = new gui.InputText();
         searchTextbox.placeholderText = "Search all characters...";
         searchTextbox.placeholderColor = "rgb(64,68,70)";
@@ -1200,37 +1231,6 @@ export class SceneBuilder implements ISceneBuilder {
                 searchCharArray = searchCharFunction(searchTextbox.text);
                 generateGrid(searchCharArray);
             }
-        });
-
-        const searchImage = gui.Button.CreateImageOnlyButton("but", "res/assets/search.png");
-        searchImage.height = "40px";
-        searchImage.width = "40px";
-        searchImage.left = -130;
-        searchImage.thickness = 0;
-        searchImage.cornerRadius = 5;
-        searchBar.addControl(searchImage);
-
-        function handleWuwaTabSwitch(): void {
-            if (tabMode != "WuWa") {
-                if (tabMode == "Genshin") {
-                    genshinButton.background = charPanel.background;
-                    hideGenshinElements();
-                } else if (tabMode == "HSR") {
-                    hideHSRElements();
-                    hsrButton.background = charPanel.background;
-                } else if (tabMode == "ZZZ") {
-                    zzzButton.background = charPanel.background;
-                    hideZZZElements();
-                }
-                tabMode = "WuWa";
-                filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
-                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                showAllWuwaElements();
-                generateGrid(filteredArray);
-            }
-        }
-        searchImage.onPointerClickObservable.add(function() {
-            handleWuwaTabSwitch();
         });
 
         const clearTextImage = gui.Button.CreateImageOnlyButton("but", "res/assets/clear.png");
@@ -2700,6 +2700,8 @@ export class SceneBuilder implements ISceneBuilder {
             gauntletsImage.background = "rgba(0,0,0,0)";
             broadbladeImage.background = "rgba(0,0,0,0)";
         }
+        hideWuwaElements();
+        sortModeChanger.isVisible = true;
 
         const myScrollViewer = new gui.ScrollViewer("scrollName");
         myScrollViewer.cornerRadiusX = 15;
