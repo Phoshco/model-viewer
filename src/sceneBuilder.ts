@@ -474,10 +474,12 @@ export class SceneBuilder implements ISceneBuilder {
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
         charScreenElement = chosenChar!.element;
-        if (firstTabMode != "Genshin" && firstTabMode != "WuWa") {
+        if (firstTabMode == "ZZZ") {
             charScreenMode = false;
         }
-        if (firstTabMode != "Genshin") {
+        if (firstTabMode == "HSR") {
+            charScreenElement = "HSR";
+        } else if (firstTabMode != "Genshin") {
             charScreenElement = "Universal";
         }
 
@@ -882,13 +884,13 @@ export class SceneBuilder implements ISceneBuilder {
         charScreenModeButton.height = iconWidthHeight;
         charScreenModeButton.thickness = 0;
         advancedTexture.addControl(charScreenModeButton);
-        if (firstTabMode != "Genshin") {
+        if (firstTabMode != "Genshin" && firstTabMode != "HSR") {
             charScreenModeButton.isVisible = false;
         }
         charScreenModeButton.onPointerClickObservable.add(function() {
             if (charScreenMode) {
                 modelMeshSt.setEnabled(false);
-            } else if (tabMode == "Genshin" && !charScreenMode) {
+            } else if ((tabMode == "Genshin" || tabMode == "HSR") && !charScreenMode) {
                 modelMeshSt.setEnabled(true);
             }
             charScreenMode = !charScreenMode;
@@ -3074,7 +3076,7 @@ export class SceneBuilder implements ISceneBuilder {
             } else {
                 throw new Error("Chosen character or its properties are undefined");
             }
-            if (tabMode != "Genshin") {// || chosenChar.element == "Universal") {
+            if (tabMode != "Genshin" && tabMode != "HSR") {// || chosenChar.element == "Universal") {
                 charScreenMode = false;
                 charScreenModeButton.isVisible = false;
             } else {
@@ -3085,6 +3087,9 @@ export class SceneBuilder implements ISceneBuilder {
             if (tabMode == "WuWa") {
                 charScreenMode = true;
                 charScreenElement = "Universal";
+            } else if (tabMode == "HSR") {
+                charScreenMode = true;
+                charScreenElement = "HSR";
             }
 
             if (charScreenMode) {
@@ -3303,7 +3308,6 @@ export class SceneBuilder implements ISceneBuilder {
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
                 chosenChar = skinChars![0];
                 skinMode = false;
-
                 createSkinButton(true, true, chosenChar!.name);
             }
         } else if (firstTabMode == "HSR") {
@@ -3312,7 +3316,6 @@ export class SceneBuilder implements ISceneBuilder {
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
                 chosenChar = skinChars![0];
                 skinMode = false;
-
                 createSkinButton(true, true, chosenChar!.name);
             }
         } else if (firstTabMode == "ZZZ") {
