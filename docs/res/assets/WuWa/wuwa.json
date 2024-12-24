@@ -284,5 +284,16 @@
         "directory": "res/chars/WuWa/Lumi",
         "image": "WuWa/Lumi.png",
         "pmx": "Lumi.pmx"
+    },
+	{
+        "id": 40000028,
+        "name": "Brant",
+        "weaponType": "Sword",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Brant",
+        "image": "WuWa/Brant.png",
+        "pmx": "Brant.pmx"
     }
 ]
