@@ -24,7 +24,7 @@ import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.vertex";
 import type { IPointerEvent } from "@babylonjs/core";
 // import { CubeTexture } from "@babylonjs/core";
 // import { VideoTexture } from "@babylonjs/core";
-import { MirrorTexture, Plane } from "@babylonjs/core";
+import { MirrorTexture, ParticleSystem, Plane } from "@babylonjs/core";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { Layer } from "@babylonjs/core/Layers";
@@ -401,6 +401,43 @@ export class SceneBuilder implements ISceneBuilder {
         shadowGenerator.filteringQuality = ShadowGenerator.QUALITY_MEDIUM;
         shadowGenerator.frustumEdgeFalloff = 0.1;
 
+        // Create a particle system
+        const particleSystem = new ParticleSystem("particles", 2000, scene);
+        //Texture of each particle
+        particleSystem.particleTexture = new Texture("../res/assets/flare.png", scene);
+        // Where the particles come from
+        particleSystem.emitter = Vector3.Zero(); // the starting position
+        particleSystem.minEmitBox = new Vector3(-25, -15, -25); // Bottom Left Front
+        particleSystem.maxEmitBox = new Vector3(25, 10, 25); // Top Right Back
+        // Colors of all particles
+        particleSystem.color1 = new Color4(1.0, 1.0, 1.0, 0.9);
+        particleSystem.color2 = new Color4(0.5, 0.5, 0.5, 0.9);
+        particleSystem.colorDead = new Color4(0.1, 0.1, 0.1, 0.0);
+        // Size of each particle (random between...
+        particleSystem.minSize = 0.1;
+        particleSystem.maxSize = 0.4;
+        // Life time of each particle (random between...
+        particleSystem.minLifeTime = 0.3;
+        particleSystem.maxLifeTime = 1.5;
+        // Emission rate
+        particleSystem.emitRate = 40;
+        // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
+        particleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+        // Set the gravity of all particles
+        particleSystem.gravity = new Vector3(0, -9.81, 0);
+        // Direction of each particle after it has been emitted
+        particleSystem.direction1 = new Vector3(-7, 8, 3);
+        particleSystem.direction2 = new Vector3(7, 8, -3);
+        // Angular speed, in radians
+        particleSystem.minAngularSpeed = 0;
+        particleSystem.maxAngularSpeed = Math.PI;
+        // Speed
+        particleSystem.minEmitPower = 1;
+        particleSystem.maxEmitPower = 3;
+        particleSystem.updateSpeed = 0.005;
+
+        particleSystem.renderingGroupId = 1;
+
         // create mmd runtime with physics
         let mmdRuntime: MmdRuntime;// | MmdWasmRuntime;
         // let wasmInstance: MmdWasmInstance;
@@ -515,15 +552,10 @@ export class SceneBuilder implements ISceneBuilder {
         })());
 
         // stage
-        // promises.push(SceneLoader.ImportMeshAsync(
-        //     undefined,
-        //     "res/stages/GenshinCharacterSphere/",
-        //     "CharacterSphere_Anemo.pmx",
-        //     scene,
-        //     (event) => updateLoadingText(4, `Loading stage... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)
-        // ));
-
         if (charScreenMode) {
+            if (!isMobile) {
+                particleSystem.start();
+            }
             promises.push(loadAssetContainerAsync(
                 "res/stages/GenshinCharacterSphere" + "/" + "CharacterSphere_" + charScreenElement + "V.pmx",
                 scene,
@@ -890,8 +922,14 @@ export class SceneBuilder implements ISceneBuilder {
         charScreenModeButton.onPointerClickObservable.add(function() {
             if (charScreenMode) {
                 modelMeshSt.setEnabled(false);
+                if (!isMobile) {
+                    particleSystem.stop();
+                }
             } else if ((tabMode == "Genshin" || tabMode == "HSR") && !charScreenMode) {
                 modelMeshSt.setEnabled(true);
+                if (!isMobile) {
+                    particleSystem.start();
+                }
             }
             charScreenMode = !charScreenMode;
         });
@@ -2875,6 +2913,9 @@ export class SceneBuilder implements ISceneBuilder {
                 skinButton.isVisible = false;
             }
             // mmdRuntime.destroyMmdModel(mmdModel);
+            if (!isMobile) {
+                particleSystem.stop();
+            }
             modelMesh.dispose(false, true);
             if (modelMeshSt) {
                 modelMeshSt.dispose(false, true);
@@ -3093,6 +3134,9 @@ export class SceneBuilder implements ISceneBuilder {
             }
 
             if (charScreenMode) {
+                if (!isMobile) {
+                    particleSystem.start();
+                }
                 promises.push(loadAssetContainerAsync(
                     "res/stages/GenshinCharacterSphere" + "/" + "CharacterSphere_" + charScreenElement + "V.pmx",
                     scene,

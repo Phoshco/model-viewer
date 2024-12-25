@@ -20,7 +20,7 @@ Implement MMD models using Babylon.js and <a href="https://github.com/noname0310
 - Typescript
 - Webpack (only resolve html template, typescript, and static files)
 - Babylon.js (with es6 module tree shaking applied)
-- eslint (Babyon.js coding style)
+- eslint (Babylon.js coding style)
 
 ## Details
 

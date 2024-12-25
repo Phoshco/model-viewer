@@ -97,18 +97,6 @@
     },
     {
         "id": 30000008,
-        "name": "Ellen",
-        "weaponType": "Attack",
-        "element": "Ice",
-        "gender": "Female",
-        "region": "Victoria Housekeeping",
-        "rarity": 5,
-        "directory": "res/chars/ZZZ/Ellen",
-        "image": "ZZZ/Ellen.png",
-        "pmx": "艾莲.pmx"
-    },
-    {
-        "id": 30000009,
         "name": "Grace",
         "weaponType": "Anomaly",
         "element": "Electric",
@@ -120,7 +108,7 @@
         "pmx": "格莉丝.pmx"
     },
     {
-        "id": 30000010,
+        "id": 30000009,
         "name": "Koleda",
         "weaponType": "Stun",
         "element": "Fire",
@@ -132,7 +120,7 @@
         "pmx": "珂雷妲.pmx"
     },
     {
-        "id": 30000011,
+        "id": 30000010,
         "name": "Lucy",
         "weaponType": "Support",
         "element": "Fire",
@@ -144,7 +132,7 @@
         "pmx": "露西_帽.pmx"
     },
     {
-        "id": 30000012,
+        "id": 30000011,
         "name": "Nekomata",
         "weaponType": "Attack",
         "element": "Physical",
@@ -156,7 +144,7 @@
         "pmx": "猫又.pmx"
     },
     {
-        "id": 30000013,
+        "id": 30000012,
         "name": "Nicole",
         "weaponType": "Support",
         "element": "Ether",
@@ -168,7 +156,7 @@
         "pmx": "妮可.pmx"
     },
     {
-        "id": 30000014,
+        "id": 30000013,
         "name": "Piper",
         "weaponType": "Anomaly",
         "element": "Physical",
@@ -180,7 +168,7 @@
         "pmx": "派派.pmx"
     },
     {
-        "id": 30000015,
+        "id": 30000014,
         "name": "Soldier 11",
         "weaponType": "Attack",
         "element": "Fire",
@@ -192,7 +180,7 @@
         "pmx": "11号.pmx"
     },
     {
-        "id": 30000016,
+        "id": 30000015,
         "name": "Soukaku",
         "weaponType": "Support",
         "element": "Ice",
@@ -204,7 +192,7 @@
         "pmx": "苍角.pmx"
     },
     {
-        "id": 30000017,
+        "id": 30000016,
         "name": "Lycaon",
         "weaponType": "Stun",
         "element": "Ice",
@@ -214,6 +202,18 @@
         "directory": "res/chars/ZZZ/Lycaon",
         "image": "ZZZ/Lycaon.png",
         "pmx": "莱卡恩.pmx"
+    },
+	{
+        "id": 30000017,
+        "name": "Ellen",
+        "weaponType": "Attack",
+        "element": "Ice",
+        "gender": "Female",
+        "region": "Victoria Housekeeping",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Ellen",
+        "image": "ZZZ/Ellen.png",
+        "pmx": "艾莲.pmx"
     },
     {
         "id": 30000018,
