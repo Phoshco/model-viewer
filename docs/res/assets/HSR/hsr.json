@@ -133,17 +133,6 @@
     },
     {
         "id": 20000013,
-        "name": "Jing Yuan",
-        "weaponType": "Erudition",
-        "element": "Lightning",
-        "gender": "Male",
-        "rarity": 5,
-        "directory": "res/chars/HSR/Jing Yuan",
-        "image": "HSR/Jing Yuan.png",
-        "pmx": "景元.pmx"
-    },
-    {
-        "id": 20000014,
         "name": "March 7th",
         "weaponType": "Preservation",
         "element": "Ice",
@@ -154,7 +143,7 @@
         "pmx": "三月七 1.0.pmx"
     },
     {
-        "id": 20000015,
+        "id": 20000014,
         "name": "Natasha",
         "weaponType": "Abundance",
         "element": "Physical",
@@ -165,7 +154,7 @@
         "pmx": "娜塔莎1.0.pmx"
     },
     {
-        "id": 20000016,
+        "id": 20000015,
         "name": "Pela",
         "weaponType": "Nihility",
         "element": "Ice",
@@ -176,7 +165,7 @@
         "pmx": "佩拉.pmx"
     },
     {
-        "id": 20000017,
+        "id": 20000016,
         "name": "Qingque",
         "weaponType": "Erudition",
         "element": "Quantum",
@@ -187,7 +176,7 @@
         "pmx": "青雀（分桦）.pmx"
     },
     {
-        "id": 20000018,
+        "id": 20000017,
         "name": "Sampo",
         "weaponType": "Nihility",
         "element": "Wind",
@@ -198,7 +187,7 @@
         "pmx": "╔ú▓⌐.pmx"
     },
     {
-        "id": 20000019,
+        "id": 20000018,
         "name": "Seele",
         "weaponType": "The Hunt",
         "element": "Quantum",
@@ -209,7 +198,7 @@
         "pmx": "希儿.pmx"
     },
     {
-        "id": 20000020,
+        "id": 20000019,
         "name": "Serval",
         "weaponType": "Erudition",
         "element": "Lightning",
@@ -220,7 +209,7 @@
         "pmx": "希露瓦1.0.pmx"
     },
     {
-        "id": 20000021,
+        "id": 20000020,
         "name": "Sushang",
         "weaponType": "The Hunt",
         "element": "Physical",
@@ -231,7 +220,7 @@
         "pmx": "李素裳1.0.pmx"
     },
     {
-        "id": 20000022,
+        "id": 20000021,
         "name": "Tingyun",
         "weaponType": "Harmony",
         "element": "Lightning",
@@ -242,7 +231,7 @@
         "pmx": "停云.pmx"
     },
 	{
-        "id": 20000023,
+        "id": 20000022,
         "name": "Welt",
         "weaponType": "Nihility",
         "element": "Imaginary",
@@ -253,7 +242,7 @@
         "pmx": "瓦尔特·杨.pmx"
     },
     {
-        "id": 20000024,
+        "id": 20000023,
         "name": "Yanqing",
         "weaponType": "The Hunt",
         "element": "Ice",
@@ -262,6 +251,17 @@
         "directory": "res/chars/HSR/Yanqing",
         "image": "HSR/Yanqing.png",
         "pmx": "彦卿1.0.pmx"
+    },
+	{
+        "id": 20000024,
+        "name": "Jing Yuan",
+        "weaponType": "Erudition",
+        "element": "Lightning",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Jing Yuan",
+        "image": "HSR/Jing Yuan.png",
+        "pmx": "景元.pmx"
     },
     {
         "id": 20000025,

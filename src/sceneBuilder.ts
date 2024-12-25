@@ -728,19 +728,6 @@ export class SceneBuilder implements ISceneBuilder {
         // layer.layerMask = 0x10000000;
         const light_bg = new Texture("res/stages/hoyo.png", scene, true);
         const dark_bg = new Texture("res/stages/hoyo_dark.png", scene, true);
-        // const pyro_bg = new VideoTexture("pyro", "res/stages/Genshin/Pyro.mp4", scene, true);
-        // const anemo_bg = new VideoTexture("anemo", "res/stages/Genshin/Anemo.mp4", scene, true);
-        // const hydro_bg = new VideoTexture("hydro", "res/stages/Genshin/Hydro.mp4", scene, true);
-        // const cryo_bg = new VideoTexture("cryo", "res/stages/Genshin/Cryo.mp4", scene, true);
-        // const dendro_bg = new VideoTexture("dendro", "res/stages/Genshin/Dendro.mp4", scene, true);
-        // const electro_bg = new VideoTexture("electro", "res/stages/Genshin/Electro.mp4", scene, true);
-        // const geo_bg = new VideoTexture("geo", "res/stages/Genshin/Geo.mp4", scene, true);
-        // if (bg_bool && isMobile) {
-        //     layer.texture = dark_bg;
-        // } else if (bg_bool && !isMobile) {
-        //     layer.texture = anemo_bg;
-        // }
-        // pyro_bg;
         if (bg_bool) {
             layer.texture = dark_bg;
         }
@@ -2971,7 +2958,6 @@ export class SceneBuilder implements ISceneBuilder {
                         for (let i = 0; i < skinChars!.length; i++) {
                             if (chosenChar!.id === skinChars![i].id) {
                                 prevI = i;
-                                // debugblock.text = prevI.toString(); // debugblock.text + "a";
                             }
                         }
                         const temp = (prevI + 1) % skinChars!.length;
@@ -2986,13 +2972,11 @@ export class SceneBuilder implements ISceneBuilder {
                             skinMode = true;
                         }
                         await createCharacter(chosenChar);
-                        // debugblock.text = debugblock.text + "e";
                         createSkinButton(true, isNextSkin, chosenChar!.name);
                     } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
                         skinMode = false;
                         chosenChar = findCharByName(charDataArray, chosenCharName);
                         await createCharacter(chosenChar);
-                        // debugblock.text = debugblock.text + "b";
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 } else {
@@ -3000,10 +2984,7 @@ export class SceneBuilder implements ISceneBuilder {
                     chosenChar = findCharByName(charDataArray, chosenCharName);
                     await createCharacter(chosenChar);
                     if (skinChars!.length > 0) {
-                        // debugblock.text = debugblock.text + "c";
                         createSkinButton(true, true, chosenChar!.name);
-                    } else {
-                        // debugblock.text = debugblock.text + "d";
                     }
                 }
             } else if (tabMode == "HSR" || firstDigit == 2) {
@@ -3025,7 +3006,6 @@ export class SceneBuilder implements ISceneBuilder {
                         for (let i = 0; i < skinChars!.length; i++) {
                             if (chosenChar!.id === skinChars![i].id) {
                                 prevI = i;
-                                // debugblock.text = prevI.toString(); // debugblock.text + "a";
                             }
                         }
                         const temp = (prevI + 1) % skinChars!.length;
@@ -3040,13 +3020,11 @@ export class SceneBuilder implements ISceneBuilder {
                             skinMode = true;
                         }
                         await createCharacter(chosenChar);
-                        // debugblock.text = debugblock.text + "e";
                         createSkinButton(true, isNextSkin, chosenChar!.name);
                     } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
                         skinMode = false;
                         chosenChar = findCharByName(hsrCharDataArray, chosenCharName);
                         await createCharacter(chosenChar);
-                        // debugblock.text = debugblock.text + "b";
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 } else {
@@ -3054,10 +3032,7 @@ export class SceneBuilder implements ISceneBuilder {
                     chosenChar = findCharById(hsrCharDataArray, nextId!);
                     await createCharacter(chosenChar);
                     if (skinChars!.length > 0) {
-                        // debugblock.text = debugblock.text + "c";
                         createSkinButton(true, true, chosenChar!.name);
-                    } else {
-                        // debugblock.text = debugblock.text + "d";
                     }
                 }
             } else {

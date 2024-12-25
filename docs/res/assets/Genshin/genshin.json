@@ -845,7 +845,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Wanderer",
+        "directory": "res/chars/Genshin/Wanderer/Wanderer",
         "image": "Genshin/Wanderer.png",
         "pmx": "流浪者.pmx"
     },

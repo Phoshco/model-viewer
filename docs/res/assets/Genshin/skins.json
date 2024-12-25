@@ -406,5 +406,29 @@
         "directory": "res/chars/Genshin/Clorinde/Luckin",
         "image": "Genshin/Clorinde.png",
         "pmx": "克洛琳德.pmx"
+    },
+	{
+        "id": 10000060,
+        "name": "Wanderer",
+        "weaponType": "Catalyst",
+        "element": "Anemo",
+        "gender": "Male",
+        "region": "Sumeru",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Wanderer/Scaramouche",
+        "image": "Genshin/Wanderer.png",
+        "pmx": "流浪者.pmx"
+    },
+	{
+        "id": 10000960,
+        "name": "Wanderer",
+        "weaponType": "Catalyst",
+        "element": "Anemo",
+        "gender": "Male",
+        "region": "Sumeru",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Wanderer/Kunikuzushi",
+        "image": "Genshin/Wanderer.png",
+        "pmx": "傾奇者(袖改变,无头饰)_0127.bpmx"
     }
 ]
