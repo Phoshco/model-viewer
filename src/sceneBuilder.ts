@@ -404,7 +404,7 @@ export class SceneBuilder implements ISceneBuilder {
         // Create a particle system
         const particleSystem = new ParticleSystem("particles", 2000, scene);
         //Texture of each particle
-        particleSystem.particleTexture = new Texture("../res/assets/flare.png", scene);
+        particleSystem.particleTexture = new Texture("res/assets/flare.png", scene);
         // Where the particles come from
         particleSystem.emitter = Vector3.Zero(); // the starting position
         particleSystem.minEmitBox = new Vector3(-25, -15, -25); // Bottom Left Front
