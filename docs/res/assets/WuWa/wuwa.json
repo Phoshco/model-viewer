@@ -286,6 +286,28 @@
         "pmx": "Lumi.pmx"
     },
 	{
+        "id": 40000026,
+        "name": "Carlotta",
+        "weaponType": "Pistols",
+        "element": "Glacio",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Carlotta",
+        "image": "WuWa/Carlotta.png",
+        "pmx": "Carlotta.pmx"
+    },
+	{
+        "id": 40000027,
+        "name": "Roccia",
+        "weaponType": "Gauntlets",
+        "element": "Havoc",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Roccia",
+        "image": "WuWa/Roccia.png",
+        "pmx": "Roccia.pmx"
+    },
+	{
         "id": 40000028,
         "name": "Brant",
         "weaponType": "Sword",
