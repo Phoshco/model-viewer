@@ -8,7 +8,7 @@
         "rarity": 5,
         "directory": "res/chars/WuWa/Rover (Male)",
         "image": "WuWa/Rover (Male).png",
-        "pmx": "Rover (Male).pmx"
+        "pmx": "Rover (Male).bpmx"
     },
     {
         "id": 40000001,
@@ -30,7 +30,7 @@
         "rarity": 4,
         "directory": "res/chars/WuWa/Aalto",
         "image": "WuWa/Aalto.png",
-        "pmx": "Aalto.bpmx"
+        "pmx": "Aalto.pmx"
     },
     {
         "id": 40000003,
@@ -63,7 +63,7 @@
         "rarity": 4,
         "directory": "res/chars/WuWa/Danjin",
         "image": "WuWa/Danjin.png",
-        "pmx": "Danjin.bpmx"
+        "pmx": "Danjin.pmx"
     },
     {
         "id": 40000006,
