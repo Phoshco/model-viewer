@@ -1,0 +1,11 @@
+[Info]
+Version = 3
+
+[Effect]
+Obj = none
+Obj[9] = normalmap\hair.fx
+Obj[10] = normalmap\body1.fx
+Obj[11] = normalmap\body1.fx
+Obj[12] = normalmap\hair.fx
+Obj[16] = none
+
