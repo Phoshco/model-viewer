@@ -430,5 +430,29 @@
         "directory": "res/chars/Genshin/Wanderer/Kunikuzushi",
         "image": "Genshin/Wanderer.png",
         "pmx": "傾奇者(袖改变,无头饰)_0127.bpmx"
+    },
+	{
+        "id": 10000014,
+        "name": "Xiangling",
+        "weaponType": "Polearm",
+        "element": "Pyro",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Xiangling/XianglingNewYearsCheer",
+        "image": "Genshin/Xiangling.png",
+        "pmx": "香菱-海灯节.pmx"
+    },
+	{
+        "id": 10000030,
+        "name": "Hu Tao",
+        "weaponType": "Polearm",
+        "element": "Pyro",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Hu Tao/HuTaoCherriesSnow",
+        "image": "Genshin/Hu Tao.png",
+        "pmx": "胡桃-海灯节.pmx"
     }
 ]

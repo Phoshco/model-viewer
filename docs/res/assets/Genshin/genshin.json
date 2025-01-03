@@ -355,7 +355,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Hu Tao",
+        "directory": "res/chars/Genshin/Hu Tao/Hu Tao",
         "image": "Genshin/Hu Tao.png",
         "pmx": "胡桃.pmx"
     },
@@ -869,7 +869,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Xiangling",
+        "directory": "res/chars/Genshin/Xiangling/Xiangling",
         "image": "Genshin/Xiangling.png",
         "pmx": "香菱.pmx"
     },
