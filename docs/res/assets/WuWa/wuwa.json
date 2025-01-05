@@ -317,5 +317,16 @@
         "directory": "res/chars/WuWa/Brant",
         "image": "WuWa/Brant.png",
         "pmx": "Brant.pmx"
+    },
+	{
+        "id": 4000000,
+        "name": "Rosemary",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Rosemary",
+        "image": "WuWa/Rosemary.png",
+        "pmx": "Rosemary.pmx"
     }
 ]

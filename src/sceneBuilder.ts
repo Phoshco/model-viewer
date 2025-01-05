@@ -2887,9 +2887,11 @@ export class SceneBuilder implements ISceneBuilder {
                         });
                         if (findCharByName(allSkinCharDataArray, selChar.name)) {
                             const skinCharButton = new gui.Image("but", "res/assets/skin_icon.png");
-                            skinCharButton.leftInPixels = grid.widthInPixels / 18;
-                            skinCharButton.topInPixels = -grid.widthInPixels / 18;
-                            skinCharButton.paddingRight = skinCharButton.paddingTop = 5;
+                            skinCharButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+                            skinCharButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                            // skinCharButton.leftInPixels = grid.widthInPixels / 18;
+                            // skinCharButton.topInPixels = -grid.widthInPixels / 18;
+                            skinCharButton.paddingRight = skinCharButton.paddingTop = 10;
                             skinCharButton.widthInPixels = skinCharButton.heightInPixels = grid.widthInPixels / 30;
                             grid.addControl(skinCharButton, i, j);
                         }
