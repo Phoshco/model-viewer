@@ -80,6 +80,7 @@ import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
 import hsrSkinCharDatas from "../res/assets/HSR/skins.json";
 import wuwaCharDatas from "../res/assets/WuWa/wuwa.json";
+import zzzSkinCharDatas from "../res/assets/ZZZ/skins.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
 import { CustomLoadingScreen } from "./CustomLoadingScreen";
@@ -129,10 +130,12 @@ export class SceneBuilder implements ISceneBuilder {
         const hsrCharDataArray = hsrCharDatas as HSRCharData[];
         const hsrSkinDataArray = hsrSkinCharDatas as HSRCharData[];
         const zzzCharDataArray = zzzCharDatas as ZZZCharData[];
+        const zzzSkinDataArray = zzzSkinCharDatas as ZZZCharData[];
         const wuwaCharDataArray = wuwaCharDatas as WuwaCharData[];
         charDataArray.sort((a, b) => b.id - a.id);
         genshinSkinDataArray.sort((a, b) => b.id - a.id);
         hsrSkinDataArray.sort((a, b) => b.id - a.id);
+        zzzSkinDataArray.sort((a, b) => b.id - a.id);
         hsrCharDataArray.sort((a, b) => b.id - a.id);
         zzzCharDataArray.sort((a, b) => b.id - a.id);
         wuwaCharDataArray.sort((a, b) => b.id - a.id);
@@ -141,12 +144,17 @@ export class SceneBuilder implements ISceneBuilder {
             return jsonData.find((item) => item.name === nameToFind);
         };
 
-        type AllCharData = GenshinCharData | HSRCharData | ZZZCharData;
+        type AllCharData = GenshinCharData | HSRCharData | ZZZCharData | WuwaCharData;
         const allCharDataArray: AllCharData[] = [
             ...charDataArray,
             ...hsrCharDataArray,
             ...zzzCharDataArray,
             ...wuwaCharDataArray
+        ];
+        const allSkinCharDataArray:  AllCharData[] = [
+            ...genshinSkinDataArray,
+            ...hsrSkinDataArray,
+            ...zzzSkinDataArray
         ];
         const miniSearchInstance = new miniSearch({
             fields: ["name"], // fields to index for full-text search
@@ -1209,6 +1217,13 @@ export class SceneBuilder implements ISceneBuilder {
         }
         searchImage.onPointerClickObservable.add(function() {
             handleWuwaTabSwitch();
+        });
+
+        searchImage.onPointerEnterObservable.add(function() {
+            searchImage.image!.source = "res/assets/tacet.png";
+        });
+        searchImage.onPointerOutObservable.add(function() {
+            searchImage.image!.source = "res/assets/search.png";
         });
 
         const searchTextbox = new gui.InputText();
@@ -2692,6 +2707,7 @@ export class SceneBuilder implements ISceneBuilder {
             gauntletsImage.isVisible = false;
             broadbladeImage.isVisible = false;
             sortModeChanger.isVisible = false;
+            searchImage.image!.source = "res/assets/search.png";
         }
 
         function showAllWuwaElements(): void {
@@ -2853,7 +2869,7 @@ export class SceneBuilder implements ISceneBuilder {
                         const charButton = gui.Button.CreateImageOnlyButton("but", `res/charsPNG/${selChar.image}`);
                         charButton.thickness = 0;
                         charButton.cornerRadius = 10;
-                        charButton.paddingBottom = charButton.paddingTop = charButton.paddingRight = charButton.paddingLeft = 4;
+                        charButton.paddingBottom = charButton.paddingTop = charButton.paddingRight = charButton.paddingLeft = 5;
                         grid.addControl(charButton, i, j);
                         charButton.onPointerEnterObservable.add(function() {
                             hoverCharName.text = selChar.name;
@@ -2869,6 +2885,14 @@ export class SceneBuilder implements ISceneBuilder {
                                 await changeCharacter(selChar.name, selChar.id);
                             }
                         });
+                        if (findCharByName(allSkinCharDataArray, selChar.name)) {
+                            const skinCharButton = new gui.Image("but", "res/assets/skin_icon.png");
+                            skinCharButton.leftInPixels = grid.widthInPixels / 18;
+                            skinCharButton.topInPixels = -grid.widthInPixels / 18;
+                            skinCharButton.paddingRight = skinCharButton.paddingTop = 5;
+                            skinCharButton.widthInPixels = skinCharButton.heightInPixels = grid.widthInPixels / 30;
+                            grid.addControl(skinCharButton, i, j);
+                        }
                         charIndex += 1;
                     }
                 }
@@ -3030,6 +3054,54 @@ export class SceneBuilder implements ISceneBuilder {
                 } else {
                     skinMode = false;
                     chosenChar = findCharById(hsrCharDataArray, nextId!);
+                    await createCharacter(chosenChar);
+                    if (skinChars!.length > 0) {
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                }
+            } else if (tabMode == "ZZZ" || firstDigit == 3) {
+                const skinChars = findAllCharsByName(zzzSkinDataArray, chosenCharName);
+                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
+                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
+                        chosenChar = skinChars![0];
+                        skinMode = true;
+                        await createCharacter(chosenChar);
+
+                        let isNextSkin = false;
+                        if (skinChars!.length > 1) {
+                            isNextSkin = true;
+                        }
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
+                        let isNextSkin = true;
+                        let prevI: number = 0;
+                        for (let i = 0; i < skinChars!.length; i++) {
+                            if (chosenChar!.id === skinChars![i].id) {
+                                prevI = i;
+                            }
+                        }
+                        const temp = (prevI + 1) % skinChars!.length;
+                        if (temp == skinChars!.length - 1) {
+                            isNextSkin = false;
+                        }
+                        if (prevI == skinChars!.length - 1) {
+                            chosenChar = findCharByName(zzzCharDataArray, chosenCharName);
+                            skinMode = false;
+                        } else {
+                            chosenChar = skinChars![temp];
+                            skinMode = true;
+                        }
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
+                        skinMode = false;
+                        chosenChar = findCharByName(zzzCharDataArray, chosenCharName);
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                } else {
+                    skinMode = false;
+                    chosenChar = findCharById(zzzCharDataArray, nextId!);
                     await createCharacter(chosenChar);
                     if (skinChars!.length > 0) {
                         createSkinButton(true, true, chosenChar!.name);
@@ -3339,6 +3411,12 @@ export class SceneBuilder implements ISceneBuilder {
             }
         } else if (firstTabMode == "ZZZ") {
             handleZZZTabSwitch();
+            const skinChars = findAllCharsByName(zzzSkinDataArray, chosenCharName);
+            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
+                chosenChar = skinChars![0];
+                skinMode = false;
+                createSkinButton(true, true, chosenChar!.name);
+            }
         } else if (firstTabMode == "WuWa") {
             handleWuwaTabSwitch();
         }

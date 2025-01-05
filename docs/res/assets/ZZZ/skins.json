@@ -1,0 +1,14 @@
+[
+	{
+        "id": 30000017,
+        "name": "Ellen",
+        "weaponType": "Attack",
+        "element": "Ice",
+        "gender": "Female",
+        "region": "Victoria Housekeeping",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Ellen/Ellen School",
+        "image": "ZZZ/Ellen.png",
+        "pmx": "Ellen [School].bpmx"
+    }
+]

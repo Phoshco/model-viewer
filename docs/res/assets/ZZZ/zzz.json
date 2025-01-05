@@ -211,7 +211,7 @@
         "gender": "Female",
         "region": "Victoria Housekeeping",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Ellen",
+        "directory": "res/chars/ZZZ/Ellen/Ellen",
         "image": "ZZZ/Ellen.png",
         "pmx": "艾莲.pmx"
     },
