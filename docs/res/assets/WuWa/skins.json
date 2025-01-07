@@ -1,0 +1,13 @@
+[
+	{
+        "id": 40000018,
+        "name": "Jinhsi",
+        "weaponType": "Broadblade",
+        "element": "Spectro",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Jinhsi/JinhsiSkin",
+        "image": "WuWa/Jinhsi.png",
+        "pmx": "鸣潮_今汐_桃夭灼灼.pmx"
+    }
+]

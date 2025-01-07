@@ -79,6 +79,7 @@ import genshinCharDatas from "../res/assets/Genshin/genshin.json";
 import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
 import hsrCharDatas from "../res/assets/HSR/hsr.json";
 import hsrSkinCharDatas from "../res/assets/HSR/skins.json";
+import wuwaSkinCharDatas from "../res/assets/WuWa/skins.json";
 import wuwaCharDatas from "../res/assets/WuWa/wuwa.json";
 import zzzSkinCharDatas from "../res/assets/ZZZ/skins.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
@@ -132,10 +133,12 @@ export class SceneBuilder implements ISceneBuilder {
         const zzzCharDataArray = zzzCharDatas as ZZZCharData[];
         const zzzSkinDataArray = zzzSkinCharDatas as ZZZCharData[];
         const wuwaCharDataArray = wuwaCharDatas as WuwaCharData[];
+        const wuwaSkinDataArray = wuwaSkinCharDatas as WuwaCharData[];
         charDataArray.sort((a, b) => b.id - a.id);
         genshinSkinDataArray.sort((a, b) => b.id - a.id);
         hsrSkinDataArray.sort((a, b) => b.id - a.id);
         zzzSkinDataArray.sort((a, b) => b.id - a.id);
+        wuwaSkinDataArray.sort((a, b) => b.id - a.id);
         hsrCharDataArray.sort((a, b) => b.id - a.id);
         zzzCharDataArray.sort((a, b) => b.id - a.id);
         wuwaCharDataArray.sort((a, b) => b.id - a.id);
@@ -154,7 +157,8 @@ export class SceneBuilder implements ISceneBuilder {
         const allSkinCharDataArray:  AllCharData[] = [
             ...genshinSkinDataArray,
             ...hsrSkinDataArray,
-            ...zzzSkinDataArray
+            ...zzzSkinDataArray,
+            ...wuwaSkinDataArray
         ];
         const miniSearchInstance = new miniSearch({
             fields: ["name"], // fields to index for full-text search
@@ -3109,6 +3113,54 @@ export class SceneBuilder implements ISceneBuilder {
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 }
+            } else if (tabMode == "WuWa" || firstDigit == 4) {
+                const skinChars = findAllCharsByName(wuwaSkinDataArray, chosenCharName);
+                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
+                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
+                        chosenChar = skinChars![0];
+                        skinMode = true;
+                        await createCharacter(chosenChar);
+
+                        let isNextSkin = false;
+                        if (skinChars!.length > 1) {
+                            isNextSkin = true;
+                        }
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
+                        let isNextSkin = true;
+                        let prevI: number = 0;
+                        for (let i = 0; i < skinChars!.length; i++) {
+                            if (chosenChar!.id === skinChars![i].id) {
+                                prevI = i;
+                            }
+                        }
+                        const temp = (prevI + 1) % skinChars!.length;
+                        if (temp == skinChars!.length - 1) {
+                            isNextSkin = false;
+                        }
+                        if (prevI == skinChars!.length - 1) {
+                            chosenChar = findCharByName(wuwaCharDataArray, chosenCharName);
+                            skinMode = false;
+                        } else {
+                            chosenChar = skinChars![temp];
+                            skinMode = true;
+                        }
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
+                        skinMode = false;
+                        chosenChar = findCharByName(wuwaCharDataArray, chosenCharName);
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                } else {
+                    skinMode = false;
+                    chosenChar = findCharById(wuwaCharDataArray, nextId!);
+                    await createCharacter(chosenChar);
+                    if (skinChars!.length > 0) {
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                }
             } else {
                 skinMode = false;
                 chosenChar = findCharByName(
@@ -3421,6 +3473,12 @@ export class SceneBuilder implements ISceneBuilder {
             }
         } else if (firstTabMode == "WuWa") {
             handleWuwaTabSwitch();
+            const skinChars = findAllCharsByName(wuwaSkinDataArray, chosenCharName);
+            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
+                chosenChar = skinChars![0];
+                skinMode = false;
+                createSkinButton(true, true, chosenChar!.name);
+            }
         }
 
         // if you want to use inspector, uncomment following line.
