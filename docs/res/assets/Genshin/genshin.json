@@ -1115,6 +1115,18 @@
     },
 	{
         "id": 10000100,
+        "name": "Yumemizuki Mizuki",
+        "weaponType": "Catalyst",
+        "element": "Anemo",
+        "gender": "Female",
+        "region": "Inazuma",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Yumemizuki Mizuki",
+        "image": "Genshin/Yumemizuki Mizuki.png",
+        "pmx": "Mizuki.pmx"
+    },
+	{
+        "id": 10000101,
         "name": "Iansan",
         "weaponType": "Polearm",
         "element": "Electro",
