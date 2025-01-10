@@ -454,5 +454,16 @@
         "directory": "res/chars/Genshin/Hu Tao/HuTaoCherriesSnow",
         "image": "Genshin/Hu Tao.png",
         "pmx": "胡桃-海灯节.pmx"
+    },
+	{
+        "id": 1000006,
+        "name": "Capitano",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Capitano/IlCapitano",
+        "image": "Genshin/Capitano.png",
+        "pmx": "Capitano.pmx"
     }
 ]

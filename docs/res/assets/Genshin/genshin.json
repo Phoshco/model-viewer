@@ -1210,8 +1210,8 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/Genshin/Capitano",
+        "directory": "res/chars/Genshin/Capitano/Capitano",
         "image": "Genshin/Capitano.png",
-        "pmx": "Capitano.pmx"
+        "pmx": "卡皮塔诺.pmx"
     }
 ]
