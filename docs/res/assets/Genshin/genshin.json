@@ -1137,8 +1137,19 @@
         "image": "Genshin/Iansan.png",
         "pmx": "Iansan.pmx"
     },
-    {
+	{
         "id": 1000000,
+        "name": "Dainsleif",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Dainsleif",
+        "image": "Genshin/Dainsleif.png",
+        "pmx": "戴因斯雷布.pmx"
+    },
+    {
+        "id": 1000001,
         "name": "Unknown God",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1149,7 +1160,7 @@
         "pmx": "Unknown God.pmx"
     },
     {
-        "id": 1000001,
+        "id": 1000002,
         "name": "Katheryne",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1160,7 +1171,7 @@
         "pmx": "Katheryne.pmx"
     },
     {
-        "id": 1000002,
+        "id": 1000003,
         "name": "La Signora",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1171,7 +1182,7 @@
         "pmx": "La Signora.pmx"
     },
     {
-        "id": 1000003,
+        "id": 1000004,
         "name": "Guizhong",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1182,7 +1193,7 @@
         "pmx": "FC式-归终.pmx"
     },
     {
-        "id": 1000004,
+        "id": 1000005,
         "name": "Dottore",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1193,7 +1204,7 @@
         "pmx": "Dottore Model.pmx"
     },
 	{
-        "id": 1000005,
+        "id": 1000006,
         "name": "Skirk",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1204,7 +1215,7 @@
         "pmx": "丝柯克.pmx"
     },
 	{
-        "id": 1000006,
+        "id": 1000007,
         "name": "Capitano",
         "weaponType": "Universal",
         "element": "Universal",
