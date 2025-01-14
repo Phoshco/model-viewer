@@ -1224,5 +1224,16 @@
         "directory": "res/chars/Genshin/Capitano/Capitano",
         "image": "Genshin/Capitano.png",
         "pmx": "卡皮塔诺.pmx"
+    },
+	{
+        "id": 1000008,
+        "name": "Xbalanque",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Xbalanque",
+        "image": "Genshin/Xbalanque.png",
+        "pmx": "Xbalanque.pmx"
     }
 ]
