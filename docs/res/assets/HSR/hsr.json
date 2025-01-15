@@ -671,6 +671,72 @@
         "pmx": "星穹铁道—忘归人.pmx"
     },
     {
+        "id": 20000062,
+        "name": "The Herta",
+        "weaponType": "Erudition",
+        "element": "Ice",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/The Herta",
+        "image": "HSR/The Herta.png",
+        "pmx": "星穹铁道—黑塔2.pmx"
+    },
+	{
+        "id": 20000063,
+        "name": "Aglaea",
+        "weaponType": "Remembrance",
+        "element": "Lightning",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Aglaea",
+        "image": "HSR/Aglaea.png",
+        "pmx": "星穹铁道—阿格莱雅2.pmx"
+    },
+	{
+        "id": 20000064,
+        "name": "Tribbie",
+        "weaponType": "Harmony",
+        "element": "Quantum",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Tribbie",
+        "image": "HSR/Tribbie.png",
+        "pmx": "缇宝.pmx"
+    },
+	{
+        "id": 20000065,
+        "name": "Mydei",
+        "weaponType": "Destruction",
+        "element": "Imaginary",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Mydei",
+        "image": "HSR/Mydei.png",
+        "pmx": "星穹铁道—万敌.pmx"
+    },
+	{
+        "id": 20000066,
+        "name": "Castorice",
+        "weaponType": "Remembrance",
+        "element": "Quantum",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Castorice",
+        "image": "HSR/Castorice.png",
+        "pmx": "星穹铁道—遐蝶2.pmx"
+    },
+	{
+        "id": 20000067,
+        "name": "Phainon",
+        "weaponType": "Remembrance",
+        "element": "Ice",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Phainon",
+        "image": "HSR/Phainon.png",
+        "pmx": "星穹铁道—白厄3.pmx"
+    },
+    {
         "id": 2000001,
         "name": "Mr. Reca",
         "weaponType": "Universal",
