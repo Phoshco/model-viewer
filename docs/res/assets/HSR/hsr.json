@@ -736,8 +736,19 @@
         "image": "HSR/Phainon.png",
         "pmx": "星穹铁道—白厄3.pmx"
     },
-    {
+	{
         "id": 2000001,
+        "name": "Cocolia",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Cocolia",
+        "image": "HSR/Cocolia.png",
+        "pmx": "可可利亚.pmx"
+    },
+    {
+        "id": 2000002,
         "name": "Mr. Reca",
         "weaponType": "Universal",
         "element": "Universal",
@@ -748,14 +759,14 @@
         "pmx": "芮克七代.pmx"
     },
     {
-        "id": 2000002,
-        "name": "Cocolia",
+        "id": 2000003,
+        "name": "Mem",
         "weaponType": "Universal",
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/HSR/Cocolia",
-        "image": "HSR/Cocolia.png",
-        "pmx": "可可利亚.pmx"
+        "directory": "res/chars/HSR/Mem",
+        "image": "HSR/Mem.png",
+        "pmx": "星穹铁道—迷迷.pmx"
     }
 ]
