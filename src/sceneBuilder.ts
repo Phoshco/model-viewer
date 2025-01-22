@@ -204,7 +204,7 @@ export class SceneBuilder implements ISceneBuilder {
                     fallbackItem = findCharByName(wuwaCharDataArray, results[0].name);
                     tabMode = "WuWa";
                 }
-                if (isLocal) {
+                if (!isLocal) {
 
                     try {
                         // Call without awaiting
@@ -700,7 +700,7 @@ export class SceneBuilder implements ISceneBuilder {
             scene.skipFrustumClipping = true;
             scene.blockMaterialDirtyMechanism = true;
             audioPlayer.mute();
-            if (isLocal) {
+            if (!isLocal) {
 
                 try {
                     // Call without awaiting
@@ -3340,7 +3340,7 @@ export class SceneBuilder implements ISceneBuilder {
                 scene.skipFrustumClipping = true;
                 scene.blockMaterialDirtyMechanism = true;
                 // audioPlayer.mute();
-                if (isLocal) {
+                if (!isLocal) {
 
                     try {
                         // Call without awaiting
