@@ -71,7 +71,7 @@ import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 // import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
 // import { MmdAmmoPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoPhysics";
 import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
-import {CounterAPI} from "counterapi";
+// import {CounterAPI} from "counterapi";
 import miniSearch from "minisearch";
 
 import extraCharDatas from "../res/assets/extras.json";
@@ -85,6 +85,7 @@ import zzzSkinCharDatas from "../res/assets/ZZZ/skins.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import type { ISceneBuilder } from "./baseRuntime";
 import { CustomLoadingScreen } from "./CustomLoadingScreen";
+import { FirebaseInstance } from "./fb";
 // import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
 
@@ -93,6 +94,7 @@ export class SceneBuilder implements ISceneBuilder {
         // for apply SDEF on shadow, outline, depth rendering
         SdefInjector.OverrideEngineCreateEffect(engine);
         const isLocal = window.location.hostname.includes("localhost");
+        const firebase = FirebaseInstance.GetInstance();
 
         // character json
         interface BaseCharData {
@@ -124,7 +126,7 @@ export class SceneBuilder implements ISceneBuilder {
         interface ExtraCharData extends BaseCharData {
         }
 
-        const counter = new CounterAPI();
+        // const counter = new CounterAPI();
         const extraDataArray = extraCharDatas as ExtraCharData[];
         const charDataArray = genshinCharDatas as GenshinCharData[];
         const genshinSkinDataArray = genshinSkinCharDatas as GenshinCharData[];
@@ -203,12 +205,16 @@ export class SceneBuilder implements ISceneBuilder {
                     tabMode = "WuWa";
                 }
                 if (!isLocal) {
-                    counter.up("phoshco", fallbackItem!.name).then((res) => {
-                        console.log(res);
-                    })
-                        .catch((error) => {
-                            console.error("Error occurred:", error);
+
+                    try {
+                        // Call without awaiting
+                        void firebase.countUp("phoshco", fallbackItem!.name).catch((error) => {
+                            console.error("Failed count: ", error);
                         });
+                    } catch (error) {
+                        console.error("Unexpected error during count: ", error);
+                    }
+
                 }
             } else {
                 fallbackItem = findCharByName(charDataArray, "Hu Tao");
@@ -695,12 +701,15 @@ export class SceneBuilder implements ISceneBuilder {
             scene.blockMaterialDirtyMechanism = true;
             audioPlayer.mute();
             if (!isLocal) {
-                counter.up("phoshco", "hoyo").then((res) => {
-                    console.log(res);
-                })
-                    .catch((error) => {
-                        console.error("Error occurred:", error);
+
+                try {
+                    // Call without awaiting
+                    void firebase.countUp("phoshco", "hoyo").catch((error) => {
+                        console.error("Failed count: ", error);
                     });
+                } catch (error) {
+                    console.error("Unexpected error during count: ", error);
+                }
             }
         });
 
@@ -3332,12 +3341,15 @@ export class SceneBuilder implements ISceneBuilder {
                 scene.blockMaterialDirtyMechanism = true;
                 // audioPlayer.mute();
                 if (!isLocal) {
-                    counter.up("phoshco", chosenChar.name).then((res) => {
-                        console.log(res);
-                    })
-                        .catch((error) => {
-                            console.error("Error occurred:", error);
+
+                    try {
+                        // Call without awaiting
+                        void firebase.countUp("phoshco", chosenChar.name).catch((error) => {
+                            console.error("Failed count: ", error);
                         });
+                    } catch (error) {
+                        console.error("Unexpected error during count: ", error);
+                    }
                 }
             });
         }

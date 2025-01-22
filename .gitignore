@@ -128,3 +128,4 @@ dist
 .pnp.*
 
 res/*
+src/fb.ts

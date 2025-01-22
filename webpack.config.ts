@@ -104,7 +104,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
     ],
     devServer: {
         host: "0.0.0.0",
-        port: 20310,
+        port: 20315,
         allowedHosts: "all",
         client: {
             logging: "none"
