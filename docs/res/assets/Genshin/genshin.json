@@ -1115,6 +1115,18 @@
     },
 	{
         "id": 10000100,
+        "name": "Lan Yan",
+        "weaponType": "Catalyst",
+        "element": "Anemo",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Lan Yan",
+        "image": "Genshin/Lan Yan.png",
+        "pmx": "蓝砚.pmx"
+    },
+	{
+        "id": 10000101,
         "name": "Yumemizuki Mizuki",
         "weaponType": "Catalyst",
         "element": "Anemo",
@@ -1126,7 +1138,7 @@
         "pmx": "Mizuki.pmx"
     },
 	{
-        "id": 10000101,
+        "id": 10000102,
         "name": "Iansan",
         "weaponType": "Polearm",
         "element": "Electro",

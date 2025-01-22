@@ -9,6 +9,30 @@
         "rarity": 5,
         "directory": "res/chars/ZZZ/Ellen/Ellen School",
         "image": "ZZZ/Ellen.png",
-        "pmx": "Ellen [School].bpmx"
+        "pmx": "艾莲.pmx"
+    },
+	{
+        "id": 30000012,
+        "name": "Nicole",
+        "weaponType": "Support",
+        "element": "Ether",
+        "gender": "Female",
+        "region": "Cunning Hares",
+        "rarity": 4,
+        "directory": "res/chars/ZZZ/Nicole/Nicole Skin",
+        "image": "ZZZ/Nicole.png",
+        "pmx": "妮可.pmx"
+    },
+    {
+        "id": 30000028,
+		"name": "Astra Yao",
+        "weaponType": "Support",
+        "element": "Ether",
+        "gender": "Female",
+        "region": "Stars of Lyra",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Astra Yao/Astra Yao Skin",
+        "image": "ZZZ/Astra Yao.png",
+        "pmx": "耀嘉音.pmx"
     }
 ]

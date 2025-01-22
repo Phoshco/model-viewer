@@ -151,7 +151,7 @@
         "gender": "Female",
         "region": "Cunning Hares",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Nicole",
+        "directory": "res/chars/ZZZ/Nicole/Nicole",
         "image": "ZZZ/Nicole.png",
         "pmx": "妮可.pmx"
     },
@@ -334,5 +334,17 @@
         "directory": "res/chars/ZZZ/Hoshimi Miyabi",
         "image": "ZZZ/Hoshimi Miyabi.png",
         "pmx": "Hoshimi Miyabi.pmx"
+    },
+    {
+        "id": 30000028,
+		"name": "Astra Yao",
+        "weaponType": "Support",
+        "element": "Ether",
+        "gender": "Female",
+        "region": "Stars of Lyra",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Astra Yao/Astra Yao",
+        "image": "ZZZ/Astra Yao.png",
+        "pmx": "耀嘉音.pmx"
     }
 ]
