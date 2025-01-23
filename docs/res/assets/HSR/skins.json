@@ -31,5 +31,27 @@
         "directory": "res/chars/HSR/Feixiao/Nocape",
         "image": "HSR/Feixiao.png",
         "pmx": "星穹铁道—飞霄（无外套）.pmx"
+    },
+	{
+        "id": 20000964,
+        "name": "Tribbie",
+        "weaponType": "Harmony",
+        "element": "Quantum",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Tribbie",
+        "image": "HSR/Tribbie.png",
+        "pmx": "缇安.pmx"
+    },
+	{
+        "id": 20000064,
+        "name": "Tribbie",
+        "weaponType": "Harmony",
+        "element": "Quantum",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Tribbie",
+        "image": "HSR/Tribbie.png",
+        "pmx": "缇宁.pmx"
     }
 ]

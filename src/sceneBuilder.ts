@@ -3463,33 +3463,33 @@ export class SceneBuilder implements ISceneBuilder {
         if (firstTabMode == "Genshin") {
             const skinChars = findAllCharsByName(genshinSkinDataArray, chosenCharName);
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                chosenChar = skinChars![0];
+                const chosenCharSk = skinChars![0];
                 skinMode = false;
-                createSkinButton(true, true, chosenChar!.name);
+                createSkinButton(true, true, chosenCharSk!.name);
             }
         } else if (firstTabMode == "HSR") {
             handleHSRTabSwitch();
             const skinChars = findAllCharsByName(hsrSkinDataArray, chosenCharName);
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                chosenChar = skinChars![0];
+                const chosenCharSk = skinChars![0];
                 skinMode = false;
-                createSkinButton(true, true, chosenChar!.name);
+                createSkinButton(true, true, chosenCharSk!.name);
             }
         } else if (firstTabMode == "ZZZ") {
             handleZZZTabSwitch();
             const skinChars = findAllCharsByName(zzzSkinDataArray, chosenCharName);
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                chosenChar = skinChars![0];
+                const chosenCharSk = skinChars![0];
                 skinMode = false;
-                createSkinButton(true, true, chosenChar!.name);
+                createSkinButton(true, true, chosenCharSk!.name);
             }
         } else if (firstTabMode == "WuWa") {
             handleWuwaTabSwitch();
             const skinChars = findAllCharsByName(wuwaSkinDataArray, chosenCharName);
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                chosenChar = skinChars![0];
+                const chosenCharSk = skinChars![0];
                 skinMode = false;
-                createSkinButton(true, true, chosenChar!.name);
+                createSkinButton(true, true, chosenCharSk!.name);
             }
         }
 
