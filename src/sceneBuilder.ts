@@ -208,7 +208,7 @@ export class SceneBuilder implements ISceneBuilder {
 
                     try {
                         // Call without awaiting
-                        void firebase.countUp("phoshco", fallbackItem!.name).catch((error) => {
+                        void firebase.countUp("phoshco", fallbackItem!.name.replace(/\./g, "")).catch((error) => {
                             console.error("Failed count: ", error);
                         });
                     } catch (error) {
@@ -3344,7 +3344,7 @@ export class SceneBuilder implements ISceneBuilder {
 
                     try {
                         // Call without awaiting
-                        void firebase.countUp("phoshco", chosenChar.name).catch((error) => {
+                        void firebase.countUp("phoshco", chosenChar.name.replace(/\./g, "")).catch((error) => {
                             console.error("Failed count: ", error);
                         });
                     } catch (error) {
