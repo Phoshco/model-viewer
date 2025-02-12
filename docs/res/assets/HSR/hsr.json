@@ -751,7 +751,7 @@
         "id": 2000002,
         "name": "Mr. Reca",
         "weaponType": "Universal",
-        "element": "Universal",
+        "element": "Remembrance",
         "gender": "Male",
         "rarity": 6,
         "directory": "res/chars/HSR/Mr. Reca",
