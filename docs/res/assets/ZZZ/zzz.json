@@ -346,5 +346,17 @@
         "directory": "res/chars/ZZZ/Astra Yao/Astra Yao",
         "image": "ZZZ/Astra Yao.png",
         "pmx": "耀嘉音.pmx"
+    },
+    {
+        "id": 30000029,
+		"name": "Evelyn Chevalier",
+        "weaponType": "Attack",
+        "element": "Fire",
+        "gender": "Female",
+        "region": "Stars of Lyra",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Evelyn Chevalier",
+        "image": "ZZZ/Evelyn Chevalier.png",
+        "pmx": "Evelyn.pmx"
     }
 ]
