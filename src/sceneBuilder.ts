@@ -529,9 +529,9 @@ export class SceneBuilder implements ISceneBuilder {
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
         charScreenElement = chosenChar!.element;
-        if (firstTabMode == "ZZZ") {
-            charScreenMode = false;
-        }
+        // if (firstTabMode == "ZZZ") {
+        //     charScreenMode = false;
+        // }
         if (firstTabMode == "HSR") {
             charScreenElement = "HSR";
         } else if (firstTabMode != "Genshin") {
@@ -924,7 +924,7 @@ export class SceneBuilder implements ISceneBuilder {
         charScreenModeButton.height = iconWidthHeight;
         charScreenModeButton.thickness = 0;
         advancedTexture.addControl(charScreenModeButton);
-        if (firstTabMode != "Genshin" && firstTabMode != "HSR") {
+        if (firstTabMode == "WuWa") {
             charScreenModeButton.isVisible = false;
         }
         charScreenModeButton.onPointerClickObservable.add(function() {
@@ -933,7 +933,7 @@ export class SceneBuilder implements ISceneBuilder {
                 if (!isMobile) {
                     particleSystem.stop();
                 }
-            } else if ((tabMode == "Genshin" || tabMode == "HSR") && !charScreenMode) {
+            } else if ((tabMode == "Genshin" || tabMode == "HSR" || tabMode == "ZZZ") && !charScreenMode) {
                 modelMeshSt.setEnabled(true);
                 if (!isMobile) {
                     particleSystem.start();
@@ -3227,7 +3227,7 @@ export class SceneBuilder implements ISceneBuilder {
             } else {
                 throw new Error("Chosen character or its properties are undefined");
             }
-            if (tabMode != "Genshin" && tabMode != "HSR") {// || chosenChar.element == "Universal") {
+            if (tabMode == "WuWa") {// || chosenChar.element == "Universal") {
                 charScreenMode = false;
                 charScreenModeButton.isVisible = false;
             } else {
@@ -3235,7 +3235,7 @@ export class SceneBuilder implements ISceneBuilder {
                 charScreenElement = chosenChar.element;
                 charScreenModeButton.isVisible = true;
             }
-            if (tabMode == "WuWa") {
+            if (tabMode == "WuWa" || tabMode == "ZZZ") {
                 charScreenMode = true;
                 charScreenElement = "Universal";
             } else if (tabMode == "HSR") {

@@ -768,5 +768,16 @@
         "directory": "res/chars/HSR/Mem",
         "image": "HSR/Mem.png",
         "pmx": "星穹铁道—迷迷.pmx"
+    },
+    {
+        "id": 2000004,
+        "name": "Tribios",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Tribios",
+        "image": "HSR/Tribios.png",
+        "pmx": "大缇宝.pmx"
     }
 ]
