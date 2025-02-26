@@ -716,17 +716,28 @@
     },
 	{
         "id": 20000066,
+        "name": "Anaxa",
+        "weaponType": "Erudition",
+        "element": "Wind",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Anaxa",
+        "image": "HSR/Anaxa.png",
+        "pmx": "Anaxa.pmx"
+    },
+	{
+        "id": 20000067,
         "name": "Castorice",
         "weaponType": "Remembrance",
         "element": "Quantum",
         "gender": "Female",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/HSR/Castorice",
         "image": "HSR/Castorice.png",
         "pmx": "星穹铁道—遐蝶2.pmx"
     },
 	{
-        "id": 20000067,
+        "id": 20000068,
         "name": "Phainon",
         "weaponType": "Remembrance",
         "element": "Ice",
@@ -735,6 +746,17 @@
         "directory": "res/chars/HSR/Phainon",
         "image": "HSR/Phainon.png",
         "pmx": "星穹铁道—白厄3.pmx"
+    },
+	{
+        "id": 20000069,
+        "name": "Hyacine",
+        "weaponType": "Remembrance",
+        "element": "Physical",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Hyacine",
+        "image": "HSR/Hyacine.png",
+        "pmx": "星穹铁道—风堇3.pmx"
     },
 	{
         "id": 2000001,

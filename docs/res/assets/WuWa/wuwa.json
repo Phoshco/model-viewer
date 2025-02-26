@@ -330,6 +330,17 @@
         "pmx": "Phoebe.pmx"
     },
 	{
+        "id": 40000031,
+        "name": "Zani",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Zani",
+        "image": "WuWa/Zani.png",
+        "pmx": "赞妮更软的披风.pmx"
+    },
+	{
         "id": 4000000,
         "name": "Rosemary",
         "weaponType": "Universal",
