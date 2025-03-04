@@ -309,17 +309,6 @@
     },
 	{
         "id": 40000028,
-        "name": "Brant",
-        "weaponType": "Sword",
-        "element": "Fusion",
-        "gender": "Male",
-        "rarity": 5,
-        "directory": "res/chars/WuWa/Brant",
-        "image": "WuWa/Brant.png",
-        "pmx": "Brant.pmx"
-    },
-	{
-        "id": 40000029,
         "name": "Phoebe",
         "weaponType": "Rectifier",
         "element": "Spectro",
@@ -328,6 +317,17 @@
         "directory": "res/chars/WuWa/Phoebe",
         "image": "WuWa/Phoebe.png",
         "pmx": "Phoebe.pmx"
+    },
+	{
+        "id": 40000029,
+        "name": "Brant",
+        "weaponType": "Sword",
+        "element": "Fusion",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Brant",
+        "image": "WuWa/Brant.png",
+        "pmx": "Brant.bpmx"
     },
 	{
         "id": 40000031,
