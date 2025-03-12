@@ -358,5 +358,29 @@
         "directory": "res/chars/ZZZ/Evelyn Chevalier",
         "image": "ZZZ/Evelyn Chevalier.png",
         "pmx": "Evelyn.pmx"
+    },
+    {
+        "id": 30000030,
+		"name": "Pulchra Fellini",
+        "weaponType": "Stun",
+        "element": "Physical",
+        "gender": "Female",
+        "region": "Sons of Calydon",
+        "rarity": 4,
+        "directory": "res/chars/ZZZ/Pulchra Fellini",
+        "image": "ZZZ/Pulchra.png",
+        "pmx": "波可娜.pmx"
+    },
+    {
+        "id": 30000031,
+		"name": "Soldier 0 - Anby",
+        "weaponType": "Attack",
+        "element": "Electric",
+        "gender": "Female",
+        "region": "Defense Force - Silver Squad",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Soldier 0 - Anby",
+        "image": "ZZZ/Soldier 0.png",
+        "pmx": "安比.pmx"
     }
 ]
