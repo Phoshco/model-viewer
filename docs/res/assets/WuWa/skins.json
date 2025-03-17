@@ -9,5 +9,16 @@
         "directory": "res/chars/WuWa/Jinhsi/JinhsiSkin",
         "image": "WuWa/Jinhsi.png",
         "pmx": "鸣潮_今汐_桃夭灼灼.pmx"
+    },
+	{
+        "id": 40000026,
+        "name": "Carlotta",
+        "weaponType": "Pistols",
+        "element": "Glacio",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Carlotta/DarkCarlotta",
+        "image": "WuWa/Carlotta.png",
+        "pmx": "Carlotta.pmx"
     }
 ]
