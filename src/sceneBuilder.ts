@@ -2831,6 +2831,9 @@ export class SceneBuilder implements ISceneBuilder {
                         extraDataArray;
                         if (tabMode == "Genshin" || tabMode == "None") {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/Genshin/Paimon.png");
+                            charButton.onPointerEnterObservable.add(function() {
+                                hoverCharName.text = "Paimon";
+                            });
                             charButton.onPointerClickObservable.add(async function() {
                                 charPanel.isVisible = !charPanel.isVisible;
                                 if (chosenCharName != "Paimon") {
@@ -2839,6 +2842,9 @@ export class SceneBuilder implements ISceneBuilder {
                             });
                         } else if (tabMode == "HSR") {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/HSR/Pom-Pom.png");
+                            charButton.onPointerEnterObservable.add(function() {
+                                hoverCharName.text = "Pom-Pom";
+                            });
                             charButton.onPointerClickObservable.add(async function() {
                                 charPanel.isVisible = !charPanel.isVisible;
                                 if (chosenCharName != "Pom-Pom") {
@@ -2847,6 +2853,9 @@ export class SceneBuilder implements ISceneBuilder {
                             });
                         } else if (tabMode == "ZZZ") {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/ZZZ/Bangboo.png");
+                            charButton.onPointerEnterObservable.add(function() {
+                                hoverCharName.text = "Bangboo";
+                            });
                             charButton.onPointerClickObservable.add(async function() {
                                 charPanel.isVisible = !charPanel.isVisible;
                                 if (chosenCharName != "Bangboo") {
@@ -2855,6 +2864,9 @@ export class SceneBuilder implements ISceneBuilder {
                             });
                         } else {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/WuWa/Abby.png");
+                            charButton.onPointerEnterObservable.add(function() {
+                                hoverCharName.text = "Abby";
+                            });
                             charButton.onPointerClickObservable.add(async function() {
                                 charPanel.isVisible = !charPanel.isVisible;
                                 if (chosenCharName != "Abby") {
@@ -2862,6 +2874,9 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         }
+                        charButton.onPointerOutObservable.add(function() {
+                            hoverCharName.text = "";
+                        });
                         charButton.thickness = 0;
                         charButton.paddingBottom = charButton.paddingLeft = charButton.paddingRight = charButton.paddingTop = 5;
                         charButton.cornerRadius = 10;
