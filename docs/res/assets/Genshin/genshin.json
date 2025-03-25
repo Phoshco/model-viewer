@@ -1150,6 +1150,18 @@
         "pmx": "Iansan.pmx"
     },
 	{
+        "id": 10000103,
+        "name": "Varesa",
+        "weaponType": "Catalyst",
+        "element": "Electro",
+        "gender": "Female",
+        "region": "Natlan",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Varesa",
+        "image": "Genshin/Varesa.png",
+        "pmx": "Varesa.pmx"
+    },
+	{
         "id": 1000000,
         "name": "Dainsleif",
         "weaponType": "Universal",
