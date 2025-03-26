@@ -1162,6 +1162,18 @@
         "pmx": "Varesa.pmx"
     },
 	{
+        "id": 10000104,
+        "name": "Ifa",
+        "weaponType": "Catalyst",
+        "element": "Anemo",
+        "gender": "Male",
+        "region": "Natlan",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Ifa",
+        "image": "Genshin/Ifa.png",
+        "pmx": "伊法.pmx"
+    },
+	{
         "id": 1000000,
         "name": "Dainsleif",
         "weaponType": "Universal",
