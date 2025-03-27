@@ -330,6 +330,17 @@
         "pmx": "Brant.bpmx"
     },
 	{
+        "id": 40000030,
+        "name": "Cantarella",
+        "weaponType": "Rectifier",
+        "element": "Havoc",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Cantarella",
+        "image": "WuWa/Cantarella.png",
+        "pmx": "Cantarella.pmx"
+    },
+	{
         "id": 40000031,
         "name": "Zani",
         "weaponType": "Universal",
