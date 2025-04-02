@@ -346,10 +346,21 @@
         "weaponType": "Universal",
         "element": "Universal",
         "gender": "Female",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/WuWa/Zani",
         "image": "WuWa/Zani.png",
         "pmx": "赞妮更软的披风.pmx"
+    },
+	{
+        "id": 40000032,
+        "name": "Cartethyia",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Cartethyia",
+        "image": "WuWa/Cartethyia.png",
+        "pmx": "Cartethyia.pmx"
     },
 	{
         "id": 4000000,
