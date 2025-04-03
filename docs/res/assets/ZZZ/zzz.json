@@ -382,5 +382,17 @@
         "directory": "res/chars/ZZZ/Soldier 0 - Anby",
         "image": "ZZZ/Soldier 0.png",
         "pmx": "安比.pmx"
+    },
+    {
+        "id": 30000032,
+		"name": "Trigger",
+        "weaponType": "Stun",
+        "element": "Electric",
+        "gender": "Female",
+        "region": "Obol Squad",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Trigger",
+        "image": "ZZZ/Trigger.png",
+        "pmx": "Trigger.pmx"
     }
 ]
