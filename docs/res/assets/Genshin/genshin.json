@@ -1174,6 +1174,17 @@
         "pmx": "伊法.pmx"
     },
 	{
+        "id": 10000106,
+        "name": "Skirk",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Skirk",
+        "image": "Genshin/Skirk.png",
+        "pmx": "丝柯克.pmx"
+    },
+	{
         "id": 1000000,
         "name": "Dainsleif",
         "weaponType": "Universal",
@@ -1241,17 +1252,6 @@
     },
 	{
         "id": 1000006,
-        "name": "Skirk",
-        "weaponType": "Universal",
-        "element": "Universal",
-        "gender": "Female",
-        "rarity": 6,
-        "directory": "res/chars/Genshin/Skirk",
-        "image": "Genshin/Skirk.png",
-        "pmx": "丝柯克.pmx"
-    },
-	{
-        "id": 1000007,
         "name": "Capitano",
         "weaponType": "Universal",
         "element": "Universal",
@@ -1262,7 +1262,7 @@
         "pmx": "卡皮塔诺.pmx"
     },
 	{
-        "id": 1000008,
+        "id": 1000007,
         "name": "Xbalanque",
         "weaponType": "Universal",
         "element": "Universal",

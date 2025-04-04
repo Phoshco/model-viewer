@@ -343,8 +343,8 @@
 	{
         "id": 40000031,
         "name": "Zani",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Gauntlets",
+        "element": "Spectro",
         "gender": "Female",
         "rarity": 5,
         "directory": "res/chars/WuWa/Zani",
@@ -372,5 +372,16 @@
         "directory": "res/chars/WuWa/Rosemary",
         "image": "WuWa/Rosemary.png",
         "pmx": "Rosemary.pmx"
+    },
+	{
+        "id": 4000001,
+        "name": "Geshu Lin",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Geshu Lin",
+        "image": "WuWa/Geshu Lin.png",
+        "pmx": "Geshu Lin.pmx"
     }
 ]
