@@ -740,12 +740,23 @@
         "id": 20000068,
         "name": "Hyacine",
         "weaponType": "Remembrance",
-        "element": "Physical",
+        "element": "Wind",
         "gender": "Female",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/HSR/Hyacine",
         "image": "HSR/Hyacine.png",
         "pmx": "星穹铁道—风堇3.pmx"
+    },
+	{
+        "id": 20000069,
+        "name": "Cipher",
+        "weaponType": "Nihility",
+        "element": "Quantum",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Cipher",
+        "image": "HSR/Cipher.png",
+        "pmx": "星穹铁道—赛飞儿3.pmx"
     },
 	{
         "id": 20000070,
