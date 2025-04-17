@@ -42,17 +42,12 @@ import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector";
 // import { MeshBuilder } from "@babylonjs/core/Meshes";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
-import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 // import { DepthOfFieldEffectBlurLevel } from "@babylonjs/core/PostProcesses";
 import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
 import { Scene } from "@babylonjs/core/scene";
 import * as gui from "@babylonjs/gui";
-import havokPhysics from "@babylonjs/havok";
 // import { Inspector } from "@babylonjs/inspector";
 import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMaterial";
-// import type { MmdWasmInstance } from "babylon-mmd";
-// import { getMmdWasmInstance } from "babylon-mmd";
-// import { MmdWasmAnimation, MmdWasmInstanceTypeSPR, MmdWasmPhysics, MmdWasmRuntime } from "babylon-mmd";
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
 // import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
 import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
@@ -66,11 +61,16 @@ import { StreamAudioPlayer } from "babylon-mmd/esm/Runtime/Audio/streamAudioPlay
 import { MmdCamera } from "babylon-mmd/esm/Runtime/mmdCamera";
 import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
+// import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
+// import havokPhysics from "@babylonjs/havok";
+// import type { MmdWasmInstance } from "babylon-mmd";
+// import { getMmdWasmInstance } from "babylon-mmd";
+// import { MmdWasmAnimation, MmdWasmInstanceTypeSPR, MmdWasmPhysics, MmdWasmRuntime } from "babylon-mmd";
 // import ammoPhysics from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
 // import ammo from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
 // import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
 // import { MmdAmmoPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoPhysics";
-import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
+// import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
 // import {CounterAPI} from "counterapi";
 import miniSearch from "minisearch";
 
@@ -459,13 +459,13 @@ export class SceneBuilder implements ISceneBuilder {
         // create mmd runtime with physics
         let mmdRuntime: MmdRuntime;// | MmdWasmRuntime;
         // let wasmInstance: MmdWasmInstance;
-        const physicsModeOn = false;
+        // const physicsModeOn = false;
 
-        if (!physicsModeOn) {
-            mmdRuntime = new MmdRuntime(scene);
-        } else {
-            mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
-        }
+        // if (!physicsModeOn) {
+        mmdRuntime = new MmdRuntime(scene);
+        // } else {
+        //     mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
+        // }
         //mmdRuntime = new MmdRuntime(scene);
         mmdRuntime.loggingEnabled = true;
         mmdRuntime.register(scene);
@@ -560,9 +560,9 @@ export class SceneBuilder implements ISceneBuilder {
         // physics
         promises.push((async(): Promise<void> => {
             updateLoadingText(3, "Loading physics engine...");
-            const physicsInstance = await havokPhysics();
-            const physicsPlugin = new HavokPlugin(true, physicsInstance);
-            physicsPlugin;
+            // const physicsInstance = await havokPhysics();
+            // const physicsPlugin = new HavokPlugin(true, physicsInstance);
+            // physicsPlugin;
             // const physicsInstance = await ammoPhysics();
             // const physicsPlugin = new MmdAmmoJSPlugin(true, physicsInstance);
             // scene.enablePhysics(new Vector3(0, -98, 0), physicsPlugin);
@@ -2966,11 +2966,11 @@ export class SceneBuilder implements ISceneBuilder {
             mmdCamera.restoreState();
             mmdRuntime.unregister(scene);
 
-            if (!physicsModeOn) {
-                mmdRuntime = new MmdRuntime(scene);
-            } else {
-                mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
-            }
+            // if (!physicsModeOn) {
+            mmdRuntime = new MmdRuntime(scene);
+            // } else {
+            //     mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
+            // }
             mmdRuntime.loggingEnabled = true;
             mmdRuntime.register(scene);
 
