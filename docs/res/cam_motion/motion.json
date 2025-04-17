@@ -1,0 +1,27 @@
+[
+    {
+      "name": "Specialist",
+      "audioPlayerFile": "res/cam_motion/Specialist (Never End ver.)/music001.mp3",
+      "camMotionFile": "res/cam_motion/Specialist (Never End ver.)/CameraMAIN2.bvmd",
+      "modelMotionFile": "res/cam_motion/Specialist (Never End ver.)/mmd_Specialist_motion.bvmd"
+    },
+    {
+      "name": "Classic",
+      "audioPlayerFile": "res/cam_motion/Classic/MMDClassic.mp3",
+      "camMotionFile": "res/cam_motion/Classic/MMDClassicCamera.bvmd",
+      "modelMotionFile": "res/cam_motion/Classic/MMDClassicMotion.bvmd"
+    },
+    {
+      "name": "Renai",
+      "audioPlayerFile": "res/cam_motion/恋サーFullモーションセット/恋愛サーキュレーション.mp3",
+      "camMotionFile": "res/cam_motion/恋サーFullモーションセット/Camera for 恋爱循环.bvmd",
+      "modelMotionFile": "res/cam_motion/恋サーFullモーションセット/恋爱循环+.bvmd"
+    },
+    {
+      "name": "105",
+      "audioPlayerFile": "res/cam_motion/热爱105C的你/热爱105℃的你音频.wav",
+      "camMotionFile": "res/cam_motion/热爱105C的你/camera.bvmd",
+      "modelMotionFile": "res/cam_motion/热爱105C的你/热爱105℃的你.bvmd"
+    }
+  ]
+  

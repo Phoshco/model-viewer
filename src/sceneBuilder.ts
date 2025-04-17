@@ -83,6 +83,7 @@ import wuwaSkinCharDatas from "../res/assets/WuWa/skins.json";
 import wuwaCharDatas from "../res/assets/WuWa/wuwa.json";
 import zzzSkinCharDatas from "../res/assets/ZZZ/skins.json";
 import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
+import motionConfig from "../res/cam_motion/motion.json";
 import type { ISceneBuilder } from "./baseRuntime";
 import { CustomLoadingScreen } from "./CustomLoadingScreen";
 import { FirebaseInstance } from "./fb";
@@ -326,7 +327,7 @@ export class SceneBuilder implements ISceneBuilder {
         // materialBuilder.loadOutlineRenderingProperties = (): void => { /* do nothing */ };
 
         const scene = new Scene(engine);
-        let bg_bool = false;
+        let bg_bool = true;
         if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
             bg_bool = true;
             scene.clearColor = new Color4(0.001, 0.001, 0.001, 1.0);
@@ -470,16 +471,14 @@ export class SceneBuilder implements ISceneBuilder {
         mmdRuntime.loggingEnabled = true;
         mmdRuntime.register(scene);
 
-        // const audioPlayerFile = "res/cam_motion/Specialist (Never End ver.)/music001.mp3";
-        // const camMotionFile = "res/cam_motion/Specialist (Never End ver.)/CameraMAIN2.bvmd";
-        // const modelMotionFile = "res/cam_motion/Specialist (Never End ver.)/mmd_Specialist_motion.bvmd";
-
-        const audioPlayerFile = "res/cam_motion/Classic/MMDClassic.mp3";
-        const camMotionFile = "res/cam_motion/Classic/MMDClassicCamera.bvmd";
-        const modelMotionFile = "res/cam_motion/Classic/MMDClassicMotion.bvmd";
+        // Randomly pick name from the list from motionConfig json
+        let motionName = motionConfig[Math.floor(Math.random() * motionConfig.length)].name;
+        let audioPlayerFile = motionConfig.find((item) => item.name === motionName)!.audioPlayerFile;
+        let camMotionFile = motionConfig.find((item) => item.name === motionName)!.camMotionFile;
+        let modelMotionFile = motionConfig.find((item) => item.name === motionName)!.modelMotionFile;
 
         // set audio player
-        const audioPlayer = new StreamAudioPlayer(scene);
+        let audioPlayer = new StreamAudioPlayer(scene);
         audioPlayer.preservesPitch = false;
         // song
         audioPlayer.source = audioPlayerFile;
@@ -643,7 +642,7 @@ export class SceneBuilder implements ISceneBuilder {
         // const theCharAnimation = physicsModeOn
         //     ? new MmdWasmAnimation(loadResults[1], wasmInstance!, scene)
         //     : (loadResults[1] as MmdAnimation);
-        const theCharAnimation = loadResults[1] as MmdAnimation;
+        let theCharAnimation = loadResults[1] as MmdAnimation;
 
         // for scaling camera to model height
         let headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
@@ -892,12 +891,16 @@ export class SceneBuilder implements ISceneBuilder {
         darkButton.width = iconWidthHeight;
         darkButton.height = iconWidthHeight;
         darkButton.thickness = 0;
+        if (charScreenMode) {
+            darkButton.isEnabled = false;
+        };
         advancedTexture.addControl(darkButton);
         function changeDarkMode(): void {
             if (bg_bool) {
                 scene.clearColor = new Color4(1, 1, 1, 1.0);
                 layer.texture = light_bg;
                 darkButton.image!.source = "res/assets/dark_mode.png";
+                motionButton.image!.source = "res/assets/note.png";
                 if (skinButton != undefined) {
                     skinButton.image!.source = "res/assets/alter.png";
                 }
@@ -905,6 +908,7 @@ export class SceneBuilder implements ISceneBuilder {
             } else {
                 layer.texture = dark_bg;
                 darkButton.image!.source = "res/assets/light_mode.png";
+                motionButton.image!.source = "res/assets/note_light.png";
                 if (skinButton != undefined) {
                     skinButton.image!.source = "res/assets/alter_light.png";
                 }
@@ -933,13 +937,38 @@ export class SceneBuilder implements ISceneBuilder {
                 if (!isMobile) {
                     particleSystem.stop();
                 }
+                darkButton.isEnabled = true;
             } else if ((tabMode == "Genshin" || tabMode == "HSR" || tabMode == "ZZZ") && !charScreenMode) {
                 modelMeshSt.setEnabled(true);
                 if (!isMobile) {
                     particleSystem.start();
                 }
+                darkButton.isEnabled = false;
             }
             charScreenMode = !charScreenMode;
+        });
+
+        const motionButton = gui.Button.CreateImageOnlyButton("but", "res/assets/note.png");
+        motionButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        motionButton.left = "10px";
+        motionButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        motionButton.top = isMobile ? "160px" : "110px";
+        motionButton.width = iconWidthHeight;
+        motionButton.height = iconWidthHeight;
+        motionButton.thickness = 0;
+        advancedTexture.addControl(motionButton);
+        if (bg_bool) {
+            motionButton.image!.source = "res/assets/note_light.png";
+        }
+        motionButton.onPointerClickObservable.add(function() {
+            // choose the next name in the motionConfig list using the current motionName as the starting point
+            const currentIndex = motionConfig.findIndex((item) => item.name === motionName);
+            const nextIndex = (currentIndex + 1) % motionConfig.length;
+            motionName = motionConfig[nextIndex].name;
+            audioPlayerFile = motionConfig.find((item) => item.name === motionName)!.audioPlayerFile;
+            camMotionFile = motionConfig.find((item) => item.name === motionName)!.camMotionFile;
+            modelMotionFile = motionConfig.find((item) => item.name === motionName)!.modelMotionFile;
+            changeMotion();
         });
 
         const charNameText = new gui.TextBlock();
@@ -2936,6 +2965,54 @@ export class SceneBuilder implements ISceneBuilder {
             previousSeekTimeFrame: 0,
             wasMuted: false
         };
+
+        // function to change the audio, camMotion and modelMotion
+        async function changeMotion(): Promise<void> {
+            mmdRuntime.pauseAnimation();
+            mmdRuntime.seekAnimation(0, true);
+            audioPlayer.dispose();
+
+            // set audio player
+            audioPlayer = new StreamAudioPlayer(scene);
+            audioPlayer.preservesPitch = false;
+            // song
+            audioPlayer.source = audioPlayerFile;
+            mmdRuntime.setAudioPlayer(audioPlayer);
+            // create youtube like player control
+            mmdPlayerControl.dispose();
+            mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
+            mmdPlayerControl.showPlayerControl();
+
+            loadingTexts = [];
+            engine.displayLoadingUI();
+            promises = [];
+
+            // camera motion
+            promises.push(bvmdLoader.loadAsync("motion", camMotionFile,
+                (event) => updateLoadingText(0, `Loading camera... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`))
+            );
+
+            // model motion
+            promises.push(bvmdLoader.loadAsync("motion", modelMotionFile,
+                (event) => updateLoadingText(1, `Loading motion... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`))
+            );
+
+            loadResults = await Promise.all(promises);
+            theCharAnimation = loadResults[1] as MmdAnimation;
+            mmdModel.addAnimation(theCharAnimation);
+            mmdModel.setAnimation("motion");
+
+            mmdCamera.addAnimation(loadResults[0]);
+            mmdCamera.restoreState();
+            mmdCamera.position.addToRef(
+                Vector3.TransformCoordinatesFromFloatsToRef(0, 0, mmdCamera.distance, rotationMatrix, cameraEyePosition),
+                cameraEyePosition
+            );
+            mmdRuntime.setCamera(mmdCamera);
+            mmdCamera.setAnimation("motion");
+
+            engine.hideLoadingUI();
+        }
 
         async function changeCharacter(nextCharacter?: string, nextId?: number): Promise<void> {
             if (!nextCharacter) {
