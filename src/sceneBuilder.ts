@@ -944,6 +944,9 @@ export class SceneBuilder implements ISceneBuilder {
                     particleSystem.start();
                 }
                 darkButton.isEnabled = false;
+                if (!bg_bool) {
+                    changeDarkMode();
+                }
             }
             charScreenMode = !charScreenMode;
         });
@@ -2969,7 +2972,9 @@ export class SceneBuilder implements ISceneBuilder {
         // function to change the audio, camMotion and modelMotion
         async function changeMotion(): Promise<void> {
             mmdRuntime.pauseAnimation();
+            mmdCamera.storeState();
             mmdRuntime.seekAnimation(0, true);
+            const oldVolume = audioPlayer.volume;
             audioPlayer.dispose();
 
             // set audio player
@@ -2980,6 +2985,7 @@ export class SceneBuilder implements ISceneBuilder {
             mmdRuntime.setAudioPlayer(audioPlayer);
             // create youtube like player control
             mmdPlayerControl.dispose();
+            audioPlayer.volume = oldVolume;
             mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
             mmdPlayerControl.showPlayerControl();
 
@@ -3468,7 +3474,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         const rotationMatrix = new Matrix();
         const cameraNormal = new Vector3();
-        const cameraEyePosition = new Vector3();
+        let cameraEyePosition = new Vector3();
         const headRelativePosition = new Vector3();
 
         scene.onBeforeRenderObservable.add(() => {
@@ -3477,7 +3483,7 @@ export class SceneBuilder implements ISceneBuilder {
 
             Vector3.TransformNormalFromFloatsToRef(0, 0, 1, rotationMatrix, cameraNormal);
 
-            mmdCamera.position.addToRef(
+            cameraEyePosition = mmdCamera.position.addToRef(
                 Vector3.TransformCoordinatesFromFloatsToRef(0, 0, mmdCamera.distance, rotationMatrix, cameraEyePosition),
                 cameraEyePosition
             );
