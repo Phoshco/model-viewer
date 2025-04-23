@@ -406,5 +406,17 @@
         "directory": "res/chars/ZZZ/Vivian",
         "image": "ZZZ/Vivian.png",
         "pmx": "薇薇安.pmx"
+    },
+    {
+        "id": 30000036,
+		"name": "Yi Xuan",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Yi Xuan",
+        "image": "ZZZ/Yi Xuan.png",
+        "pmx": "Yi Xuan.pmx"
     }
 ]
