@@ -394,5 +394,17 @@
         "directory": "res/chars/ZZZ/Trigger",
         "image": "ZZZ/Trigger.png",
         "pmx": "Trigger.pmx"
+    },
+    {
+        "id": 30000033,
+		"name": "Vivian Banshee",
+        "weaponType": "Anomaly",
+        "element": "Ether",
+        "gender": "Female",
+        "region": "Mockingbird",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Vivian",
+        "image": "ZZZ/Vivian.png",
+        "pmx": "薇薇安.pmx"
     }
 ]
