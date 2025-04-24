@@ -409,14 +409,14 @@
     },
     {
         "id": 30000036,
-		"name": "Yi Xuan",
+		"name": "Yixuan",
         "weaponType": "Universal",
         "element": "Universal",
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Yi Xuan",
-        "image": "ZZZ/Yi Xuan.png",
+        "directory": "res/chars/ZZZ/Yixuan",
+        "image": "ZZZ/Yixuan.png",
         "pmx": "Yi Xuan.pmx"
     }
 ]
