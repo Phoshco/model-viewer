@@ -1174,6 +1174,18 @@
         "pmx": "伊法.pmx"
     },
 	{
+        "id": 10000105,
+        "name": "Escoffier",
+        "weaponType": "Polearm",
+        "element": "Cryo",
+        "gender": "Female",
+        "region": "Fontaine",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Escoffier",
+        "image": "Genshin/Escoffier.png",
+        "pmx": "Escoffier.pmx"
+    },
+	{
         "id": 10000106,
         "name": "Skirk",
         "weaponType": "Universal",
