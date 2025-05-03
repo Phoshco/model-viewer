@@ -410,11 +410,11 @@
     {
         "id": 30000036,
 		"name": "Yixuan",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Rupture",
+        "element": "Ether",
         "gender": "Female",
-        "region": "Universal",
-        "rarity": 6,
+        "region": "Yunkui Summit",
+        "rarity": 5,
         "directory": "res/chars/ZZZ/Yixuan",
         "image": "ZZZ/Yixuan.png",
         "pmx": "Yi Xuan.pmx"
