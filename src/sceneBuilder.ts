@@ -2502,6 +2502,24 @@ export class SceneBuilder implements ISceneBuilder {
             hoverCharName.text = "";
         });
 
+        const ruptureImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Rupture.png");
+        ruptureImage.height = "40px";
+        ruptureImage.width = "40px";
+        ruptureImage.left = 292;
+        ruptureImage.thickness = 0;
+        ruptureImage.cornerRadius = 5;
+        ruptureImage.isVisible = false;
+        filterBar2.addControl(ruptureImage);
+        ruptureImage.onPointerClickObservable.add(function() {
+            checkIfInZZZFilter(ruptureImage, "Rupture", "weaponType");
+        });
+        ruptureImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Rupture";
+        });
+        ruptureImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
         function hideZZZElements(): void {
             zzzFourStarImage.isVisible = false;
             zzzFiveStarImage.isVisible = false;
@@ -2515,6 +2533,7 @@ export class SceneBuilder implements ISceneBuilder {
             defenseImage.isVisible = false;
             stunImage.isVisible = false;
             supportImage.isVisible = false;
+            ruptureImage.isVisible = false;
             sortModeChanger.isVisible = false;
         }
 
@@ -2531,6 +2550,7 @@ export class SceneBuilder implements ISceneBuilder {
             defenseImage.isVisible = true;
             stunImage.isVisible = true;
             supportImage.isVisible = true;
+            ruptureImage.isVisible = true;
             sortModeChanger.isVisible = true;
         }
 
@@ -2548,6 +2568,7 @@ export class SceneBuilder implements ISceneBuilder {
             defenseImage.background = "rgba(0,0,0,0)";
             stunImage.background = "rgba(0,0,0,0)";
             supportImage.background = "rgba(0,0,0,0)";
+            ruptureImage.background = "rgba(0,0,0,0)";
         }
 
         const aeroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Aero.png");
