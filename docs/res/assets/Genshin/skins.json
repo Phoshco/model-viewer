@@ -465,5 +465,29 @@
         "directory": "res/chars/Genshin/Capitano/IlCapitano",
         "image": "Genshin/Capitano.png",
         "pmx": "Capitano.pmx"
+    },
+	{
+        "id": 10000040,
+        "name": "Sangonomiya Kokomi",
+        "weaponType": "Catalyst",
+        "element": "Hydro",
+        "gender": "Female",
+        "region": "Inazuma",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Sangonomiya Kokomi/脉动",
+        "image": "Genshin/Sangonomiya Kokomi.png",
+        "pmx": "珊瑚宫心海.pmx"
+    },
+	{
+        "id": 10000046,
+        "name": "Yae Miko",
+        "weaponType": "Catalyst",
+        "element": "Electro",
+        "gender": "Female",
+        "region": "Inazuma",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Yae Miko/脉动",
+        "image": "Genshin/Yae Miko.png",
+        "pmx": "八重神子.pmx"
     }
 ]

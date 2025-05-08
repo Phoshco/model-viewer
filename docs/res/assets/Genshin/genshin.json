@@ -691,7 +691,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Sangonomiya Kokomi",
+        "directory": "res/chars/Genshin/Sangonomiya Kokomi/Sangonomiya Kokomi",
         "image": "Genshin/Sangonomiya Kokomi.png",
         "pmx": "珊瑚宫心海.pmx"
     },
@@ -929,7 +929,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Yae Miko",
+        "directory": "res/chars/Genshin/Yae Miko/Yae Miko",
         "image": "Genshin/Yae Miko.png",
         "pmx": "八重神子.pmx"
     },
