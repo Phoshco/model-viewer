@@ -407,6 +407,18 @@
         "image": "ZZZ/Vivian.png",
         "pmx": "薇薇安.pmx"
     },
+	{
+        "id": 30000034,
+		"name": "Hugo Vlad",
+        "weaponType": "Attack",
+        "element": "Ice",
+        "gender": "Male",
+        "region": "Mockingbird",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Hugo",
+        "image": "ZZZ/Hugo.png",
+        "pmx": "雨果.pmx"
+    },
     {
         "id": 30000036,
 		"name": "Yixuan",
