@@ -955,7 +955,7 @@ export class SceneBuilder implements ISceneBuilder {
         motionButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         motionButton.left = "10px";
         motionButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
-        motionButton.top = isMobile ? "160px" : "110px";
+        motionButton.top = isMobile ? "210px" : "110px";
         motionButton.width = iconWidthHeight;
         motionButton.height = iconWidthHeight;
         motionButton.thickness = 0;
