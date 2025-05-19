@@ -353,6 +353,17 @@
     },
 	{
         "id": 40000032,
+        "name": "Ciaccona",
+        "weaponType": "Pistols",
+        "element": "Aero",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Ciaccona",
+        "image": "WuWa/Ciaccona.png",
+        "pmx": "鸣潮_夏空1.031.pmx"
+    },
+	{
+        "id": 40000033,
         "name": "Cartethyia",
         "weaponType": "Universal",
         "element": "Universal",
@@ -361,6 +372,17 @@
         "directory": "res/chars/WuWa/Cartethyia",
         "image": "WuWa/Cartethyia.png",
         "pmx": "Cartethyia.pmx"
+    },
+	{
+        "id": 40000040,
+        "name": "Phrolova",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Phrolova",
+        "image": "WuWa/Phrolova.png",
+        "pmx": "弗洛洛.pmx"
     },
 	{
         "id": 4000000,
