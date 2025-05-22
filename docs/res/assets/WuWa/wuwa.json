@@ -385,7 +385,7 @@
         "pmx": "弗洛洛.pmx"
     },
 	{
-        "id": 4000000,
+        "id": 4000001,
         "name": "Rosemary",
         "weaponType": "Universal",
         "element": "Universal",
@@ -396,7 +396,7 @@
         "pmx": "Rosemary.pmx"
     },
 	{
-        "id": 4000001,
+        "id": 4000002,
         "name": "Geshu Lin",
         "weaponType": "Universal",
         "element": "Universal",

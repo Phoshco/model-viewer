@@ -770,6 +770,17 @@
         "pmx": "星穹铁道—白厄3.pmx"
     },
 	{
+        "id": 20000071,
+        "name": "Cyrene",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Cyrene",
+        "image": "HSR/Cyrene.png",
+        "pmx": "星穹铁道—昔涟.pmx"
+    },
+	{
         "id": 2000001,
         "name": "Cocolia",
         "weaponType": "Universal",
