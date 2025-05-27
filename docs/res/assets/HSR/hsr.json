@@ -761,16 +761,16 @@
 	{
         "id": 20000070,
         "name": "Phainon",
-        "weaponType": "Remembrance",
-        "element": "Ice",
+        "weaponType": "Destruction",
+        "element": "Physical",
         "gender": "Male",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/HSR/Phainon",
         "image": "HSR/Phainon.png",
         "pmx": "星穹铁道—白厄3.pmx"
     },
 	{
-        "id": 20000071,
+        "id": 20000073,
         "name": "Cyrene",
         "weaponType": "Universal",
         "element": "Universal",

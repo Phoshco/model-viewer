@@ -1164,6 +1164,11 @@ export class SceneBuilder implements ISceneBuilder {
                     hideWuwaElements();
                 }
                 tabMode = "HSR";
+                if (sortModeKey == "id") {
+                    hsrSortModeChanger.image!.source = "res/assets/release.png";
+                } else if (sortModeKey == "name") {
+                    hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
+                }
                 filteredArray = filterBy(hsrCharDataArray, hsrFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
                 showAllHSRElements();
@@ -1269,6 +1274,12 @@ export class SceneBuilder implements ISceneBuilder {
         });
         searchImage.onPointerOutObservable.add(function() {
             searchImage.image!.source = "res/assets/search.png";
+        });
+        searchImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Wuthering Waves";
+        });
+        searchImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
         });
 
         const searchTextbox = new gui.InputText();
