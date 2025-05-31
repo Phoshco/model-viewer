@@ -823,5 +823,16 @@
         "directory": "res/chars/HSR/Tribios",
         "image": "HSR/Tribios.png",
         "pmx": "大缇宝.pmx"
+    },
+    {
+        "id": 2000005,
+        "name": "Flame Reaver",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Flame Reaver",
+        "image": "HSR/Flame Reaver.png",
+        "pmx": "盗火行者.pmx"
     }
 ]
