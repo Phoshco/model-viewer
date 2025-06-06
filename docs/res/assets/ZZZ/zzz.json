@@ -420,6 +420,18 @@
         "pmx": "雨果.pmx"
     },
     {
+        "id": 30000035,
+		"name": "Pan Yinhu",
+        "weaponType": "Defense",
+        "element": "Physical",
+        "gender": "Male",
+        "region": "Yunkui Summit",
+        "rarity": 4,
+        "directory": "res/chars/ZZZ/Pan Yinhu",
+        "image": "ZZZ/Pan Yinhu.png",
+        "pmx": "Pan Yinhu.pmx"
+    },
+    {
         "id": 30000036,
 		"name": "Yixuan",
         "weaponType": "Rupture",
