@@ -19,7 +19,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Alhaitham",
+        "directory": "res/chars/Genshin/Alhaitham/Alhaitham",
         "image": "Genshin/Alhaitham.png",
         "pmx": "艾尔海森.pmx"
     },
@@ -427,7 +427,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Kaveh",
+        "directory": "res/chars/Genshin/Kaveh/Kaveh",
         "image": "Genshin/Kaveh.png",
         "pmx": "卡维.pmx"
     },
@@ -1187,12 +1187,24 @@
     },
 	{
         "id": 10000106,
+        "name": "Dahlia",
+        "weaponType": "Sword",
+        "element": "Hydro",
+        "gender": "Male",
+        "region": "Mondstadt",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Dahlia",
+        "image": "Genshin/Dahlia.png",
+        "pmx": "塔利雅.pmx"
+    },
+	{
+        "id": 10000107,
         "name": "Skirk",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Sword",
+        "element": "Cryo",
         "gender": "Female",
-        "rarity": 6,
-        "directory": "res/chars/Genshin/Skirk",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Skirk/Skirk",
         "image": "Genshin/Skirk.png",
         "pmx": "丝柯克.pmx"
     },
