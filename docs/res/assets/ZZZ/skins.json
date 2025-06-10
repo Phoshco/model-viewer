@@ -34,5 +34,65 @@
         "directory": "res/chars/ZZZ/Astra Yao/Astra Yao Skin",
         "image": "ZZZ/Astra Yao.png",
         "pmx": "耀嘉音.pmx"
+    },
+	{
+        "id": 30000900,
+        "name": "Belle",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Proxies",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Belle/Suibian",
+        "image": "ZZZ/Belle.png",
+        "pmx": "Belle_Suibianguan.bpmx"
+    },
+    {
+        "id": 30000901,
+        "name": "Wise",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "region": "Proxies",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Wise/Suibian",
+        "image": "ZZZ/Wise.png",
+        "pmx": "Wise_Suibianguan.bpmx"
+    },
+	{
+        "id": 30000000,
+        "name": "Belle",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Proxies",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Belle/Swimsuit",
+        "image": "ZZZ/Belle.png",
+        "pmx": "Belle_Swimwear.bpmx"
+    },
+    {
+        "id": 30000001,
+        "name": "Wise",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "region": "Proxies",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Wise/Swimsuit",
+        "image": "ZZZ/Wise.png",
+        "pmx": "Wise_Swimwear.bpmx"
+    },
+	{
+        "id": 30000036,
+		"name": "Yixuan",
+        "weaponType": "Rupture",
+        "element": "Ether",
+        "gender": "Female",
+        "region": "Yunkui Summit",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Yixuan/Skin",
+        "image": "ZZZ/Yixuan.png",
+        "pmx": "Yixuan_skin.bpmx"
     }
 ]

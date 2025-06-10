@@ -7,7 +7,7 @@
         "gender": "Female",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Belle",
+        "directory": "res/chars/ZZZ/Belle/Belle",
         "image": "ZZZ/Belle.png",
         "pmx": "铃.pmx"
     },
@@ -19,7 +19,7 @@
         "gender": "Male",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Wise",
+        "directory": "res/chars/ZZZ/Wise/Wise",
         "image": "ZZZ/Wise.png",
         "pmx": "哲.pmx"
     },
@@ -439,8 +439,44 @@
         "gender": "Female",
         "region": "Yunkui Summit",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Yixuan",
+        "directory": "res/chars/ZZZ/Yixuan/Yixuan",
         "image": "ZZZ/Yixuan.png",
         "pmx": "Yixuan.pmx"
+    },
+    {
+        "id": 30000038,
+		"name": "Ukinami Yuzuha",
+        "weaponType": "Support",
+        "element": "Physical",
+        "gender": "Female",
+        "region": "Spook Shack",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Ukinami Yuzuha",
+        "image": "ZZZ/Ukinami Yuzuha.png",
+        "pmx": "Ukinami Yuzuha.bpmx"
+    },
+    {
+        "id": 30000039,
+		"name": "Alice Thymefield",
+        "weaponType": "Anomaly",
+        "element": "Physical",
+        "gender": "Female",
+        "region": "Spook Shack",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Alice Thymefield",
+        "image": "ZZZ/Alice Thymefield.png",
+        "pmx": "Alice Thymefield.bpmx"
+    },
+    {
+        "id": 30000040,
+		"name": "Komano Manato",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Komano Manato",
+        "image": "ZZZ/Komano Manato.png",
+        "pmx": "Komano Manato.bpmx"
     }
 ]
