@@ -478,5 +478,17 @@
         "directory": "res/chars/ZZZ/Komano Manato",
         "image": "ZZZ/Komano Manato.png",
         "pmx": "Komano Manato.bpmx"
+    },
+    {
+        "id": 3000002,
+		"name": "Sweety",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Sweety",
+        "image": "ZZZ/Sweety.png",
+        "pmx": "红豆.pmx"
     }
 ]
