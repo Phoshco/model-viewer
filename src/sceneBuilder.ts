@@ -3052,6 +3052,8 @@ export class SceneBuilder implements ISceneBuilder {
             engine.hideLoadingUI();
         }
 
+        let firstDigitGlobal = 0;
+
         async function changeCharacter(nextCharacter?: string, nextId?: number): Promise<void> {
             if (!nextCharacter) {
                 return;
@@ -3102,6 +3104,7 @@ export class SceneBuilder implements ISceneBuilder {
             let firstDigit = 0;
             if (tabMode == "None") {
                 firstDigit = getFirstDigit(nextId!);
+                firstDigitGlobal = firstDigit;
             }
 
             if (chosenCharName == "Paimon" || chosenCharName == "Pom-Pom" || chosenCharName == "Bangboo" || chosenCharName == "Abby") {
@@ -3362,15 +3365,17 @@ export class SceneBuilder implements ISceneBuilder {
                 charScreenModeButton.isVisible = false;
             } else {
                 charScreenMode = true;
-                charScreenElement = chosenChar.element;
                 charScreenModeButton.isVisible = true;
             }
-            if (tabMode == "WuWa" || tabMode == "ZZZ") {
+            if (tabMode == "WuWa" || tabMode == "ZZZ" || tabMode == "None" && (firstDigitGlobal == 4 || firstDigitGlobal == 3)) {
                 charScreenMode = true;
                 charScreenElement = "Universal";
-            } else if (tabMode == "HSR") {
+            } else if (tabMode == "HSR" || tabMode == "None" && (firstDigitGlobal == 2)) {
                 charScreenMode = true;
                 charScreenElement = "HSR";
+            } else if (tabMode == "Genshin" || tabMode == "None" && (firstDigitGlobal == 1)) {
+                charScreenMode = true;
+                charScreenElement = chosenChar.element;
             }
 
             if (charScreenMode) {
