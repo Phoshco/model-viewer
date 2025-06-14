@@ -94,5 +94,29 @@
         "directory": "res/chars/ZZZ/Yixuan/Skin",
         "image": "ZZZ/Yixuan.png",
         "pmx": "仪玄.pmx"
+    },
+    {
+        "id": 30000038,
+		"name": "Ukinami Yuzuha",
+        "weaponType": "Support",
+        "element": "Physical",
+        "gender": "Female",
+        "region": "Spook Shack",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Ukinami Yuzuha/Yuzuha_skin",
+        "image": "ZZZ/Ukinami Yuzuha.png",
+        "pmx": "Yuzuha.pmx"
+    },
+    {
+        "id": 30000039,
+		"name": "Alice Thymefield",
+        "weaponType": "Anomaly",
+        "element": "Physical",
+        "gender": "Female",
+        "region": "Spook Shack",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Alice Thymefield/Alice_skin",
+        "image": "ZZZ/Alice Thymefield.png",
+        "pmx": "Alice.pmx"
     }
 ]
