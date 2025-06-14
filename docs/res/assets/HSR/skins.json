@@ -53,5 +53,16 @@
         "directory": "res/chars/HSR/Tribbie",
         "image": "HSR/Tribbie.png",
         "pmx": "缇宁.pmx"
+    },
+	{
+        "id": 20000070,
+        "name": "Phainon",
+        "weaponType": "Destruction",
+        "element": "Physical",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Phainon/Phainon_alter",
+        "image": "HSR/Phainon.png",
+        "pmx": "Phainon.pmx"
     }
 ]

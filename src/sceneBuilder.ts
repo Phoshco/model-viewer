@@ -662,7 +662,7 @@ export class SceneBuilder implements ISceneBuilder {
                 theHeight = mmdCameraRoot.position.y;
             });
 
-            scene.onBeforeRenderObservable.add(() => {
+            scene.onBeforeRenderObservable.addOnce(() => {
                 bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
                 // bodyBone!.getFinalMatrix()!.multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
                 boneWorldMatrix.getTranslationToRef(directionalLight.position);
@@ -3447,7 +3447,7 @@ export class SceneBuilder implements ISceneBuilder {
                     theHeight = mmdCameraRoot.position.y;
                 });
 
-                scene.onBeforeRenderObservable.add(() => {
+                scene.onBeforeRenderObservable.addOnce(() => {
                     bodyBone!.getWorldMatrixToRef(boneWorldMatrix).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrix);
                     boneWorldMatrix.getTranslationToRef(directionalLight.position);
                     directionalLight.position.y -= 10 * worldScale;

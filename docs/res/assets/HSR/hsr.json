@@ -721,7 +721,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Castorice",
+        "directory": "res/chars/HSR/Castorice/Castorice",
         "image": "HSR/Castorice.png",
         "pmx": "星穹铁道—遐蝶2.pmx"
     },
@@ -765,9 +765,31 @@
         "element": "Physical",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Phainon",
+        "directory": "res/chars/HSR/Phainon/Phainon",
         "image": "HSR/Phainon.png",
         "pmx": "星穹铁道—白厄3.pmx"
+    },
+	{
+        "id": 20000071,
+        "name": "Archer",
+        "weaponType": "Quantum",
+        "element": "The Hunt",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Archer",
+        "image": "HSR/Archer.png",
+        "pmx": "Archer.pmx"
+    },
+	{
+        "id": 20000072,
+        "name": "Saber",
+        "weaponType": "Destruction",
+        "element": "Wind",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Saber",
+        "image": "HSR/Saber.png",
+        "pmx": "Saber.pmx"
     },
 	{
         "id": 20000073,
