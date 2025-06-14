@@ -374,6 +374,50 @@
         "pmx": "卡提希娅.pmx"
     },
 	{
+        "id": 40000034,
+        "name": "Lupa",
+        "weaponType": "Broadblade",
+        "element": "Fusion",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Lupa",
+        "image": "WuWa/Lupa.png",
+        "pmx": "Lupa.pmx"
+    },
+	{
+        "id": 40000035,
+        "name": "Augusta",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Augusta",
+        "image": "WuWa/Augusta.png",
+        "pmx": "Augusta.pmx"
+    },
+	{
+        "id": 40000036,
+        "name": "Iuno",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Iuno",
+        "image": "WuWa/Iuno.png",
+        "pmx": "Iuno.pmx"
+    },
+	{
+        "id": 40000037,
+        "name": "Buling",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Buling",
+        "image": "WuWa/Buling.png",
+        "pmx": "Buling.pmx"
+    },
+	{
         "id": 40000040,
         "name": "Phrolova",
         "weaponType": "Universal",
