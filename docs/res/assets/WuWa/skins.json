@@ -31,5 +31,16 @@
         "directory": "res/chars/WuWa/Sanhua/Sanhua skin",
         "image": "WuWa/Sanhua.png",
         "pmx": "Sanhua.pmx"
+    },
+	{
+        "id": 40000033,
+        "name": "Cartethyia",
+        "weaponType": "Sword",
+        "element": "Aero",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Cartethyia/Fleurdelys",
+        "image": "WuWa/Cartethyia.png",
+        "pmx": "Fleurdelys.pmx"
     }
 ]
