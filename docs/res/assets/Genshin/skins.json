@@ -515,6 +515,17 @@
         "pmx": "卡维.pmx"
     },
 	{
+        "id": 10001007,
+        "name": "Skirk",
+        "weaponType": "Sword",
+        "element": "Cryo",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Skirk/Skirk",
+        "image": "Genshin/Skirk.png",
+        "pmx": "丝柯克_黑.pmx"
+    },
+	{
         "id": 10000107,
         "name": "Skirk",
         "weaponType": "Sword",
