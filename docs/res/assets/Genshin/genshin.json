@@ -1209,6 +1209,17 @@
         "pmx": "丝柯克.pmx"
     },
 	{
+        "id": 10000108,
+        "name": "Ineffa",
+        "weaponType": "Polearm",
+        "element": "Electro",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Ineffa",
+        "image": "Genshin/Ineffa.png",
+        "pmx": "Ineffa.pmx"
+    },
+	{
         "id": 1000000,
         "name": "Dainsleif",
         "weaponType": "Universal",
