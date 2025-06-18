@@ -1209,17 +1209,6 @@
         "pmx": "丝柯克.pmx"
     },
 	{
-        "id": 10000108,
-        "name": "Ineffa",
-        "weaponType": "Polearm",
-        "element": "Electro",
-        "gender": "Female",
-        "rarity": 5,
-        "directory": "res/chars/Genshin/Ineffa",
-        "image": "Genshin/Ineffa.png",
-        "pmx": "Ineffa.pmx"
-    },
-	{
         "id": 1000000,
         "name": "Dainsleif",
         "weaponType": "Universal",
@@ -1306,5 +1295,16 @@
         "directory": "res/chars/Genshin/Xbalanque",
         "image": "Genshin/Xbalanque.png",
         "pmx": "Xbalanque.pmx"
+    },
+	{
+        "id": 1000008,
+        "name": "Direidyth",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Direidyth",
+        "image": "Genshin/Direidyth.png",
+        "pmx": "Direidyth.pmx"
     }
 ]
