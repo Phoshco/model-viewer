@@ -481,6 +481,18 @@
     },
     {
         "id": 3000002,
+		"name": "Ye Shiyuan",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Ye Shiyuan",
+        "image": "ZZZ/Ye Shiyuan.png",
+        "pmx": "Ye Shiyuan.pmx"
+    },
+    {
+        "id": 3000003,
 		"name": "Sweety",
         "weaponType": "Universal",
         "element": "Universal",

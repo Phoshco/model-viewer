@@ -103,7 +103,7 @@
         "gender": "Male",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Bennett",
+        "directory": "res/chars/Genshin/Bennett/Bennett",
         "image": "Genshin/Bennett.png",
         "pmx": "班尼特.pmx"
     },
