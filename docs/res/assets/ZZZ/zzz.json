@@ -443,6 +443,18 @@
         "image": "ZZZ/Yixuan.png",
         "pmx": "Yixuan.pmx"
     },
+	{
+        "id": 30000037,
+	"name": "Ju Fufu",
+        "weaponType": "Stun",
+        "element": "Fire",
+        "gender": "Female",
+        "region": "Yunkui Summit",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Ju Fufu",
+        "image": "ZZZ/Ju Fufu.png",
+        "pmx": "Ju Fufu.pmx"
+    },
     {
         "id": 30000038,
 		"name": "Ukinami Yuzuha",
