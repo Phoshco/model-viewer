@@ -64,5 +64,16 @@
         "directory": "res/chars/HSR/Phainon/Phainon_alter",
         "image": "HSR/Phainon.png",
         "pmx": "Phainon.pmx"
+    },
+    {
+        "id": 20000051,
+        "name": "Firefly",
+        "weaponType": "Destruction",
+        "element": "Fire",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Firefly/Firefly_skin",
+        "image": "HSR/Firefly.png",
+        "pmx": "Firefly.pmx"
     }
 ]

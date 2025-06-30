@@ -793,6 +793,17 @@
     },
 	{
         "id": 20000073,
+        "name": "Hysilens",
+        "weaponType": "Physical",
+        "element": "Nihility",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Hysilens",
+        "image": "HSR/Hysilens.png",
+        "pmx": "Hysilens.pmx"
+    },
+	{
+        "id": 20000074,
         "name": "Cyrene",
         "weaponType": "Universal",
         "element": "Universal",
@@ -856,5 +867,16 @@
         "directory": "res/chars/HSR/Flame Reaver",
         "image": "HSR/Flame Reaver.png",
         "pmx": "盗火行者.pmx"
+    },
+    {
+        "id": 2000006,
+        "name": "Lancer",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Lancer",
+        "image": "HSR/Lancer.png",
+        "pmx": "Lancer.pmx"
     }
 ]
