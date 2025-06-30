@@ -382,10 +382,21 @@
         "rarity": 5,
         "directory": "res/chars/WuWa/Lupa",
         "image": "WuWa/Lupa.png",
-        "pmx": "Lupa.pmx"
+        "pmx": "Lupa.bpmx"
     },
 	{
         "id": 40000035,
+        "name": "Phrolova",
+        "weaponType": "Rectifier",
+        "element": "Havoc",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Phrolova",
+        "image": "WuWa/Phrolova.png",
+        "pmx": "弗洛洛.pmx"
+    },
+	{
+        "id": 40000036,
         "name": "Augusta",
         "weaponType": "Universal",
         "element": "Universal",
@@ -396,7 +407,7 @@
         "pmx": "Augusta.pmx"
     },
 	{
-        "id": 40000036,
+        "id": 40000037,
         "name": "Iuno",
         "weaponType": "Universal",
         "element": "Universal",
@@ -407,7 +418,7 @@
         "pmx": "Iuno.pmx"
     },
 	{
-        "id": 40000037,
+        "id": 40000038,
         "name": "Buling",
         "weaponType": "Universal",
         "element": "Universal",
@@ -416,17 +427,6 @@
         "directory": "res/chars/WuWa/Buling",
         "image": "WuWa/Buling.png",
         "pmx": "Buling.pmx"
-    },
-	{
-        "id": 40000040,
-        "name": "Phrolova",
-        "weaponType": "Universal",
-        "element": "Universal",
-        "gender": "Female",
-        "rarity": 6,
-        "directory": "res/chars/WuWa/Phrolova",
-        "image": "WuWa/Phrolova.png",
-        "pmx": "弗洛洛.pmx"
     },
 	{
         "id": 4000001,
