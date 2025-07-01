@@ -462,7 +462,7 @@
         "element": "Physical",
         "gender": "Female",
         "region": "Spook Shack",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/ZZZ/Ukinami Yuzuha/Ukinami Yuzuha",
         "image": "ZZZ/Ukinami Yuzuha.png",
         "pmx": "Ukinami Yuzuha.bpmx"
@@ -474,7 +474,7 @@
         "element": "Physical",
         "gender": "Female",
         "region": "Spook Shack",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/ZZZ/Alice Thymefield/Alice Thymefield",
         "image": "ZZZ/Alice Thymefield.png",
         "pmx": "Alice Thymefield.bpmx"

@@ -794,8 +794,8 @@
 	{
         "id": 20000073,
         "name": "Hysilens",
-        "weaponType": "Physical",
-        "element": "Nihility",
+        "weaponType": "Nihility",
+        "element": "Physical",
         "gender": "Female",
         "rarity": 5,
         "directory": "res/chars/HSR/Hysilens",
