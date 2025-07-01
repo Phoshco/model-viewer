@@ -804,6 +804,17 @@
     },
 	{
         "id": 20000074,
+        "name": "Cerydra",
+        "weaponType": "Harmony",
+        "element": "Wind",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Cerydra",
+        "image": "HSR/Cerydra.png",
+        "pmx": "Cerydra.pmx"
+    },
+	{
+        "id": 20000075,
         "name": "Cyrene",
         "weaponType": "Universal",
         "element": "Universal",

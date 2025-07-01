@@ -491,6 +491,18 @@
         "image": "ZZZ/Komano Manato.png",
         "pmx": "Komano Manato.pmx"
     },
+	{
+        "id": 3000001,
+		"name": "Orchidea",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Orchidea",
+        "image": "ZZZ/Orchidea.png",
+        "pmx": "Orchidea.pmx"
+    },
     {
         "id": 3000002,
 		"name": "Ye Shiyuan",
