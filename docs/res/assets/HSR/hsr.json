@@ -879,8 +879,19 @@
         "image": "HSR/Flame Reaver.png",
         "pmx": "盗火行者.pmx"
     },
-    {
+	{
         "id": 2000006,
+        "name": "Lygus",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Lygus",
+        "image": "HSR/Lygus.png",
+        "pmx": "Lygus.pmx"
+    },
+    {
+        "id": 2000007,
         "name": "Lancer",
         "weaponType": "Universal",
         "element": "Universal",
