@@ -492,6 +492,18 @@
         "pmx": "Komano Manato.pmx"
     },
 	{
+        "id": 3000000,
+		"name": "Asha",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Asha",
+        "image": "ZZZ/Asha.png",
+        "pmx": "Asha.pmx"
+    },
+	{
         "id": 3000001,
 		"name": "Orchidea",
         "weaponType": "Universal",
