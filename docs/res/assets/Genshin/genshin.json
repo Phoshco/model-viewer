@@ -1232,14 +1232,14 @@
     },
     {
         "id": 1000001,
-        "name": "Unknown God",
+        "name": "Asmoday",
         "weaponType": "Universal",
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/Genshin/Unknown God",
-        "image": "Genshin/Unknown God.png",
-        "pmx": "Unknown God.pmx"
+        "directory": "res/chars/Genshin/Asmoday",
+        "image": "Genshin/Asmoday.png",
+        "pmx": "Asmoday.pmx"
     },
     {
         "id": 1000002,
