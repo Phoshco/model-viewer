@@ -835,8 +835,19 @@
         "image": "HSR/Cocolia.png",
         "pmx": "可可利亚.pmx"
     },
-    {
+	{
         "id": 2000002,
+        "name": "Siobhan",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Siobhan",
+        "image": "HSR/Siobhan.png",
+        "pmx": "Siobhan.pmx"
+    },
+    {
+        "id": 2000003,
         "name": "Mr. Reca",
         "weaponType": "Universal",
         "element": "Remembrance",
@@ -847,7 +858,7 @@
         "pmx": "芮克七代.pmx"
     },
     {
-        "id": 2000003,
+        "id": 2000004,
         "name": "Mem",
         "weaponType": "Universal",
         "element": "Universal",
@@ -858,7 +869,7 @@
         "pmx": "星穹铁道—迷迷.pmx"
     },
     {
-        "id": 2000004,
+        "id": 2000005,
         "name": "Tribios",
         "weaponType": "Universal",
         "element": "Universal",
@@ -869,7 +880,7 @@
         "pmx": "大缇宝.pmx"
     },
     {
-        "id": 2000005,
+        "id": 2000006,
         "name": "Flame Reaver",
         "weaponType": "Universal",
         "element": "Universal",
@@ -880,7 +891,7 @@
         "pmx": "盗火行者.pmx"
     },
 	{
-        "id": 2000006,
+        "id": 2000007,
         "name": "Lygus",
         "weaponType": "Universal",
         "element": "Universal",
@@ -891,7 +902,7 @@
         "pmx": "Lygus.pmx"
     },
     {
-        "id": 2000007,
+        "id": 2000008,
         "name": "Lancer",
         "weaponType": "Universal",
         "element": "Universal",
