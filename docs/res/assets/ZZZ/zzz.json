@@ -482,14 +482,26 @@
     {
         "id": 30000040,
 		"name": "Komano Manato",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Stun",
+        "element": "Fire",
         "gender": "Male",
         "region": "Universal",
         "rarity": 6,
         "directory": "res/chars/ZZZ/Komano Manato",
         "image": "ZZZ/Komano Manato.png",
         "pmx": "Komano Manato.pmx"
+    },
+	{
+        "id": 30000041,
+		"name": "Chinatsu Remiel",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Chinatsu Remiel",
+        "image": "ZZZ/Chinatsu Remiel.png",
+        "pmx": "Chinatsu Remiel.pmx"
     },
 	{
         "id": 3000000,
