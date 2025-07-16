@@ -69,7 +69,7 @@
         "rarity": 5,
         "directory": "res/chars/ZZZ/Belle/Swimsuit",
         "image": "ZZZ/Belle.png",
-        "pmx": "Belle_Swimwear.bpmx"
+        "pmx": "Belle_Swimwear.pmx"
     },
     {
         "id": 30000001,
@@ -81,7 +81,7 @@
         "rarity": 5,
         "directory": "res/chars/ZZZ/Wise/Swimsuit",
         "image": "ZZZ/Wise.png",
-        "pmx": "Wise_Swimwear.bpmx"
+        "pmx": "Wise_Swimwear.pmx"
     },
 	{
         "id": 30000036,
