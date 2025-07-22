@@ -550,5 +550,29 @@
         "directory": "res/chars/ZZZ/Sweety",
         "image": "ZZZ/Sweety.png",
         "pmx": "红豆.pmx"
+    },
+    {
+        "id": 3000004,
+		"name": "Sarah",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Sarah",
+        "image": "ZZZ/Sarah.png",
+        "pmx": "Sarah.pmx"
+    },
+    {
+        "id": 3000005,
+		"name": "Isolde",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Isolde",
+        "image": "ZZZ/Isolde.png",
+        "pmx": "Isolde.pmx"
     }
 ]
