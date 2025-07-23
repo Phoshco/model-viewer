@@ -22,6 +22,17 @@
         "pmx": "Carlotta.pmx"
     },
 	{
+        "id": 40000926,
+        "name": "Carlotta",
+        "weaponType": "Pistols",
+        "element": "Glacio",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Carlotta/Carlotta_skin",
+        "image": "WuWa/Carlotta.png",
+        "pmx": "Carlotta.pmx"
+    },
+	{
         "id": 40000007,
         "name": "Sanhua",
         "weaponType": "Sword",
@@ -42,5 +53,16 @@
         "directory": "res/chars/WuWa/Cartethyia/Fleurdelys",
         "image": "WuWa/Cartethyia.png",
         "pmx": "Fleurdelys.pmx"
+    },
+    {
+        "id": 40000019,
+        "name": "Changli",
+        "weaponType": "Sword",
+        "element": "Fusion",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Changli/Changli_skin",
+        "image": "WuWa/Changli.png",
+        "pmx": "Changli.pmx"
     }
 ]
