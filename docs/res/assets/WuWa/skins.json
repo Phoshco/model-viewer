@@ -64,5 +64,16 @@
         "directory": "res/chars/WuWa/Changli/Changli_skin",
         "image": "WuWa/Changli.png",
         "pmx": "Changli.pmx"
+    },
+	{
+        "id": 40000035,
+        "name": "Phrolova",
+        "weaponType": "Rectifier",
+        "element": "Havoc",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Phrolova/Dark_Phrolova",
+        "image": "WuWa/Phrolova.png",
+        "pmx": "Phrolova.pmx"
     }
 ]
