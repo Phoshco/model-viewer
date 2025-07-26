@@ -479,8 +479,20 @@
         "image": "ZZZ/Alice Thymefield.png",
         "pmx": "Alice Thymefield.bpmx"
     },
-    {
+	{
         "id": 30000040,
+		"name": "Seed",
+        "weaponType": "Attack",
+        "element": "Electric",
+        "gender": "Female",
+        "region": "Obol Squad",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Seed",
+        "image": "ZZZ/Seed.png",
+        "pmx": "Seed.pmx"
+    },
+    {
+        "id": 30000043,
 		"name": "Komano Manato",
         "weaponType": "Stun",
         "element": "Fire",
@@ -492,7 +504,7 @@
         "pmx": "Komano Manato.pmx"
     },
 	{
-        "id": 30000041,
+        "id": 30000044,
 		"name": "Chinatsu Remiel",
         "weaponType": "Universal",
         "element": "Universal",
