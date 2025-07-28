@@ -535,5 +535,29 @@
         "directory": "res/chars/Genshin/Skirk/Skirk_Old",
         "image": "Genshin/Skirk.png",
         "pmx": "丝柯克.pmx"
+    },
+	{
+        "id": 10000005,
+        "name": "Bennett",
+        "weaponType": "Sword",
+        "element": "Pyro",
+        "gender": "Male",
+        "region": "Mondstadt",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Bennett/Bennett_skin",
+        "image": "Genshin/Bennett.png",
+        "pmx": "Bennett.pmx"
+    },
+    {
+        "id": 10000048,
+        "name": "Yelan",
+        "weaponType": "Bow",
+        "element": "Hydro",
+        "gender": "Female",
+        "region": "Liyue",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Yelan/Yelan_skin",
+        "image": "Genshin/Yelan.png",
+        "pmx": "Yelan.pmx"
     }
 ]

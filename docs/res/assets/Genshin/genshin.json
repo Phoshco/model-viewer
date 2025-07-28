@@ -965,7 +965,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Yelan",
+        "directory": "res/chars/Genshin/Yelan/Yelan",
         "image": "Genshin/Yelan.png",
         "pmx": "夜兰.pmx"
     },
