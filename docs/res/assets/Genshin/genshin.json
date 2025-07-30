@@ -1220,6 +1220,39 @@
         "pmx": "Ineffa.pmx"
     },
 	{
+        "id": 10000109,
+        "name": "Aino",
+        "weaponType": "Claymore",
+        "element": "Hydro",
+        "gender": "Female",
+        "rarity": 4,
+        "directory": "res/chars/Genshin/Aino",
+        "image": "Genshin/Aino.png",
+        "pmx": "Aino.pmx"
+    },
+	{
+        "id": 10000110,
+        "name": "Flins",
+        "weaponType": "Polearm",
+        "element": "Electro",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Flins",
+        "image": "Genshin/Flins.png",
+        "pmx": "Flins.pmx"
+    },
+	{
+        "id": 10000111,
+        "name": "Lauma",
+        "weaponType": "Catalyst",
+        "element": "Dendro",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Lauma",
+        "image": "Genshin/Lauma.png",
+        "pmx": "Lauma.pmx"
+    },
+	{
         "id": 1000000,
         "name": "Dainsleif",
         "weaponType": "Universal",
