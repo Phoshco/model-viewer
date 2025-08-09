@@ -10,6 +10,17 @@
         "image": "HSR/March 7th.png",
         "pmx": "三月七.pmx"
     },
+	{
+        "id": 20000007,
+        "name": "Clara",
+        "weaponType": "Destruction",
+        "element": "Physical",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Clara/Svarog",
+        "image": "HSR/Clara.png",
+        "pmx": "Svarog.pmx"
+    },
     {
         "id": 20000046,
         "name": "Acheron",

@@ -72,7 +72,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Clara",
+        "directory": "res/chars/HSR/Clara/Clara",
         "image": "HSR/Clara.png",
         "pmx": "克拉拉.pmx"
     },
