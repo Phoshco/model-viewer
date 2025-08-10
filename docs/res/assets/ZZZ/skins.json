@@ -36,6 +36,18 @@
         "pmx": "耀嘉音.pmx"
     },
 	{
+        "id": 3000002,
+		"name": "Twiggy",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Twiggy/Girl A",
+        "image": "ZZZ/Twiggy.png",
+        "pmx": "Girl A.pmx"
+    },
+	{
         "id": 30000900,
         "name": "Belle",
         "weaponType": "Universal",

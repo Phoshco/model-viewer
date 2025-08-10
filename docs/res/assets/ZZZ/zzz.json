@@ -539,8 +539,20 @@
         "image": "ZZZ/Orchidea.png",
         "pmx": "Orchidea.pmx"
     },
-    {
+	{
         "id": 3000002,
+		"name": "Twiggy",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Twiggy/Twiggy",
+        "image": "ZZZ/Twiggy.png",
+        "pmx": "Twiggy.pmx"
+    },
+    {
+        "id": 3000003,
 		"name": "Ye Shiyuan",
         "weaponType": "Universal",
         "element": "Universal",
@@ -552,7 +564,7 @@
         "pmx": "Ye Shiyuan.pmx"
     },
     {
-        "id": 3000003,
+        "id": 3000004,
 		"name": "Sweety",
         "weaponType": "Universal",
         "element": "Universal",
@@ -564,7 +576,7 @@
         "pmx": "红豆.pmx"
     },
     {
-        "id": 3000004,
+        "id": 3000005,
 		"name": "Sarah",
         "weaponType": "Universal",
         "element": "Universal",
@@ -576,7 +588,7 @@
         "pmx": "Sarah.pmx"
     },
     {
-        "id": 3000005,
+        "id": 3000006,
 		"name": "Isolde",
         "weaponType": "Universal",
         "element": "Universal",
