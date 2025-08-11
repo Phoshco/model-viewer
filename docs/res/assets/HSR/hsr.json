@@ -815,6 +815,17 @@
     },
 	{
         "id": 20000075,
+        "name": "Evernight",
+        "weaponType": "Remembrance",
+        "element": "Ice",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Evernight",
+        "image": "HSR/Evernight.png",
+        "pmx": "Evernight.pmx"
+    },
+	{
+        "id": 20000077,
         "name": "Cyrene",
         "weaponType": "Universal",
         "element": "Universal",
