@@ -825,6 +825,17 @@
         "pmx": "Evernight.pmx"
     },
 	{
+        "id": 20000076,
+        "name": "Permansor Terrae",
+        "weaponType": "Preservation",
+        "element": "Physical",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/HSR/Permansor Terrae",
+        "image": "HSR/Permansor Terrae.png",
+        "pmx": "Permansor Terrae.pmx"
+    },
+	{
         "id": 20000077,
         "name": "Cyrene",
         "weaponType": "Universal",
@@ -919,7 +930,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/HSR/Lygus",
+        "directory": "res/chars/HSR/Lygus/Lygus",
         "image": "HSR/Lygus.png",
         "pmx": "Lygus.pmx"
     },

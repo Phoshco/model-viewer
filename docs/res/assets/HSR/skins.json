@@ -97,5 +97,16 @@
         "directory": "res/chars/HSR/Firefly/Sam",
         "image": "HSR/Firefly.png",
         "pmx": "Sam.pmx"
+    },
+	{
+        "id": 2000008,
+        "name": "Lygus",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/HSR/Lygus/Lygus_boss",
+        "image": "HSR/Lygus.png",
+        "pmx": "Lygus.pmx"
     }
 ]

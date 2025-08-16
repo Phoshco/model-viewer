@@ -398,10 +398,10 @@
 	{
         "id": 40000036,
         "name": "Augusta",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Broadblade",
+        "element": "Electro",
         "gender": "Female",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/WuWa/Augusta",
         "image": "WuWa/Augusta.png",
         "pmx": "Augusta.pmx"
@@ -409,10 +409,10 @@
 	{
         "id": 40000037,
         "name": "Iuno",
-        "weaponType": "Universal",
-        "element": "Universal",
+        "weaponType": "Gauntlets",
+        "element": "Aero",
         "gender": "Female",
-        "rarity": 6,
+        "rarity": 5,
         "directory": "res/chars/WuWa/Iuno",
         "image": "WuWa/Iuno.png",
         "pmx": "Iuno.pmx"

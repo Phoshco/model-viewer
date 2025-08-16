@@ -1,0 +1,16 @@
+{
+  "m_Shader": {
+    "m_FileID": 1,
+    "m_PathID": -6550255339530601893,
+    "Name": "miHoYo/CRP_Character/Character Stencil Clear",
+    "IsNull": false
+  },
+  "m_SavedProperties": {
+    "m_TexEnvs": {},
+    "m_Ints": null,
+    "m_Floats": {},
+    "m_Colors": {}
+  },
+  "m_Name": "Mat_FaceMask",
+  "Name": "Mat_FaceMask"
+}
