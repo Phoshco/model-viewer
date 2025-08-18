@@ -449,5 +449,16 @@
         "directory": "res/chars/WuWa/Geshu Lin",
         "image": "WuWa/Geshu Lin.png",
         "pmx": "Geshu Lin.pmx"
+    },
+	{
+        "id": 4000003,
+        "name": "Margherita",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Margherita",
+        "image": "WuWa/Margherita.png",
+        "pmx": "Margherita.pmx"
     }
 ]
