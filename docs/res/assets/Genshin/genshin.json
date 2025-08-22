@@ -1350,5 +1350,16 @@
         "directory": "res/chars/Genshin/Direidyth",
         "image": "Genshin/Direidyth.png",
         "pmx": "Direidyth.pmx"
+    },
+	{
+        "id": 1001000,
+        "name": "Aloy",
+        "weaponType": "Bow",
+        "element": "Cryo",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Aloy",
+        "image": "Genshin/Aloy.png",
+        "pmx": "Aloy.pmx"
     }
 ]
