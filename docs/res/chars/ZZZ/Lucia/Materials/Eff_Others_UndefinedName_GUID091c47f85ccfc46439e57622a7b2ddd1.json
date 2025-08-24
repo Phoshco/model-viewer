@@ -1,0 +1,682 @@
+{
+  "m_Shader": {
+    "m_FileID": 1,
+    "m_PathID": -8861675102675100451,
+    "Name": "miHoYo/Particles/Particles_Dissolve_CustomColor_Mask",
+    "IsNull": false
+  },
+  "m_SavedProperties": {
+    "m_TexEnvs": {
+      "_AnimationSheetsVectorMap": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_CG_VEMaskTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_DTTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_DissolveRampTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_DissolveTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_DistortionTex": {
+        "m_Texture": {
+          "m_FileID": 2,
+          "m_PathID": 1726668173696404799,
+          "Name": "Eff_Noise_105_LWJ_01",
+          "IsNull": false
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 0.5
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_DistortionTex2": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_MainTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 0.5
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_MaskTex": {
+        "m_Texture": {
+          "m_FileID": 3,
+          "m_PathID": -5865511498628020042,
+          "Name": "Eff_Mask_001_XL_01",
+          "IsNull": false
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": -0.1
+        }
+      },
+      "_RampTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_VertexColorTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_VertexExtrusionTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_VertexNormalTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      },
+      "_VertexPositionTex": {
+        "m_Texture": {
+          "m_FileID": 0,
+          "m_PathID": 0,
+          "Name": "",
+          "IsNull": true
+        },
+        "m_Scale": {
+          "X": 1.0,
+          "Y": 1.0
+        },
+        "m_Offset": {
+          "X": 0.0,
+          "Y": 0.0
+        }
+      }
+    },
+    "m_Ints": null,
+    "m_Floats": {
+      "_2ToneUsingVertexAlpha": 0.0,
+      "_AffectByCamera3DUIAlpha": 0.0,
+      "_AffectByEffectFogColor": 0.0,
+      "_AffectByEffectSandstormColor": 0.0,
+      "_AffectByGlobalEtherColor": 0.0,
+      "_AffectByGlobalUseMultiply": 0.0,
+      "_AffectByGlobalWaterColor": 0.0,
+      "_AffectedByMainLightColor": 0.0,
+      "_AgeClip": 1.0,
+      "_AlphaChannelMapping": 0.0,
+      "_AlphaCutoff": 0.0,
+      "_AlphaFade": 1.0,
+      "_AlphaSphereFadeIn": 0.0,
+      "_AlphaSphereFadeOut": 0.0,
+      "_AlphaSphereFadeUseLocal": 0.0,
+      "_AnimationSheetsVectorMap_Scale": 0.1,
+      "_AnimationSheets_Columns": 4.0,
+      "_AnimationSheets_Frame": 0.0,
+      "_AnimationSheets_NormalizedTime": 0.0,
+      "_AnimationSheets_Rows": 4.0,
+      "_AnimationSheets_Speed": 0.0,
+      "_AnimationSheets_Switch": 0.0,
+      "_AnimationSheets_UseNormalizedTime": 0.0,
+      "_ApplySceneFog": 0.0,
+      "_Arc_Mask": 0.0,
+      "_AvatarYOffset": 1.0,
+      "_BackfaceRevert": 0.0,
+      "_BlendMode": 1.0,
+      "_BlendWithLightAttenuation": 0.0,
+      "_BlendWithLightAttenuationValue": 1.0,
+      "_BumpScale": 1.0,
+      "_CG_Blink": 0.0,
+      "_CG_BlinkFrequency": 0.0,
+      "_CG_VEMask": 0.0,
+      "_CG_VEMaskChannel": 0.0,
+      "_ClampZToFar": 0.0,
+      "_ClipPlane": 0.0,
+      "_ClipPlaneXZ": 0.0,
+      "_ClipPlane_Soft": 0.0,
+      "_ClipPlane_SoftDistance": 1.0,
+      "_CloserHighlight": 0.0,
+      "_CollideWithAvatar": 0.0,
+      "_ColorChannelMapping": 4.0,
+      "_Cull": 0.0,
+      "_Current_Frame": 0.0,
+      "_CustomData1W": 0.0,
+      "_CustomData1Z": 0.0,
+      "_Cutoff": 0.5,
+      "_DTIntensity": 0.0,
+      "_DTTexClampU": 0.0,
+      "_DTTexClampV": 0.0,
+      "_DTTexFlip": 0.0,
+      "_DTTexRotation": 0.0,
+      "_DTTexUVMode": 0.0,
+      "_DebugOctagonDistortion": 0.0,
+      "_DebugOctagonShape": 0.0,
+      "_DetailNormalMapScale": 1.0,
+      "_DisableColorSaturation": 0.0,
+      "_DissolveAffects2Tone": 1.0,
+      "_DissolveChannel": 0.0,
+      "_DissolveDistortion2Intensity": 0.0,
+      "_DissolveDistortionIntensity": 0.0,
+      "_DissolveIntensityOnMobile": 1.0,
+      "_DissolveProgress": 0.0,
+      "_DissolveRampTexChannelMapping": 0.0,
+      "_DissolveRampTexClampU": 0.0,
+      "_DissolveRampTexClampV": 0.0,
+      "_DissolveRampTexFlip": 0.0,
+      "_DissolveRampTexRotation": 0.0,
+      "_DissolveRampTex_BlendOp": 0.0,
+      "_DissolveRampTex_UseDissolveTexUV": 1.0,
+      "_DissolveRandomUV": 0.0,
+      "_DissolveTexClampU": 0.0,
+      "_DissolveTexClampV": 0.0,
+      "_DissolveTexFlip": 0.0,
+      "_DissolveTexRotation": 0.0,
+      "_DissolveTexUVMode": 0.0,
+      "_Dist_Intensity_PostProcessing": 1.0,
+      "_Distortion": 0.0,
+      "_Distortion2Channel": 0.0,
+      "_Distortion2Intensity": 0.0,
+      "_Distortion2RandomUV": 0.0,
+      "_DistortionChannel": 0.0,
+      "_DistortionIntensity": 0.5,
+      "_DistortionIntensity_NonPSR": 1.0,
+      "_DistortionMode": 0.0,
+      "_DistortionRandomUV": 0.0,
+      "_DistortionTex2ClampU": 0.0,
+      "_DistortionTex2ClampV": 0.0,
+      "_DistortionTex2Flip": 0.0,
+      "_DistortionTex2Rotation": 0.0,
+      "_DistortionTex2UVMode": 0.0,
+      "_DistortionTexClampU": 0.0,
+      "_DistortionTexClampV": 0.0,
+      "_DistortionTexFlip": 0.0,
+      "_DistortionTexRotation": 0.0,
+      "_DistortionTexUVMode": 0.0,
+      "_DitherAlpha": 1.0,
+      "_DitherAlpha2": 1.0,
+      "_DstBlend": 0.0,
+      "_DstFactor": 1.0,
+      "_DtUSpeed": 1.0,
+      "_DtUvMove": 0.0,
+      "_DtVSpeed": 1.0,
+      "_FadeFromCamera": 1.0,
+      "_FadeFromCameraOn": 0.0,
+      "_FadeFromCameraType": 0.0,
+      "_FadeFromCamera_Invert": 0.0,
+      "_FogIntensity": 1.0,
+      "_Frames": 24.0,
+      "_FresnelBias": 0.0,
+      "_FresnelBlendMode": 1.0,
+      "_FresnelInvert": 0.0,
+      "_FresnelPower": 5.0,
+      "_FresnelScale": 1.0,
+      "_Glitch": 0.0,
+      "_GlossMapScale": 1.0,
+      "_Glossiness": 0.5,
+      "_GlossyReflections": 1.0,
+      "_HalfResDstAlphaFactor": 1.0,
+      "_HalfResDstFactor": 1.0,
+      "_HalfResSrcAlphaFactor": 0.0,
+      "_HalfResSrcFactor": 1.0,
+      "_HighShadingRate": 0.0,
+      "_HollowMask": 0.0,
+      "_IgnoreTimeScale": 0.0,
+      "_IgnoreVertexColor": 0.0,
+      "_InvFresnel": 0.0,
+      "_IsMirrorUp": 1.0,
+      "_LerpBrightness": 50.0,
+      "_MainTexClampU": 0.0,
+      "_MainTexClampV": 0.0,
+      "_MainTexFlip": 0.0,
+      "_MainTexRandomUV": 0.0,
+      "_MainTexRotation": 0.0,
+      "_MainTexScreenUvScaleWithCamera": 0.0,
+      "_MainTexUVMode": 0.0,
+      "_MainTex_Blur_Amount": 5.0,
+      "_MainTex_Blur_Step": 3.0,
+      "_MaskAffectsDistortion": 0.0,
+      "_MaskChannelMapping": 0.0,
+      "_MaskDistortion2Intensity": 0.0,
+      "_MaskDistortionChannelMapping": 0.0,
+      "_MaskDistortionIntensity": 0.0,
+      "_MaskTexClampU": 0.0,
+      "_MaskTexClampV": 0.0,
+      "_MaskTexFlip": 0.0,
+      "_MaskTexRotation": 0.0,
+      "_MaskTexUVMode": 0.0,
+      "_Metallic": 0.0,
+      "_MirrorPos": 0.0,
+      "_Mode": 0.0,
+      "_MoonMaskAllOn": 0.0,
+      "_MoonMaskOn": 0.0,
+      "_MoonMaskTexOn": 0.0,
+      "_MoonRockMode": 0.0,
+      "_MoonUVMode": 0.0,
+      "_MoonUVScale": 1.0,
+      "_NearDepthClip_Distance": 0.0,
+      "_OcclusionStrength": 1.0,
+      "_OffsetFactor": 0.0,
+      "_OffsetUnits": 0.0,
+      "_OpaquenessFadeByScript": 1.0,
+      "_Parallax": 0.02,
+      "_PlaneClipReverse": 0.0,
+      "_PowerAlpha": 1.0,
+      "_PowerRGB": 1.0,
+      "_RampTexChannelMapping": 4.0,
+      "_RampTexClampU": 0.0,
+      "_RampTexClampV": 0.0,
+      "_RampTexFlip": 0.0,
+      "_RampTexOnlyAffectAlpha": 0.0,
+      "_RampTexRotation": 0.0,
+      "_RampTex_UseMainTexUV": 1.0,
+      "_RcpFadeLength": 1.0,
+      "_ReversePlaneXZ": 0.0,
+      "_SE_Boundary": 0.3,
+      "_SE_BoundaryAspect": 1.0,
+      "_SE_Feather": 1.0,
+      "_SE_Invert": 0.0,
+      "_SE_MaxOpacity": 1.0,
+      "_SE_SquarePixels": 1.0,
+      "_SE_UVMode": 0.0,
+      "_Saturation": 1.0,
+      "_SceneClipOffset": 0.0,
+      "_ScreenEffectUseUV": 0.0,
+      "_ScreenEffects": 0.0,
+      "_SeparateRGBIntensity": 0.0,
+      "_SkipInterpolation": 0.0,
+      "_SmoothnessTextureChannel": 0.0,
+      "_SoftEdge": 0.0,
+      "_SoftEdgeUsingOldFunction": 0.0,
+      "_SoftParticles": 0.0,
+      "_SoftParticlesFarFadeDistance": 1.0,
+      "_SoftParticlesNearFadeDistance": 0.0,
+      "_SoftParticlesRcpDistance": 1.0,
+      "_SoftRange": 0.0,
+      "_SpecularHighlights": 1.0,
+      "_SphereFadeKeepAspect": 0.0,
+      "_SphereFadeUseScreenUV": 0.0,
+      "_SrcBlend": 1.0,
+      "_SrcFactor": 1.0,
+      "_StencilComp": 0.0,
+      "_StencilMode": 0.0,
+      "_StencilOp": 0.0,
+      "_StencilReadMask": 0.0,
+      "_StencilRef": 0.0,
+      "_TextureLodBias": 0.0,
+      "_TextureLodBiasOn": 0.0,
+      "_TimeOffset": 0.0,
+      "_TimeScaleSpeed": 0.0,
+      "_UVMove": 1.0,
+      "_UVSec": 0.0,
+      "_UiPreTransformFix": 0.0,
+      "_UseClipPlane": 0.0,
+      "_UseDissolveTex": 0.0,
+      "_UseDistortionTexture": 1.0,
+      "_UseDistortionTexture2": 0.0,
+      "_UseMask": 1.0,
+      "_UseSphereFade": 0.0,
+      "_Use_CustomData_Frame": 0.0,
+      "_Use_Frame": 0.0,
+      "_UsingAlphaAsDissolve": 0.0,
+      "_UsingNonPSR": 1.0,
+      "_VFXVolumetricShadowGap": 0.5,
+      "_VertexAnimation": 0.0,
+      "_VertexExtrusion": 0.0,
+      "_VertexExtrusionIntensity": 1.0,
+      "_VertexExtrusionIntensity2": -1.0,
+      "_VertexExtrusionIntensityChannel": 0.0,
+      "_VertexExtrusionIntensityChannel2": 1.0,
+      "_VertexExtrusionIntensityChannel_X": 0.0,
+      "_VertexExtrusionIntensityChannel_Y": 1.0,
+      "_VertexExtrusionIntensityChannel_Z": 2.0,
+      "_VertexExtrusionIntensity_NonPSR": 0.0,
+      "_VertexExtrusionTexRandomUV": 0.0,
+      "_VertexExtrusionUseTriPlanarUV": 0.0,
+      "_VfxShadow_EffectType": 0.0,
+      "_Vfx_Volumetric_Shadow": 0.0,
+      "_WorldSoftLength": 1.0,
+      "_WorldSoftParticle": 0.0,
+      "_WorldSoftStartY": 0.0,
+      "_ZOffset": 0.0,
+      "_ZTest": 4.0,
+      "_ZWrite": 0.0,
+      "_group_2tone": 0.0,
+      "_group_alphaCut": 0.0,
+      "_group_basic": 0.0,
+      "_group_colorAdjustment": 0.0,
+      "_group_debug": 0.0,
+      "_group_dissolve_ramptex": 0.0,
+      "_group_dither": 0.0,
+      "_group_globalParams": 0.0,
+      "_group_maintex": 0.0,
+      "_group_maintex_blur": 0.0,
+      "_group_nearlyDepthClip": 0.0,
+      "_group_ramptex": 0.0,
+      "_group_renderstate": 0.0,
+      "_group_timescale": 0.0
+    },
+    "m_Colors": {
+      "_AlphaSphereFadeCenter": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_AmbientColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_BlockColorA": {
+        "r": 1.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_BlockColorB": {
+        "r": 0.5,
+        "g": 1.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_BlockColorC": {
+        "r": 0.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_BlockColorD": {
+        "r": 0.5,
+        "g": 0.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_BlockMoveSpeed": {
+        "r": 66.0,
+        "g": 88.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_CenterPos": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_CloserHighlightParams": {
+        "r": 5.0,
+        "g": 2.0,
+        "b": 2.0,
+        "a": 0.0
+      },
+      "_CollisionRadius": {
+        "r": 1.0,
+        "g": 1.5,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_Color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_CustomDataColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_DissolveUVSpeed": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_Distortion2UVSpeed": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_DistortionUVSpeed": {
+        "r": -0.2,
+        "g": 0.2,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_EmissionColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_Forward": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_FresnelColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_MainTexMoveStep": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_MainTexUVSpeed": {
+        "r": 0.0,
+        "g": 0.5,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_MaskTexUVSpeed": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_MultiplyParticleColor": {
+        "r": 0.8739645,
+        "g": 0.61450624,
+        "b": 2.6082377,
+        "a": 1.0
+      },
+      "_OctagonClipErrorColor": {
+        "r": 1.0,
+        "g": 0.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_PlaneXZScale": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_VertexExtrusionUVSpeed": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_VertexExtrusionWorldAxisMask": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_VertexExtrusionWorldAxis_X_ST": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_VertexExtrusionWorldAxis_Y_ST": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_VertexExtrusionWorldAxis_Z_ST": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_VfxShadow_VolumeSize": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 0.0
+      }
+    }
+  },
+  "m_Name": "Eff_Others_UndefinedName_GUID091c47f85ccfc46439e57622a7b2ddd1",
+  "Name": "Eff_Others_UndefinedName_GUID091c47f85ccfc46439e57622a7b2ddd1"
+}

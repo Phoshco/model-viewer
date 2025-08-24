@@ -492,19 +492,43 @@
         "pmx": "Seed.pmx"
     },
     {
-        "id": 30000043,
+        "id": 30000042,
 		"name": "Komano Manato",
-        "weaponType": "Stun",
+        "weaponType": "Rupture",
         "element": "Fire",
         "gender": "Male",
-        "region": "Universal",
-        "rarity": 6,
+        "region": "Spook Shack",
+        "rarity": 4,
         "directory": "res/chars/ZZZ/Komano Manato",
         "image": "ZZZ/Komano Manato.png",
         "pmx": "Komano Manato.pmx"
     },
 	{
+        "id": 30000043,
+		"name": "Lucia",
+        "weaponType": "Support",
+        "element": "Ether",
+        "gender": "Female",
+        "region": "Spook Shack",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Lucia",
+        "image": "ZZZ/Lucia.png",
+        "pmx": "Lucia.pmx"
+    },
+	{
         "id": 30000044,
+		"name": "Yidhari",
+        "weaponType": "Rupture",
+        "element": "Ice",
+        "gender": "Female",
+        "region": "Spook Shack",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Yidhari",
+        "image": "ZZZ/Yidhari.png",
+        "pmx": "Yidhari.pmx"
+    },
+	{
+        "id": 30000045,
 		"name": "Chinatsu Remiel",
         "weaponType": "Universal",
         "element": "Universal",

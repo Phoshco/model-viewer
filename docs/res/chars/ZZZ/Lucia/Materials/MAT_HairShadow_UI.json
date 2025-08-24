@@ -1,0 +1,65 @@
+{
+  "m_Shader": {
+    "m_FileID": 1,
+    "m_PathID": 9078208572821743001,
+    "Name": "miHoYo/Character/NapStencilShadowCaster",
+    "IsNull": false
+  },
+  "m_SavedProperties": {
+    "m_TexEnvs": {},
+    "m_Ints": null,
+    "m_Floats": {
+      "_BumpScale": 1.0,
+      "_ClipSpaceXOffset": 0.0,
+      "_ClipSpaceYOffset": 0.0,
+      "_Cutoff": 0.5,
+      "_DetailNormalMapScale": 1.0,
+      "_DitherAlpha": 1.0,
+      "_DitherAlpha2": 1.0,
+      "_DstBlend": 0.0,
+      "_GlossMapScale": 1.0,
+      "_Glossiness": 0.5,
+      "_GlossyReflections": 1.0,
+      "_Length": 1.0,
+      "_Metallic": 0.0,
+      "_Mode": 0.0,
+      "_OcclusionStrength": 1.0,
+      "_OverrideMainLight": 0.0,
+      "_Parallax": 0.02,
+      "_SmoothnessTextureChannel": 0.0,
+      "_SpecularHighlights": 1.0,
+      "_SrcBlend": 1.0,
+      "_UI": 1.0,
+      "_UVSec": 0.0,
+      "_XOffset": 0.8,
+      "_XOffsetEnter": -0.7,
+      "_XOffsetNew": -0.25,
+      "_YOffset": 1.5,
+      "_YOffsetEnter": 0.75,
+      "_ZOffset": 0.5,
+      "_ZWrite": 1.0
+    },
+    "m_Colors": {
+      "_Color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_EmissionColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_OverrideMainLightDir": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 1.0,
+        "a": 0.0
+      }
+    }
+  },
+  "m_Name": "MAT_HairShadow_UI",
+  "Name": "MAT_HairShadow_UI"
+}
