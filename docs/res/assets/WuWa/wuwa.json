@@ -429,6 +429,17 @@
         "pmx": "Buling.pmx"
     },
 	{
+        "id": 4000000,
+        "name": "Scar",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/WuWa/Scar",
+        "image": "WuWa/Scar.png",
+        "pmx": "Scar.pmx"
+    },
+	{
         "id": 4000001,
         "name": "Rosemary",
         "weaponType": "Universal",
