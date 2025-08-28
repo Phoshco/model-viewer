@@ -419,6 +419,17 @@
     },
 	{
         "id": 40000038,
+        "name": "Galbrena",
+        "weaponType": "Pistols",
+        "element": "Fusion",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "res/chars/WuWa/Galbrena",
+        "image": "WuWa/Galbrena.png",
+        "pmx": "Galbrena.pmx"
+    },
+	{
+        "id": 40000039,
         "name": "Buling",
         "weaponType": "Universal",
         "element": "Universal",
