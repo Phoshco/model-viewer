@@ -529,6 +529,18 @@
     },
 	{
         "id": 30000045,
+		"name": "Zhao",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Zhao",
+        "image": "ZZZ/Zhao.png",
+        "pmx": "Zhao.pmx"
+    },
+	{
+        "id": 30000046,
 		"name": "Chinatsu Remiel",
         "weaponType": "Universal",
         "element": "Universal",
@@ -622,5 +634,17 @@
         "directory": "res/chars/ZZZ/Isolde",
         "image": "ZZZ/Isolde.png",
         "pmx": "Isolde.pmx"
+    },
+    {
+        "id": 3000007,
+		"name": "Carole Arna",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "region": "Universal",
+        "rarity": 6,
+        "directory": "res/chars/ZZZ/Carole Arna",
+        "image": "ZZZ/Carole Arna.png",
+        "pmx": "Carole Arna.pmx"
     }
 ]
