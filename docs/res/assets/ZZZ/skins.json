@@ -130,5 +130,17 @@
         "directory": "res/chars/ZZZ/Alice Thymefield/Alice_skin",
         "image": "ZZZ/Alice Thymefield.png",
         "pmx": "Alice.pmx"
+    },
+	{
+        "id": 30000040,
+		"name": "Seed",
+        "weaponType": "Attack",
+        "element": "Electric",
+        "gender": "Female",
+        "region": "Obol Squad",
+        "rarity": 5,
+        "directory": "res/chars/ZZZ/Seed/Seed Sr",
+        "image": "ZZZ/Seed.png",
+        "pmx": "Seed.pmx"
     }
 ]

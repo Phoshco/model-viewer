@@ -1232,17 +1232,6 @@
     },
 	{
         "id": 10000110,
-        "name": "Flins",
-        "weaponType": "Polearm",
-        "element": "Electro",
-        "gender": "Male",
-        "rarity": 5,
-        "directory": "res/chars/Genshin/Flins",
-        "image": "Genshin/Flins.png",
-        "pmx": "Flins.pmx"
-    },
-	{
-        "id": 10000111,
         "name": "Lauma",
         "weaponType": "Catalyst",
         "element": "Dendro",
@@ -1251,6 +1240,17 @@
         "directory": "res/chars/Genshin/Lauma",
         "image": "Genshin/Lauma.png",
         "pmx": "Lauma.pmx"
+    },
+	{
+        "id": 10000111,
+        "name": "Flins",
+        "weaponType": "Polearm",
+        "element": "Electro",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "res/chars/Genshin/Flins",
+        "image": "Genshin/Flins.png",
+        "pmx": "Flins.pmx"
     },
 	{
         "id": 1000000,

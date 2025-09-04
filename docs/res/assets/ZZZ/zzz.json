@@ -487,7 +487,7 @@
         "gender": "Female",
         "region": "Obol Squad",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Seed",
+        "directory": "res/chars/ZZZ/Seed/Seed",
         "image": "ZZZ/Seed.png",
         "pmx": "Seed.pmx"
     },
