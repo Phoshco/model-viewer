@@ -559,5 +559,16 @@
         "directory": "res/chars/Genshin/Yelan/Yelan_skin",
         "image": "Genshin/Yelan.png",
         "pmx": "Yelan.pmx"
+    },
+	{
+        "id": 1000009,
+        "name": "Rerir",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Rerir/Wild Hunt",
+        "image": "Genshin/Rerir.png",
+        "pmx": "Rerir.pmx"
     }
 ]

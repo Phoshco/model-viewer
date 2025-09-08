@@ -1253,6 +1253,50 @@
         "pmx": "Flins.pmx"
     },
 	{
+        "id": 10000112,
+        "name": "Jahoda",
+        "weaponType": "Universal",
+        "element": "Anemo",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Jahoda",
+        "image": "Genshin/Jahoda.png",
+        "pmx": "Jahoda.pmx"
+    },
+	{
+        "id": 10000113,
+        "name": "Nefer",
+        "weaponType": "Universal",
+        "element": "Dendro",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Nefer",
+        "image": "Genshin/Nefer.png",
+        "pmx": "Nefer.pmx"
+    },
+	{
+        "id": 10000116,
+        "name": "Columbina",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Columbina",
+        "image": "Genshin/Columbina.png",
+        "pmx": "Columbina.pmx"
+    },
+	{
+        "id": 10000117,
+        "name": "Sandrone",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Sandrone",
+        "image": "Genshin/Sandrone.png",
+        "pmx": "Sandrone.pmx"
+    },
+	{
         "id": 1000000,
         "name": "Dainsleif",
         "weaponType": "Universal",
@@ -1350,6 +1394,17 @@
         "directory": "res/chars/Genshin/Direidyth",
         "image": "Genshin/Direidyth.png",
         "pmx": "Direidyth.pmx"
+    },
+	{
+        "id": 1000009,
+        "name": "Rerir",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "res/chars/Genshin/Rerir/Rerir",
+        "image": "Genshin/Rerir.png",
+        "pmx": "Rerir.pmx"
     },
 	{
         "id": 1001000,
