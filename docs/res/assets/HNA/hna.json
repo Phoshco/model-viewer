@@ -1,0 +1,156 @@
+[
+    {
+        "id": 50000001,
+        "name": "Argenti",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "hna/chars/Argenti",
+        "image": "hna/HNA/Argenti.png",
+        "pmx": "Argenti.pmx"
+    },
+    {
+        "id": 50000002,
+        "name": "Armand",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "hna/chars/Armand",
+        "image": "hna/HNA/Armand.png",
+        "pmx": "Armand.pmx"
+    },
+    {
+        "id": 50000003,
+        "name": "Blade",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "hna/chars/Blade",
+        "image": "hna/HNA/Blade.png",
+        "pmx": "Blade.pmx"
+    },
+    {
+        "id": 50000004,
+        "name": "Cassio Rollex",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 4,
+        "directory": "hna/chars/Cassio Rollex",
+        "image": "hna/HNA/Cassio Rollex.png",
+        "pmx": "Cassio Rollex.pmx"
+    },
+    {
+        "id": 50000005,
+        "name": "Hua",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 4,
+        "directory": "hna/chars/Hua",
+        "image": "hna/HNA/Hua.png",
+        "pmx": "Hua.pmx"
+    },
+    {
+        "id": 50000006,
+        "name": "Hungrille",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "hna/chars/Hungrille",
+        "image": "hna/HNA/Hungrille.png",
+        "pmx": "Hungrille.pmx"
+    },
+    {
+        "id": 50000007,
+        "name": "Jalily Belau",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 4,
+        "directory": "hna/chars/Jalily Belau",
+        "image": "hna/HNA/Jalily Belau.png",
+        "pmx": "Jalily Belau.pmx"
+    },
+    {
+        "id": 50000008,
+        "name": "Kiana",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 4,
+        "directory": "hna/chars/Kiana",
+        "image": "hna/HNA/Kiana.png",
+        "pmx": "Kiana.pmx"
+    },
+    {
+        "id": 50000009,
+        "name": "Kumyo Kyo",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "hna/chars/Kumyo Kyo",
+        "image": "hna/HNA/Kumyo Kyo.png",
+        "pmx": "Kumyo Kyo.pmx"
+    },
+    {
+        "id": 50000010,
+        "name": "Maple Manybell",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 4,
+        "directory": "hna/chars/Maple Manybell",
+        "image": "hna/HNA/Maple Manybell.png",
+        "pmx": "Maple Manybell.pmx"
+    },
+    {
+        "id": 50000013,
+        "name": "Parayaya, the Sovereign of Love and Hate",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "hna/chars/Parayaya, the Sovereign of Love and Hate",
+        "image": "hna/HNA/Parayaya, the Sovereign of Love and Hate.png",
+        "pmx": "Parayaya, the Sovereign of Love and Hate.bpmx"
+    },
+    {
+        "id": 50000014,
+        "name": "Prabhas",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Female",
+        "rarity": 5,
+        "directory": "hna/chars/Prabhas",
+        "image": "hna/HNA/Prabhas.png",
+        "pmx": "Prabhas.pmx"
+    },
+    {
+        "id": 50000015,
+        "name": "Sir Champion",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 5,
+        "directory": "hna/chars/Sir Champion",
+        "image": "hna/HNA/Sir Champion.png",
+        "pmx": "Sir Champion.pmx"
+    },
+	{
+        "id": 5000001,
+        "name": "Breadhead",
+        "weaponType": "Universal",
+        "element": "Universal",
+        "gender": "Male",
+        "rarity": 6,
+        "directory": "hna/chars/Breadhead",
+        "image": "hna/HNA/Breadhead.png",
+        "pmx": "Breadhead.pmx"
+    }
+]

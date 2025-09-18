@@ -107,6 +107,8 @@ export class SceneBuilder implements ISceneBuilder {
         const zzzSkinCharDatas = await (await fetch(`${baseUrl}zzz/skins.json`)).json();
         const wuwaCharDatas = await (await fetch(`${baseUrl}ww/wuwa.json`)).json();
         const wuwaSkinCharDatas = await (await fetch(`${baseUrl}ww/skins.json`)).json();
+        const hnaCharDatas = await (await fetch(`${baseUrl}hna/hna.json`)).json();
+        const hnaSkinCharDatas = await (await fetch(`${baseUrl}hna/skins.json`)).json();
 
         // character json
         interface BaseCharData {
@@ -135,6 +137,9 @@ export class SceneBuilder implements ISceneBuilder {
         interface WuwaCharData extends BaseCharData {
         }
 
+        interface HNACharData extends BaseCharData {
+        }
+
         interface ExtraCharData extends BaseCharData {
         }
 
@@ -148,6 +153,8 @@ export class SceneBuilder implements ISceneBuilder {
         const zzzSkinDataArray = zzzSkinCharDatas as ZZZCharData[];
         const wuwaCharDataArray = wuwaCharDatas as WuwaCharData[];
         const wuwaSkinDataArray = wuwaSkinCharDatas as WuwaCharData[];
+        const hnaCharDataArray = hnaCharDatas as HNACharData[];
+        const hnaSkinDataArray = hnaSkinCharDatas as HNACharData[];
         charDataArray.sort((a, b) => b.id - a.id);
         genshinSkinDataArray.sort((a, b) => b.id - a.id);
         hsrSkinDataArray.sort((a, b) => b.id - a.id);
@@ -156,6 +163,8 @@ export class SceneBuilder implements ISceneBuilder {
         hsrCharDataArray.sort((a, b) => b.id - a.id);
         zzzCharDataArray.sort((a, b) => b.id - a.id);
         wuwaCharDataArray.sort((a, b) => b.id - a.id);
+        hnaCharDataArray.sort((a, b) => b.id - a.id);
+        hnaSkinDataArray.sort((a, b) => b.id - a.id);
 
         const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
             return jsonData.find((item) => item.name === nameToFind);
@@ -166,13 +175,15 @@ export class SceneBuilder implements ISceneBuilder {
             ...charDataArray,
             ...hsrCharDataArray,
             ...zzzCharDataArray,
-            ...wuwaCharDataArray
+            ...wuwaCharDataArray,
+            ...hnaCharDataArray
         ];
         const allSkinCharDataArray:  AllCharData[] = [
             ...genshinSkinDataArray,
             ...hsrSkinDataArray,
             ...zzzSkinDataArray,
-            ...wuwaSkinDataArray
+            ...wuwaSkinDataArray,
+            ...hnaSkinDataArray
         ];
         const miniSearchInstance = new miniSearch({
             fields: ["name"], // fields to index for full-text search
@@ -212,9 +223,12 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabById == 3) {
                     fallbackItem = findCharByName(zzzCharDataArray, results[0].name);
                     tabMode = "ZZZ";
-                } else {
+                } else if (tabById == 4) {
                     fallbackItem = findCharByName(wuwaCharDataArray, results[0].name);
                     tabMode = "WuWa";
+                } else {
+                    fallbackItem = findCharByName(hnaCharDataArray, results[0].name);
+                    tabMode = "HNA";
                 }
                 if (!isLocal) {
 
@@ -250,8 +264,10 @@ export class SceneBuilder implements ISceneBuilder {
                     fallbackItem.push(findCharByName(hsrCharDataArray, results[i].name)!);
                 } else if (tabById == 3) {
                     fallbackItem.push(findCharByName(zzzCharDataArray, results[i].name)!);
-                } else {
+                } else if (tabById == 4) {
                     fallbackItem.push(findCharByName(wuwaCharDataArray, results[i].name)!);
+                } else {
+                    fallbackItem.push(findCharByName(hnaCharDataArray, results[i].name)!);
                 }
             }
             // console.log(fallbackItem);
@@ -949,7 +965,7 @@ export class SceneBuilder implements ISceneBuilder {
                     particleSystem.stop();
                 }
                 darkButton.isEnabled = true;
-            } else if ((tabMode == "Genshin" || tabMode == "HSR" || tabMode == "ZZZ") && !charScreenMode) {
+            } else if ((tabMode == "Genshin" || tabMode == "HSR" || tabMode == "ZZZ" || tabMode == "HNA") && !charScreenMode) {
                 modelMeshSt.setEnabled(true);
                 if (!isMobile) {
                     particleSystem.start();
@@ -1084,40 +1100,56 @@ export class SceneBuilder implements ISceneBuilder {
         panel.addControl(topBar);
 
         const genshinButton = gui.Button.CreateSimpleButton("but", "Genshin Impact");
-        genshinButton.width = "233px";
+        genshinButton.fontSize = 10;
+        genshinButton.width = "175px";
         genshinButton.height = "50px";
         genshinButton.color = "white";
         genshinButton.background = "rgb(64,68,70)";
         genshinButton.disabledColor = charPanel.background;
         genshinButton.thickness = 0;
-        genshinButton.left = -233;
+        genshinButton.left = -262.5;
         genshinButton.top = -50;
         genshinButton.cornerRadiusX = genshinButton.cornerRadiusY = 15;
         topBar.addControl(genshinButton);
 
         const hsrButton = gui.Button.CreateSimpleButton("but", "Honkai: Star Rail");
-        hsrButton.width = "233px";
+        hsrButton.fontSize = 10;
+        hsrButton.width = "175px";
         hsrButton.height = "50px";
         hsrButton.color = "white";
         hsrButton.background = charPanel.background;
         hsrButton.disabledColor = charPanel.background;
         hsrButton.thickness = 0;
-        hsrButton.left = 0;
+        hsrButton.left = -87.5;
         hsrButton.top = -50;
         hsrButton.cornerRadiusX = hsrButton.cornerRadiusY = 15;
         topBar.addControl(hsrButton);
 
         const zzzButton = gui.Button.CreateSimpleButton("but", "Zenless Zone Zero");
-        zzzButton.width = "233px";
+        zzzButton.fontSize = 10;
+        zzzButton.width = "175px";
         zzzButton.height = "50px";
         zzzButton.color = "white";
         zzzButton.background = charPanel.background;
         zzzButton.disabledColor = charPanel.background;
         zzzButton.thickness = 0;
-        zzzButton.left = 233;
+        zzzButton.left = 87.5;
         zzzButton.top = -50;
         zzzButton.cornerRadiusX = zzzButton.cornerRadiusY = 15;
         topBar.addControl(zzzButton);
+
+        const hnaButton = gui.Button.CreateSimpleButton("but", "Honkai: Nexus Anima");
+        hnaButton.fontSize = 10;
+        hnaButton.width = "175px";
+        hnaButton.height = "50px";
+        hnaButton.color = "white";
+        hnaButton.background = charPanel.background;
+        hnaButton.disabledColor = charPanel.background;
+        hnaButton.thickness = 0;
+        hnaButton.left = 262.5;
+        hnaButton.top = -50;
+        hnaButton.cornerRadiusX = hnaButton.cornerRadiusY = 15;
+        topBar.addControl(hnaButton);
 
         // CURRENT STATE
         let sortModeAscending = false;
@@ -1135,6 +1167,9 @@ export class SceneBuilder implements ISceneBuilder {
         const wuwaFilter: { key: keyof WuwaCharData; value: string }[] = [
             { key: "id", value: "4000" }
         ];
+        const hnaFilter: { key: keyof HNACharData; value: string }[] = [
+            { key: "id", value: "5000" }
+        ];
         let filteredArray: BaseCharData[];
         filteredArray = filterBy(charDataArray, genshinFilter);
         sortModeKey = "id";
@@ -1148,8 +1183,11 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
-                } else {
+                } else if (tabMode == "WuWa") {
                     hideWuwaElements();
+                } else {
+                    hnaButton.background = charPanel.background;
+                    hideHNAElements();
                 }
                 tabMode = "Genshin";
                 filteredArray = filterBy(charDataArray, genshinFilter);
@@ -1171,8 +1209,11 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
-                } else {
+                } else if (tabMode == "WuWa") {
                     hideWuwaElements();
+                } else {
+                    hnaButton.background = charPanel.background;
+                    hideHNAElements();
                 }
                 tabMode = "HSR";
                 if (sortModeKey == "id") {
@@ -1199,8 +1240,11 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabMode == "HSR") {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
-                } else {
+                } else if (tabMode == "WuWa") {
                     hideWuwaElements();
+                } else {
+                    hnaButton.background = charPanel.background;
+                    hideHNAElements();
                 }
                 tabMode = "ZZZ";
                 filteredArray = filterBy(zzzCharDataArray, zzzFilter);
@@ -1211,6 +1255,32 @@ export class SceneBuilder implements ISceneBuilder {
         }
         zzzButton.onPointerClickObservable.add(function() {
             handleZZZTabSwitch();
+        });
+
+        function handleHNATabSwitch(): void {
+            if (tabMode != "HNA") {
+                hnaButton.background = "rgb(64,68,70)";
+                if (tabMode == "Genshin") {
+                    genshinButton.background = charPanel.background;
+                    hideGenshinElements();
+                } else if (tabMode == "HSR") {
+                    hideHSRElements();
+                    hsrButton.background = charPanel.background;
+                } else if (tabMode == "ZZZ") {
+                    zzzButton.background = charPanel.background;
+                    hideZZZElements();
+                } else if (tabMode == "WuWa") {
+                    hideWuwaElements();
+                }
+                tabMode = "HNA";
+                filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                showHNAElements();
+                generateGrid(filteredArray);
+            }
+        }
+        hnaButton.onPointerClickObservable.add(function() {
+            handleHNATabSwitch();
         });
 
         const filterBar = new gui.Rectangle();
@@ -1268,6 +1338,9 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
+                } else if (tabMode == "HNA") {
+                    hnaButton.background = charPanel.background;
+                    hideHNAElements();
                 }
                 tabMode = "WuWa";
                 filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
@@ -1319,6 +1392,8 @@ export class SceneBuilder implements ISceneBuilder {
                     handleZZZTabSwitch();
                 } else if (searchTextboxPrevTab == "WuWa") {
                     handleWuwaTabSwitch();
+                } else if (searchTextboxPrevTab == "HNA") {
+                    handleHNATabSwitch();
                 }
                 searchTextboxPrevTab = "None";
             } else {
@@ -1335,6 +1410,7 @@ export class SceneBuilder implements ISceneBuilder {
                     hideHSRElements();
                     hideZZZElements();
                     hideWuwaElements();
+                    hideHNAElements();
                 }
                 tabMode = "None";
                 searchCharArray = searchCharFunction(searchTextbox.text);
@@ -1642,6 +1718,70 @@ export class SceneBuilder implements ISceneBuilder {
             generateGrid(filteredArray);
         });
 
+        const hnaFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_4.png");
+        hnaFourStarImage.height = "40px";
+        hnaFourStarImage.width = "40px";
+        hnaFourStarImage.left = -188;
+        hnaFourStarImage.thickness = 0;
+        hnaFourStarImage.cornerRadius = 5;
+        filterBar.addControl(hnaFourStarImage);
+        hnaFourStarImage.isVisible = false;
+        hnaFourStarImage.onPointerClickObservable.add(function() {
+            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (hnaFilter[index].value == "4") {
+                    hnaFilter.splice(index, 1);
+                    hnaFourStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    hnaFilter[index].value = "4";
+                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
+                    hnaFourStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof WuwaCharData; value: string } = {
+                    key: "rarity",
+                    value: "4"
+                };
+                hnaFilter.push(newPush);
+                hnaFourStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
+        const hnaFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_5.png");
+        hnaFiveStarImage.height = "40px";
+        hnaFiveStarImage.width = "40px";
+        hnaFiveStarImage.left = -148;
+        hnaFiveStarImage.thickness = 0;
+        hnaFiveStarImage.cornerRadius = 5;
+        filterBar.addControl(hnaFiveStarImage);
+        hnaFiveStarImage.isVisible = false;
+        hnaFiveStarImage.onPointerClickObservable.add(function() {
+            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (hnaFilter[index].value == "5") {
+                    hnaFilter.splice(index, 1);
+                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    hnaFilter[index].value = "5";
+                    hnaFourStarImage.background = "rgba(0,0,0,0)";
+                    hnaFiveStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof WuwaCharData; value: string } = {
+                    key: "rarity",
+                    value: "5"
+                };
+                hnaFilter.push(newPush);
+                hnaFiveStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
         function checkIfInFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof GenshinCharData): void {
             const index = genshinFilter.findIndex(obj => obj.key === theKey);
             if (index !== -1) { // Object with the key exists
@@ -1750,6 +1890,34 @@ export class SceneBuilder implements ISceneBuilder {
                 buttonObj.background = charPanel.background;
             }
             filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        }
+
+        function checkIfInHNAFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof HNACharData): void {
+            const index = hnaFilter.findIndex(obj => obj.key === theKey);
+            if (index !== -1) { // Object with the key exists
+                if (hnaFilter[index].value == theObjType) {
+                    hnaFilter.splice(index, 1);
+                    buttonObj.background = "rgba(0,0,0,0)";
+                } else {
+                    hnaFilter[index].value = theObjType;
+                    if (theKey.toString() == "element") {
+                        offHNAElementBG();
+                    } else {
+                        offHNAWeaponBG();
+                    }
+                    buttonObj.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof HNACharData; value: string } = {
+                    key: theKey,
+                    value: theObjType
+                };
+                hnaFilter.push(newPush);
+                buttonObj.background = charPanel.background;
+            }
+            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
             filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
             generateGrid(filteredArray);
         }
@@ -2344,6 +2512,28 @@ export class SceneBuilder implements ISceneBuilder {
             poleImage.background = "rgba(0,0,0,0)";
         }
 
+        function hideHNAElements(): void {
+            hnaFourStarImage.isVisible = false;
+            hnaFiveStarImage.isVisible = false;
+            sortModeChanger.isVisible = false;
+        }
+
+        function showHNAElements(): void {
+            hnaFourStarImage.isVisible = true;
+            hnaFiveStarImage.isVisible = true;
+            sortModeChanger.isVisible = true;
+        }
+
+        function offHNAElementBG(): void {
+
+        }
+
+        function offHNAWeaponBG(): void {
+
+        }
+
+        checkIfInHNAFilter;
+
         const electricImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Electric.png");
         electricImage.height = "40px";
         electricImage.width = "40px";
@@ -2937,7 +3127,7 @@ export class SceneBuilder implements ISceneBuilder {
                                     await changeCharacter("Bangboo");
                                 }
                             });
-                        } else {
+                        } else if (tabMode == "WuWa") {
                             charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "ww/WuWa/Abby.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Abby";
@@ -2947,6 +3137,17 @@ export class SceneBuilder implements ISceneBuilder {
                                 if (chosenCharName != "Abby") {
                                     await changeCharacter("Abby");
                                 }
+                            });
+                        } else {
+                            charButton = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/Puddlipup.png");
+                            charButton.onPointerEnterObservable.add(function() {
+                                hoverCharName.text = "Puddlipup";
+                            });
+                            charButton.onPointerClickObservable.add(async function() {
+                                // charPanel.isVisible = !charPanel.isVisible;
+                                // if (chosenCharName != "Puddlipup") {
+                                //     await changeCharacter("Puddlipup");
+                                // }
                             });
                         }
                         charButton.onPointerOutObservable.add(function() {
@@ -3314,6 +3515,54 @@ export class SceneBuilder implements ISceneBuilder {
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 }
+            } else if (tabMode == "HNA" || firstDigit == 5) {
+                const skinChars = findAllCharsByName(hnaSkinDataArray, chosenCharName);
+                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
+                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
+                        chosenChar = skinChars![0];
+                        skinMode = true;
+                        await createCharacter(chosenChar);
+
+                        let isNextSkin = false;
+                        if (skinChars!.length > 1) {
+                            isNextSkin = true;
+                        }
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
+                        let isNextSkin = true;
+                        let prevI: number = 0;
+                        for (let i = 0; i < skinChars!.length; i++) {
+                            if (chosenChar!.id === skinChars![i].id) {
+                                prevI = i;
+                            }
+                        }
+                        const temp = (prevI + 1) % skinChars!.length;
+                        if (temp == skinChars!.length - 1) {
+                            isNextSkin = false;
+                        }
+                        if (prevI == skinChars!.length - 1) {
+                            chosenChar = findCharByName(hnaSkinDataArray, chosenCharName);
+                            skinMode = false;
+                        } else {
+                            chosenChar = skinChars![temp];
+                            skinMode = true;
+                        }
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
+                        skinMode = false;
+                        chosenChar = findCharByName(hnaCharDataArray, chosenCharName);
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                } else {
+                    skinMode = false;
+                    chosenChar = findCharById(hnaCharDataArray, nextId!);
+                    await createCharacter(chosenChar);
+                    if (skinChars!.length > 0) {
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                }
             } else {
                 skinMode = false;
                 chosenChar = findCharByName(
@@ -3321,7 +3570,8 @@ export class SceneBuilder implements ISceneBuilder {
                         (tabMode === "HSR" || firstDigit === 2) ? hsrCharDataArray :
                             (tabMode === "ZZZ" || firstDigit === 3) ? zzzCharDataArray :
                                 (tabMode === "WuWa" || firstDigit === 4) ? wuwaCharDataArray :
-                                    [],
+                                    (tabMode === "HNA" || firstDigit === 5) ? hnaCharDataArray :
+                                        [],
                     chosenCharName
                 );
                 await createCharacter(chosenChar);
@@ -3381,7 +3631,7 @@ export class SceneBuilder implements ISceneBuilder {
             if (tabMode == "WuWa" || tabMode == "ZZZ" || tabMode == "None" && (firstDigitGlobal == 4 || firstDigitGlobal == 3)) {
                 charScreenMode = true;
                 charScreenElement = "Universal";
-            } else if (tabMode == "HSR" || tabMode == "None" && (firstDigitGlobal == 2)) {
+            } else if (tabMode == "HSR" || tabMode == "HNA" || tabMode == "None" && (firstDigitGlobal == 2 || firstDigitGlobal == 5)) {
                 charScreenMode = true;
                 charScreenElement = "HSR";
             } else if (tabMode == "Genshin" || tabMode == "None" && (firstDigitGlobal == 1)) {
@@ -3632,6 +3882,14 @@ export class SceneBuilder implements ISceneBuilder {
         } else if (firstTabMode == "WuWa") {
             handleWuwaTabSwitch();
             const skinChars = findAllCharsByName(wuwaSkinDataArray, chosenCharName);
+            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
+                const chosenCharSk = skinChars![0];
+                skinMode = false;
+                createSkinButton(true, true, chosenCharSk!.name);
+            }
+        } else if (firstTabMode == "HNA") {
+            handleHNATabSwitch();
+            const skinChars = findAllCharsByName(hnaSkinDataArray, chosenCharName);
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
                 const chosenCharSk = skinChars![0];
                 skinMode = false;
