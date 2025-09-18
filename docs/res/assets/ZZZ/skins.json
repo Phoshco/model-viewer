@@ -7,7 +7,7 @@
         "gender": "Female",
         "region": "Victoria Housekeeping",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Ellen/Ellen School",
+        "directory": "zzz/chars/Ellen/Ellen School",
         "image": "ZZZ/Ellen.png",
         "pmx": "艾莲.pmx"
     },
@@ -19,7 +19,7 @@
         "gender": "Female",
         "region": "Cunning Hares",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Nicole/Nicole Skin",
+        "directory": "zzz/chars/Nicole/Nicole Skin",
         "image": "ZZZ/Nicole.png",
         "pmx": "妮可.pmx"
     },
@@ -31,7 +31,7 @@
         "gender": "Female",
         "region": "Stars of Lyra",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Astra Yao/Astra Yao Skin",
+        "directory": "zzz/chars/Astra Yao/Astra Yao Skin",
         "image": "ZZZ/Astra Yao.png",
         "pmx": "耀嘉音.pmx"
     },
@@ -43,7 +43,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Twiggy/Girl A",
+        "directory": "zzz/chars/Twiggy/Girl A",
         "image": "ZZZ/Twiggy.png",
         "pmx": "Girl A.pmx"
     },
@@ -55,7 +55,7 @@
         "gender": "Female",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Belle/Suibian",
+        "directory": "zzz/chars/Belle/Suibian",
         "image": "ZZZ/Belle.png",
         "pmx": "Belle_Suibianguan.pmx"
     },
@@ -67,7 +67,7 @@
         "gender": "Male",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Wise/Suibian",
+        "directory": "zzz/chars/Wise/Suibian",
         "image": "ZZZ/Wise.png",
         "pmx": "Wise_Suibianguan.pmx"
     },
@@ -79,7 +79,7 @@
         "gender": "Female",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Belle/Swimsuit",
+        "directory": "zzz/chars/Belle/Swimsuit",
         "image": "ZZZ/Belle.png",
         "pmx": "Belle_Swimwear.pmx"
     },
@@ -91,7 +91,7 @@
         "gender": "Male",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Wise/Swimsuit",
+        "directory": "zzz/chars/Wise/Swimsuit",
         "image": "ZZZ/Wise.png",
         "pmx": "Wise_Swimwear.pmx"
     },
@@ -103,7 +103,7 @@
         "gender": "Female",
         "region": "Yunkui Summit",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Yixuan/Skin",
+        "directory": "zzz/chars/Yixuan/Skin",
         "image": "ZZZ/Yixuan.png",
         "pmx": "仪玄.pmx"
     },
@@ -115,7 +115,7 @@
         "gender": "Female",
         "region": "Spook Shack",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Ukinami Yuzuha/Yuzuha_skin",
+        "directory": "zzz/chars/Ukinami Yuzuha/Yuzuha_skin",
         "image": "ZZZ/Ukinami Yuzuha.png",
         "pmx": "Yuzuha.pmx"
     },
@@ -127,7 +127,7 @@
         "gender": "Female",
         "region": "Spook Shack",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Alice Thymefield/Alice_skin",
+        "directory": "zzz/chars/Alice Thymefield/Alice_skin",
         "image": "ZZZ/Alice Thymefield.png",
         "pmx": "Alice.pmx"
     },
@@ -139,7 +139,7 @@
         "gender": "Female",
         "region": "Obol Squad",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Seed/Seed Sr",
+        "directory": "zzz/chars/Seed/Seed Sr",
         "image": "ZZZ/Seed.png",
         "pmx": "Seed.pmx"
     }

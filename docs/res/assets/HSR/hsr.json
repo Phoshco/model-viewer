@@ -6,7 +6,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Stelle",
+        "directory": "hsr/chars/Stelle",
         "image": "HSR/Stelle.png",
         "pmx": "女主1.0.pmx"
     },
@@ -17,7 +17,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Caelus",
+        "directory": "hsr/chars/Caelus",
         "image": "HSR/Caelus.png",
         "pmx": "男主1.0.pmx"
     },
@@ -28,7 +28,7 @@
         "element": "Lightning",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/HSR/Arlan",
+        "directory": "hsr/chars/Arlan",
         "image": "HSR/Arlan.png",
         "pmx": "阿兰1.0.pmx"
     },
@@ -39,7 +39,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Asta",
+        "directory": "hsr/chars/Asta",
         "image": "HSR/Asta.png",
         "pmx": "星穹铁道—艾丝妲160.pmx"
     },
@@ -50,7 +50,7 @@
         "element": "Lightning",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Bailu",
+        "directory": "hsr/chars/Bailu",
         "image": "HSR/Bailu.png",
         "pmx": "白露1.0.pmx"
     },
@@ -61,7 +61,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Bronya",
+        "directory": "hsr/chars/Bronya",
         "image": "HSR/Bronya.png",
         "pmx": "布洛妮娅 1.0.pmx"
     },
@@ -72,7 +72,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Clara/Clara",
+        "directory": "hsr/chars/Clara/Clara",
         "image": "HSR/Clara.png",
         "pmx": "克拉拉.pmx"
     },
@@ -83,7 +83,7 @@
         "element": "Wind",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/HSR/Dan Heng",
+        "directory": "hsr/chars/Dan Heng",
         "image": "HSR/Dan Heng.png",
         "pmx": "丹恒.pmx"
     },
@@ -94,7 +94,7 @@
         "element": "Ice",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Gepard",
+        "directory": "hsr/chars/Gepard",
         "image": "HSR/Gepard.png",
         "pmx": "杰帕德.pmx"
     },
@@ -105,7 +105,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Herta",
+        "directory": "hsr/chars/Herta",
         "image": "HSR/Herta.png",
         "pmx": "黑塔.pmx"
     },
@@ -116,7 +116,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Himeko",
+        "directory": "hsr/chars/Himeko",
         "image": "HSR/Himeko.png",
         "pmx": "姬子2.0.pmx"
     },
@@ -127,7 +127,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Hook",
+        "directory": "hsr/chars/Hook",
         "image": "HSR/Hook.png",
         "pmx": "虎克.pmx"
     },
@@ -138,7 +138,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/March 7th/March 7th (Preservation)",
+        "directory": "hsr/chars/March 7th/March 7th (Preservation)",
         "image": "HSR/March 7th.png",
         "pmx": "三月七 1.0.pmx"
     },
@@ -149,7 +149,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Natasha",
+        "directory": "hsr/chars/Natasha",
         "image": "HSR/Natasha.png",
         "pmx": "娜塔莎1.0.pmx"
     },
@@ -160,7 +160,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Pela",
+        "directory": "hsr/chars/Pela",
         "image": "HSR/Pela.png",
         "pmx": "佩拉.pmx"
     },
@@ -171,7 +171,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Qingque",
+        "directory": "hsr/chars/Qingque",
         "image": "HSR/Qingque.png",
         "pmx": "青雀（分桦）.pmx"
     },
@@ -182,7 +182,7 @@
         "element": "Wind",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/HSR/Sampo",
+        "directory": "hsr/chars/Sampo",
         "image": "HSR/Sampo.png",
         "pmx": "╔ú▓⌐.pmx"
     },
@@ -193,7 +193,7 @@
         "element": "Lightning",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Serval",
+        "directory": "hsr/chars/Serval",
         "image": "HSR/Serval.png",
         "pmx": "希露瓦1.0.pmx"
     },
@@ -204,7 +204,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Sushang",
+        "directory": "hsr/chars/Sushang",
         "image": "HSR/Sushang.png",
         "pmx": "李素裳1.0.pmx"
     },
@@ -215,7 +215,7 @@
         "element": "Lightning",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Tingyun",
+        "directory": "hsr/chars/Tingyun",
         "image": "HSR/Tingyun.png",
         "pmx": "停云.pmx"
     },
@@ -226,7 +226,7 @@
         "element": "Imaginary",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Welt",
+        "directory": "hsr/chars/Welt",
         "image": "HSR/Welt.png",
         "pmx": "瓦尔特·杨.pmx"
     },
@@ -237,7 +237,7 @@
         "element": "Ice",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Yanqing",
+        "directory": "hsr/chars/Yanqing",
         "image": "HSR/Yanqing.png",
         "pmx": "彦卿1.0.pmx"
     },
@@ -248,7 +248,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Seele",
+        "directory": "hsr/chars/Seele",
         "image": "HSR/Seele.png",
         "pmx": "希儿.pmx"
     },
@@ -259,7 +259,7 @@
         "element": "Lightning",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Jing Yuan",
+        "directory": "hsr/chars/Jing Yuan",
         "image": "HSR/Jing Yuan.png",
         "pmx": "景元.pmx"
     },
@@ -270,7 +270,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Silver Wolf",
+        "directory": "hsr/chars/Silver Wolf",
         "image": "HSR/Silver Wolf.png",
         "pmx": "银狼.pmx"
     },
@@ -281,7 +281,7 @@
         "element": "Imaginary",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Luocha",
+        "directory": "hsr/chars/Luocha",
         "image": "HSR/Luocha.png",
         "pmx": "罗刹.pmx"
     },
@@ -292,7 +292,7 @@
         "element": "Imaginary",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Yukong",
+        "directory": "hsr/chars/Yukong",
         "image": "HSR/Yukong.png",
         "pmx": "星穹铁道—驭空（改5）.pmx"
     },
@@ -303,7 +303,7 @@
         "element": "Wind",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Blade",
+        "directory": "hsr/chars/Blade",
         "image": "HSR/Blade.png",
         "pmx": "刃1.0.pmx"
     },
@@ -314,7 +314,7 @@
         "element": "Lightning",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Kafka",
+        "directory": "hsr/chars/Kafka",
         "image": "HSR/Kafka.png",
         "pmx": "卡芙卡.pmx"
     },
@@ -325,7 +325,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Luka",
+        "directory": "hsr/chars/Luka",
         "image": "HSR/Luka.png",
         "pmx": "卢卡（改.pmx"
     },
@@ -336,7 +336,7 @@
         "element": "Imaginary",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Imbibitor Lunae",
+        "directory": "hsr/chars/Imbibitor Lunae",
         "image": "HSR/Imbibitor Lunae.png",
         "pmx": "星穹铁道—饮月君1708.pmx"
     },
@@ -347,7 +347,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Fu Xuan",
+        "directory": "hsr/chars/Fu Xuan",
         "image": "HSR/Fu Xuan.png",
         "pmx": "符玄（鞋+发饰补差145cm）(目修).pmx"
     },
@@ -358,7 +358,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Lynx",
+        "directory": "hsr/chars/Lynx",
         "image": "HSR/Lynx.png",
         "pmx": "┴ß┐╔2.0.pmx"
     },
@@ -369,7 +369,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Guinaifen",
+        "directory": "hsr/chars/Guinaifen",
         "image": "HSR/Guinaifen.png",
         "pmx": "星穹铁道—桂乃芬.pmx"
     },
@@ -380,7 +380,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Jingliu",
+        "directory": "hsr/chars/Jingliu",
         "image": "HSR/Jingliu.png",
         "pmx": "镜流2.0.pmx"
     },
@@ -391,7 +391,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Topaz and Numby",
+        "directory": "hsr/chars/Topaz and Numby",
         "image": "HSR/Topaz and Numby.png",
         "pmx": "═╨┼┴.pmx"
     },
@@ -402,7 +402,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Huohuo",
+        "directory": "hsr/chars/Huohuo",
         "image": "HSR/Huohuo.png",
         "pmx": "▐╜▐╜4.0.pmx"
     },
@@ -413,7 +413,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Hanya",
+        "directory": "hsr/chars/Hanya",
         "image": "HSR/Hanya.png",
         "pmx": "║«╤╗3.0.pmx"
     },
@@ -424,7 +424,7 @@
         "element": "Physical",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Argenti",
+        "directory": "hsr/chars/Argenti",
         "image": "HSR/Argenti.png",
         "pmx": "星穹铁道—银枝3.pmx"
     },
@@ -435,7 +435,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/Xueyi",
+        "directory": "hsr/chars/Xueyi",
         "image": "HSR/Xueyi.png",
         "pmx": "雪衣1.0.pmx"
     },
@@ -446,7 +446,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Ruan Mei",
+        "directory": "hsr/chars/Ruan Mei",
         "image": "HSR/Ruan Mei.png",
         "pmx": "╚εíñ├╖1.0.pmx"
     },
@@ -457,7 +457,7 @@
         "element": "Imaginary",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Dr. Ratio",
+        "directory": "hsr/chars/Dr. Ratio",
         "image": "HSR/Dr. Ratio.png",
         "pmx": "星穹铁道—真理医生2.pmx"
     },
@@ -468,7 +468,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Black Swan",
+        "directory": "hsr/chars/Black Swan",
         "image": "HSR/Black Swan.png",
         "pmx": "星穹铁道—黑天鹅（优化）.pmx"
     },
@@ -479,7 +479,7 @@
         "element": "Ice",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/HSR/Misha",
+        "directory": "hsr/chars/Misha",
         "image": "HSR/Misha.png",
         "pmx": "星穹铁道—米沙.pmx"
     },
@@ -490,7 +490,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Sparkle",
+        "directory": "hsr/chars/Sparkle",
         "image": "HSR/Sparkle.png",
         "pmx": "╗¿╗≡3.0.pmx"
     },
@@ -501,7 +501,7 @@
         "element": "Fire",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/HSR/Gallagher",
+        "directory": "hsr/chars/Gallagher",
         "image": "HSR/Gallagher.png",
         "pmx": "星穹铁道—加拉赫.pmx"
     },
@@ -512,7 +512,7 @@
         "element": "Lightning",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Acheron/Acheron",
+        "directory": "hsr/chars/Acheron/Acheron",
         "image": "HSR/Acheron.png",
         "pmx": "星穹铁道—黄泉（轴修复）.pmx"
     },
@@ -523,7 +523,7 @@
         "element": "Imaginary",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Aventurine",
+        "directory": "hsr/chars/Aventurine",
         "image": "HSR/Aventurine.png",
         "pmx": "星穹铁道—砂金9.pmx"
     },
@@ -534,7 +534,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Robin",
+        "directory": "hsr/chars/Robin",
         "image": "HSR/Robin.png",
         "pmx": "星穹铁道—知更鸟（改）.pmx"
     },
@@ -545,7 +545,7 @@
         "element": "Physical",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Boothill",
+        "directory": "hsr/chars/Boothill",
         "image": "HSR/Boothill.png",
         "pmx": "星穹铁道—波提欧2.pmx"
     },
@@ -556,7 +556,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Firefly/Firefly",
+        "directory": "hsr/chars/Firefly/Firefly",
         "image": "HSR/Firefly.png",
         "pmx": "流萤3.0.pmx"
     },
@@ -567,7 +567,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Jade",
+        "directory": "hsr/chars/Jade",
         "image": "HSR/Jade.png",
         "pmx": "星穹铁道—翡翠.pmx"
     },
@@ -578,7 +578,7 @@
         "element": "Imaginary",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/HSR/March 7th/March 7th (The Hunt)",
+        "directory": "hsr/chars/March 7th/March 7th (The Hunt)",
         "image": "HSR/March 7th (The Hunt).png",
         "pmx": "星穹铁道—三月七3.pmx"
     },
@@ -589,7 +589,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Yunli",
+        "directory": "hsr/chars/Yunli",
         "image": "HSR/Yunli.png",
         "pmx": "星穹铁道—云璃2.pmx"
     },
@@ -600,7 +600,7 @@
         "element": "Fire",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Jiaoqiu",
+        "directory": "hsr/chars/Jiaoqiu",
         "image": "HSR/Jiaoqiu.png",
         "pmx": "星穹铁道—椒丘2.pmx"
     },
@@ -611,7 +611,7 @@
         "element": "Lightning",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/HSR/Moze",
+        "directory": "hsr/chars/Moze",
         "image": "HSR/Moze.png",
         "pmx": "貘泽.pmx"
     },
@@ -622,7 +622,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Feixiao/Feixiao",
+        "directory": "hsr/chars/Feixiao/Feixiao",
         "image": "HSR/Feixiao.png",
         "pmx": "飞霄2.0.pmx"
     },
@@ -633,7 +633,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Lingsha",
+        "directory": "hsr/chars/Lingsha",
         "image": "HSR/Lingsha.png",
         "pmx": "霊砂.pmx"
     },
@@ -644,7 +644,7 @@
         "element": "Imaginary",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Rappa",
+        "directory": "hsr/chars/Rappa",
         "image": "HSR/Rappa.png",
         "pmx": "星穹铁道—乱破.pmx"
     },
@@ -655,7 +655,7 @@
         "element": "Imaginary",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Sunday",
+        "directory": "hsr/chars/Sunday",
         "image": "HSR/Sunday.png",
         "pmx": "星穹铁道—星期日2.pmx"
     },
@@ -666,7 +666,7 @@
         "element": "Fire",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Fugue",
+        "directory": "hsr/chars/Fugue",
         "image": "HSR/Fugue.png",
         "pmx": "星穹铁道—忘归人.pmx"
     },
@@ -677,7 +677,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/The Herta",
+        "directory": "hsr/chars/The Herta",
         "image": "HSR/The Herta.png",
         "pmx": "星穹铁道—黑塔2.pmx"
     },
@@ -688,7 +688,7 @@
         "element": "Lightning",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Aglaea",
+        "directory": "hsr/chars/Aglaea",
         "image": "HSR/Aglaea.png",
         "pmx": "星穹铁道—阿格莱雅2.pmx"
     },
@@ -699,7 +699,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Tribbie",
+        "directory": "hsr/chars/Tribbie",
         "image": "HSR/Tribbie.png",
         "pmx": "缇宝.pmx"
     },
@@ -710,7 +710,7 @@
         "element": "Imaginary",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Mydei",
+        "directory": "hsr/chars/Mydei",
         "image": "HSR/Mydei.png",
         "pmx": "星穹铁道—万敌.pmx"
     },
@@ -721,7 +721,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Castorice/Castorice",
+        "directory": "hsr/chars/Castorice/Castorice",
         "image": "HSR/Castorice.png",
         "pmx": "星穹铁道—遐蝶2.pmx"
     },
@@ -732,7 +732,7 @@
         "element": "Wind",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Anaxa",
+        "directory": "hsr/chars/Anaxa",
         "image": "HSR/Anaxa.png",
         "pmx": "Anaxa.pmx"
     },
@@ -743,7 +743,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Hyacine",
+        "directory": "hsr/chars/Hyacine",
         "image": "HSR/Hyacine.png",
         "pmx": "星穹铁道—风堇3.pmx"
     },
@@ -754,7 +754,7 @@
         "element": "Quantum",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Cipher",
+        "directory": "hsr/chars/Cipher",
         "image": "HSR/Cipher.png",
         "pmx": "星穹铁道—赛飞儿3.pmx"
     },
@@ -765,7 +765,7 @@
         "element": "Physical",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Phainon/Phainon",
+        "directory": "hsr/chars/Phainon/Phainon",
         "image": "HSR/Phainon.png",
         "pmx": "星穹铁道—白厄3.pmx"
     },
@@ -776,7 +776,7 @@
         "element": "The Hunt",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Archer",
+        "directory": "hsr/chars/Archer",
         "image": "HSR/Archer.png",
         "pmx": "Archer.pmx"
     },
@@ -787,7 +787,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Saber",
+        "directory": "hsr/chars/Saber",
         "image": "HSR/Saber.png",
         "pmx": "Saber.pmx"
     },
@@ -798,7 +798,7 @@
         "element": "Physical",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Hysilens",
+        "directory": "hsr/chars/Hysilens",
         "image": "HSR/Hysilens.png",
         "pmx": "Hysilens.pmx"
     },
@@ -809,7 +809,7 @@
         "element": "Wind",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Cerydra",
+        "directory": "hsr/chars/Cerydra",
         "image": "HSR/Cerydra.png",
         "pmx": "Cerydra.pmx"
     },
@@ -820,7 +820,7 @@
         "element": "Ice",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/HSR/Evernight",
+        "directory": "hsr/chars/Evernight",
         "image": "HSR/Evernight.png",
         "pmx": "Evernight.pmx"
     },
@@ -831,7 +831,7 @@
         "element": "Physical",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/HSR/Permansor Terrae",
+        "directory": "hsr/chars/Permansor Terrae",
         "image": "HSR/Permansor Terrae.png",
         "pmx": "Permansor Terrae.pmx"
     },
@@ -842,7 +842,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/HSR/Cyrene",
+        "directory": "hsr/chars/Cyrene",
         "image": "HSR/Cyrene.png",
         "pmx": "星穹铁道—昔涟.pmx"
     },
@@ -853,7 +853,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/HSR/Cocolia",
+        "directory": "hsr/chars/Cocolia",
         "image": "HSR/Cocolia.png",
         "pmx": "可可利亚.pmx"
     },
@@ -864,7 +864,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/HSR/Dan Feng",
+        "directory": "hsr/chars/Dan Feng",
         "image": "HSR/Dan Feng.png",
         "pmx": "Dan Feng.pmx"
     },
@@ -875,7 +875,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/HSR/Siobhan",
+        "directory": "hsr/chars/Siobhan",
         "image": "HSR/Siobhan.png",
         "pmx": "Siobhan.pmx"
     },
@@ -886,7 +886,7 @@
         "element": "Remembrance",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/HSR/Mr. Reca",
+        "directory": "hsr/chars/Mr. Reca",
         "image": "HSR/Mr. Reca.png",
         "pmx": "芮克七代.pmx"
     },
@@ -897,7 +897,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/HSR/Mem",
+        "directory": "hsr/chars/Mem",
         "image": "HSR/Mem.png",
         "pmx": "星穹铁道—迷迷.pmx"
     },
@@ -908,7 +908,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/HSR/Tribios",
+        "directory": "hsr/chars/Tribios",
         "image": "HSR/Tribios.png",
         "pmx": "大缇宝.pmx"
     },
@@ -919,7 +919,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/HSR/Flame Reaver",
+        "directory": "hsr/chars/Flame Reaver",
         "image": "HSR/Flame Reaver.png",
         "pmx": "盗火行者.pmx"
     },
@@ -930,7 +930,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/HSR/Lygus/Lygus",
+        "directory": "hsr/chars/Lygus/Lygus",
         "image": "HSR/Lygus.png",
         "pmx": "Lygus.pmx"
     },
@@ -941,7 +941,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/HSR/Lancer",
+        "directory": "hsr/chars/Lancer",
         "image": "HSR/Lancer.png",
         "pmx": "Lancer.pmx"
     }

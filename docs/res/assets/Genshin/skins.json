@@ -7,7 +7,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Barbara/Skin",
+        "directory": "gi/chars/Barbara/Skin",
         "image": "Genshin/Barbara.png",
         "pmx": "芭芭拉.pmx"
     },
@@ -19,7 +19,7 @@
         "gender": "Male",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Diluc/Skin",
+        "directory": "gi/chars/Diluc/Skin",
         "image": "Genshin/Diluc.png",
         "pmx": "迪卢克.pmx"
     },
@@ -31,7 +31,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Fischl/Skin",
+        "directory": "gi/chars/Fischl/Skin",
         "image": "Genshin/Fischl.png",
         "pmx": "菲谢尔.pmx"
     },
@@ -43,7 +43,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Furina/Furina",
+        "directory": "gi/chars/Furina/Furina",
         "image": "Genshin/Furina.png",
         "pmx": "【芙宁娜_荒】.pmx"
     },
@@ -55,7 +55,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Furina/Focalors",
+        "directory": "gi/chars/Furina/Focalors",
         "image": "Genshin/Furina.png",
         "pmx": "芙卡洛斯.pmx"
     },
@@ -67,7 +67,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Ganyu/Skin1",
+        "directory": "gi/chars/Ganyu/Skin1",
         "image": "Genshin/Ganyu.png",
         "pmx": "甘雨.pmx"
     },
@@ -79,7 +79,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Ganyu/Skin2",
+        "directory": "gi/chars/Ganyu/Skin2",
         "image": "Genshin/Ganyu.png",
         "pmx": "甘雨.pmx"
     },
@@ -91,7 +91,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Jean/Skin",
+        "directory": "gi/chars/Jean/Skin",
         "image": "Genshin/Jean.png",
         "pmx": "琴.pmx"
     },
@@ -103,7 +103,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Jean/Skin1",
+        "directory": "gi/chars/Jean/Skin1",
         "image": "Genshin/Jean.png",
         "pmx": "琴闲替衣装.pmx"
     },
@@ -115,7 +115,7 @@
         "gender": "Male",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Kaeya/Skin",
+        "directory": "gi/chars/Kaeya/Skin",
         "image": "Genshin/Kaeya.png",
         "pmx": "凯亚.pmx"
     },
@@ -127,7 +127,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Kamisato Ayaka/Skin",
+        "directory": "gi/chars/Kamisato Ayaka/Skin",
         "image": "Genshin/Kamisato Ayaka.png",
         "pmx": "神里绫华.pmx"
     },
@@ -139,7 +139,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Keqing/Skin",
+        "directory": "gi/chars/Keqing/Skin",
         "image": "Genshin/Keqing.png",
         "pmx": "刻晴.pmx"
     },
@@ -151,7 +151,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Kirara/Skin",
+        "directory": "gi/chars/Kirara/Skin",
         "image": "Genshin/Kirara.png",
         "pmx": "绮良良.pmx"
     },
@@ -163,7 +163,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Klee/Skin",
+        "directory": "gi/chars/Klee/Skin",
         "image": "Genshin/Klee.png",
         "pmx": "可莉.pmx"
     },
@@ -175,7 +175,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Lisa/Skin",
+        "directory": "gi/chars/Lisa/Skin",
         "image": "Genshin/Lisa.png",
         "pmx": "丽莎.pmx"
     },
@@ -187,7 +187,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Lynette/KFC",
+        "directory": "gi/chars/Lynette/KFC",
         "image": "Genshin/Lynette.png",
         "pmx": "【琳妮特】.pmx"
     },
@@ -199,7 +199,7 @@
         "gender": "Male",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Lyney/KFC",
+        "directory": "gi/chars/Lyney/KFC",
         "image": "Genshin/Lyney.png",
         "pmx": "林尼.pmx"
     },
@@ -211,7 +211,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Mona/Skin",
+        "directory": "gi/chars/Mona/Skin",
         "image": "Genshin/Mona.png",
         "pmx": "莫娜.pmx"
     },
@@ -223,7 +223,7 @@
         "gender": "Female",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Nilou/Skin",
+        "directory": "gi/chars/Nilou/Skin",
         "image": "Genshin/Nilou.png",
         "pmx": "妮露.pmx"
     },
@@ -235,7 +235,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Ningguang/Skin",
+        "directory": "gi/chars/Ningguang/Skin",
         "image": "Genshin/Ningguang.png",
         "pmx": "凝光.pmx"
     },
@@ -247,7 +247,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Shenhe/Skin1",
+        "directory": "gi/chars/Shenhe/Skin1",
         "image": "Genshin/Shenhe.png",
         "pmx": "申鹤.pmx"
     },
@@ -259,7 +259,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Shenhe/Skin2",
+        "directory": "gi/chars/Shenhe/Skin2",
         "image": "Genshin/Shenhe.png",
         "pmx": "申鹤.pmx"
     },
@@ -271,7 +271,7 @@
         "gender": "Male",
         "region": "Liyue",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Xingqiu/Skin",
+        "directory": "gi/chars/Xingqiu/Skin",
         "image": "Genshin/Xingqiu.png",
         "pmx": "行秋.pmx"
     },
@@ -283,7 +283,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Amber/Skin1",
+        "directory": "gi/chars/Amber/Skin1",
         "image": "Genshin/Amber.png",
         "pmx": "安柏.pmx"
     },
@@ -295,7 +295,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Amber/Skin2",
+        "directory": "gi/chars/Amber/Skin2",
         "image": "Genshin/Amber.png",
         "pmx": "安柏闲替衣装.pmx"
     },
@@ -307,7 +307,7 @@
         "gender": "Female",
         "region": "Mondstadt",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Eula/Skin1",
+        "directory": "gi/chars/Eula/Skin1",
         "image": "Genshin/Eula.png",
         "pmx": "优菈.pmx"
     },
@@ -319,7 +319,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Kamisato Ayaka/Skin2",
+        "directory": "gi/chars/Kamisato Ayaka/Skin2",
         "image": "Genshin/Kamisato Ayaka.png",
         "pmx": "神里绫华.pmx"
     },
@@ -331,7 +331,7 @@
         "gender": "Male",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Kamisato Ayato/Skin1",
+        "directory": "gi/chars/Kamisato Ayato/Skin1",
         "image": "Genshin/Kamisato Ayato.png",
         "pmx": "神里绫人.pmx"
     },
@@ -343,7 +343,7 @@
         "gender": "Female",
         "region": "Sumeru",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Collei/Skin1",
+        "directory": "gi/chars/Collei/Skin1",
         "image": "Genshin/Collei.png",
         "pmx": "柯莱.pmx"
     },
@@ -355,7 +355,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Tighnari/Skin1",
+        "directory": "gi/chars/Tighnari/Skin1",
         "image": "Genshin/Tighnari.png",
         "pmx": "提纳里.pmx"
     },
@@ -367,7 +367,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Qiqi/Skin1",
+        "directory": "gi/chars/Qiqi/Skin1",
         "image": "Genshin/Qiqi.png",
         "pmx": "七七.pmx"
     },
@@ -379,7 +379,7 @@
         "gender": "Male",
         "region": "Inazuma",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Gorou/Miss Hina",
+        "directory": "gi/chars/Gorou/Miss Hina",
         "image": "Genshin/Gorou.png",
         "pmx": "五郎.pmx"
     },
@@ -391,7 +391,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Sigewinne/Luckin",
+        "directory": "gi/chars/Sigewinne/Luckin",
         "image": "Genshin/Sigewinne.png",
         "pmx": "希格雯.pmx"
     },
@@ -403,7 +403,7 @@
         "gender": "Female",
         "region": "Fontaine",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Clorinde/Luckin",
+        "directory": "gi/chars/Clorinde/Luckin",
         "image": "Genshin/Clorinde.png",
         "pmx": "克洛琳德.pmx"
     },
@@ -415,7 +415,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Wanderer/Scaramouche",
+        "directory": "gi/chars/Wanderer/Scaramouche",
         "image": "Genshin/Wanderer.png",
         "pmx": "流浪者.pmx"
     },
@@ -427,7 +427,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Wanderer/Kunikuzushi",
+        "directory": "gi/chars/Wanderer/Kunikuzushi",
         "image": "Genshin/Wanderer.png",
         "pmx": "傾奇者(袖改变,无头饰)_0127.bpmx"
     },
@@ -439,7 +439,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Xiangling/XianglingNewYearsCheer",
+        "directory": "gi/chars/Xiangling/XianglingNewYearsCheer",
         "image": "Genshin/Xiangling.png",
         "pmx": "香菱-海灯节.pmx"
     },
@@ -451,7 +451,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Hu Tao/HuTaoCherriesSnow",
+        "directory": "gi/chars/Hu Tao/HuTaoCherriesSnow",
         "image": "Genshin/Hu Tao.png",
         "pmx": "胡桃-海灯节.pmx"
     },
@@ -462,7 +462,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/Genshin/Capitano/IlCapitano",
+        "directory": "gi/chars/Capitano/IlCapitano",
         "image": "Genshin/Capitano.png",
         "pmx": "Capitano.pmx"
     },
@@ -474,7 +474,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Sangonomiya Kokomi/脉动",
+        "directory": "gi/chars/Sangonomiya Kokomi/脉动",
         "image": "Genshin/Sangonomiya Kokomi.png",
         "pmx": "珊瑚宫心海.pmx"
     },
@@ -486,7 +486,7 @@
         "gender": "Female",
         "region": "Inazuma",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Yae Miko/脉动",
+        "directory": "gi/chars/Yae Miko/脉动",
         "image": "Genshin/Yae Miko.png",
         "pmx": "八重神子.pmx"
     },
@@ -498,7 +498,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Alhaitham/Alhaitham_KFC",
+        "directory": "gi/chars/Alhaitham/Alhaitham_KFC",
         "image": "Genshin/Alhaitham.png",
         "pmx": "艾尔海森.pmx"
     },
@@ -510,7 +510,7 @@
         "gender": "Male",
         "region": "Sumeru",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Kaveh/Kaveh_KFC",
+        "directory": "gi/chars/Kaveh/Kaveh_KFC",
         "image": "Genshin/Kaveh.png",
         "pmx": "卡维.pmx"
     },
@@ -521,7 +521,7 @@
         "element": "Cryo",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Skirk/Skirk",
+        "directory": "gi/chars/Skirk/Skirk",
         "image": "Genshin/Skirk.png",
         "pmx": "丝柯克_黑.pmx"
     },
@@ -532,7 +532,7 @@
         "element": "Cryo",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Skirk/Skirk_Old",
+        "directory": "gi/chars/Skirk/Skirk_Old",
         "image": "Genshin/Skirk.png",
         "pmx": "丝柯克.pmx"
     },
@@ -544,7 +544,7 @@
         "gender": "Male",
         "region": "Mondstadt",
         "rarity": 4,
-        "directory": "res/chars/Genshin/Bennett/Bennett_skin",
+        "directory": "gi/chars/Bennett/Bennett_skin",
         "image": "Genshin/Bennett.png",
         "pmx": "Bennett.pmx"
     },
@@ -556,7 +556,7 @@
         "gender": "Female",
         "region": "Liyue",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Yelan/Yelan_skin",
+        "directory": "gi/chars/Yelan/Yelan_skin",
         "image": "Genshin/Yelan.png",
         "pmx": "Yelan.pmx"
     },
@@ -567,7 +567,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/Genshin/Rerir/Wild Hunt",
+        "directory": "gi/chars/Rerir/Wild Hunt",
         "image": "Genshin/Rerir.png",
         "pmx": "Rerir.pmx"
     }

@@ -6,7 +6,7 @@
         "element": "Spectro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Jinhsi/JinhsiSkin",
+        "directory": "ww/chars/Jinhsi/JinhsiSkin",
         "image": "WuWa/Jinhsi.png",
         "pmx": "鸣潮_今汐_桃夭灼灼.pmx"
     },
@@ -17,7 +17,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Carlotta/DarkCarlotta",
+        "directory": "ww/chars/Carlotta/DarkCarlotta",
         "image": "WuWa/Carlotta.png",
         "pmx": "Carlotta.pmx"
     },
@@ -28,7 +28,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Carlotta/Carlotta_skin",
+        "directory": "ww/chars/Carlotta/Carlotta_skin",
         "image": "WuWa/Carlotta.png",
         "pmx": "Carlotta.pmx"
     },
@@ -39,7 +39,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Sanhua/Sanhua_skin",
+        "directory": "ww/chars/Sanhua/Sanhua_skin",
         "image": "WuWa/Sanhua.png",
         "pmx": "Sanhua.pmx"
     },
@@ -50,7 +50,7 @@
         "element": "Aero",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Cartethyia/Fleurdelys",
+        "directory": "ww/chars/Cartethyia/Fleurdelys",
         "image": "WuWa/Cartethyia.png",
         "pmx": "Fleurdelys.pmx"
     },
@@ -61,7 +61,7 @@
         "element": "Fusion",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Changli/Changli_skin",
+        "directory": "ww/chars/Changli/Changli_skin",
         "image": "WuWa/Changli.png",
         "pmx": "Changli.pmx"
     },
@@ -72,7 +72,7 @@
         "element": "Havoc",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Phrolova/Dark_Phrolova",
+        "directory": "ww/chars/Phrolova/Dark_Phrolova",
         "image": "WuWa/Phrolova.png",
         "pmx": "Phrolova.pmx"
     }

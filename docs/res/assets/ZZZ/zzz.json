@@ -7,7 +7,7 @@
         "gender": "Female",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Belle/Belle",
+        "directory": "zzz/chars/Belle/Belle",
         "image": "ZZZ/Belle.png",
         "pmx": "铃.pmx"
     },
@@ -19,7 +19,7 @@
         "gender": "Male",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Wise/Wise",
+        "directory": "zzz/chars/Wise/Wise",
         "image": "ZZZ/Wise.png",
         "pmx": "哲.pmx"
     },
@@ -31,7 +31,7 @@
         "gender": "Female",
         "region": "Victoria Housekeeping",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Rina",
+        "directory": "zzz/chars/Rina",
         "image": "ZZZ/Rina.png",
         "pmx": "亚历山德丽娜.bpmx"
     },
@@ -43,7 +43,7 @@
         "gender": "Female",
         "region": "Cunning Hares",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Anby",
+        "directory": "zzz/chars/Anby",
         "image": "ZZZ/Anby.png",
         "pmx": "安比.pmx"
     },
@@ -55,7 +55,7 @@
         "gender": "Male",
         "region": "Belobog Heavy Industries",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Anton",
+        "directory": "zzz/chars/Anton",
         "image": "ZZZ/Anton.png",
         "pmx": "安东.pmx"
     },
@@ -67,7 +67,7 @@
         "gender": "Male",
         "region": "Belobog Heavy Industries",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Ben",
+        "directory": "zzz/chars/Ben",
         "image": "ZZZ/Ben.png",
         "pmx": "本.bpmx"
     },
@@ -79,7 +79,7 @@
         "gender": "Male",
         "region": "Cunning Hares",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Billy",
+        "directory": "zzz/chars/Billy",
         "image": "ZZZ/Billy.png",
         "pmx": "比利.pmx"
     },
@@ -91,7 +91,7 @@
         "gender": "Female",
         "region": "Victoria Housekeeping",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Corin",
+        "directory": "zzz/chars/Corin",
         "image": "ZZZ/Corin.png",
         "pmx": "可琳.pmx"
     },
@@ -103,7 +103,7 @@
         "gender": "Female",
         "region": "Belobog Heavy Industries",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Grace",
+        "directory": "zzz/chars/Grace",
         "image": "ZZZ/Grace.png",
         "pmx": "格莉丝.pmx"
     },
@@ -115,7 +115,7 @@
         "gender": "Female",
         "region": "Belobog Heavy Industries",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Koleda",
+        "directory": "zzz/chars/Koleda",
         "image": "ZZZ/Koleda.png",
         "pmx": "珂雷妲.pmx"
     },
@@ -127,7 +127,7 @@
         "gender": "Female",
         "region": "Sons of Calydon",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Lucy",
+        "directory": "zzz/chars/Lucy",
         "image": "ZZZ/Lucy.png",
         "pmx": "露西_帽.pmx"
     },
@@ -139,7 +139,7 @@
         "gender": "Female",
         "region": "Cunning Hares",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Nekomata",
+        "directory": "zzz/chars/Nekomata",
         "image": "ZZZ/Nekomata.png",
         "pmx": "猫又.pmx"
     },
@@ -151,7 +151,7 @@
         "gender": "Female",
         "region": "Cunning Hares",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Nicole/Nicole",
+        "directory": "zzz/chars/Nicole/Nicole",
         "image": "ZZZ/Nicole.png",
         "pmx": "妮可.pmx"
     },
@@ -163,7 +163,7 @@
         "gender": "Female",
         "region": "Sons of Calydon",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Piper",
+        "directory": "zzz/chars/Piper",
         "image": "ZZZ/Piper.png",
         "pmx": "派派.pmx"
     },
@@ -175,7 +175,7 @@
         "gender": "Female",
         "region": "Obol Squad",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Soldier 11",
+        "directory": "zzz/chars/Soldier 11",
         "image": "ZZZ/Soldier 11.png",
         "pmx": "11号.pmx"
     },
@@ -187,7 +187,7 @@
         "gender": "Female",
         "region": "Section 6",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Soukaku",
+        "directory": "zzz/chars/Soukaku",
         "image": "ZZZ/Soukaku.png",
         "pmx": "苍角.pmx"
     },
@@ -199,7 +199,7 @@
         "gender": "Male",
         "region": "Proxies",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Lycaon",
+        "directory": "zzz/chars/Lycaon",
         "image": "ZZZ/Lycaon.png",
         "pmx": "莱卡恩.pmx"
     },
@@ -211,7 +211,7 @@
         "gender": "Female",
         "region": "Victoria Housekeeping",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Ellen/Ellen",
+        "directory": "zzz/chars/Ellen/Ellen",
         "image": "ZZZ/Ellen.png",
         "pmx": "艾莲.pmx"
     },
@@ -223,7 +223,7 @@
         "gender": "Female",
         "region": "Criminal Investigation Special Response Team",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Zhu Yuan",
+        "directory": "zzz/chars/Zhu Yuan",
         "image": "ZZZ/Zhu Yuan.png",
         "pmx": "朱鸢.pmx"
     },
@@ -235,7 +235,7 @@
         "gender": "Female",
         "region": "Criminal Investigation Special Response Team",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Qingyi",
+        "directory": "zzz/chars/Qingyi",
         "image": "ZZZ/Qingyi.png",
         "pmx": "Qingyi.pmx"
     },
@@ -247,7 +247,7 @@
         "gender": "Female",
         "region": "Faction Unknown",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Jane Doe",
+        "directory": "zzz/chars/Jane Doe",
         "image": "ZZZ/Jane Doe.png",
         "pmx": "简.pmx"
     },
@@ -259,7 +259,7 @@
         "gender": "Male",
         "region": "Criminal Investigation Special Response Team",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Seth Lowell",
+        "directory": "zzz/chars/Seth Lowell",
         "image": "ZZZ/Seth Lowell.png",
         "pmx": "赛斯.pmx"
     },
@@ -271,7 +271,7 @@
         "gender": "Female",
         "region": "Sons of Calydon",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Caesar King",
+        "directory": "zzz/chars/Caesar King",
         "image": "ZZZ/Caesar King.png",
         "pmx": "凯撒.pmx"
     },
@@ -283,7 +283,7 @@
         "gender": "Female",
         "region": "Sons of Calydon",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Burnice White",
+        "directory": "zzz/chars/Burnice White",
         "image": "ZZZ/Burnice White.png",
         "pmx": "柏妮思.pmx"
     },
@@ -295,7 +295,7 @@
         "gender": "Female",
         "region": "Section 6",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Tsukishiro Yanagi",
+        "directory": "zzz/chars/Tsukishiro Yanagi",
         "image": "ZZZ/Tsukishiro Yanagi.png",
         "pmx": "柳.pmx"
     },
@@ -307,7 +307,7 @@
         "gender": "Male",
         "region": "Sons of Calydon",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Lighter",
+        "directory": "zzz/chars/Lighter",
         "image": "ZZZ/Lighter.png",
         "pmx": "莱特.pmx"
     },
@@ -319,7 +319,7 @@
         "gender": "Male",
         "region": "Section 6",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Harumasa",
+        "directory": "zzz/chars/Harumasa",
         "image": "ZZZ/Harumasa.png",
         "pmx": "Harumasa.pmx"
     },
@@ -331,7 +331,7 @@
         "gender": "Female",
         "region": "Section 6",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Hoshimi Miyabi",
+        "directory": "zzz/chars/Hoshimi Miyabi",
         "image": "ZZZ/Hoshimi Miyabi.png",
         "pmx": "Hoshimi Miyabi.pmx"
     },
@@ -343,7 +343,7 @@
         "gender": "Female",
         "region": "Stars of Lyra",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Astra Yao/Astra Yao",
+        "directory": "zzz/chars/Astra Yao/Astra Yao",
         "image": "ZZZ/Astra Yao.png",
         "pmx": "耀嘉音.pmx"
     },
@@ -355,7 +355,7 @@
         "gender": "Female",
         "region": "Stars of Lyra",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Evelyn Chevalier",
+        "directory": "zzz/chars/Evelyn Chevalier",
         "image": "ZZZ/Evelyn Chevalier.png",
         "pmx": "Evelyn.pmx"
     },
@@ -367,7 +367,7 @@
         "gender": "Female",
         "region": "Sons of Calydon",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Pulchra Fellini",
+        "directory": "zzz/chars/Pulchra Fellini",
         "image": "ZZZ/Pulchra.png",
         "pmx": "波可娜.pmx"
     },
@@ -379,7 +379,7 @@
         "gender": "Female",
         "region": "Defense Force - Silver Squad",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Soldier 0 - Anby",
+        "directory": "zzz/chars/Soldier 0 - Anby",
         "image": "ZZZ/Soldier 0.png",
         "pmx": "安比.pmx"
     },
@@ -391,7 +391,7 @@
         "gender": "Female",
         "region": "Obol Squad",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Trigger",
+        "directory": "zzz/chars/Trigger",
         "image": "ZZZ/Trigger.png",
         "pmx": "Trigger.pmx"
     },
@@ -403,7 +403,7 @@
         "gender": "Female",
         "region": "Mockingbird",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Vivian",
+        "directory": "zzz/chars/Vivian",
         "image": "ZZZ/Vivian.png",
         "pmx": "薇薇安.pmx"
     },
@@ -415,7 +415,7 @@
         "gender": "Male",
         "region": "Mockingbird",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Hugo",
+        "directory": "zzz/chars/Hugo",
         "image": "ZZZ/Hugo.png",
         "pmx": "雨果.pmx"
     },
@@ -427,7 +427,7 @@
         "gender": "Male",
         "region": "Yunkui Summit",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Pan Yinhu",
+        "directory": "zzz/chars/Pan Yinhu",
         "image": "ZZZ/Pan Yinhu.png",
         "pmx": "Pan Yinhu.pmx"
     },
@@ -439,7 +439,7 @@
         "gender": "Female",
         "region": "Yunkui Summit",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Yixuan/Yixuan",
+        "directory": "zzz/chars/Yixuan/Yixuan",
         "image": "ZZZ/Yixuan.png",
         "pmx": "Yixuan.pmx"
     },
@@ -451,7 +451,7 @@
         "gender": "Female",
         "region": "Yunkui Summit",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Ju Fufu",
+        "directory": "zzz/chars/Ju Fufu",
         "image": "ZZZ/Ju Fufu.png",
         "pmx": "Ju Fufu.pmx"
     },
@@ -463,7 +463,7 @@
         "gender": "Female",
         "region": "Spook Shack",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Ukinami Yuzuha/Ukinami Yuzuha",
+        "directory": "zzz/chars/Ukinami Yuzuha/Ukinami Yuzuha",
         "image": "ZZZ/Ukinami Yuzuha.png",
         "pmx": "Ukinami Yuzuha.pmx"
     },
@@ -475,7 +475,7 @@
         "gender": "Female",
         "region": "Spook Shack",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Alice Thymefield/Alice Thymefield",
+        "directory": "zzz/chars/Alice Thymefield/Alice Thymefield",
         "image": "ZZZ/Alice Thymefield.png",
         "pmx": "Alice Thymefield.pmx"
     },
@@ -487,7 +487,7 @@
         "gender": "Female",
         "region": "Obol Squad",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Seed/Seed",
+        "directory": "zzz/chars/Seed/Seed",
         "image": "ZZZ/Seed.png",
         "pmx": "Seed.pmx"
     },
@@ -499,7 +499,7 @@
         "gender": "Male",
         "region": "Spook Shack",
         "rarity": 4,
-        "directory": "res/chars/ZZZ/Komano Manato",
+        "directory": "zzz/chars/Komano Manato",
         "image": "ZZZ/Komano Manato.png",
         "pmx": "Komano Manato.pmx"
     },
@@ -511,7 +511,7 @@
         "gender": "Female",
         "region": "Spook Shack",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Lucia",
+        "directory": "zzz/chars/Lucia",
         "image": "ZZZ/Lucia.png",
         "pmx": "Lucia.pmx"
     },
@@ -523,7 +523,7 @@
         "gender": "Female",
         "region": "Spook Shack",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Yidhari",
+        "directory": "zzz/chars/Yidhari",
         "image": "ZZZ/Yidhari.png",
         "pmx": "Yidhari.pmx"
     },
@@ -535,7 +535,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Zhao",
+        "directory": "zzz/chars/Zhao",
         "image": "ZZZ/Zhao.png",
         "pmx": "Zhao.pmx"
     },
@@ -547,7 +547,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Chinatsu Remiel",
+        "directory": "zzz/chars/Chinatsu Remiel",
         "image": "ZZZ/Chinatsu Remiel.png",
         "pmx": "Chinatsu Remiel.pmx"
     },
@@ -559,7 +559,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Asha",
+        "directory": "zzz/chars/Asha",
         "image": "ZZZ/Asha.png",
         "pmx": "Asha.pmx"
     },
@@ -571,7 +571,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Orchidea",
+        "directory": "zzz/chars/Orchidea",
         "image": "ZZZ/Orchidea.png",
         "pmx": "Orchidea.pmx"
     },
@@ -583,7 +583,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Twiggy/Twiggy",
+        "directory": "zzz/chars/Twiggy/Twiggy",
         "image": "ZZZ/Twiggy.png",
         "pmx": "Twiggy.pmx"
     },
@@ -595,7 +595,7 @@
         "gender": "Male",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Ye Shiyuan",
+        "directory": "zzz/chars/Ye Shiyuan",
         "image": "ZZZ/Ye Shiyuan.png",
         "pmx": "Ye Shiyuan.pmx"
     },
@@ -607,7 +607,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Sweety",
+        "directory": "zzz/chars/Sweety",
         "image": "ZZZ/Sweety.png",
         "pmx": "红豆.pmx"
     },
@@ -619,7 +619,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Sarah",
+        "directory": "zzz/chars/Sarah",
         "image": "ZZZ/Sarah.png",
         "pmx": "Sarah.pmx"
     },
@@ -631,7 +631,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Isolde",
+        "directory": "zzz/chars/Isolde",
         "image": "ZZZ/Isolde.png",
         "pmx": "Isolde.pmx"
     },
@@ -643,7 +643,7 @@
         "gender": "Female",
         "region": "Universal",
         "rarity": 6,
-        "directory": "res/chars/ZZZ/Carole Arna",
+        "directory": "zzz/chars/Carole Arna",
         "image": "ZZZ/Carole Arna.png",
         "pmx": "Carole Arna.pmx"
     }

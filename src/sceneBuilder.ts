@@ -1,3 +1,4 @@
+const baseUrl = "https://phoshco.github.io/";
 // for use loading screen, we need to import following module.
 import "@babylonjs/core/Loading/loadingScreen";
 // for cast shadow, we need to import following module.
@@ -75,14 +76,14 @@ import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 import miniSearch from "minisearch";
 
 import extraCharDatas from "../res/assets/extras.json";
-import genshinCharDatas from "../res/assets/Genshin/genshin.json";
-import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
-import hsrCharDatas from "../res/assets/HSR/hsr.json";
-import hsrSkinCharDatas from "../res/assets/HSR/skins.json";
-import wuwaSkinCharDatas from "../res/assets/WuWa/skins.json";
-import wuwaCharDatas from "../res/assets/WuWa/wuwa.json";
-import zzzSkinCharDatas from "../res/assets/ZZZ/skins.json";
-import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
+// import genshinCharDatas from "../res/assets/Genshin/genshin.json";
+// import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
+// import hsrCharDatas from "../res/assets/HSR/hsr.json";
+// import hsrSkinCharDatas from "../res/assets/HSR/skins.json";
+// import wuwaSkinCharDatas from "../res/assets/WuWa/skins.json";
+// import wuwaCharDatas from "../res/assets/WuWa/wuwa.json";
+// import zzzSkinCharDatas from "../res/assets/ZZZ/skins.json";
+// import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import motionConfig from "../res/cam_motion/motion.json";
 import type { ISceneBuilder } from "./baseRuntime";
 import { CustomLoadingScreen } from "./CustomLoadingScreen";
@@ -96,6 +97,16 @@ export class SceneBuilder implements ISceneBuilder {
         SdefInjector.OverrideEngineCreateEffect(engine);
         const isLocal = window.location.hostname.includes("localhost");
         const firebase = FirebaseInstance.GetInstance();
+
+        // If you want to load json data dynamically, uncomment following lines and comment out above import lines.
+        const genshinCharDatas = await (await fetch(`${baseUrl}gi/genshin.json`)).json();
+        const genshinSkinCharDatas = await (await fetch(`${baseUrl}gi/skins.json`)).json();
+        const hsrCharDatas = await (await fetch(`${baseUrl}hsr/hsr.json`)).json();
+        const hsrSkinCharDatas = await (await fetch(`${baseUrl}hsr/skins.json`)).json();
+        const zzzCharDatas = await (await fetch(`${baseUrl}zzz/zzz.json`)).json();
+        const zzzSkinCharDatas = await (await fetch(`${baseUrl}zzz/skins.json`)).json();
+        const wuwaCharDatas = await (await fetch(`${baseUrl}ww/wuwa.json`)).json();
+        const wuwaSkinCharDatas = await (await fetch(`${baseUrl}ww/skins.json`)).json();
 
         // character json
         interface BaseCharData {
@@ -539,7 +550,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
             promises.push(loadAssetContainerAsync(
-                chosenChar.directory + "/" + chosenChar.pmx,
+                baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
                 scene,
                 {
                     onProgress: (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),
@@ -2894,7 +2905,7 @@ export class SceneBuilder implements ISceneBuilder {
                         let charButton: gui.Button;
                         extraDataArray;
                         if (tabMode == "Genshin" || tabMode == "None") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/Genshin/Paimon.png");
+                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "gi/Genshin/Paimon.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Paimon";
                             });
@@ -2905,7 +2916,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else if (tabMode == "HSR") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/HSR/Pom-Pom.png");
+                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "hsr/HSR/Pom-Pom.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Pom-Pom";
                             });
@@ -2916,7 +2927,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else if (tabMode == "ZZZ") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/ZZZ/Bangboo.png");
+                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "zzz/ZZZ/Bangboo.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Bangboo";
                             });
@@ -2927,7 +2938,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else {
-                            charButton = gui.Button.CreateImageOnlyButton("but", "res/charsPNG/WuWa/Abby.png");
+                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "ww/WuWa/Abby.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Abby";
                             });
@@ -2958,7 +2969,7 @@ export class SceneBuilder implements ISceneBuilder {
                             theBG.background = "rgb(192,79,85)";
                         }
                         grid.addControl(theBG, i, j);
-                        const charButton = gui.Button.CreateImageOnlyButton("but", `res/charsPNG/${selChar.image}`);
+                        const charButton = gui.Button.CreateImageOnlyButton("but", `${baseUrl}/${selChar.image}`);
                         charButton.thickness = 0;
                         charButton.cornerRadius = 10;
                         charButton.paddingBottom = charButton.paddingTop = charButton.paddingRight = charButton.paddingLeft = 5;
@@ -3344,7 +3355,7 @@ export class SceneBuilder implements ISceneBuilder {
             prevCharId = chosenChar!.id;
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
                 promises.push(loadAssetContainerAsync(
-                    chosenChar.directory + "/" + chosenChar.pmx,
+                    baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
                     scene,
                     {
                         onProgress: (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),

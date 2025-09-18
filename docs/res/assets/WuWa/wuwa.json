@@ -6,7 +6,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Rover (Male)",
+        "directory": "ww/chars/Rover (Male)",
         "image": "WuWa/Rover (Male).png",
         "pmx": "Rover (Male).bpmx"
     },
@@ -17,7 +17,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Rover (Female)",
+        "directory": "ww/chars/Rover (Female)",
         "image": "WuWa/Rover (Female).png",
         "pmx": "Rover (Female).pmx"
     },
@@ -28,7 +28,7 @@
         "element": "Aero",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Aalto",
+        "directory": "ww/chars/Aalto",
         "image": "WuWa/Aalto.png",
         "pmx": "Aalto.pmx"
     },
@@ -39,7 +39,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Baizhi",
+        "directory": "ww/chars/Baizhi",
         "image": "WuWa/Baizhi.png",
         "pmx": "Baizhi.pmx"
     },
@@ -50,7 +50,7 @@
         "element": "Fusion",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Chixia",
+        "directory": "ww/chars/Chixia",
         "image": "WuWa/Chixia.png",
         "pmx": "Chixia.pmx"
     },
@@ -61,7 +61,7 @@
         "element": "Havoc",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Danjin",
+        "directory": "ww/chars/Danjin",
         "image": "WuWa/Danjin.png",
         "pmx": "Danjin.pmx"
     },
@@ -72,7 +72,7 @@
         "element": "Fusion",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Mortefi",
+        "directory": "ww/chars/Mortefi",
         "image": "WuWa/Mortefi.png",
         "pmx": "Mortefi.pmx"
     },
@@ -83,7 +83,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Sanhua/Sanhua",
+        "directory": "ww/chars/Sanhua/Sanhua",
         "image": "WuWa/Sanhua.png",
         "pmx": "Sanhua.pmx"
     },
@@ -94,7 +94,7 @@
         "element": "Havoc",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Taoqi",
+        "directory": "ww/chars/Taoqi",
         "image": "WuWa/Taoqi.png",
         "pmx": "Taoqi.pmx"
     },
@@ -105,7 +105,7 @@
         "element": "Aero",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Yangyang",
+        "directory": "ww/chars/Yangyang",
         "image": "WuWa/Yangyang.png",
         "pmx": "Yangyang.pmx"
     },
@@ -116,7 +116,7 @@
         "element": "Electro",
         "gender": "Male",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Yuanwu",
+        "directory": "ww/chars/Yuanwu",
         "image": "WuWa/Yuanwu.png",
         "pmx": "Yuanwu.pmx"
     },
@@ -127,7 +127,7 @@
         "element": "Electro",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Calcharo",
+        "directory": "ww/chars/Calcharo",
         "image": "WuWa/Calcharo.png",
         "pmx": "Calcharo.pmx"
     },
@@ -138,7 +138,7 @@
         "element": "Fusion",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Encore",
+        "directory": "ww/chars/Encore",
         "image": "WuWa/Encore.png",
         "pmx": "Encore.pmx"
     },
@@ -149,7 +149,7 @@
         "element": "Aero",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Jianxin",
+        "directory": "ww/chars/Jianxin",
         "image": "WuWa/Jianxin.png",
         "pmx": "Jianxin.pmx"
     },
@@ -160,7 +160,7 @@
         "element": "Aero",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Jiyan",
+        "directory": "ww/chars/Jiyan",
         "image": "WuWa/Jiyan.png",
         "pmx": "Jiyan.pmx"
     },
@@ -171,7 +171,7 @@
         "element": "Glacio",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Lingyang",
+        "directory": "ww/chars/Lingyang",
         "image": "WuWa/Lingyang.png",
         "pmx": "Lingyang.pmx"
     },
@@ -182,7 +182,7 @@
         "element": "Spectro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Verina",
+        "directory": "ww/chars/Verina",
         "image": "WuWa/Verina.png",
         "pmx": "Verina.pmx"
     },
@@ -193,7 +193,7 @@
         "element": "Electro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Yinlin",
+        "directory": "ww/chars/Yinlin",
         "image": "WuWa/Yinlin.png",
         "pmx": "Yinlin.pmx"
     },
@@ -204,7 +204,7 @@
         "element": "Spectro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Jinhsi/Jinhsi",
+        "directory": "ww/chars/Jinhsi/Jinhsi",
         "image": "WuWa/Jinhsi.png",
         "pmx": "Jinhsi.pmx"
     },
@@ -215,7 +215,7 @@
         "element": "Fusion",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Changli/Changli",
+        "directory": "ww/chars/Changli/Changli",
         "image": "WuWa/Changli.png",
         "pmx": "Changli.pmx"
     },
@@ -226,7 +226,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Zhezhi",
+        "directory": "ww/chars/Zhezhi",
         "image": "WuWa/Zhezhi.png",
         "pmx": "Zhezhi.pmx"
     },
@@ -237,7 +237,7 @@
         "element": "Electro",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Xiangli Yao",
+        "directory": "ww/chars/Xiangli Yao",
         "image": "WuWa/Xiangli Yao.png",
         "pmx": "Xiangli Yao.pmx"
     },
@@ -248,7 +248,7 @@
         "element": "Spectro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Shorekeeper",
+        "directory": "ww/chars/Shorekeeper",
         "image": "WuWa/Shorekeeper.png",
         "pmx": "Shorekeeper.pmx"
     },
@@ -259,7 +259,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Youhu",
+        "directory": "ww/chars/Youhu",
         "image": "WuWa/Youhu.png",
         "pmx": "Youhu.pmx"
     },
@@ -270,7 +270,7 @@
         "element": "Havoc",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Camellya",
+        "directory": "ww/chars/Camellya",
         "image": "WuWa/Camellya.png",
         "pmx": "Camellya.pmx"
     },
@@ -281,7 +281,7 @@
         "element": "Electro",
         "gender": "Female",
         "rarity": 4,
-        "directory": "res/chars/WuWa/Lumi",
+        "directory": "ww/chars/Lumi",
         "image": "WuWa/Lumi.png",
         "pmx": "Lumi.pmx"
     },
@@ -292,7 +292,7 @@
         "element": "Glacio",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Carlotta/Carlotta",
+        "directory": "ww/chars/Carlotta/Carlotta",
         "image": "WuWa/Carlotta.png",
         "pmx": "Carlotta.pmx"
     },
@@ -303,7 +303,7 @@
         "element": "Havoc",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Roccia",
+        "directory": "ww/chars/Roccia",
         "image": "WuWa/Roccia.png",
         "pmx": "Roccia.pmx"
     },
@@ -314,7 +314,7 @@
         "element": "Spectro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Phoebe",
+        "directory": "ww/chars/Phoebe",
         "image": "WuWa/Phoebe.png",
         "pmx": "Phoebe.pmx"
     },
@@ -325,7 +325,7 @@
         "element": "Fusion",
         "gender": "Male",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Brant",
+        "directory": "ww/chars/Brant",
         "image": "WuWa/Brant.png",
         "pmx": "Brant.bpmx"
     },
@@ -336,7 +336,7 @@
         "element": "Havoc",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Cantarella",
+        "directory": "ww/chars/Cantarella",
         "image": "WuWa/Cantarella.png",
         "pmx": "Cantarella.pmx"
     },
@@ -347,7 +347,7 @@
         "element": "Spectro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Zani",
+        "directory": "ww/chars/Zani",
         "image": "WuWa/Zani.png",
         "pmx": "赞妮更软的披风.pmx"
     },
@@ -358,7 +358,7 @@
         "element": "Aero",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Ciaccona",
+        "directory": "ww/chars/Ciaccona",
         "image": "WuWa/Ciaccona.png",
         "pmx": "鸣潮_夏空1.032.pmx"
     },
@@ -369,7 +369,7 @@
         "element": "Aero",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Cartethyia/Cartethyia",
+        "directory": "ww/chars/Cartethyia/Cartethyia",
         "image": "WuWa/Cartethyia.png",
         "pmx": "卡提希娅.pmx"
     },
@@ -380,7 +380,7 @@
         "element": "Fusion",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Lupa",
+        "directory": "ww/chars/Lupa",
         "image": "WuWa/Lupa.png",
         "pmx": "Lupa.bpmx"
     },
@@ -391,7 +391,7 @@
         "element": "Havoc",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Phrolova/Phrolova",
+        "directory": "ww/chars/Phrolova/Phrolova",
         "image": "WuWa/Phrolova.png",
         "pmx": "弗洛洛.pmx"
     },
@@ -402,7 +402,7 @@
         "element": "Electro",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Augusta",
+        "directory": "ww/chars/Augusta",
         "image": "WuWa/Augusta.png",
         "pmx": "Augusta.pmx"
     },
@@ -413,7 +413,7 @@
         "element": "Aero",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Iuno",
+        "directory": "ww/chars/Iuno",
         "image": "WuWa/Iuno.png",
         "pmx": "Iuno.pmx"
     },
@@ -424,7 +424,7 @@
         "element": "Fusion",
         "gender": "Female",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Galbrena",
+        "directory": "ww/chars/Galbrena",
         "image": "WuWa/Galbrena.png",
         "pmx": "Galbrena.pmx"
     },
@@ -435,7 +435,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/WuWa/Buling",
+        "directory": "ww/chars/Buling",
         "image": "WuWa/Buling.png",
         "pmx": "Buling.pmx"
     },
@@ -446,7 +446,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/WuWa/Scar",
+        "directory": "ww/chars/Scar",
         "image": "WuWa/Scar.png",
         "pmx": "Scar.pmx"
     },
@@ -457,7 +457,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/WuWa/Rosemary",
+        "directory": "ww/chars/Rosemary",
         "image": "WuWa/Rosemary.png",
         "pmx": "Rosemary.pmx"
     },
@@ -468,7 +468,7 @@
         "element": "Universal",
         "gender": "Male",
         "rarity": 6,
-        "directory": "res/chars/WuWa/Geshu Lin",
+        "directory": "ww/chars/Geshu Lin",
         "image": "WuWa/Geshu Lin.png",
         "pmx": "Geshu Lin.pmx"
     },
@@ -479,7 +479,7 @@
         "element": "Universal",
         "gender": "Female",
         "rarity": 6,
-        "directory": "res/chars/WuWa/Margherita",
+        "directory": "ww/chars/Margherita",
         "image": "WuWa/Margherita.png",
         "pmx": "Margherita.pmx"
     }
