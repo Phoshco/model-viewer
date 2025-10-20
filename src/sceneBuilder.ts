@@ -1,4 +1,4 @@
-const baseUrl = "https://phoshco.github.io/";
+const baseUrl = "https://phoshco.github.io/"; //"http://127.0.0.1:8080/";
 // for use loading screen, we need to import following module.
 import "@babylonjs/core/Loading/loadingScreen";
 // for cast shadow, we need to import following module.
@@ -886,11 +886,13 @@ export class SceneBuilder implements ISceneBuilder {
         textblock.color = "black";
         advancedTexture.addControl(textblock);
         textblock.isVisible = false;
+        
+        const iconWidthHeight = isMobile ? "100px" : "50px";
 
         const disclaimerText = new gui.TextBlock();
         disclaimerText.resizeToFit = true;
-        disclaimerText.top = 0;
         disclaimerText.left = 0;
+        disclaimerText.top = 0;
         disclaimerText.paddingTop = 10;
         disclaimerText.paddingRight = 10;
         disclaimerText.text = "Double click / tap to change camera mode.";
@@ -902,7 +904,18 @@ export class SceneBuilder implements ISceneBuilder {
         advancedTexture.addControl(disclaimerText);
         disclaimerText.isVisible = true;
 
-        const iconWidthHeight = isMobile ? "100px" : "50px";
+        const supportButton = gui.Button.CreateImageOnlyButton("but", "res/assets/support.png");
+        supportButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        supportButton.left = -10;
+        supportButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        supportButton.top = isMobile ? "50px" : "30px";
+        supportButton.width = iconWidthHeight;
+        supportButton.height = iconWidthHeight;
+        supportButton.thickness = 0;
+        advancedTexture.addControl(supportButton);
+        supportButton.onPointerClickObservable.add(function() {
+            window.open("https://ko-fi.com/phoshco", "_blank");
+        });
 
         const showButton = gui.Button.CreateImageOnlyButton("but", "res/assets/menu.png");
         showButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
@@ -3380,8 +3393,8 @@ export class SceneBuilder implements ISceneBuilder {
             mmdPlayerControl.showPlayerControl();
 
             let firstDigit = 0;
+            firstDigit = getFirstDigit(nextId!);
             if (tabMode == "None") {
-                firstDigit = getFirstDigit(nextId!);
                 firstDigitGlobal = firstDigit;
             }
 
@@ -3389,7 +3402,8 @@ export class SceneBuilder implements ISceneBuilder {
                 skinMode = false;
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
                 await createCharacter(chosenChar);
-            } else if (tabMode == "Genshin" || firstDigit == 1) {
+            } else if (firstDigit == 1 || tabMode == "Genshin") {
+                tabMode = "Genshin";
                 const skinChars = findAllCharsByName(genshinSkinDataArray, chosenCharName);
                 if (prevCharName == chosenCharName) {
                     if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
@@ -3437,7 +3451,8 @@ export class SceneBuilder implements ISceneBuilder {
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 }
-            } else if (tabMode == "HSR" || firstDigit == 2) {
+            } else if (firstDigit == 2 || tabMode == "HSR") {
+                tabMode = "HSR";
                 const skinChars = findAllCharsByName(hsrSkinDataArray, chosenCharName);
                 if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
                     if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
@@ -3485,7 +3500,9 @@ export class SceneBuilder implements ISceneBuilder {
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 }
-            } else if (tabMode == "ZZZ" || firstDigit == 3) {
+            } else if (firstDigit == 3 || tabMode == "ZZZ") {
+                tabMode = "ZZZ";
+                console.log("ZZZ character selected");
                 const skinChars = findAllCharsByName(zzzSkinDataArray, chosenCharName);
                 if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
                     if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
@@ -3533,7 +3550,8 @@ export class SceneBuilder implements ISceneBuilder {
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 }
-            } else if (tabMode == "WuWa" || firstDigit == 4) {
+            } else if (firstDigit == 4 || tabMode == "WuWa") {
+                tabMode = "WuWa";
                 const skinChars = findAllCharsByName(wuwaSkinDataArray, chosenCharName);
                 if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
                     if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
@@ -3581,7 +3599,8 @@ export class SceneBuilder implements ISceneBuilder {
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 }
-            } else if (tabMode == "HNA" || firstDigit == 5) {
+            } else if (firstDigit == 5 || tabMode == "HNA") {
+                tabMode = "HNA";
                 const skinChars = findAllCharsByName(hnaSkinDataArray, chosenCharName);
                 if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
                     if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
@@ -3630,6 +3649,7 @@ export class SceneBuilder implements ISceneBuilder {
                     }
                 }
             } else {
+                tabMode = "None";
                 skinMode = false;
                 chosenChar = findCharByName(
                     (tabMode === "Genshin" || firstDigit === 1) ? charDataArray :
