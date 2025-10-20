@@ -52,16 +52,24 @@ import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMa
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
 // import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
 import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
-import { MmdStandardMaterialBuilder, MmdStandardMaterialRenderMethod } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
+import { MmdStandardMaterialBuilder } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
 // import type { BpmxLoader } from "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 import { BvmdLoader } from "babylon-mmd/esm/Loader/Optimized/bvmdLoader";
-import { registerDxBmpTextureLoader } from "babylon-mmd/esm/Loader/registerDxBmpTextureLoader";
+import { RegisterDxBmpTextureLoader } from "babylon-mmd/esm/Loader/registerDxBmpTextureLoader";
 import { SdefInjector } from "babylon-mmd/esm/Loader/sdefInjector";
 // import { VmdLoader } from "babylon-mmd/esm/Loader/vmdLoader";
 import { StreamAudioPlayer } from "babylon-mmd/esm/Runtime/Audio/streamAudioPlayer";
 import { MmdCamera } from "babylon-mmd/esm/Runtime/mmdCamera";
 import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
+import { MmdWasmInstanceTypeMPR } from "babylon-mmd/esm/Runtime/Optimized/InstanceType/multiPhysicsRelease";
+import { GetMmdWasmInstance } from "babylon-mmd/esm/Runtime/Optimized/mmdWasmInstance";
+import { MultiPhysicsRuntime } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/Impl/multiPhysicsRuntime";
+import { MmdBulletPhysics } from "babylon-mmd/esm/Runtime/Optimized/Physics/mmdBulletPhysics";
+import { PhysicsStaticPlaneShape } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/physicsShape";
+import { RigidBody } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/rigidBody";
+import { RigidBodyConstructionInfo } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/rigidBodyConstructionInfo";
+import { MotionType } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/motionType";
 // import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 // import havokPhysics from "@babylonjs/havok";
 // import type { MmdWasmInstance } from "babylon-mmd";
@@ -318,9 +326,9 @@ export class SceneBuilder implements ISceneBuilder {
         const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         ///////////////
-        registerDxBmpTextureLoader();
+    RegisterDxBmpTextureLoader();
         const materialBuilder = new MmdStandardMaterialBuilder();
-        materialBuilder.renderMethod = MmdStandardMaterialRenderMethod.DepthWriteAlphaBlending;
+        
         materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
             material.forceDepthWrite = true;
             const diffuseTexture = material.diffuseTexture;
@@ -335,7 +343,7 @@ export class SceneBuilder implements ISceneBuilder {
         };
 
         const materialBuilderSt = new MmdStandardMaterialBuilder();
-        materialBuilderSt.renderMethod = MmdStandardMaterialRenderMethod.DepthWriteAlphaBlending;
+        
         materialBuilderSt.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
             material.forceDepthWrite = true;
             const diffuseTexture = material.diffuseTexture;
@@ -484,19 +492,13 @@ export class SceneBuilder implements ISceneBuilder {
 
         particleSystem.renderingGroupId = 1;
 
-        // create mmd runtime with physics
-        let mmdRuntime: MmdRuntime;// | MmdWasmRuntime;
-        // let wasmInstance: MmdWasmInstance;
-        // const physicsModeOn = false;
+        // create mmd runtime with physics (initialized later after audio player using updated wasm/physics APIs)
+        let mmdRuntime: MmdRuntime;
+        let physicsRuntime: MultiPhysicsRuntime | undefined;
 
-        // if (!physicsModeOn) {
-        mmdRuntime = new MmdRuntime(scene);
-        // } else {
-        //     mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
-        // }
-        //mmdRuntime = new MmdRuntime(scene);
-        mmdRuntime.loggingEnabled = true;
-        mmdRuntime.register(scene);
+        // physics toggle: enable/disable physics via URL param `?physics=1` or set default here
+        //const getUrlFlag = (name: string): string | null => new URLSearchParams(window.location.search).get(name);
+        const physicsModeOn = false;
 
         // Randomly pick name from the list from motionConfig json
         let motionName = motionConfig[Math.floor(Math.random() * motionConfig.length)].name;
@@ -509,7 +511,25 @@ export class SceneBuilder implements ISceneBuilder {
         audioPlayer.preservesPitch = false;
         // song
         audioPlayer.source = audioPlayerFile;
-        mmdRuntime.setAudioPlayer(audioPlayer);
+        // initialize wasm + physics + mmd runtime (updated babylon-mmd APIs)
+        if (physicsModeOn) {
+            const wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
+            physicsRuntime = new MultiPhysicsRuntime(wasmInstance);
+            physicsRuntime.setGravity(new Vector3(0, -98, 0));
+            physicsRuntime.register(scene);
+
+            mmdRuntime = new MmdRuntime(scene, new MmdBulletPhysics(physicsRuntime)); // use Bullet physics for rigid body simulation
+            mmdRuntime.loggingEnabled = true;
+            mmdRuntime.register(scene);
+            mmdRuntime.setAudioPlayer(audioPlayer);
+            mmdRuntime.playAnimation();
+        } else {
+            // create runtime without physics
+            mmdRuntime = new MmdRuntime(scene);
+            mmdRuntime.loggingEnabled = true;
+            mmdRuntime.register(scene);
+            mmdRuntime.setAudioPlayer(audioPlayer);
+        }
 
         // create youtube like player control
         let mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
@@ -532,15 +552,21 @@ export class SceneBuilder implements ISceneBuilder {
         const bvmdLoader = new BvmdLoader(scene);
         bvmdLoader.loggingEnabled = true;
 
-        // camera motion
-        promises.push(bvmdLoader.loadAsync("motion", camMotionFile,
-            (event) => updateLoadingText(0, `Loading camera... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`))
-        );
+        // camera motion (gracefully handle unsupported BVMD versions)
+        const safeLoadBvmd = async (type: string, url: string, onProgress?: any) => {
+            try {
+                return await bvmdLoader.loadAsync(type, url, onProgress);
+            } catch (e: any) {
+                // if BVMD version unsupported, log and return undefined so caller can fallback
+                console.warn("BVMD load failed, continuing without motion:", e?.message || e);
+                return undefined;
+            }
+        };
+
+        promises.push(safeLoadBvmd("motion", camMotionFile, (event: any) => updateLoadingText(0, `Loading camera... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)));
 
         // model motion
-        promises.push(bvmdLoader.loadAsync("motion", modelMotionFile,
-            (event) => updateLoadingText(1, `Loading motion... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`))
-        );
+        promises.push(safeLoadBvmd("motion", modelMotionFile, (event: any) => updateLoadingText(1, `Loading motion... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)));
 
         let charScreenMode = true;
         let charScreenElement = "Pyro";
@@ -669,7 +695,7 @@ export class SceneBuilder implements ISceneBuilder {
         // const theCharAnimation = physicsModeOn
         //     ? new MmdWasmAnimation(loadResults[1], wasmInstance!, scene)
         //     : (loadResults[1] as MmdAnimation);
-        let theCharAnimation = loadResults[1] as MmdAnimation;
+        let theCharAnimation = loadResults[1] as MmdAnimation | undefined;
 
         // for scaling camera to model height
         let headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
@@ -679,8 +705,11 @@ export class SceneBuilder implements ISceneBuilder {
         let boneWorldMatrix = new Matrix();
 
         if (headBone != undefined && bodyBone != undefined) {
-            mmdModel.addAnimation(theCharAnimation);
-            mmdModel.setAnimation("motion");
+            // create and set runtime animation handle for the model (updated API)
+            if (theCharAnimation) {
+                const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
+                mmdModel.setRuntimeAnimation(modelAnimationHandle);
+            }
             scene.onBeforeDrawPhaseObservable.addOnce(() => {
                 headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
                 boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
@@ -697,10 +726,19 @@ export class SceneBuilder implements ISceneBuilder {
             });
         }
 
-        mmdCamera.addAnimation(loadResults[0]);
+        // create and set runtime animation handle for the camera (updated API)
+        let cameraAnimationHandle: any;
+        
+        if (loadResults[0]) {
+            cameraAnimationHandle = mmdCamera.createRuntimeAnimation(loadResults[0] as any);
+            mmdCamera.setRuntimeAnimation(cameraAnimationHandle);
+        }
         mmdCamera.storeState();
-        mmdRuntime.setCamera(mmdCamera);
-        mmdCamera.setAnimation("motion");
+        // attempt to register camera with runtime if available
+        // if (typeof (mmdRuntime as any).setCamera === "function") {
+        //     try { (mmdRuntime as any).setCamera(mmdCamera); } catch { /* ignore */ }
+        // }
+        mmdRuntime.addAnimatable(mmdCamera);
 
         // optimize scene when all assets are loaded
         scene.onAfterRenderObservable.addOnce(() => {
@@ -745,6 +783,15 @@ export class SceneBuilder implements ISceneBuilder {
         //     new Vector3(0, -1, 0),
         //     new Quaternion(),
         //     new Vector3(100, 2, 100), scene);
+
+        // create ground rigid body for physics runtime (if available)
+        if (physicsRuntime) {
+            const info = new RigidBodyConstructionInfo((physicsRuntime as any).wasmInstance);
+            info.motionType = MotionType.Static;
+            info.shape = new PhysicsStaticPlaneShape(physicsRuntime, new Vector3(0, 1, 0), 0);
+            const groundBody = new RigidBody(physicsRuntime, info);
+            physicsRuntime.addRigidBodyToGlobal(groundBody);
+        }
 
         const defaultPipeline = new DefaultRenderingPipeline("default", true, scene, [mmdCamera, camera, stillCamera]);
         defaultPipeline.samples = 4;
@@ -3238,28 +3285,34 @@ export class SceneBuilder implements ISceneBuilder {
             promises = [];
 
             // camera motion
-            promises.push(bvmdLoader.loadAsync("motion", camMotionFile,
-                (event) => updateLoadingText(0, `Loading camera... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`))
-            );
+            promises.push(safeLoadBvmd("motion", camMotionFile, (event: any) => updateLoadingText(0, `Loading camera... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)));
 
             // model motion
-            promises.push(bvmdLoader.loadAsync("motion", modelMotionFile,
-                (event) => updateLoadingText(1, `Loading motion... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`))
-            );
+            promises.push(safeLoadBvmd("motion", modelMotionFile, (event: any) => updateLoadingText(1, `Loading motion... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)));
 
             loadResults = await Promise.all(promises);
-            theCharAnimation = loadResults[1] as MmdAnimation;
-            mmdModel.addAnimation(theCharAnimation);
-            mmdModel.setAnimation("motion");
+            theCharAnimation = loadResults[1] as MmdAnimation | undefined;
+            // updated API: create runtime animation for model and set it (if available)
+            if (theCharAnimation) {
+                const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
+                mmdModel.setRuntimeAnimation(modelAnimationHandle);
+            }
 
-            mmdCamera.addAnimation(loadResults[0]);
+            // updated API: create runtime animation for camera and set it
+            if (loadResults[0]) {
+                cameraAnimationHandle = mmdCamera.createRuntimeAnimation(loadResults[0] as any);
+                mmdCamera.setRuntimeAnimation(cameraAnimationHandle);
+            }
             mmdCamera.restoreState();
             mmdCamera.position.addToRef(
                 Vector3.TransformCoordinatesFromFloatsToRef(0, 0, mmdCamera.distance, rotationMatrix, cameraEyePosition),
                 cameraEyePosition
             );
-            mmdRuntime.setCamera(mmdCamera);
-            mmdCamera.setAnimation("motion");
+            // attempt to register camera with runtime if available
+            // if (typeof (mmdRuntime as any).setCamera === "function") {
+            //     try { (mmdRuntime as any).setCamera(mmdCamera); } catch { /* ignore */ }
+            // }
+            mmdRuntime.addAnimatable(mmdCamera);
 
             engine.hideLoadingUI();
         }
@@ -3295,13 +3348,26 @@ export class SceneBuilder implements ISceneBuilder {
             mmdCamera.restoreState();
             mmdRuntime.unregister(scene);
 
-            // if (!physicsModeOn) {
-            mmdRuntime = new MmdRuntime(scene);
-            // } else {
-            //     mmdRuntime = new MmdRuntime(scene, new MmdPhysics(scene));
-            // }
-            mmdRuntime.loggingEnabled = true;
-            mmdRuntime.register(scene);
+            // recreate mmd runtime according to physics toggle. reuse existing physicsRuntime when possible
+            if (physicsModeOn) {
+                if (!physicsRuntime) {
+                    const wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
+                    physicsRuntime = new MultiPhysicsRuntime(wasmInstance);
+                    physicsRuntime.setGravity(new Vector3(0, -98, 0));
+                    physicsRuntime.register(scene);
+                }
+
+                mmdRuntime = new MmdRuntime(scene, new MmdBulletPhysics(physicsRuntime));
+                mmdRuntime.loggingEnabled = true;
+                mmdRuntime.register(scene);
+                mmdRuntime.setAudioPlayer(audioPlayer);
+                // keep animation state controlled by caller
+            } else {
+                mmdRuntime = new MmdRuntime(scene);
+                mmdRuntime.loggingEnabled = true;
+                mmdRuntime.register(scene);
+                mmdRuntime.setAudioPlayer(audioPlayer);
+            }
 
             // audioPlayer = new StreamAudioPlayer(scene);
             // audioPlayer.preservesPitch = false;
@@ -3603,6 +3669,23 @@ export class SceneBuilder implements ISceneBuilder {
             promises = [];
             loadingTexts = [];
             prevCharId = chosenChar!.id;
+            // ensure runtime is initialized (in case changeCharacter recreated/unregistered it)
+            if (!mmdRuntime) {
+                if (physicsModeOn) {
+                    if (!physicsRuntime) {
+                        const wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
+                        physicsRuntime = new MultiPhysicsRuntime(wasmInstance);
+                        physicsRuntime.setGravity(new Vector3(0, -98, 0));
+                        physicsRuntime.register(scene);
+                    }
+                    mmdRuntime = new MmdRuntime(scene, new MmdBulletPhysics(physicsRuntime));
+                } else {
+                    mmdRuntime = new MmdRuntime(scene);
+                }
+                mmdRuntime.loggingEnabled = true;
+                mmdRuntime.register(scene);
+                mmdRuntime.setAudioPlayer(audioPlayer);
+            }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
                 promises.push(loadAssetContainerAsync(
                     baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
@@ -3697,8 +3780,10 @@ export class SceneBuilder implements ISceneBuilder {
             boneWorldMatrix = new Matrix();
 
             if (headBone != undefined && bodyBone != undefined) {
-                mmdModel.addAnimation(theCharAnimation);
-                mmdModel.setAnimation("motion");
+                if (theCharAnimation) {
+                    const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
+                    mmdModel.setRuntimeAnimation(modelAnimationHandle);
+                }
                 scene.onBeforeDrawPhaseObservable.addOnce(() => {
                     headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
                     boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
@@ -3715,8 +3800,16 @@ export class SceneBuilder implements ISceneBuilder {
                 });
             }
 
-            mmdRuntime.setCamera(mmdCamera);
-            mmdCamera.setAnimation("motion");
+            // if (loadResults[0]) {
+            //     const cameraAnimationHandle = mmdCamera.createRuntimeAnimation(loadResults[0] as any);
+            //     mmdCamera.setRuntimeAnimation(cameraAnimationHandle);
+            // }
+            // attempt to register camera with runtime if available
+            // if (typeof (mmdRuntime as any).setCamera === "function") {
+            //     try { (mmdRuntime as any).setCamera(mmdCamera); } catch { /* ignore */ }
+            // }
+            mmdCamera.setRuntimeAnimation(cameraAnimationHandle);
+            mmdRuntime.addAnimatable(mmdCamera);
 
             scene.onAfterRenderObservable.addOnce(() => {
                 scene.freezeMaterials();
