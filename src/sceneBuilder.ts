@@ -2111,7 +2111,7 @@ export class SceneBuilder implements ISceneBuilder {
         const abundanceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_abundance.png");
         abundanceImage.height = "40px";
         abundanceImage.width = "40px";
-        abundanceImage.left = 12;
+        abundanceImage.left = -8;
         abundanceImage.thickness = 0;
         abundanceImage.cornerRadius = 5;
         abundanceImage.isVisible = false;
@@ -2129,7 +2129,7 @@ export class SceneBuilder implements ISceneBuilder {
         const destructionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_destruction.png");
         destructionImage.height = "40px";
         destructionImage.width = "40px";
-        destructionImage.left = 52;
+        destructionImage.left = 32;
         destructionImage.thickness = 0;
         destructionImage.cornerRadius = 5;
         destructionImage.isVisible = false;
@@ -2147,7 +2147,7 @@ export class SceneBuilder implements ISceneBuilder {
         const eruditionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_erudition.png");
         eruditionImage.height = "40px";
         eruditionImage.width = "40px";
-        eruditionImage.left = 92;
+        eruditionImage.left = 72;
         eruditionImage.thickness = 0;
         eruditionImage.cornerRadius = 5;
         eruditionImage.isVisible = false;
@@ -2165,7 +2165,7 @@ export class SceneBuilder implements ISceneBuilder {
         const harmonyImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_harmony.png");
         harmonyImage.height = "40px";
         harmonyImage.width = "40px";
-        harmonyImage.left = 132;
+        harmonyImage.left = 112;
         harmonyImage.thickness = 0;
         harmonyImage.cornerRadius = 5;
         harmonyImage.isVisible = false;
@@ -2183,7 +2183,7 @@ export class SceneBuilder implements ISceneBuilder {
         const huntImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_hunt.png");
         huntImage.height = "40px";
         huntImage.width = "40px";
-        huntImage.left = 172;
+        huntImage.left = 152;
         huntImage.thickness = 0;
         huntImage.cornerRadius = 5;
         huntImage.isVisible = false;
@@ -2201,7 +2201,7 @@ export class SceneBuilder implements ISceneBuilder {
         const nihilityImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_nihility.png");
         nihilityImage.height = "40px";
         nihilityImage.width = "40px";
-        nihilityImage.left = 212;
+        nihilityImage.left = 192;
         nihilityImage.thickness = 0;
         nihilityImage.cornerRadius = 5;
         nihilityImage.isVisible = false;
@@ -2219,7 +2219,7 @@ export class SceneBuilder implements ISceneBuilder {
         const preservationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_preservation.png");
         preservationImage.height = "40px";
         preservationImage.width = "40px";
-        preservationImage.left = 252;
+        preservationImage.left = 232;
         preservationImage.thickness = 0;
         preservationImage.cornerRadius = 5;
         preservationImage.isVisible = false;
@@ -2237,7 +2237,7 @@ export class SceneBuilder implements ISceneBuilder {
         const remembranceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_remembrance.png");
         remembranceImage.height = "40px";
         remembranceImage.width = "40px";
-        remembranceImage.left = 292;
+        remembranceImage.left = 272;
         remembranceImage.thickness = 0;
         remembranceImage.cornerRadius = 5;
         remembranceImage.isVisible = false;
@@ -2249,6 +2249,24 @@ export class SceneBuilder implements ISceneBuilder {
             hoverCharName.text = "Remembrance";
         });
         remembranceImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const elationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_elation.png");
+        elationImage.height = "40px";
+        elationImage.width = "40px";
+        elationImage.left = 312;
+        elationImage.thickness = 0;
+        elationImage.cornerRadius = 5;
+        elationImage.isVisible = false;
+        filterBar2.addControl(elationImage);
+        elationImage.onPointerClickObservable.add(function() {
+            checkIfInHSRFilter(elationImage, "Elation", "weaponType");
+        });
+        elationImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Elation";
+        });
+        elationImage.onPointerOutObservable.add(function() {
             hoverCharName.text = "";
         });
 
@@ -2268,6 +2286,7 @@ export class SceneBuilder implements ISceneBuilder {
             nihilityImage.isVisible = false;
             preservationImage.isVisible = false;
             remembranceImage.isVisible = false;
+            elationImage.isVisible = false;
             hsrSortModeChanger.isVisible = false;
             hsrStarImage.isVisible = false;
         }
@@ -2288,6 +2307,7 @@ export class SceneBuilder implements ISceneBuilder {
             nihilityImage.isVisible = true;
             preservationImage.isVisible = true;
             remembranceImage.isVisible = true;
+            elationImage.isVisible = true;
             hsrSortModeChanger.isVisible = true;
             hsrStarImage.isVisible = true;
         }
@@ -2312,6 +2332,7 @@ export class SceneBuilder implements ISceneBuilder {
             nihilityImage.background = "rgba(0,0,0,0)";
             preservationImage.background = "rgba(0,0,0,0)";
             remembranceImage.background = "rgba(0,0,0,0)";
+            elationImage.background = "rgba(0,0,0,0)";
         }
 
         const anemoImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_anemo.png");
