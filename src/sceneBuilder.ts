@@ -35,7 +35,6 @@ import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator"
 // import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
 import { LoadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
-import { Material } from "@babylonjs/core/Materials/material";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
@@ -51,7 +50,7 @@ import * as gui from "@babylonjs/gui";
 import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMaterial";
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
 // import type { MmdModelLoader } from "babylon-mmd/esm/Loader/mmdModelLoader";
-import type { MmdStandardMaterial } from "babylon-mmd/esm/Loader/mmdStandardMaterial";
+
 import { MmdStandardMaterialBuilder } from "babylon-mmd/esm/Loader/mmdStandardMaterialBuilder";
 // import type { BpmxLoader } from "babylon-mmd/esm/Loader/Optimized/bpmxLoader";
 import { BvmdLoader } from "babylon-mmd/esm/Loader/Optimized/bvmdLoader";
@@ -98,6 +97,9 @@ import { CustomLoadingScreen } from "./CustomLoadingScreen";
 import { FirebaseInstance } from "./fb";
 // import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
+import type { BaseCharData, GenshinCharData, HSRCharData, ZZZCharData, WuwaCharData, HNACharData, ExtraCharData } from "./sceneBuilder.types";
+import { normalize, getFirstDigit, findCharByName, findCharById, findAllCharsByName, filterBy, sortBy } from "./sceneBuilder.utils";
+import { afterBuildSingleMaterialDefault, afterBuildSingleMaterialSt } from "./sceneBuilder.materials";
 
 export class SceneBuilder implements ISceneBuilder {
     public async build(canvas: HTMLCanvasElement, engine: AbstractEngine, item: string): Promise<Scene> {
@@ -118,38 +120,7 @@ export class SceneBuilder implements ISceneBuilder {
         const hnaCharDatas = await (await fetch(`${baseUrl}hna/hna.json`)).json();
         const hnaSkinCharDatas = await (await fetch(`${baseUrl}hna/skins.json`)).json();
 
-        // character json
-        interface BaseCharData {
-            "id": number;
-            "name": string;
-            "weaponType": string;
-            "element": string;
-            "gender": string;
-            "rarity": number;
-            "directory": string;
-            "image": string;
-            "pmx": string;
-        }
-
-        interface GenshinCharData extends BaseCharData {
-            "region": string;
-        }
-
-        interface HSRCharData extends BaseCharData {
-        }
-
-        interface ZZZCharData extends BaseCharData {
-            "region": string;
-        }
-
-        interface WuwaCharData extends BaseCharData {
-        }
-
-        interface HNACharData extends BaseCharData {
-        }
-
-        interface ExtraCharData extends BaseCharData {
-        }
+        // character json types moved to `./sceneBuilder.types.ts`
 
         // const counter = new CounterAPI();
         const extraDataArray = extraCharDatas as ExtraCharData[];
@@ -174,9 +145,7 @@ export class SceneBuilder implements ISceneBuilder {
         hnaCharDataArray.sort((a, b) => b.id - a.id);
         hnaSkinDataArray.sort((a, b) => b.id - a.id);
 
-        const findCharByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T | undefined => {
-            return jsonData.find((item) => item.name === nameToFind);
-        };
+        // findCharByName moved to `./sceneBuilder.utils.ts`
 
         type AllCharData = GenshinCharData | HSRCharData | ZZZCharData | WuwaCharData;
         const allCharDataArray: AllCharData[] = [
@@ -203,13 +172,7 @@ export class SceneBuilder implements ISceneBuilder {
         });
         miniSearchInstance.addAll(allCharDataArray);
 
-        const normalize = (str: string): string =>
-            str.toLowerCase().replace(/[^a-z]/g, "");
-
-        const getFirstDigit = (num: number): number => {
-            const str = Math.abs(num).toString(); // Convert to string and handle negative numbers
-            return parseInt(str[0], 10); // Extract the first digit and convert to a number
-        };
+        // normalize & getFirstDigit moved to `./sceneBuilder.utils.ts`
 
         const findFirstCharByName = (
             nameToFind: string
@@ -282,46 +245,7 @@ export class SceneBuilder implements ISceneBuilder {
             return fallbackItem;
         };
 
-        const findCharById = <T extends { id: number }>(jsonData: T[], idToFind: number): T | undefined => {
-            return jsonData.find((item) => item.id === idToFind);
-        };
-
-        const findAllCharsByName = <T extends { name: string }>(jsonData: T[], nameToFind: string): T[] | undefined => {
-            return sortBy(jsonData.filter((item) => item.name === nameToFind), "name", false);
-        };
-
-        function filterBy<T>(
-            dataArray: T[],
-            filters: { key: keyof T; value: string }[]
-        ): T[] {
-            return dataArray.filter((data) =>
-                filters.every((filter) => {
-                    const propertyValue = String(data[filter.key]);
-                    return propertyValue.includes(filter.value);
-                })
-            );
-        }
-
-        function sortBy<T>(
-            dataArray: T[],
-            sortByKey: keyof T,
-            sortAscending: boolean = true
-        ): T[] {
-            return dataArray.slice().sort((a, b) => {
-                const valueA = a[sortByKey];
-                const valueB = b[sortByKey];
-
-                if (typeof valueA === "number" && typeof valueB === "number") {
-                    // Numerical comparison
-                    return sortAscending ? valueA - valueB : valueB - valueA;
-                } else {
-                    // String comparison (converts values to strings if not already)
-                    const strA = String(valueA);
-                    const strB = String(valueB);
-                    return sortAscending ? strB.localeCompare(strA) : strA.localeCompare(strB);
-                }
-            });
-        }
+        // findCharById, findAllCharsByName, filterBy, sortBy moved to `./sceneBuilder.utils.ts`
 
         const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -329,35 +253,11 @@ export class SceneBuilder implements ISceneBuilder {
     RegisterDxBmpTextureLoader();
         const materialBuilder = new MmdStandardMaterialBuilder();
         
-        materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
-            material.forceDepthWrite = true;
-            material.useAlphaFromDiffuseTexture = true;
-            const diffuseTexture = material.diffuseTexture;
-            if (diffuseTexture) {
-                diffuseTexture.hasAlpha = true;
-                material.useAlphaFromDiffuseTexture = true;
-            }
-            if (material.transparencyMode === Material.MATERIAL_ALPHABLEND) {
-                material.transparencyMode = Material.MATERIAL_ALPHATESTANDBLEND;
-                material.alphaCutOff = 0.01;
-            }
-        };
+        materialBuilder.afterBuildSingleMaterial = afterBuildSingleMaterialDefault;
 
         const materialBuilderSt = new MmdStandardMaterialBuilder();
         
-        materialBuilderSt.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
-            material.forceDepthWrite = true;
-            const diffuseTexture = material.diffuseTexture;
-            material.specularColor = Color3.Black();
-            if (diffuseTexture) {
-                diffuseTexture.hasAlpha = true;
-                material.useAlphaFromDiffuseTexture = true;
-            }
-            if (material.transparencyMode === Material.MATERIAL_ALPHABLEND) {
-                material.transparencyMode = Material.MATERIAL_ALPHATESTANDBLEND;
-                material.alphaCutOff = 0.01;
-            }
-        };
+        materialBuilderSt.afterBuildSingleMaterial = afterBuildSingleMaterialSt;
 
         // if you need outline rendering, comment out following line.
         // materialBuilder.loadOutlineRenderingProperties = (): void => { /* do nothing */ };
