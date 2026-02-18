@@ -33,7 +33,7 @@ import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
 // import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
-import { loadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
+import { LoadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
 import { Material } from "@babylonjs/core/Materials/material";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
@@ -331,6 +331,7 @@ export class SceneBuilder implements ISceneBuilder {
         
         materialBuilder.afterBuildSingleMaterial = (material: MmdStandardMaterial): void => {
             material.forceDepthWrite = true;
+            material.useAlphaFromDiffuseTexture = true;
             const diffuseTexture = material.diffuseTexture;
             if (diffuseTexture) {
                 diffuseTexture.hasAlpha = true;
@@ -591,7 +592,7 @@ export class SceneBuilder implements ISceneBuilder {
         }
 
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
-            promises.push(loadAssetContainerAsync(
+            promises.push(LoadAssetContainerAsync(
                 baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
                 scene,
                 {
@@ -626,7 +627,7 @@ export class SceneBuilder implements ISceneBuilder {
             if (!isMobile) {
                 particleSystem.start();
             }
-            promises.push(loadAssetContainerAsync(
+            promises.push(LoadAssetContainerAsync(
                 "res/stages/GenshinCharacterSphere" + "/" + "CharacterSphere_" + charScreenElement + "V.pmx",
                 scene,
                 {
@@ -634,7 +635,9 @@ export class SceneBuilder implements ISceneBuilder {
                     pluginOptions: {
                         mmdmodel: {
                             loggingEnabled: true,
-                            materialBuilder: materialBuilderSt
+                            materialBuilder: materialBuilderSt,
+                            buildSkeleton: false,
+                            buildMorph: false,
                         }
                     }
                 }
@@ -3728,7 +3731,7 @@ export class SceneBuilder implements ISceneBuilder {
                 mmdRuntime.setAudioPlayer(audioPlayer);
             }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
-                promises.push(loadAssetContainerAsync(
+                promises.push(LoadAssetContainerAsync(
                     baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
                     scene,
                     {
@@ -3767,7 +3770,7 @@ export class SceneBuilder implements ISceneBuilder {
                 if (!isMobile) {
                     particleSystem.start();
                 }
-                promises.push(loadAssetContainerAsync(
+                promises.push(LoadAssetContainerAsync(
                     "res/stages/GenshinCharacterSphere" + "/" + "CharacterSphere_" + charScreenElement + "V.pmx",
                     scene,
                     {
@@ -3775,7 +3778,9 @@ export class SceneBuilder implements ISceneBuilder {
                         pluginOptions: {
                             mmdmodel: {
                                 loggingEnabled: true,
-                                materialBuilder: materialBuilderSt
+                                materialBuilder: materialBuilderSt,
+                                buildSkeleton: false,
+                                buildMorph: false,
                             }
                         }
                     }
