@@ -97,7 +97,7 @@ import { CustomLoadingScreen } from "./CustomLoadingScreen";
 import { FirebaseInstance } from "./fb";
 // import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
-import type { BaseCharData, GenshinCharData, HSRCharData, ZZZCharData, WuwaCharData, HNACharData, ExtraCharData } from "./sceneBuilder.types";
+import type { BaseCharData, GenshinCharData, HSRCharData, ZZZCharData, WuwaCharData, HNACharData, NTECharData, ExtraCharData } from "./sceneBuilder.types";
 import { normalize, getFirstDigit, findCharByName, findCharById, findAllCharsByName, filterBy, sortBy } from "./sceneBuilder.utils";
 import { afterBuildSingleMaterialDefault, afterBuildSingleMaterialSt } from "./sceneBuilder.materials";
 
@@ -119,6 +119,8 @@ export class SceneBuilder implements ISceneBuilder {
         const wuwaSkinCharDatas = await (await fetch(`${baseUrl}ww/skins.json`)).json();
         const hnaCharDatas = await (await fetch(`${baseUrl}hna/hna.json`)).json();
         const hnaSkinCharDatas = await (await fetch(`${baseUrl}hna/skins.json`)).json();
+        const nteCharDatas = await (await fetch(`${baseUrl}nte/nte.json`)).json();
+        const nteSkinCharDatas = await (await fetch(`${baseUrl}nte/skins.json`)).json();
 
         // character json types moved to `./sceneBuilder.types.ts`
 
@@ -134,6 +136,8 @@ export class SceneBuilder implements ISceneBuilder {
         const wuwaSkinDataArray = wuwaSkinCharDatas as WuwaCharData[];
         const hnaCharDataArray = hnaCharDatas as HNACharData[];
         const hnaSkinDataArray = hnaSkinCharDatas as HNACharData[];
+        const nteCharDataArray = nteCharDatas as NTECharData[];
+        const nteSkinDataArray = nteSkinCharDatas as NTECharData[];
         charDataArray.sort((a, b) => b.id - a.id);
         genshinSkinDataArray.sort((a, b) => b.id - a.id);
         hsrSkinDataArray.sort((a, b) => b.id - a.id);
@@ -144,23 +148,27 @@ export class SceneBuilder implements ISceneBuilder {
         wuwaCharDataArray.sort((a, b) => b.id - a.id);
         hnaCharDataArray.sort((a, b) => b.id - a.id);
         hnaSkinDataArray.sort((a, b) => b.id - a.id);
+        nteCharDataArray.sort((a, b) => b.id - a.id);
+        nteSkinDataArray.sort((a, b) => b.id - a.id);
 
         // findCharByName moved to `./sceneBuilder.utils.ts`
 
-        type AllCharData = GenshinCharData | HSRCharData | ZZZCharData | WuwaCharData;
+        type AllCharData = GenshinCharData | HSRCharData | ZZZCharData | WuwaCharData | NTECharData;
         const allCharDataArray: AllCharData[] = [
             ...charDataArray,
             ...hsrCharDataArray,
             ...zzzCharDataArray,
             ...wuwaCharDataArray,
-            ...hnaCharDataArray
+            ...hnaCharDataArray,
+            ...nteCharDataArray
         ];
         const allSkinCharDataArray:  AllCharData[] = [
             ...genshinSkinDataArray,
             ...hsrSkinDataArray,
             ...zzzSkinDataArray,
             ...wuwaSkinDataArray,
-            ...hnaSkinDataArray
+            ...hnaSkinDataArray,
+            ...nteSkinDataArray
         ];
         const miniSearchInstance = new miniSearch({
             fields: ["name"], // fields to index for full-text search
@@ -197,9 +205,12 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabById == 4) {
                     fallbackItem = findCharByName(wuwaCharDataArray, results[0].name);
                     tabMode = "WuWa";
-                } else {
+                } else if (tabById == 5) {
                     fallbackItem = findCharByName(hnaCharDataArray, results[0].name);
                     tabMode = "HNA";
+                } else {
+                    fallbackItem = findCharByName(nteCharDataArray, results[0].name);
+                    tabMode = "NTE";
                 }
                 if (!isLocal) {
 
@@ -237,8 +248,10 @@ export class SceneBuilder implements ISceneBuilder {
                     fallbackItem.push(findCharByName(zzzCharDataArray, results[i].name)!);
                 } else if (tabById == 4) {
                     fallbackItem.push(findCharByName(wuwaCharDataArray, results[i].name)!);
-                } else {
+                } else if (tabById == 5) {
                     fallbackItem.push(findCharByName(hnaCharDataArray, results[i].name)!);
+                } else {
+                    fallbackItem.push(findCharByName(nteCharDataArray, results[i].name)!);
                 }
             }
             // console.log(fallbackItem);
@@ -918,7 +931,7 @@ export class SceneBuilder implements ISceneBuilder {
         charScreenModeButton.height = iconWidthHeight;
         charScreenModeButton.thickness = 0;
         advancedTexture.addControl(charScreenModeButton);
-        if (firstTabMode == "WuWa") {
+        if (firstTabMode == "WuWa" || firstTabMode == "NTE") {
             charScreenModeButton.isVisible = false;
         }
         charScreenModeButton.onPointerClickObservable.add(function() {
@@ -1133,6 +1146,9 @@ export class SceneBuilder implements ISceneBuilder {
         const hnaFilter: { key: keyof HNACharData; value: string }[] = [
             { key: "id", value: "5000" }
         ];
+        const nteFilter: { key: keyof NTECharData; value: string }[] = [
+            { key: "id", value: "6000" }
+        ];
         let filteredArray: BaseCharData[];
         filteredArray = filterBy(charDataArray, genshinFilter);
         sortModeKey = "id";
@@ -1147,10 +1163,14 @@ export class SceneBuilder implements ISceneBuilder {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
                 } else if (tabMode == "WuWa") {
+                    tacetImage.background = "rgb(64,68,70)";
                     hideWuwaElements();
-                } else {
+                } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
+                } else if (tabMode == "NTE") {
+                    nteImage.background = "rgb(64,68,70)";
+                    hideNTEElements();
                 }
                 tabMode = "Genshin";
                 filteredArray = filterBy(charDataArray, genshinFilter);
@@ -1173,7 +1193,11 @@ export class SceneBuilder implements ISceneBuilder {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
                 } else if (tabMode == "WuWa") {
+                    tacetImage.background = "rgb(64,68,70)";
                     hideWuwaElements();
+                } else if (tabMode == "NTE") {
+                    nteImage.background = "rgb(64,68,70)";
+                    hideNTEElements();
                 } else {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
@@ -1204,7 +1228,11 @@ export class SceneBuilder implements ISceneBuilder {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "WuWa") {
+                    tacetImage.background = "rgb(64,68,70)";
                     hideWuwaElements();
+                } else if (tabMode == "NTE") {
+                    nteImage.background = "rgb(64,68,70)";
+                    hideNTEElements();
                 } else {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
@@ -1233,7 +1261,11 @@ export class SceneBuilder implements ISceneBuilder {
                     zzzButton.background = charPanel.background;
                     hideZZZElements();
                 } else if (tabMode == "WuWa") {
+                    tacetImage.background = "rgb(64,68,70)";
                     hideWuwaElements();
+                } else if (tabMode == "NTE") {
+                    nteImage.background = "rgb(64,68,70)";
+                    hideNTEElements();
                 }
                 tabMode = "HNA";
                 filteredArray = filterBy(hnaCharDataArray, hnaFilter);
@@ -1269,29 +1301,40 @@ export class SceneBuilder implements ISceneBuilder {
         hoverCharName.color = "white";
         hoverCharName.left = -48;
         hoverCharName.text = "";
+        hoverCharName.fontSize = 16;
+        hoverCharName.textVerticalAlignment = gui.Control.VERTICAL_ALIGNMENT_CENTER;
         hoverCharName.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         // hoverCharName.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
         filterBar.addControl(hoverCharName);
 
         const searchBar = new gui.Rectangle();
-        searchBar.width = "300px";
+        searchBar.width = "220px";
         searchBar.height = "40px";
         searchBar.background = charPanel.background;
         searchBar.cornerRadius = 15;
-        searchBar.left = -190;
+        searchBar.left = -150;
         searchBar.thickness = 0;
         filterBar2.addControl(searchBar);
 
-        const searchImage = gui.Button.CreateImageOnlyButton("but", "res/assets/search.png");
-        searchImage.height = "40px";
-        searchImage.width = "40px";
-        searchImage.left = -130;
-        searchImage.thickness = 0;
-        searchImage.cornerRadius = 5;
-        searchBar.addControl(searchImage);
+        const tacetImage = gui.Button.CreateImageOnlyButton("but", "res/assets/tacet.png");
+        tacetImage.height = "40px";
+        tacetImage.width = "40px";
+        tacetImage.left = -328;
+        tacetImage.thickness = 0;
+        tacetImage.cornerRadius = 5;
+        filterBar2.addControl(tacetImage);
+
+        const nteImage = gui.Button.CreateImageOnlyButton("but", "res/assets/nte.png");
+        nteImage.height = "40px";
+        nteImage.width = "40px";
+        nteImage.left = -288;
+        nteImage.thickness = 0;
+        nteImage.cornerRadius = 5;
+        filterBar2.addControl(nteImage);
 
         function handleWuwaTabSwitch(): void {
             if (tabMode != "WuWa") {
+                tacetImage.background = charPanel.background;
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
                     hideGenshinElements();
@@ -1304,6 +1347,9 @@ export class SceneBuilder implements ISceneBuilder {
                 } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
+                } else if (tabMode == "NTE") {
+                    nteImage.background = "rgb(64,68,70)";
+                    hideNTEElements();
                 }
                 tabMode = "WuWa";
                 filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
@@ -1312,29 +1358,71 @@ export class SceneBuilder implements ISceneBuilder {
                 generateGrid(filteredArray);
             }
         }
-        searchImage.onPointerClickObservable.add(function() {
+
+        function handleNTETabSwitch(): void {
+            if (tabMode != "NTE") {
+                nteImage.background = charPanel.background;
+                if (tabMode == "Genshin") {
+                    genshinButton.background = charPanel.background;
+                    hideGenshinElements();
+                } else if (tabMode == "HSR") {
+                    hideHSRElements();
+                    hsrButton.background = charPanel.background;
+                } else if (tabMode == "ZZZ") {
+                    zzzButton.background = charPanel.background;
+                    hideZZZElements();
+                } else if (tabMode == "HNA") {
+                    hnaButton.background = charPanel.background;
+                    hideHNAElements();
+                } else if (tabMode == "WuWa") {
+                    tacetImage.background = "rgb(64,68,70)";
+                    hideWuwaElements();
+                }
+                tabMode = "NTE";
+                filteredArray = filterBy(nteCharDataArray, nteFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                showNTEElements();
+                generateGrid(filteredArray);
+            }
+        }
+
+        tacetImage.onPointerClickObservable.add(function() {
             handleWuwaTabSwitch();
         });
+        
+        nteImage.onPointerClickObservable.add(function() {
+            handleNTETabSwitch();
+        });
 
-        searchImage.onPointerEnterObservable.add(function() {
-            searchImage.image!.source = "res/assets/tacet.png";
-        });
-        searchImage.onPointerOutObservable.add(function() {
-            searchImage.image!.source = "res/assets/search.png";
-        });
-        searchImage.onPointerEnterObservable.add(function() {
+        // searchImage.onPointerClickObservable.add(function() {
+        //     handleWuwaTabSwitch();
+        // });
+
+        // searchImage.onPointerEnterObservable.add(function() {
+        //     searchImage.image!.source = "res/assets/tacet.png";
+        // });
+        // searchImage.onPointerOutObservable.add(function() {
+        //     searchImage.image!.source = "res/assets/search.png";
+        // });
+        tacetImage.onPointerEnterObservable.add(function() {
             hoverCharName.text = "Wuthering Waves";
         });
-        searchImage.onPointerOutObservable.add(function() {
+        tacetImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+        nteImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Neverness To Everness";
+        });
+        nteImage.onPointerOutObservable.add(function() {
             hoverCharName.text = "";
         });
 
         const searchTextbox = new gui.InputText();
-        searchTextbox.placeholderText = "Search all characters...";
+        searchTextbox.placeholderText = "Find character...";
         searchTextbox.placeholderColor = "rgb(64,68,70)";
         searchTextbox.thickness = 0;
         searchTextbox.background = searchBar.background;
-        searchTextbox.width = "220px";
+        searchTextbox.width = "160px";
         searchTextbox.color = "white";
         searchTextbox.focusedBackground = searchTextbox.background;
         searchTextbox.promptMessage = "Search for character:";
@@ -1346,6 +1434,9 @@ export class SceneBuilder implements ISceneBuilder {
                 genshinButton.isEnabled = true;
                 hsrButton.isEnabled = true;
                 zzzButton.isEnabled = true;
+                hnaButton.isEnabled = true;
+                tacetImage.isVisible = true;
+                nteImage.isVisible = true;
                 sortImage.isVisible = true;
                 if (searchTextboxPrevTab == "Genshin") {
                     handleGenshinTabSwitch();
@@ -1357,6 +1448,8 @@ export class SceneBuilder implements ISceneBuilder {
                     handleWuwaTabSwitch();
                 } else if (searchTextboxPrevTab == "HNA") {
                     handleHNATabSwitch();
+                } else if (searchTextboxPrevTab == "NTE") {
+                    handleNTETabSwitch();
                 }
                 searchTextboxPrevTab = "None";
             } else {
@@ -1369,11 +1462,17 @@ export class SceneBuilder implements ISceneBuilder {
                     hsrButton.isEnabled = false;
                     zzzButton.background = charPanel.background;
                     zzzButton.isEnabled = false;
+                    hnaButton.background = charPanel.background;
+                    hnaButton.isEnabled = false;
+                    tacetImage.isVisible = false;
+                    nteImage.isVisible = false;
                     hideGenshinElements();
                     hideHSRElements();
                     hideZZZElements();
                     hideWuwaElements();
                     hideHNAElements();
+                    hideWuwaElements();
+                    hideNTEElements();
                 }
                 tabMode = "None";
                 searchCharArray = searchCharFunction(searchTextbox.text);
@@ -1381,10 +1480,18 @@ export class SceneBuilder implements ISceneBuilder {
             }
         });
 
+        const searchImage = gui.Button.CreateImageOnlyButton("but", "res/assets/search.png");
+        searchImage.height = "40px";
+        searchImage.width = "40px";
+        searchImage.left = -90;
+        searchImage.thickness = 0;
+        searchImage.cornerRadius = 5;
+        searchBar.addControl(searchImage);
+
         const clearTextImage = gui.Button.CreateImageOnlyButton("but", "res/assets/clear.png");
         clearTextImage.height = "40px";
         clearTextImage.width = "40px";
-        clearTextImage.left = 130;
+        clearTextImage.left = 90;
         clearTextImage.thickness = 0;
         clearTextImage.cornerRadius = 5;
         searchBar.addControl(clearTextImage);
@@ -1701,7 +1808,7 @@ export class SceneBuilder implements ISceneBuilder {
                     hnaFourStarImage.background = charPanel.background;
                 }
             } else {
-                const newPush: { key: keyof WuwaCharData; value: string } = {
+                const newPush: { key: keyof HNACharData; value: string } = {
                     key: "rarity",
                     value: "4"
                 };
@@ -1733,7 +1840,7 @@ export class SceneBuilder implements ISceneBuilder {
                     hnaFiveStarImage.background = charPanel.background;
                 }
             } else {
-                const newPush: { key: keyof WuwaCharData; value: string } = {
+                const newPush: { key: keyof HNACharData; value: string } = {
                     key: "rarity",
                     value: "5"
                 };
@@ -1741,6 +1848,70 @@ export class SceneBuilder implements ISceneBuilder {
                 hnaFiveStarImage.background = charPanel.background;
             }
             filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
+        const nteFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/rank-a.png");
+        nteFourStarImage.height = "40px";
+        nteFourStarImage.width = "40px";
+        nteFourStarImage.left = -188;
+        nteFourStarImage.thickness = 0;
+        nteFourStarImage.cornerRadius = 5;
+        filterBar.addControl(nteFourStarImage);
+        nteFourStarImage.isVisible = false;
+        nteFourStarImage.onPointerClickObservable.add(function() {
+            const index = nteFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (nteFilter[index].value == "4") {
+                    nteFilter.splice(index, 1);
+                    nteFourStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    nteFilter[index].value = "4";
+                    nteFiveStarImage.background = "rgba(0,0,0,0)";
+                    nteFourStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof NTECharData; value: string } = {
+                    key: "rarity",
+                    value: "4"
+                };
+                nteFilter.push(newPush);
+                nteFourStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(nteCharDataArray, nteFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        });
+
+        const nteFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/rank-s.png");
+        nteFiveStarImage.height = "40px";
+        nteFiveStarImage.width = "40px";
+        nteFiveStarImage.left = -148;
+        nteFiveStarImage.thickness = 0;
+        nteFiveStarImage.cornerRadius = 5;
+        filterBar.addControl(nteFiveStarImage);
+        nteFiveStarImage.isVisible = false;
+        nteFiveStarImage.onPointerClickObservable.add(function() {
+            const index = nteFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) { // Object with the key exists
+                if (nteFilter[index].value == "5") {
+                    nteFilter.splice(index, 1);
+                    nteFiveStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    nteFilter[index].value = "5";
+                    nteFourStarImage.background = "rgba(0,0,0,0)";
+                    nteFiveStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof NTECharData; value: string } = {
+                    key: "rarity",
+                    value: "5"
+                };
+                nteFilter.push(newPush);
+                nteFiveStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(nteCharDataArray, nteFilter);
             filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
             generateGrid(filteredArray);
         });
@@ -1881,6 +2052,34 @@ export class SceneBuilder implements ISceneBuilder {
                 buttonObj.background = charPanel.background;
             }
             filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
+        }
+
+        function checkIfInNTEFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof NTECharData): void {
+            const index = nteFilter.findIndex(obj => obj.key === theKey);
+            if (index !== -1) { // Object with the key exists
+                if (nteFilter[index].value == theObjType) {
+                    nteFilter.splice(index, 1);
+                    buttonObj.background = "rgba(0,0,0,0)";
+                } else {
+                    nteFilter[index].value = theObjType;
+                    if (theKey.toString() == "element") {
+                        offNTEElementBG();
+                    } else {
+                        offNTEWeaponBG();
+                    }
+                    buttonObj.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof NTECharData; value: string } = {
+                    key: theKey,
+                    value: theObjType
+                };
+                nteFilter.push(newPush);
+                buttonObj.background = charPanel.background;
+            }
+            filteredArray = filterBy(nteCharDataArray, nteFilter);
             filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
             generateGrid(filteredArray);
         }
@@ -2518,6 +2717,147 @@ export class SceneBuilder implements ISceneBuilder {
 
         checkIfInHNAFilter;
 
+        const animaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/anima.png");
+        animaImage.height = "40px";
+        animaImage.width = "40px";
+        animaImage.left = 52;
+        animaImage.thickness = 0;
+        animaImage.cornerRadius = 5;
+        filterBar.addControl(animaImage);
+        animaImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(animaImage, "Anima", "element");
+        });
+        animaImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Anima";
+        });
+        animaImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const chaosImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/chaos.png");
+        chaosImage.height = "40px";
+        chaosImage.width = "40px";
+        chaosImage.left = 92;
+        chaosImage.thickness = 0;
+        chaosImage.cornerRadius = 5;
+        filterBar.addControl(chaosImage);
+        chaosImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(chaosImage, "Chaos", "element");
+        });
+        chaosImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Chaos";
+        });
+        chaosImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const cosmosImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/cosmos.png");
+        cosmosImage.height = "40px";
+        cosmosImage.width = "40px";
+        cosmosImage.left = 132;
+        cosmosImage.thickness = 0;
+        cosmosImage.cornerRadius = 5;
+        filterBar.addControl(cosmosImage);
+        cosmosImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(cosmosImage, "Cosmos", "element");
+        });
+        cosmosImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Cosmos";
+        });
+        cosmosImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const incantationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/incantation.png");
+        incantationImage.height = "40px";
+        incantationImage.width = "40px";
+        incantationImage.left = 172;
+        incantationImage.thickness = 0;
+        incantationImage.cornerRadius = 5;
+        filterBar.addControl(incantationImage);
+        incantationImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(incantationImage, "Incantation", "element");
+        });
+        incantationImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Incantation";
+        });
+        incantationImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const lakshanaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/lakshana.png");
+        lakshanaImage.height = "40px";
+        lakshanaImage.width = "40px";
+        lakshanaImage.left = 212;
+        lakshanaImage.thickness = 0;
+        lakshanaImage.cornerRadius = 5;
+        filterBar.addControl(lakshanaImage);
+        lakshanaImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(lakshanaImage, "Lakshana", "element");
+        });
+        lakshanaImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Lakshana";
+        });
+        lakshanaImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const psycheImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/psyche.png");
+        psycheImage.height = "40px";
+        psycheImage.width = "40px";
+        psycheImage.left = 252;
+        psycheImage.thickness = 0;
+        psycheImage.cornerRadius = 5;
+        filterBar.addControl(psycheImage);
+        psycheImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(psycheImage, "Psyche", "element");
+        });
+        psycheImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Psyche";
+        });
+        psycheImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        function hideNTEElements(): void {
+            nteFourStarImage.isVisible = false;
+            nteFiveStarImage.isVisible = false;
+            animaImage.isVisible = false;
+            chaosImage.isVisible = false;
+            cosmosImage.isVisible = false;
+            incantationImage.isVisible = false;
+            lakshanaImage.isVisible = false;
+            psycheImage.isVisible = false;
+            sortModeChanger.isVisible = false;
+        }
+        
+        function showNTEElements(): void {
+            nteFourStarImage.isVisible = true;
+            nteFiveStarImage.isVisible = true;
+            animaImage.isVisible = true;
+            chaosImage.isVisible = true;
+            cosmosImage.isVisible = true;
+            incantationImage.isVisible = true;
+            lakshanaImage.isVisible = true;
+            psycheImage.isVisible = true;
+            sortModeChanger.isVisible = true;
+        }
+
+        function offNTEElementBG(): void {
+            animaImage.background = "rgba(0,0,0,0)";
+            chaosImage.background = "rgba(0,0,0,0)";
+            cosmosImage.background = "rgba(0,0,0,0)";
+            incantationImage.background = "rgba(0,0,0,0)";
+            lakshanaImage.background = "rgba(0,0,0,0)";
+            psycheImage.background = "rgba(0,0,0,0)";
+        }
+
+        function offNTEWeaponBG(): void {
+
+        }
+
+        hideNTEElements();
+
         const electricImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Electric.png");
         electricImage.height = "40px";
         electricImage.width = "40px";
@@ -2969,7 +3309,7 @@ export class SceneBuilder implements ISceneBuilder {
             gauntletsImage.isVisible = false;
             broadbladeImage.isVisible = false;
             sortModeChanger.isVisible = false;
-            searchImage.image!.source = "res/assets/search.png";
+            // searchImage.image!.source = "res/assets/search.png";
         }
 
         function showAllWuwaElements(): void {
@@ -3122,7 +3462,7 @@ export class SceneBuilder implements ISceneBuilder {
                                     await changeCharacter("Abby");
                                 }
                             });
-                        } else {
+                        } else if (tabMode == "HNA") {
                             charButton = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/Puddlipup.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Puddlipup";
@@ -3131,6 +3471,17 @@ export class SceneBuilder implements ISceneBuilder {
                                 // charPanel.isVisible = !charPanel.isVisible;
                                 // if (chosenCharName != "Puddlipup") {
                                 //     await changeCharacter("Puddlipup");
+                                // }
+                            });
+                        } else {
+                            charButton = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/Taygedo.png");
+                            charButton.onPointerEnterObservable.add(function() {
+                                hoverCharName.text = "Taygedo";
+                            });
+                            charButton.onPointerClickObservable.add(async function() {
+                                // charPanel.isVisible = !charPanel.isVisible;
+                                // if (chosenCharName != "Taygedo") {
+                                //     await changeCharacter("Taygedo");
                                 // }
                             });
                         }
@@ -3572,6 +3923,55 @@ export class SceneBuilder implements ISceneBuilder {
                         createSkinButton(true, true, chosenChar!.name);
                     }
                 }
+            } else if (firstDigit == 6 || tabMode == "NTE") {
+                tabMode = "NTE";
+                const skinChars = findAllCharsByName(nteSkinDataArray, chosenCharName);
+                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
+                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
+                        chosenChar = skinChars![0];
+                        skinMode = true;
+                        await createCharacter(chosenChar);
+
+                        let isNextSkin = false;
+                        if (skinChars!.length > 1) {
+                            isNextSkin = true;
+                        }
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
+                        let isNextSkin = true;
+                        let prevI: number = 0;
+                        for (let i = 0; i < skinChars!.length; i++) {
+                            if (chosenChar!.id === skinChars![i].id) {
+                                prevI = i;
+                            }
+                        }
+                        const temp = (prevI + 1) % skinChars!.length;
+                        if (temp == skinChars!.length - 1) {
+                            isNextSkin = false;
+                        }
+                        if (prevI == skinChars!.length - 1) {
+                            chosenChar = findCharByName(nteSkinDataArray, chosenCharName);
+                            skinMode = false;
+                        } else {
+                            chosenChar = skinChars![temp];
+                            skinMode = true;
+                        }
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, isNextSkin, chosenChar!.name);
+                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
+                        skinMode = false;
+                        chosenChar = findCharByName(nteCharDataArray, chosenCharName);
+                        await createCharacter(chosenChar);
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                } else {
+                    skinMode = false;
+                    chosenChar = findCharById(nteCharDataArray, nextId!);
+                    await createCharacter(chosenChar);
+                    if (skinChars!.length > 0) {
+                        createSkinButton(true, true, chosenChar!.name);
+                    }
+                }
             } else {
                 tabMode = "None";
                 skinMode = false;
@@ -3581,7 +3981,8 @@ export class SceneBuilder implements ISceneBuilder {
                             (tabMode === "ZZZ" || firstDigit === 3) ? zzzCharDataArray :
                                 (tabMode === "WuWa" || firstDigit === 4) ? wuwaCharDataArray :
                                     (tabMode === "HNA" || firstDigit === 5) ? hnaCharDataArray :
-                                        [],
+                                        (tabMode === "NTE" || firstDigit === 6) ? nteCharDataArray :
+                                            [],
                     chosenCharName
                 );
                 await createCharacter(chosenChar);
@@ -3648,14 +4049,14 @@ export class SceneBuilder implements ISceneBuilder {
             } else {
                 throw new Error("Chosen character or its properties are undefined");
             }
-            if (tabMode == "WuWa") {// || chosenChar.element == "Universal") {
+            if (tabMode == "WuWa" || tabMode == "NTE") {// || chosenChar.element == "Universal") {
                 charScreenMode = false;
                 charScreenModeButton.isVisible = false;
             } else {
                 charScreenMode = true;
                 charScreenModeButton.isVisible = true;
             }
-            if (tabMode == "WuWa" || tabMode == "ZZZ" || tabMode == "None" && (firstDigitGlobal == 4 || firstDigitGlobal == 3)) {
+            if (tabMode == "WuWa" || tabMode == "ZZZ" || tabMode == "NTE" || tabMode == "None" && (firstDigitGlobal == 4 || firstDigitGlobal == 3 || firstDigitGlobal == 6)) {
                 charScreenMode = true;
                 charScreenElement = "Universal";
             } else if (tabMode == "HSR" || tabMode == "HNA" || tabMode == "None" && (firstDigitGlobal == 2 || firstDigitGlobal == 5)) {
@@ -3929,6 +4330,14 @@ export class SceneBuilder implements ISceneBuilder {
         } else if (firstTabMode == "HNA") {
             handleHNATabSwitch();
             const skinChars = findAllCharsByName(hnaSkinDataArray, chosenCharName);
+            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
+                const chosenCharSk = skinChars![0];
+                skinMode = false;
+                createSkinButton(true, true, chosenCharSk!.name);
+            }
+        } else if (firstTabMode == "NTE") {
+            handleNTETabSwitch();
+            const skinChars = findAllCharsByName(nteSkinDataArray, chosenCharName);
             if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
                 const chosenCharSk = skinChars![0];
                 skinMode = false;

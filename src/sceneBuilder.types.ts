@@ -19,4 +19,5 @@ export interface HSRCharData extends BaseCharData {}
 export interface ZZZCharData extends BaseCharData { region: string }
 export interface WuwaCharData extends BaseCharData {}
 export interface HNACharData extends BaseCharData {}
+export interface NTECharData extends BaseCharData {}
 export interface ExtraCharData extends BaseCharData {}
