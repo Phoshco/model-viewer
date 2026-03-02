@@ -2819,6 +2819,57 @@ export class SceneBuilder implements ISceneBuilder {
             hoverCharName.text = "";
         });
 
+        const buffImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/role_buff.png");
+        buffImage.height = "40px";
+        buffImage.width = "40px";
+        buffImage.left = 172;
+        buffImage.thickness = 0;
+        buffImage.cornerRadius = 5;
+        filterBar2.addControl(buffImage);
+        buffImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(buffImage, "Buff", "weaponType");
+        });
+        buffImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Buff";
+        });
+        buffImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const damageImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/role_damage.png");
+        damageImage.height = "40px";
+        damageImage.width = "40px";
+        damageImage.left = 212;
+        damageImage.thickness = 0;
+        damageImage.cornerRadius = 5;
+        filterBar2.addControl(damageImage);
+        damageImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(damageImage, "Damage", "weaponType");
+        });
+        damageImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Damage";
+        });
+        damageImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
+        const survivalImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/role_survival.png");
+        survivalImage.height = "40px";
+        survivalImage.width = "40px";
+        survivalImage.left = 252;
+        survivalImage.thickness = 0;
+        survivalImage.cornerRadius = 5;
+        filterBar2.addControl(survivalImage);
+        survivalImage.onPointerClickObservable.add(function() {
+            checkIfInNTEFilter(survivalImage, "Survival", "weaponType");
+        });
+        survivalImage.onPointerEnterObservable.add(function() {
+            hoverCharName.text = "Survival";
+        });
+        survivalImage.onPointerOutObservable.add(function() {
+            hoverCharName.text = "";
+        });
+
         function hideNTEElements(): void {
             nteFourStarImage.isVisible = false;
             nteFiveStarImage.isVisible = false;
@@ -2828,6 +2879,9 @@ export class SceneBuilder implements ISceneBuilder {
             incantationImage.isVisible = false;
             lakshanaImage.isVisible = false;
             psycheImage.isVisible = false;
+            buffImage.isVisible = false;
+            damageImage.isVisible = false;
+            survivalImage.isVisible = false;
             sortModeChanger.isVisible = false;
         }
         
@@ -2840,6 +2894,9 @@ export class SceneBuilder implements ISceneBuilder {
             incantationImage.isVisible = true;
             lakshanaImage.isVisible = true;
             psycheImage.isVisible = true;
+            buffImage.isVisible = true;
+            damageImage.isVisible = true;
+            survivalImage.isVisible = true;
             sortModeChanger.isVisible = true;
         }
 
@@ -2853,7 +2910,9 @@ export class SceneBuilder implements ISceneBuilder {
         }
 
         function offNTEWeaponBG(): void {
-
+            buffImage.background = "rgba(0,0,0,0)";
+            damageImage.background = "rgba(0,0,0,0)";
+            survivalImage.background = "rgba(0,0,0,0)";
         }
 
         hideNTEElements();
