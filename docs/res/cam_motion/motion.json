@@ -22,6 +22,12 @@
       "audioPlayerFile": "res/cam_motion/热爱105C的你/热爱105C的你.mp3",
       "camMotionFile": "res/cam_motion/热爱105C的你/camera.bvmd",
       "modelMotionFile": "res/cam_motion/热爱105C的你/热爱105℃的你.bvmd"
+    },
+    {
+      "name": "MoeChakkaFire",
+      "audioPlayerFile": "res/cam_motion/モエチャッカファイア/MoeChakkaFire.mp3",
+      "camMotionFile": "res/cam_motion/モエチャッカファイア/かめら(185cm).bvmd",
+      "modelMotionFile": "res/cam_motion/モエチャッカファイア/モエチャッカファイア.bvmd"
     }
   ]
   
