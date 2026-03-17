@@ -23,7 +23,6 @@
         "@stylistic/eslint-plugin": "^5.4.0",
         "@typescript-eslint/eslint-plugin": "^8.20.0",
         "@typescript-eslint/parser": "^8.20.0",
-        "babylon-mmd": "^1.0.0",
         "copy-webpack-plugin": "^13.0.1",
         "eslint": "^9.37.0",
         "eslint-plugin-simple-import-sort": "^12.1.1",
@@ -47,7 +46,7 @@
         "@babylonjs/inspector": "^8.30.5",
         "@babylonjs/loaders": "^8.30.5",
         "@babylonjs/materials": "^8.30.5",
-        "babylon-mmd": "^1.0.0",
+        "babylon-mmd": "^1.1.0",
         "firebase": "^11.2.0",
         "minisearch": "^7.1.1",
         "typescript-eslint": "^8.46.0"

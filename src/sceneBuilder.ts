@@ -18,6 +18,7 @@ import "babylon-mmd/esm/Loader/mmdOutlineRenderer";
 // for play `MmdAnimation` we need to import following two modules.
 import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeCameraAnimation";
 import "babylon-mmd/esm/Runtime/Animation/mmdRuntimeModelAnimation";
+import "babylon-mmd/esm/Runtime/Optimized/Animation/mmdWasmRuntimeModelAnimation";
 import "@babylonjs/core/Rendering/depthRendererSceneComponent";
 import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.fragment";
 import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.vertex";
@@ -61,36 +62,15 @@ import { StreamAudioPlayer } from "babylon-mmd/esm/Runtime/Audio/streamAudioPlay
 import { MmdCamera } from "babylon-mmd/esm/Runtime/mmdCamera";
 import type { MmdMesh } from "babylon-mmd/esm/Runtime/mmdMesh";
 import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
+import { MmdWasmRuntime } from "babylon-mmd/esm/Runtime/Optimized/mmdWasmRuntime";
+import { MmdWasmPhysics } from "babylon-mmd/esm/Runtime/Optimized/Physics/mmdWasmPhysics";
+import { MmdWasmAnimation } from "babylon-mmd/esm/Runtime/Optimized/Animation/mmdWasmAnimation";
 import { MmdWasmInstanceTypeMPR } from "babylon-mmd/esm/Runtime/Optimized/InstanceType/multiPhysicsRelease";
+// import { MmdWasmInstanceTypeSPR } from "babylon-mmd/esm/Runtime/Optimized/InstanceType/singlePhysicsRelease";
 import { GetMmdWasmInstance } from "babylon-mmd/esm/Runtime/Optimized/mmdWasmInstance";
-import { MultiPhysicsRuntime } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/Impl/multiPhysicsRuntime";
-import { MmdBulletPhysics } from "babylon-mmd/esm/Runtime/Optimized/Physics/mmdBulletPhysics";
-import { PhysicsStaticPlaneShape } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/physicsShape";
-import { RigidBody } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/rigidBody";
-import { RigidBodyConstructionInfo } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/rigidBodyConstructionInfo";
-import { MotionType } from "babylon-mmd/esm/Runtime/Optimized/Physics/Bind/motionType";
-// import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
-// import havokPhysics from "@babylonjs/havok";
-// import type { MmdWasmInstance } from "babylon-mmd";
-// import { getMmdWasmInstance } from "babylon-mmd";
-// import { MmdWasmAnimation, MmdWasmInstanceTypeSPR, MmdWasmPhysics, MmdWasmRuntime } from "babylon-mmd";
-// import ammoPhysics from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
-// import ammo from "babylon-mmd/esm/Runtime/Physics/External/ammo.wasm";
-// import { MmdAmmoJSPlugin } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoJSPlugin";
-// import { MmdAmmoPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdAmmoPhysics";
-// import { MmdPhysics } from "babylon-mmd/esm/Runtime/Physics/mmdPhysics";
-// import {CounterAPI} from "counterapi";
 import miniSearch from "minisearch";
 
 import extraCharDatas from "../res/assets/extras.json";
-// import genshinCharDatas from "../res/assets/Genshin/genshin.json";
-// import genshinSkinCharDatas from "../res/assets/Genshin/skins.json";
-// import hsrCharDatas from "../res/assets/HSR/hsr.json";
-// import hsrSkinCharDatas from "../res/assets/HSR/skins.json";
-// import wuwaSkinCharDatas from "../res/assets/WuWa/skins.json";
-// import wuwaCharDatas from "../res/assets/WuWa/wuwa.json";
-// import zzzSkinCharDatas from "../res/assets/ZZZ/skins.json";
-// import zzzCharDatas from "../res/assets/ZZZ/zzz.json";
 import motionConfig from "../res/cam_motion/motion.json";
 import type { ISceneBuilder } from "./baseRuntime";
 import { CustomLoadingScreen } from "./CustomLoadingScreen";
@@ -291,31 +271,32 @@ export class SceneBuilder implements ISceneBuilder {
         advancedTexture.useSmallestIdeal = true;
 
         // scaling for WebXR
-        const worldScale = 0.09;
+        const worldScale = 1;
 
         const mmdRoot = new TransformNode("mmdRoot", scene);
         mmdRoot.scaling.scaleInPlace(worldScale);
-        mmdRoot.position.z = 1;
+        mmdRoot.position.z = 10;
 
         const mmdCameraRoot = new TransformNode("mmdRoot", scene);
         mmdCameraRoot.scaling.scaleInPlace(worldScale);
-        mmdCameraRoot.position.z = 1;
+        mmdCameraRoot.position.z = 10;
 
         // mmd camera for play mmd camera animation
-        const mmdCamera = new MmdCamera("mmdCamera", new Vector3(0, 10, 0), scene);
+        const mmdCamera = new MmdCamera("mmdCamera", new Vector3(0, 0, 0), scene);
         mmdCamera.maxZ = 5000;
         mmdCamera.minZ = 0.1;
         mmdCamera.parent = mmdRoot;
         mmdCamera.layerMask = 1;
 
-        const defCamPos = new Vector3(0, 10, -20).scaleInPlace(worldScale);
-        const camera = new ArcRotateCamera("arcRotateCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
-        camera.maxZ = 100;
+        const defCamPos = new Vector3(0, 10, -30).scaleInPlace(worldScale);
+        const camera = new ArcRotateCamera("arcRotateCamera", 0, 0, 25 * worldScale, new Vector3(0, 10, 1), scene);
+        camera.maxZ = 5000;
         camera.minZ = 0.1;
+        camera.parent = mmdRoot;
         camera.setPosition(defCamPos);
         camera.attachControl(canvas, false);
         camera.inertia = 0.8;
-        camera.speed = 4 * worldScale;
+        camera.speed = 5 * worldScale;
         camera.zoomToMouseLocation = true;
         camera.wheelDeltaPercentage = 0.1;
         camera.upperRadiusLimit = 100 * worldScale;
@@ -325,13 +306,14 @@ export class SceneBuilder implements ISceneBuilder {
         }
         camera.layerMask = 1;
 
-        const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
-        stillCamera.maxZ = 100;
+        const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 25 * worldScale, new Vector3(0, 10, 1), scene);
+        stillCamera.maxZ = 5000;
         stillCamera.minZ = 0.1;
+        stillCamera.parent = mmdRoot;
         stillCamera.setPosition(defCamPos);
         stillCamera.attachControl(canvas, false);
         stillCamera.inertia = 0.8;
-        stillCamera.speed = 4 * worldScale;
+        stillCamera.speed = 5 * worldScale;
         stillCamera.zoomToMouseLocation = true;
         stillCamera.wheelDeltaPercentage = 0.1;
         stillCamera.upperRadiusLimit = 100 * worldScale;
@@ -407,12 +389,12 @@ export class SceneBuilder implements ISceneBuilder {
         particleSystem.renderingGroupId = 1;
 
         // create mmd runtime with physics (initialized later after audio player using updated wasm/physics APIs)
-        let mmdRuntime: MmdRuntime;
-        let physicsRuntime: MultiPhysicsRuntime | undefined;
+        let mmdRuntime: MmdRuntime | any;
+        // let physicsRuntime: MultiPhysicsRuntime | undefined;
 
         // physics toggle: enable/disable physics via URL param `?physics=1` or set default here
         //const getUrlFlag = (name: string): string | null => new URLSearchParams(window.location.search).get(name);
-        const physicsModeOn = false;
+        let physicsModeOn = false;
 
         // Randomly pick name from the list from motionConfig json
         let motionName = motionConfig[Math.floor(Math.random() * motionConfig.length)].name;
@@ -426,17 +408,15 @@ export class SceneBuilder implements ISceneBuilder {
         // song
         audioPlayer.source = audioPlayerFile;
         // initialize wasm + physics + mmd runtime (updated babylon-mmd APIs)
+        let wasmInstance: any | undefined;
         if (physicsModeOn) {
-            const wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
-            physicsRuntime = new MultiPhysicsRuntime(wasmInstance);
-            physicsRuntime.setGravity(new Vector3(0, -98, 0));
-            physicsRuntime.register(scene);
+            wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
 
-            mmdRuntime = new MmdRuntime(scene, new MmdBulletPhysics(physicsRuntime)); // use Bullet physics for rigid body simulation
+            mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene)); // use Bullet physics for rigid body simulation
             mmdRuntime.loggingEnabled = true;
             mmdRuntime.register(scene);
             mmdRuntime.setAudioPlayer(audioPlayer);
-            mmdRuntime.playAnimation();
+            // mmdRuntime.playAnimation();
         } else {
             // create runtime without physics
             mmdRuntime = new MmdRuntime(scene);
@@ -565,8 +545,8 @@ export class SceneBuilder implements ISceneBuilder {
         scene.onAfterRenderObservable.addOnce(() => engine.hideLoadingUI());
         scene.activeCameras = [stillCamera, guiCam];
 
-        let theDiff = 1.66;
-        let theHeight = 69;
+        let theDiff = 1.85;
+        let theHeight = 1.85;
         let boneWorldMatrixCam = new Matrix();
 
         let characterModelPromiseRes = loadResults[2];
@@ -611,27 +591,32 @@ export class SceneBuilder implements ISceneBuilder {
         // const theCharAnimation = physicsModeOn
         //     ? new MmdWasmAnimation(loadResults[1], wasmInstance!, scene)
         //     : (loadResults[1] as MmdAnimation);
-        let theCharAnimation = loadResults[1] as MmdAnimation | undefined;
+        let theCharAnimation = loadResults[1] as MmdAnimation | MmdWasmAnimation | undefined;
 
         // for scaling camera to model height
         let headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
 
         // make sure directional light follow the model
-        let bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
+        let bodyBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "センター");
         let boneWorldMatrix = new Matrix();
 
         if (headBone != undefined && bodyBone != undefined) {
             // create and set runtime animation handle for the model (updated API)
             if (theCharAnimation) {
+                if (physicsModeOn) {
+                    theCharAnimation = new MmdWasmAnimation(theCharAnimation as any, wasmInstance, scene);
+                }
                 const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
                 mmdModel.setRuntimeAnimation(modelAnimationHandle);
             }
             scene.onBeforeDrawPhaseObservable.addOnce(() => {
                 headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
                 boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
+                mmdCameraRoot.position.z = 10;
+                mmdCameraRoot.position.x = 0;
                 // boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-                theDiff = theDiff - mmdCameraRoot.position.y;
-                theHeight = mmdCameraRoot.position.y;
+                theDiff = theDiff - mmdCameraRoot.position.y / 10;
+                theHeight = mmdCameraRoot.position.y / 10;
             });
 
             scene.onBeforeRenderObservable.addOnce(() => {
@@ -701,13 +686,13 @@ export class SceneBuilder implements ISceneBuilder {
         //     new Vector3(100, 2, 100), scene);
 
         // create ground rigid body for physics runtime (if available)
-        if (physicsRuntime) {
-            const info = new RigidBodyConstructionInfo((physicsRuntime as any).wasmInstance);
-            info.motionType = MotionType.Static;
-            info.shape = new PhysicsStaticPlaneShape(physicsRuntime, new Vector3(0, 1, 0), 0);
-            const groundBody = new RigidBody(physicsRuntime, info);
-            physicsRuntime.addRigidBodyToGlobal(groundBody);
-        }
+        // if (physicsRuntime) {
+        //     const info = new RigidBodyConstructionInfo((physicsRuntime as any).wasmInstance);
+        //     info.motionType = MotionType.Static;
+        //     info.shape = new PhysicsStaticPlaneShape(physicsRuntime, new Vector3(0, 1, 0), 0);
+        //     const groundBody = new RigidBody(physicsRuntime, info);
+        //     physicsRuntime.addRigidBodyToGlobal(groundBody);
+        // }
 
         const defaultPipeline = new DefaultRenderingPipeline("default", true, scene, [mmdCamera, camera, stillCamera]);
         defaultPipeline.samples = 4;
@@ -779,7 +764,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         const debugblock = new gui.TextBlock();
         debugblock.widthInPixels = 100;
-        debugblock.heightInPixels = 50;
+        debugblock.heightInPixels = 100;
         debugblock.left = 0;
         debugblock.text = "lol"; // `${mmdCameraRoot.position.y}`;
         debugblock.fontSize = 16;
@@ -816,7 +801,11 @@ export class SceneBuilder implements ISceneBuilder {
         disclaimerText.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_CENTER;
         disclaimerText.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
         disclaimerText.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
-        disclaimerText.color = "grey";
+        if (bg_bool) {
+            disclaimerText.color = "white";
+        } else {
+            disclaimerText.color = "black";
+        }
         advancedTexture.addControl(disclaimerText);
         disclaimerText.isVisible = true;
 
@@ -904,18 +893,22 @@ export class SceneBuilder implements ISceneBuilder {
                 layer.texture = light_bg;
                 darkButton.image!.source = "res/assets/dark_mode.png";
                 motionButton.image!.source = "res/assets/note.png";
+                physicsButton.image!.source = "res/assets/physics.png";
                 if (skinButton != undefined) {
                     skinButton.image!.source = "res/assets/alter.png";
                 }
                 charNameText.color = "black";
+                disclaimerText.color = "black";
             } else {
                 layer.texture = dark_bg;
                 darkButton.image!.source = "res/assets/light_mode.png";
                 motionButton.image!.source = "res/assets/note_light.png";
+                physicsButton.image!.source = "res/assets/physics_light.png";
                 if (skinButton != undefined) {
                     skinButton.image!.source = "res/assets/alter_light.png";
                 }
                 charNameText.color = "white";
+                disclaimerText.color = "white";
             }
             layer.render;
             bg_bool = !bg_bool;
@@ -975,6 +968,23 @@ export class SceneBuilder implements ISceneBuilder {
             camMotionFile = motionConfig.find((item) => item.name === motionName)!.camMotionFile;
             modelMotionFile = motionConfig.find((item) => item.name === motionName)!.modelMotionFile;
             changeMotion();
+        });
+
+        const physicsButton = gui.Button.CreateImageOnlyButton("but", "res/assets/physics.png");
+        physicsButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        physicsButton.left = "10px";
+        physicsButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        physicsButton.top = isMobile ? "310px" : "160px";
+        physicsButton.width = iconWidthHeight;
+        physicsButton.height = iconWidthHeight;
+        physicsButton.thickness = 0;
+        physicsButton.cornerRadius = 10;
+        advancedTexture.addControl(physicsButton);
+        if (bg_bool) {
+            physicsButton.image!.source = "res/assets/physics_light.png";
+        }
+        physicsButton.onPointerClickObservable.add(function() {
+            changePhysics();
         });
 
         const charNameText = new gui.TextBlock();
@@ -3641,6 +3651,9 @@ export class SceneBuilder implements ISceneBuilder {
             theCharAnimation = loadResults[1] as MmdAnimation | undefined;
             // updated API: create runtime animation for model and set it (if available)
             if (theCharAnimation) {
+                if (physicsModeOn) {
+                    theCharAnimation = new MmdWasmAnimation(theCharAnimation as any, wasmInstance, scene);
+                }
                 const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
                 mmdModel.setRuntimeAnimation(modelAnimationHandle);
             }
@@ -3664,9 +3677,29 @@ export class SceneBuilder implements ISceneBuilder {
             engine.hideLoadingUI();
         }
 
+        async function changePhysics(): Promise<void> {
+            // Toggle the physics runtime mode and recreate the character runtime so the physics state is applied.
+            physicsModeOn = !physicsModeOn;
+            physicsButton.background = physicsModeOn ? "rgba(119, 119, 119, 0.5)" : "rgba(0,0,0,0)";
+
+            // Ensure wasm instance is ready when turning physics on.
+            if (physicsModeOn && !wasmInstance) {
+                wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
+            }
+
+            // Force a reload of the current character so the runtime is recreated for the new physics mode.
+            // Temporarily break the "same character" check inside changeCharacter so it doesn't try to switch skins.
+            const currentCharName = chosenCharName;
+            const currentCharId = chosenChar?.id ?? prevCharId;
+            prevCharName = "";
+            prevCharId = -1;
+
+            await changeCharacter(currentCharName, currentCharId, true);
+        }
+
         let firstDigitGlobal = 0;
 
-        async function changeCharacter(nextCharacter?: string, nextId?: number): Promise<void> {
+        async function changeCharacter(nextCharacter?: string, nextId?: number, same?: boolean): Promise<void> {
             if (!nextCharacter) {
                 return;
             }
@@ -3697,18 +3730,10 @@ export class SceneBuilder implements ISceneBuilder {
 
             // recreate mmd runtime according to physics toggle. reuse existing physicsRuntime when possible
             if (physicsModeOn) {
-                if (!physicsRuntime) {
-                    const wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
-                    physicsRuntime = new MultiPhysicsRuntime(wasmInstance);
-                    physicsRuntime.setGravity(new Vector3(0, -98, 0));
-                    physicsRuntime.register(scene);
-                }
-
-                mmdRuntime = new MmdRuntime(scene, new MmdBulletPhysics(physicsRuntime));
+                mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene)); // use Bullet physics for rigid body simulation
                 mmdRuntime.loggingEnabled = true;
                 mmdRuntime.register(scene);
                 mmdRuntime.setAudioPlayer(audioPlayer);
-                // keep animation state controlled by caller
             } else {
                 mmdRuntime = new MmdRuntime(scene);
                 mmdRuntime.loggingEnabled = true;
@@ -3716,12 +3741,7 @@ export class SceneBuilder implements ISceneBuilder {
                 mmdRuntime.setAudioPlayer(audioPlayer);
             }
 
-            // audioPlayer = new StreamAudioPlayer(scene);
-            // audioPlayer.preservesPitch = false;
-            // audioPlayer.source = audioPlayerFile;
             mmdRuntime.setAudioPlayer(audioPlayer);
-            // mmdRuntime.playAnimation();
-            // mmdRuntime.pauseAnimation();
 
             mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
             mmdPlayerControl.showPlayerControl();
@@ -3732,7 +3752,10 @@ export class SceneBuilder implements ISceneBuilder {
                 firstDigitGlobal = firstDigit;
             }
 
-            if (chosenCharName == "Paimon" || chosenCharName == "Pom-Pom" || chosenCharName == "Bangboo" || chosenCharName == "Abby") {
+            if (same) {
+                await createCharacter(chosenChar!);
+            }
+            else if (chosenCharName == "Paimon" || chosenCharName == "Pom-Pom" || chosenCharName == "Bangboo" || chosenCharName == "Abby") {
                 skinMode = false;
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
                 await createCharacter(chosenChar);
@@ -4075,14 +4098,9 @@ export class SceneBuilder implements ISceneBuilder {
             prevCharId = chosenChar!.id;
             // ensure runtime is initialized (in case changeCharacter recreated/unregistered it)
             if (!mmdRuntime) {
+                console.log("Initializing MMD runtime...");
                 if (physicsModeOn) {
-                    if (!physicsRuntime) {
-                        const wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
-                        physicsRuntime = new MultiPhysicsRuntime(wasmInstance);
-                        physicsRuntime.setGravity(new Vector3(0, -98, 0));
-                        physicsRuntime.register(scene);
-                    }
-                    mmdRuntime = new MmdRuntime(scene, new MmdBulletPhysics(physicsRuntime));
+                    mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene)); 
                 } else {
                     mmdRuntime = new MmdRuntime(scene);
                 }
@@ -4174,8 +4192,8 @@ export class SceneBuilder implements ISceneBuilder {
                 modelMeshSt.parent = mmdRoot;
             }
 
-            theDiff = 1.66;
-            theHeight = 69;
+            theDiff = 1.85;
+            theHeight = 1.85;
             boneWorldMatrixCam = new Matrix();
 
             characterModelPromiseRes = loadResults[0];
@@ -4193,11 +4211,14 @@ export class SceneBuilder implements ISceneBuilder {
             }
 
             headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
-            bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
+            bodyBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "センター");
             boneWorldMatrix = new Matrix();
 
             if (headBone != undefined && bodyBone != undefined) {
                 if (theCharAnimation) {
+                    if (physicsModeOn) {
+                        theCharAnimation = new MmdWasmAnimation(theCharAnimation as any, wasmInstance, scene);
+                    }
                     try {
                         const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
                         mmdModel.setRuntimeAnimation(modelAnimationHandle);
@@ -4209,10 +4230,10 @@ export class SceneBuilder implements ISceneBuilder {
                 scene.onBeforeDrawPhaseObservable.addOnce(() => {
                     headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
                     boneWorldMatrixCam.getTranslationToRef(mmdCameraRoot.position);
-                    mmdCameraRoot.position.z = 1;
+                    mmdCameraRoot.position.z = 10;
                     mmdCameraRoot.position.x = 0;
-                    theDiff = theDiff - mmdCameraRoot.position.y;
-                    theHeight = mmdCameraRoot.position.y;
+                    theDiff = theDiff - mmdCameraRoot.position.y/10;
+                    theHeight = mmdCameraRoot.position.y/10;
                 });
 
                 scene.onBeforeRenderObservable.addOnce(() => {
@@ -4267,21 +4288,17 @@ export class SceneBuilder implements ISceneBuilder {
 
         // for scaling camera to model height
         {
-            mmdCameraRoot.position.x = mmdRoot.position.x;
-            mmdCameraRoot.position.y = mmdRoot.position.y;
-            mmdCameraRoot.position.z = mmdRoot.position.z;
+            mmdCamera.parent = mmdCameraRoot;
             scene.onBeforeAnimationsObservable.add(() => {
-                cameraPos = mmdCamera.position.y / 10;
-                textblock.text = `${scene.activeCameras![0].name}`;
+                cameraPos = mmdCamera.position.y/10;
                 if (cameraPos < theHeight && 0 < cameraPos) {
-                    mmdCameraRoot.position.y = 0 - theDiff * (cameraPos / theHeight);
+                    mmdCameraRoot.position.y = 10 * (0 - theDiff * (cameraPos / theHeight));
                 } else if (cameraPos <= 0) {
                     mmdCameraRoot.position.y = 0;
                 } else {
-                    mmdCameraRoot.position.y = 0 - theDiff;
+                    mmdCameraRoot.position.y = 10 * (0 - theDiff);
                 }
-                // debugblock.text = `${mmdCameraRoot.position.y}\n${theHeight}\n${theDiff}`;
-                mmdCamera.parent = mmdCameraRoot;
+                debugblock.text = `${cameraPos}\n${mmdCameraRoot.position.y}\n${theHeight}\n${theDiff}`;
             });
         }
 
@@ -4291,8 +4308,8 @@ export class SceneBuilder implements ISceneBuilder {
         const headRelativePosition = new Vector3();
 
         scene.onBeforeRenderObservable.add(() => {
-            const cameraRotation = mmdCamera.rotation;
-            Matrix.RotationYawPitchRollToRef(-cameraRotation.y, -cameraRotation.x, -cameraRotation.z, rotationMatrix);
+            // const cameraRotation = mmdCamera.rotation;
+            // Matrix.RotationYawPitchRollToRef(-cameraRotation.y, -cameraRotation.x, -cameraRotation.z, rotationMatrix);
 
             Vector3.TransformNormalFromFloatsToRef(0, 0, 1, rotationMatrix, cameraNormal);
 
