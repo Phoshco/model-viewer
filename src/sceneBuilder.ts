@@ -65,8 +65,8 @@ import { MmdRuntime } from "babylon-mmd/esm/Runtime/mmdRuntime";
 import { MmdWasmRuntime } from "babylon-mmd/esm/Runtime/Optimized/mmdWasmRuntime";
 import { MmdWasmPhysics } from "babylon-mmd/esm/Runtime/Optimized/Physics/mmdWasmPhysics";
 import { MmdWasmAnimation } from "babylon-mmd/esm/Runtime/Optimized/Animation/mmdWasmAnimation";
-import { MmdWasmInstanceTypeMPR } from "babylon-mmd/esm/Runtime/Optimized/InstanceType/multiPhysicsRelease";
-// import { MmdWasmInstanceTypeSPR } from "babylon-mmd/esm/Runtime/Optimized/InstanceType/singlePhysicsRelease";
+// import { MmdWasmInstanceTypeMPR } from "babylon-mmd/esm/Runtime/Optimized/InstanceType/multiPhysicsRelease";
+import { MmdWasmInstanceTypeSPR } from "babylon-mmd/esm/Runtime/Optimized/InstanceType/singlePhysicsRelease";
 import { GetMmdWasmInstance } from "babylon-mmd/esm/Runtime/Optimized/mmdWasmInstance";
 import miniSearch from "minisearch";
 
@@ -410,7 +410,7 @@ export class SceneBuilder implements ISceneBuilder {
         // initialize wasm + physics + mmd runtime (updated babylon-mmd APIs)
         let wasmInstance: any | undefined;
         if (physicsModeOn) {
-            wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
+            wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeSPR());
 
             mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene)); // use Bullet physics for rigid body simulation
             mmdRuntime.loggingEnabled = true;
@@ -3684,7 +3684,7 @@ export class SceneBuilder implements ISceneBuilder {
 
             // Ensure wasm instance is ready when turning physics on.
             if (physicsModeOn && !wasmInstance) {
-                wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeMPR());
+                wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeSPR());
             }
 
             // Force a reload of the current character so the runtime is recreated for the new physics mode.
