@@ -28,6 +28,12 @@
       "audioPlayerFile": "res/cam_motion/モエチャッカファイア/MoeChakkaFire.mp3",
       "camMotionFile": "res/cam_motion/モエチャッカファイア/かめら(185cm).bvmd",
       "modelMotionFile": "res/cam_motion/モエチャッカファイア/モエチャッカファイア.bvmd"
+    },
+    {
+      "name": "Show",
+      "audioPlayerFile": "res/cam_motion/Show/Show.mp3",
+      "camMotionFile": "res/cam_motion/Show/唱_camera.bvmd",
+      "modelMotionFile": "res/cam_motion/Show/唱.bvmd"
     }
   ]
   

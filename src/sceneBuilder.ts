@@ -4091,16 +4091,23 @@ export class SceneBuilder implements ISceneBuilder {
                 mmdRuntime.setAudioPlayer(audioPlayer);
             }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
+                const isSpecialModel = ["Parayaya", "Denia", "Hiyuki"].some(name =>
+                    chosenChar.name.includes(name)
+                );
+
+                const mmdModelOptions = {
+                loggingEnabled: true,
+                materialBuilder: materialBuilder,
+                ...(isSpecialModel ? { buildSkeleton: false, buildMorph: false } : {})
+                };
+
                 promises.push(LoadAssetContainerAsync(
                     baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
                     scene,
                     {
                         onProgress: (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),
                         pluginOptions: {
-                            mmdmodel: {
-                                loggingEnabled: true,
-                                materialBuilder: materialBuilder
-                            }
+                            mmdmodel: mmdModelOptions
                         }
                     }
                 )
@@ -4179,7 +4186,11 @@ export class SceneBuilder implements ISceneBuilder {
             shadowGenerator.addShadowCaster(modelMesh);
             for (const mesh of modelMesh.metadata.meshes) mesh.receiveShadows = true;
 
-            mmdModel = mmdRuntime.createMmdModel(modelMesh);
+            try {
+                mmdModel = mmdRuntime.createMmdModel(modelMesh);
+            } catch (error) {
+                console.error("Failed to create MMD model:", error);
+            }
 
             headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
             bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
@@ -4187,8 +4198,13 @@ export class SceneBuilder implements ISceneBuilder {
 
             if (headBone != undefined && bodyBone != undefined) {
                 if (theCharAnimation) {
-                    const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
-                    mmdModel.setRuntimeAnimation(modelAnimationHandle);
+                    try {
+                        const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
+                        mmdModel.setRuntimeAnimation(modelAnimationHandle);
+                    }
+                    catch (error) {
+                        console.error("Failed to create or set MMD animation:", error);
+                    }
                 }
                 scene.onBeforeDrawPhaseObservable.addOnce(() => {
                     headBone!.getWorldMatrixToRef(boneWorldMatrixCam).multiplyToRef(modelMesh.getWorldMatrix(), boneWorldMatrixCam);
