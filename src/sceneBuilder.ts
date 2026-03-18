@@ -296,7 +296,8 @@ export class SceneBuilder implements ISceneBuilder {
         camera.setPosition(defCamPos);
         camera.attachControl(canvas, false);
         camera.inertia = 0.8;
-        camera.speed = 5 * worldScale;
+        camera.speed = 0.5 * worldScale;
+        camera.panningSensibility = 500;
         camera.zoomToMouseLocation = true;
         camera.wheelDeltaPercentage = 0.1;
         camera.upperRadiusLimit = 100 * worldScale;
@@ -313,7 +314,8 @@ export class SceneBuilder implements ISceneBuilder {
         stillCamera.setPosition(defCamPos);
         stillCamera.attachControl(canvas, false);
         stillCamera.inertia = 0.8;
-        stillCamera.speed = 5 * worldScale;
+        stillCamera.speed = 0.5 * worldScale;
+        stillCamera.panningSensibility = 500;
         stillCamera.zoomToMouseLocation = true;
         stillCamera.wheelDeltaPercentage = 0.1;
         stillCamera.upperRadiusLimit = 100 * worldScale;
