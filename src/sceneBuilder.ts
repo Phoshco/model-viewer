@@ -3753,6 +3753,23 @@ export class SceneBuilder implements ISceneBuilder {
             }
 
             if (same) {
+                let skinChars: BaseCharData[] | undefined;
+                if (firstDigit === 1 || tabMode === "Genshin") {
+                    skinChars = findAllCharsByName(genshinSkinDataArray, chosenChar!.name);
+                } else if (firstDigit === 2 || tabMode === "HSR") {
+                    skinChars = findAllCharsByName(hsrSkinDataArray, chosenChar!.name);
+                } else if (firstDigit === 3 || tabMode === "ZZZ") {
+                    skinChars = findAllCharsByName(zzzSkinDataArray, chosenChar!.name);
+                } else if (firstDigit === 4 || tabMode === "WuWa") {
+                    skinChars = findAllCharsByName(wuwaSkinDataArray, chosenChar!.name);
+                } else if (firstDigit === 5 || tabMode === "HNA") {
+                    skinChars = findAllCharsByName(hnaSkinDataArray, chosenChar!.name);
+                } else if (firstDigit === 6 || tabMode === "NTE") {
+                    skinChars = findAllCharsByName(nteSkinDataArray, chosenChar!.name);
+                }
+                if (skinChars && skinChars.length > 0) {
+                    createSkinButton(true, true, chosenChar!.name);
+                }
                 await createCharacter(chosenChar!);
             }
             else if (chosenCharName == "Paimon" || chosenCharName == "Pom-Pom" || chosenCharName == "Bangboo" || chosenCharName == "Abby") {

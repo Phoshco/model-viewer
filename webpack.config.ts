@@ -98,8 +98,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
         }),
         new copyWebpackPlugin({
             patterns: [
-                { from: "res", to: "res" },
-                { from: "./src/coi-serviceworker.js", to: "." }
+                { from: "res", to: "res" }
             ]
         })
     ],
