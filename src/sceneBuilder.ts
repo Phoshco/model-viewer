@@ -80,6 +80,10 @@ import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
 import type { BaseCharData, GenshinCharData, HSRCharData, ZZZCharData, WuwaCharData, HNACharData, NTECharData, ExtraCharData } from "./sceneBuilder.types";
 import { normalize, getFirstDigit, findCharByName, findCharById, findAllCharsByName, filterBy, sortBy } from "./sceneBuilder.utils";
 import { afterBuildSingleMaterialDefault, afterBuildSingleMaterialSt } from "./sceneBuilder.materials";
+import { createGenshinUI } from "./ui/genshinUI";
+import { createZzzUI } from "./ui/zzzUI";
+import { createNteUI } from "./ui/nteUI";
+import { createWuwaUI } from "./ui/wuwaUI";
 
 export class SceneBuilder implements ISceneBuilder {
     public async build(canvas: HTMLCanvasElement, engine: AbstractEngine, item: string): Promise<Scene> {
@@ -1173,21 +1177,21 @@ export class SceneBuilder implements ISceneBuilder {
                     hideHSRElements();
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
-                    hideZZZElements();
+                    zzzUI.hide();
                 } else if (tabMode == "WuWa") {
                     tacetImage.background = "rgb(64,68,70)";
-                    hideWuwaElements();
+                    wuwaUI.hide();
                 } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
                 } else if (tabMode == "NTE") {
                     nteImage.background = "rgb(64,68,70)";
-                    hideNTEElements();
+                    nteUI.hide();
                 }
                 tabMode = "Genshin";
                 filteredArray = filterBy(charDataArray, genshinFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                showGenshinElements();
+                genshinUI.showAll();
                 generateGrid(filteredArray);
             }
         }
@@ -1200,16 +1204,16 @@ export class SceneBuilder implements ISceneBuilder {
                 hsrButton.background = "rgb(64,68,70)";
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
-                    hideGenshinElements();
+                    genshinUI.hide();
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
-                    hideZZZElements();
+                    zzzUI.hide();
                 } else if (tabMode == "WuWa") {
                     tacetImage.background = "rgb(64,68,70)";
-                    hideWuwaElements();
+                    wuwaUI.hide();
                 } else if (tabMode == "NTE") {
                     nteImage.background = "rgb(64,68,70)";
-                    hideNTEElements();
+                    nteUI.hide();
                 } else {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
@@ -1235,16 +1239,16 @@ export class SceneBuilder implements ISceneBuilder {
                 zzzButton.background = "rgb(64,68,70)";
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
-                    hideGenshinElements();
+                    genshinUI.hide();
                 } else if (tabMode == "HSR") {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "WuWa") {
                     tacetImage.background = "rgb(64,68,70)";
-                    hideWuwaElements();
+                    wuwaUI.hide();
                 } else if (tabMode == "NTE") {
                     nteImage.background = "rgb(64,68,70)";
-                    hideNTEElements();
+                    nteUI.hide();
                 } else {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
@@ -1252,7 +1256,7 @@ export class SceneBuilder implements ISceneBuilder {
                 tabMode = "ZZZ";
                 filteredArray = filterBy(zzzCharDataArray, zzzFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                showAllZZZElements();
+                zzzUI.showAll();
                 generateGrid(filteredArray);
             }
         }
@@ -1265,19 +1269,19 @@ export class SceneBuilder implements ISceneBuilder {
                 hnaButton.background = "rgb(64,68,70)";
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
-                    hideGenshinElements();
+                    genshinUI.hide();
                 } else if (tabMode == "HSR") {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
-                    hideZZZElements();
+                    zzzUI.hide();
                 } else if (tabMode == "WuWa") {
                     tacetImage.background = "rgb(64,68,70)";
-                    hideWuwaElements();
+                    wuwaUI.hide();
                 } else if (tabMode == "NTE") {
                     nteImage.background = "rgb(64,68,70)";
-                    hideNTEElements();
+                    nteUI.hide();
                 }
                 tabMode = "HNA";
                 filteredArray = filterBy(hnaCharDataArray, hnaFilter);
@@ -1349,24 +1353,24 @@ export class SceneBuilder implements ISceneBuilder {
                 tacetImage.background = charPanel.background;
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
-                    hideGenshinElements();
+                    genshinUI.hide();
                 } else if (tabMode == "HSR") {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
-                    hideZZZElements();
+                    zzzUI.hide();
                 } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
                 } else if (tabMode == "NTE") {
                     nteImage.background = "rgb(64,68,70)";
-                    hideNTEElements();
+                    nteUI.hide();
                 }
                 tabMode = "WuWa";
                 filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                showAllWuwaElements();
+                wuwaUI.showAll();
                 generateGrid(filteredArray);
             }
         }
@@ -1376,24 +1380,24 @@ export class SceneBuilder implements ISceneBuilder {
                 nteImage.background = charPanel.background;
                 if (tabMode == "Genshin") {
                     genshinButton.background = charPanel.background;
-                    hideGenshinElements();
+                    genshinUI.hide();
                 } else if (tabMode == "HSR") {
                     hideHSRElements();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
-                    hideZZZElements();
+                    zzzUI.hide();
                 } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
                     hideHNAElements();
                 } else if (tabMode == "WuWa") {
                     tacetImage.background = "rgb(64,68,70)";
-                    hideWuwaElements();
+                    wuwaUI.hide();
                 }
                 tabMode = "NTE";
                 filteredArray = filterBy(nteCharDataArray, nteFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                showNTEElements();
+                nteUI.showAll();
                 generateGrid(filteredArray);
             }
         }
@@ -1406,16 +1410,6 @@ export class SceneBuilder implements ISceneBuilder {
             handleNTETabSwitch();
         });
 
-        // searchImage.onPointerClickObservable.add(function() {
-        //     handleWuwaTabSwitch();
-        // });
-
-        // searchImage.onPointerEnterObservable.add(function() {
-        //     searchImage.image!.source = "res/assets/tacet.png";
-        // });
-        // searchImage.onPointerOutObservable.add(function() {
-        //     searchImage.image!.source = "res/assets/search.png";
-        // });
         tacetImage.onPointerEnterObservable.add(function() {
             hoverCharName.text = "Wuthering Waves";
         });
@@ -1478,13 +1472,13 @@ export class SceneBuilder implements ISceneBuilder {
                     hnaButton.isEnabled = false;
                     tacetImage.isVisible = false;
                     nteImage.isVisible = false;
-                    hideGenshinElements();
+                    genshinUI.hide();
                     hideHSRElements();
-                    hideZZZElements();
-                    hideWuwaElements();
+                    zzzUI.hide();
+                    wuwaUI.hide();
                     hideHNAElements();
-                    hideWuwaElements();
-                    hideNTEElements();
+                    wuwaUI.hide();
+                    nteUI.hide();
                 }
                 tabMode = "None";
                 searchCharArray = searchCharFunction(searchTextbox.text);
@@ -1576,68 +1570,6 @@ export class SceneBuilder implements ISceneBuilder {
         });
         hsrSortModeChanger.isVisible = false;
 
-        const fourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/rarity_4.png");
-        fourStarImage.height = "40px";
-        fourStarImage.width = "40px";
-        fourStarImage.left = -188;
-        fourStarImage.thickness = 0;
-        fourStarImage.cornerRadius = 5;
-        filterBar.addControl(fourStarImage);
-        fourStarImage.onPointerClickObservable.add(function() {
-            const index = genshinFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (genshinFilter[index].value == "4") {
-                    genshinFilter.splice(index, 1);
-                    fourStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    genshinFilter[index].value = "4";
-                    fiveStarImage.background = "rgba(0,0,0,0)";
-                    fourStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof GenshinCharData; value: string } = {
-                    key: "rarity",
-                    value: "4"
-                };
-                genshinFilter.push(newPush);
-                fourStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(charDataArray, genshinFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
-        const fiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/rarity_5.png");
-        fiveStarImage.height = "40px";
-        fiveStarImage.width = "40px";
-        fiveStarImage.left = -148;
-        fiveStarImage.thickness = 0;
-        fiveStarImage.cornerRadius = 5;
-        filterBar.addControl(fiveStarImage);
-        fiveStarImage.onPointerClickObservable.add(function() {
-            const index = genshinFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (genshinFilter[index].value == "5") {
-                    genshinFilter.splice(index, 1);
-                    fiveStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    genshinFilter[index].value = "5";
-                    fourStarImage.background = "rgba(0,0,0,0)";
-                    fiveStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof GenshinCharData; value: string } = {
-                    key: "rarity",
-                    value: "5"
-                };
-                genshinFilter.push(newPush);
-                fiveStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(charDataArray, genshinFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
         // 5star+tp -> 5star+bg -> 4star+bg -> 5star+tp
         const hsrStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/rarity_5.png");
         hsrStarImage.height = "40px";
@@ -1672,289 +1604,65 @@ export class SceneBuilder implements ISceneBuilder {
             generateGrid(filteredArray);
         });
 
-        const zzzFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_AgentRank_A.png");
-        zzzFourStarImage.height = "40px";
-        zzzFourStarImage.width = "40px";
-        zzzFourStarImage.left = -188;
-        zzzFourStarImage.thickness = 0;
-        zzzFourStarImage.cornerRadius = 5;
-        filterBar.addControl(zzzFourStarImage);
-        zzzFourStarImage.isVisible = false;
-        zzzFourStarImage.onPointerClickObservable.add(function() {
-            const index = zzzFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (zzzFilter[index].value == "4") {
-                    zzzFilter.splice(index, 1);
-                    zzzFourStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    zzzFilter[index].value = "4";
-                    zzzFiveStarImage.background = "rgba(0,0,0,0)";
-                    zzzFourStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof ZZZCharData; value: string } = {
-                    key: "rarity",
-                    value: "4"
-                };
-                zzzFilter.push(newPush);
-                zzzFourStarImage.background = charPanel.background;
+        const genshinUI = createGenshinUI({
+            filterBar,
+            filterBar2,
+            hoverCharName,
+            charPanel,
+            sortModeChanger,
+            filterArray: genshinFilter,
+            applyFilter: () => {
+                filteredArray = filterBy(charDataArray, genshinFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                generateGrid(filteredArray);
             }
-            filteredArray = filterBy(zzzCharDataArray, zzzFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
         });
 
-        const zzzFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_AgentRank_S.png");
-        zzzFiveStarImage.height = "40px";
-        zzzFiveStarImage.width = "40px";
-        zzzFiveStarImage.left = -148;
-        zzzFiveStarImage.thickness = 0;
-        zzzFiveStarImage.cornerRadius = 5;
-        filterBar.addControl(zzzFiveStarImage);
-        zzzFiveStarImage.isVisible = false;
-        zzzFiveStarImage.onPointerClickObservable.add(function() {
-            const index = zzzFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (zzzFilter[index].value == "5") {
-                    zzzFilter.splice(index, 1);
-                    zzzFiveStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    zzzFilter[index].value = "5";
-                    zzzFourStarImage.background = "rgba(0,0,0,0)";
-                    zzzFiveStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof ZZZCharData; value: string } = {
-                    key: "rarity",
-                    value: "5"
-                };
-                zzzFilter.push(newPush);
-                zzzFiveStarImage.background = charPanel.background;
+        const zzzUI = createZzzUI({
+            filterBar,
+            filterBar2,
+            hoverCharName,
+            charPanel,
+            sortModeChanger,
+            filterArray: zzzFilter,
+            applyFilter: () => {
+                filteredArray = filterBy(zzzCharDataArray, zzzFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                generateGrid(filteredArray);
             }
-            filteredArray = filterBy(zzzCharDataArray, zzzFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
         });
+        zzzUI.hide();
 
-        const wuwaFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/rarity_4.png");
-        wuwaFourStarImage.height = "40px";
-        wuwaFourStarImage.width = "40px";
-        wuwaFourStarImage.left = -188;
-        wuwaFourStarImage.thickness = 0;
-        wuwaFourStarImage.cornerRadius = 5;
-        filterBar.addControl(wuwaFourStarImage);
-        wuwaFourStarImage.isVisible = false;
-        wuwaFourStarImage.onPointerClickObservable.add(function() {
-            const index = wuwaFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (wuwaFilter[index].value == "4") {
-                    wuwaFilter.splice(index, 1);
-                    wuwaFourStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    wuwaFilter[index].value = "4";
-                    wuwaFiveStarImage.background = "rgba(0,0,0,0)";
-                    wuwaFourStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof WuwaCharData; value: string } = {
-                    key: "rarity",
-                    value: "4"
-                };
-                wuwaFilter.push(newPush);
-                wuwaFourStarImage.background = charPanel.background;
+        const wuwaUI = createWuwaUI({
+            filterBar,
+            filterBar2,
+            hoverCharName,
+            charPanel,
+            sortModeChanger,
+            filterArray: wuwaFilter,
+            applyFilter: () => {
+                filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                generateGrid(filteredArray);
             }
-            filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
         });
+        wuwaUI.hide();
 
-        const wuwaFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/rarity_5.png");
-        wuwaFiveStarImage.height = "40px";
-        wuwaFiveStarImage.width = "40px";
-        wuwaFiveStarImage.left = -148;
-        wuwaFiveStarImage.thickness = 0;
-        wuwaFiveStarImage.cornerRadius = 5;
-        filterBar.addControl(wuwaFiveStarImage);
-        wuwaFiveStarImage.isVisible = false;
-        wuwaFiveStarImage.onPointerClickObservable.add(function() {
-            const index = wuwaFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (wuwaFilter[index].value == "5") {
-                    wuwaFilter.splice(index, 1);
-                    wuwaFiveStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    wuwaFilter[index].value = "5";
-                    wuwaFourStarImage.background = "rgba(0,0,0,0)";
-                    wuwaFiveStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof WuwaCharData; value: string } = {
-                    key: "rarity",
-                    value: "5"
-                };
-                wuwaFilter.push(newPush);
-                wuwaFiveStarImage.background = charPanel.background;
+        const nteUI = createNteUI({
+            filterBar,
+            filterBar2,
+            hoverCharName,
+            charPanel,
+            sortModeChanger,
+            filterArray: nteFilter,
+            applyFilter: () => {
+                filteredArray = filterBy(nteCharDataArray, nteFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                generateGrid(filteredArray);
             }
-            filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
         });
-
-        const hnaFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_4.png");
-        hnaFourStarImage.height = "40px";
-        hnaFourStarImage.width = "40px";
-        hnaFourStarImage.left = -188;
-        hnaFourStarImage.thickness = 0;
-        hnaFourStarImage.cornerRadius = 5;
-        filterBar.addControl(hnaFourStarImage);
-        hnaFourStarImage.isVisible = false;
-        hnaFourStarImage.onPointerClickObservable.add(function() {
-            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (hnaFilter[index].value == "4") {
-                    hnaFilter.splice(index, 1);
-                    hnaFourStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    hnaFilter[index].value = "4";
-                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
-                    hnaFourStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof HNACharData; value: string } = {
-                    key: "rarity",
-                    value: "4"
-                };
-                hnaFilter.push(newPush);
-                hnaFourStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
-        const hnaFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_5.png");
-        hnaFiveStarImage.height = "40px";
-        hnaFiveStarImage.width = "40px";
-        hnaFiveStarImage.left = -148;
-        hnaFiveStarImage.thickness = 0;
-        hnaFiveStarImage.cornerRadius = 5;
-        filterBar.addControl(hnaFiveStarImage);
-        hnaFiveStarImage.isVisible = false;
-        hnaFiveStarImage.onPointerClickObservable.add(function() {
-            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (hnaFilter[index].value == "5") {
-                    hnaFilter.splice(index, 1);
-                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    hnaFilter[index].value = "5";
-                    hnaFourStarImage.background = "rgba(0,0,0,0)";
-                    hnaFiveStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof HNACharData; value: string } = {
-                    key: "rarity",
-                    value: "5"
-                };
-                hnaFilter.push(newPush);
-                hnaFiveStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
-        const nteFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/rank-a.png");
-        nteFourStarImage.height = "40px";
-        nteFourStarImage.width = "40px";
-        nteFourStarImage.left = -188;
-        nteFourStarImage.thickness = 0;
-        nteFourStarImage.cornerRadius = 5;
-        filterBar.addControl(nteFourStarImage);
-        nteFourStarImage.isVisible = false;
-        nteFourStarImage.onPointerClickObservable.add(function() {
-            const index = nteFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (nteFilter[index].value == "4") {
-                    nteFilter.splice(index, 1);
-                    nteFourStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    nteFilter[index].value = "4";
-                    nteFiveStarImage.background = "rgba(0,0,0,0)";
-                    nteFourStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof NTECharData; value: string } = {
-                    key: "rarity",
-                    value: "4"
-                };
-                nteFilter.push(newPush);
-                nteFourStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(nteCharDataArray, nteFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
-        const nteFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/rank-s.png");
-        nteFiveStarImage.height = "40px";
-        nteFiveStarImage.width = "40px";
-        nteFiveStarImage.left = -148;
-        nteFiveStarImage.thickness = 0;
-        nteFiveStarImage.cornerRadius = 5;
-        filterBar.addControl(nteFiveStarImage);
-        nteFiveStarImage.isVisible = false;
-        nteFiveStarImage.onPointerClickObservable.add(function() {
-            const index = nteFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (nteFilter[index].value == "5") {
-                    nteFilter.splice(index, 1);
-                    nteFiveStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    nteFilter[index].value = "5";
-                    nteFourStarImage.background = "rgba(0,0,0,0)";
-                    nteFiveStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof NTECharData; value: string } = {
-                    key: "rarity",
-                    value: "5"
-                };
-                nteFilter.push(newPush);
-                nteFiveStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(nteCharDataArray, nteFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
-        function checkIfInFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof GenshinCharData): void {
-            const index = genshinFilter.findIndex(obj => obj.key === theKey);
-            if (index !== -1) { // Object with the key exists
-                if (genshinFilter[index].value == theObjType) {
-                    genshinFilter.splice(index, 1);
-                    buttonObj.background = "rgba(0,0,0,0)";
-                } else {
-                    genshinFilter[index].value = theObjType;
-                    if (theKey.toString() == "element") {
-                        offElementBG();
-                    } else {
-                        offWeaponBG();
-                    }
-                    buttonObj.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof GenshinCharData; value: string } = {
-                    key: theKey,
-                    value: theObjType
-                };
-                genshinFilter.push(newPush);
-                buttonObj.background = charPanel.background;
-            }
-            filteredArray = filterBy(charDataArray, genshinFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        }
+        nteUI.hide();
+        sortModeChanger.isVisible = true;
 
         function checkIfInHSRFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof HSRCharData): void {
             const index = hsrFilter.findIndex(obj => obj.key === theKey);
@@ -1984,62 +1692,7 @@ export class SceneBuilder implements ISceneBuilder {
             generateGrid(filteredArray);
         }
 
-        function checkIfInZZZFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof ZZZCharData): void {
-            const index = zzzFilter.findIndex(obj => obj.key === theKey);
-            if (index !== -1) { // Object with the key exists
-                if (zzzFilter[index].value == theObjType) {
-                    zzzFilter.splice(index, 1);
-                    buttonObj.background = "rgba(0,0,0,0)";
-                } else {
-                    zzzFilter[index].value = theObjType;
-                    if (theKey.toString() == "element") {
-                        offZZZElementBG();
-                    } else {
-                        offStyleBG();
-                    }
-                    buttonObj.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof ZZZCharData; value: string } = {
-                    key: theKey,
-                    value: theObjType
-                };
-                zzzFilter.push(newPush);
-                buttonObj.background = charPanel.background;
-            }
-            filteredArray = filterBy(zzzCharDataArray, zzzFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        }
-
-        function checkIfInWuwaFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof WuwaCharData): void {
-            const index = wuwaFilter.findIndex(obj => obj.key === theKey);
-            if (index !== -1) { // Object with the key exists
-                if (wuwaFilter[index].value == theObjType) {
-                    wuwaFilter.splice(index, 1);
-                    buttonObj.background = "rgba(0,0,0,0)";
-                } else {
-                    wuwaFilter[index].value = theObjType;
-                    if (theKey.toString() == "element") {
-                        offWuwaElementBG();
-                    } else {
-                        offWuwaWeaponBG();
-                    }
-                    buttonObj.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof WuwaCharData; value: string } = {
-                    key: theKey,
-                    value: theObjType
-                };
-                wuwaFilter.push(newPush);
-                buttonObj.background = charPanel.background;
-            }
-            filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        }
-
+        // WuWa filter toggles are managed within the wuwaUI controller (see ./ui/wuwaUI.ts).
         function checkIfInHNAFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof HNACharData): void {
             const index = hnaFilter.findIndex(obj => obj.key === theKey);
             if (index !== -1) { // Object with the key exists
@@ -2067,34 +1720,7 @@ export class SceneBuilder implements ISceneBuilder {
             filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
             generateGrid(filteredArray);
         }
-
-        function checkIfInNTEFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof NTECharData): void {
-            const index = nteFilter.findIndex(obj => obj.key === theKey);
-            if (index !== -1) { // Object with the key exists
-                if (nteFilter[index].value == theObjType) {
-                    nteFilter.splice(index, 1);
-                    buttonObj.background = "rgba(0,0,0,0)";
-                } else {
-                    nteFilter[index].value = theObjType;
-                    if (theKey.toString() == "element") {
-                        offNTEElementBG();
-                    } else {
-                        offNTEWeaponBG();
-                    }
-                    buttonObj.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof NTECharData; value: string } = {
-                    key: theKey,
-                    value: theObjType
-                };
-                nteFilter.push(newPush);
-                buttonObj.background = charPanel.background;
-            }
-            filteredArray = filterBy(nteCharDataArray, nteFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        }
+        checkIfInHNAFilter;
 
         const fireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_fire.png");
         fireImage.height = "40px";
@@ -2449,263 +2075,63 @@ export class SceneBuilder implements ISceneBuilder {
             elationImage.background = "rgba(0,0,0,0)";
         }
 
-        const anemoImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_anemo.png");
-        anemoImage.height = "40px";
-        anemoImage.width = "40px";
-        anemoImage.left = 52;
-        anemoImage.thickness = 0;
-        anemoImage.cornerRadius = 5;
-        filterBar.addControl(anemoImage);
-        anemoImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(anemoImage, "Anemo", "element");
-        });
-        anemoImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Anemo";
-        });
-        anemoImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const geoImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_geo.png");
-        geoImage.height = "40px";
-        geoImage.width = "40px";
-        geoImage.left = 92;
-        geoImage.thickness = 0;
-        geoImage.cornerRadius = 5;
-        filterBar.addControl(geoImage);
-        geoImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(geoImage, "Geo", "element");
-        });
-        geoImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Geo";
-        });
-        geoImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
+        const hnaFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_4.png");
+        hnaFourStarImage.height = "40px";
+        hnaFourStarImage.width = "40px";
+        hnaFourStarImage.left = -188;
+        hnaFourStarImage.thickness = 0;
+        hnaFourStarImage.cornerRadius = 5;
+        hnaFourStarImage.isVisible = false;
+        filterBar.addControl(hnaFourStarImage);
+        hnaFourStarImage.onPointerClickObservable.add(function() {
+            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) {
+                if (hnaFilter[index].value == "4") {
+                    hnaFilter.splice(index, 1);
+                    hnaFourStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    hnaFilter[index].value = "4";
+                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
+                    hnaFourStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof HNACharData; value: string } = { key: "rarity", value: "4" };
+                hnaFilter.push(newPush);
+                hnaFourStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
         });
 
-        const electroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_electro.png");
-        electroImage.height = "40px";
-        electroImage.width = "40px";
-        electroImage.left = 132;
-        electroImage.thickness = 0;
-        electroImage.cornerRadius = 5;
-        filterBar.addControl(electroImage);
-        electroImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(electroImage, "Electro", "element");
+        const hnaFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_5.png");
+        hnaFiveStarImage.height = "40px";
+        hnaFiveStarImage.width = "40px";
+        hnaFiveStarImage.left = -148;
+        hnaFiveStarImage.thickness = 0;
+        hnaFiveStarImage.cornerRadius = 5;
+        hnaFiveStarImage.isVisible = false;
+        filterBar.addControl(hnaFiveStarImage);
+        hnaFiveStarImage.onPointerClickObservable.add(function() {
+            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
+            if (index !== -1) {
+                if (hnaFilter[index].value == "5") {
+                    hnaFilter.splice(index, 1);
+                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
+                } else {
+                    hnaFilter[index].value = "5";
+                    hnaFourStarImage.background = "rgba(0,0,0,0)";
+                    hnaFiveStarImage.background = charPanel.background;
+                }
+            } else {
+                const newPush: { key: keyof HNACharData; value: string } = { key: "rarity", value: "5" };
+                hnaFilter.push(newPush);
+                hnaFiveStarImage.background = charPanel.background;
+            }
+            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+            generateGrid(filteredArray);
         });
-        electroImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Electro";
-        });
-        electroImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const dendroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_dendro.png");
-        dendroImage.height = "40px";
-        dendroImage.width = "40px";
-        dendroImage.left = 172;
-        dendroImage.thickness = 0;
-        dendroImage.cornerRadius = 5;
-        filterBar.addControl(dendroImage);
-        dendroImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(dendroImage, "Dendro", "element");
-        });
-        dendroImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Dendro";
-        });
-        dendroImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const hydroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_hydro.png");
-        hydroImage.height = "40px";
-        hydroImage.width = "40px";
-        hydroImage.left = 212;
-        hydroImage.thickness = 0;
-        hydroImage.cornerRadius = 5;
-        filterBar.addControl(hydroImage);
-        hydroImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(hydroImage, "Hydro", "element");
-        });
-        hydroImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Hydro";
-        });
-        hydroImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const pyroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_pyro.png");
-        pyroImage.height = "40px";
-        pyroImage.width = "40px";
-        pyroImage.left = 252;
-        pyroImage.thickness = 0;
-        pyroImage.cornerRadius = 5;
-        filterBar.addControl(pyroImage);
-        pyroImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(pyroImage, "Pyro", "element");
-        });
-        pyroImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Pyro";
-        });
-        pyroImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const cryoImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/element_cryo.png");
-        cryoImage.height = "40px";
-        cryoImage.width = "40px";
-        cryoImage.left = 292;
-        cryoImage.thickness = 0;
-        cryoImage.cornerRadius = 5;
-        filterBar.addControl(cryoImage);
-        cryoImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(cryoImage, "Cryo", "element");
-        });
-        cryoImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Cryo";
-        });
-        cryoImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const swordImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Sword.png");
-        swordImage.height = "40px";
-        swordImage.width = "40px";
-        swordImage.left = 92;
-        swordImage.thickness = 0;
-        swordImage.cornerRadius = 5;
-        filterBar2.addControl(swordImage);
-        swordImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(swordImage, "Sword", "weaponType");
-        });
-        swordImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Sword";
-        });
-        swordImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const catalystImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Catalyst.png");
-        catalystImage.height = "40px";
-        catalystImage.width = "40px";
-        catalystImage.left = 132;
-        catalystImage.thickness = 0;
-        catalystImage.cornerRadius = 5;
-        filterBar2.addControl(catalystImage);
-        catalystImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(catalystImage, "Catalyst", "weaponType");
-        });
-        catalystImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Catalyst";
-        });
-        catalystImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const bowImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Bow.png");
-        bowImage.height = "40px";
-        bowImage.width = "40px";
-        bowImage.left = 172;
-        bowImage.thickness = 0;
-        bowImage.cornerRadius = 5;
-        filterBar2.addControl(bowImage);
-        bowImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(bowImage, "Bow", "weaponType");
-        });
-        bowImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Bow";
-        });
-        bowImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const claymoreImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Claymore.png");
-        claymoreImage.height = "40px";
-        claymoreImage.width = "40px";
-        claymoreImage.left = 212;
-        claymoreImage.thickness = 0;
-        claymoreImage.cornerRadius = 5;
-        filterBar2.addControl(claymoreImage);
-        claymoreImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(claymoreImage, "Claymore", "weaponType");
-        });
-        claymoreImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Claymore";
-        });
-        claymoreImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const poleImage = gui.Button.CreateImageOnlyButton("but", "res/assets/Genshin/Pole.png");
-        poleImage.height = "40px";
-        poleImage.width = "40px";
-        poleImage.left = 252;
-        poleImage.thickness = 0;
-        poleImage.cornerRadius = 5;
-        filterBar2.addControl(poleImage);
-        poleImage.onPointerClickObservable.add(function() {
-            checkIfInFilter(poleImage, "Polearm", "weaponType");
-        });
-        poleImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Polearm";
-        });
-        poleImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        function hideGenshinElements(): void {
-            fourStarImage.isVisible = false;
-            fiveStarImage.isVisible = false;
-            anemoImage.isVisible = false;
-            geoImage.isVisible = false;
-            electroImage.isVisible = false;
-            dendroImage.isVisible = false;
-            hydroImage.isVisible = false;
-            pyroImage.isVisible = false;
-            cryoImage.isVisible = false;
-            swordImage.isVisible = false;
-            catalystImage.isVisible = false;
-            bowImage.isVisible = false;
-            claymoreImage.isVisible = false;
-            poleImage.isVisible = false;
-            sortModeChanger.isVisible = false;
-        }
-
-        function showGenshinElements(): void {
-            fourStarImage.isVisible = true;
-            fiveStarImage.isVisible = true;
-            anemoImage.isVisible = true;
-            geoImage.isVisible = true;
-            electroImage.isVisible = true;
-            dendroImage.isVisible = true;
-            hydroImage.isVisible = true;
-            pyroImage.isVisible = true;
-            cryoImage.isVisible = true;
-            swordImage.isVisible = true;
-            catalystImage.isVisible = true;
-            bowImage.isVisible = true;
-            claymoreImage.isVisible = true;
-            poleImage.isVisible = true;
-            sortModeChanger.isVisible = true;
-        }
-
-        function offElementBG(): void {
-            anemoImage.background = "rgba(0,0,0,0)";
-            geoImage.background = "rgba(0,0,0,0)";
-            electroImage.background = "rgba(0,0,0,0)";
-            dendroImage.background = "rgba(0,0,0,0)";
-            hydroImage.background = "rgba(0,0,0,0)";
-            pyroImage.background = "rgba(0,0,0,0)";
-            cryoImage.background = "rgba(0,0,0,0)";
-        }
-
-        function offWeaponBG(): void {
-            swordImage.background = "rgba(0,0,0,0)";
-            catalystImage.background = "rgba(0,0,0,0)";
-            bowImage.background = "rgba(0,0,0,0)";
-            claymoreImage.background = "rgba(0,0,0,0)";
-            poleImage.background = "rgba(0,0,0,0)";
-        }
 
         function hideHNAElements(): void {
             hnaFourStarImage.isVisible = false;
@@ -2726,698 +2152,6 @@ export class SceneBuilder implements ISceneBuilder {
         function offHNAWeaponBG(): void {
 
         }
-
-        checkIfInHNAFilter;
-
-        const animaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/anima.png");
-        animaImage.height = "40px";
-        animaImage.width = "40px";
-        animaImage.left = 52;
-        animaImage.thickness = 0;
-        animaImage.cornerRadius = 5;
-        filterBar.addControl(animaImage);
-        animaImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(animaImage, "Anima", "element");
-        });
-        animaImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Anima";
-        });
-        animaImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const chaosImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/chaos.png");
-        chaosImage.height = "40px";
-        chaosImage.width = "40px";
-        chaosImage.left = 92;
-        chaosImage.thickness = 0;
-        chaosImage.cornerRadius = 5;
-        filterBar.addControl(chaosImage);
-        chaosImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(chaosImage, "Chaos", "element");
-        });
-        chaosImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Chaos";
-        });
-        chaosImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const cosmosImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/cosmos.png");
-        cosmosImage.height = "40px";
-        cosmosImage.width = "40px";
-        cosmosImage.left = 132;
-        cosmosImage.thickness = 0;
-        cosmosImage.cornerRadius = 5;
-        filterBar.addControl(cosmosImage);
-        cosmosImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(cosmosImage, "Cosmos", "element");
-        });
-        cosmosImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Cosmos";
-        });
-        cosmosImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const incantationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/incantation.png");
-        incantationImage.height = "40px";
-        incantationImage.width = "40px";
-        incantationImage.left = 172;
-        incantationImage.thickness = 0;
-        incantationImage.cornerRadius = 5;
-        filterBar.addControl(incantationImage);
-        incantationImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(incantationImage, "Incantation", "element");
-        });
-        incantationImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Incantation";
-        });
-        incantationImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const lakshanaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/lakshana.png");
-        lakshanaImage.height = "40px";
-        lakshanaImage.width = "40px";
-        lakshanaImage.left = 212;
-        lakshanaImage.thickness = 0;
-        lakshanaImage.cornerRadius = 5;
-        filterBar.addControl(lakshanaImage);
-        lakshanaImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(lakshanaImage, "Lakshana", "element");
-        });
-        lakshanaImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Lakshana";
-        });
-        lakshanaImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const psycheImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/psyche.png");
-        psycheImage.height = "40px";
-        psycheImage.width = "40px";
-        psycheImage.left = 252;
-        psycheImage.thickness = 0;
-        psycheImage.cornerRadius = 5;
-        filterBar.addControl(psycheImage);
-        psycheImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(psycheImage, "Psyche", "element");
-        });
-        psycheImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Psyche";
-        });
-        psycheImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const buffImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/role_buff.png");
-        buffImage.height = "40px";
-        buffImage.width = "40px";
-        buffImage.left = 172;
-        buffImage.thickness = 0;
-        buffImage.cornerRadius = 5;
-        filterBar2.addControl(buffImage);
-        buffImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(buffImage, "Buff", "weaponType");
-        });
-        buffImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Buff";
-        });
-        buffImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const damageImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/role_damage.png");
-        damageImage.height = "40px";
-        damageImage.width = "40px";
-        damageImage.left = 212;
-        damageImage.thickness = 0;
-        damageImage.cornerRadius = 5;
-        filterBar2.addControl(damageImage);
-        damageImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(damageImage, "Damage", "weaponType");
-        });
-        damageImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Damage";
-        });
-        damageImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const survivalImage = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/role_survival.png");
-        survivalImage.height = "40px";
-        survivalImage.width = "40px";
-        survivalImage.left = 252;
-        survivalImage.thickness = 0;
-        survivalImage.cornerRadius = 5;
-        filterBar2.addControl(survivalImage);
-        survivalImage.onPointerClickObservable.add(function() {
-            checkIfInNTEFilter(survivalImage, "Survival", "weaponType");
-        });
-        survivalImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Survival";
-        });
-        survivalImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        function hideNTEElements(): void {
-            nteFourStarImage.isVisible = false;
-            nteFiveStarImage.isVisible = false;
-            animaImage.isVisible = false;
-            chaosImage.isVisible = false;
-            cosmosImage.isVisible = false;
-            incantationImage.isVisible = false;
-            lakshanaImage.isVisible = false;
-            psycheImage.isVisible = false;
-            buffImage.isVisible = false;
-            damageImage.isVisible = false;
-            survivalImage.isVisible = false;
-            sortModeChanger.isVisible = false;
-        }
-        
-        function showNTEElements(): void {
-            nteFourStarImage.isVisible = true;
-            nteFiveStarImage.isVisible = true;
-            animaImage.isVisible = true;
-            chaosImage.isVisible = true;
-            cosmosImage.isVisible = true;
-            incantationImage.isVisible = true;
-            lakshanaImage.isVisible = true;
-            psycheImage.isVisible = true;
-            buffImage.isVisible = true;
-            damageImage.isVisible = true;
-            survivalImage.isVisible = true;
-            sortModeChanger.isVisible = true;
-        }
-
-        function offNTEElementBG(): void {
-            animaImage.background = "rgba(0,0,0,0)";
-            chaosImage.background = "rgba(0,0,0,0)";
-            cosmosImage.background = "rgba(0,0,0,0)";
-            incantationImage.background = "rgba(0,0,0,0)";
-            lakshanaImage.background = "rgba(0,0,0,0)";
-            psycheImage.background = "rgba(0,0,0,0)";
-        }
-
-        function offNTEWeaponBG(): void {
-            buffImage.background = "rgba(0,0,0,0)";
-            damageImage.background = "rgba(0,0,0,0)";
-            survivalImage.background = "rgba(0,0,0,0)";
-        }
-
-        hideNTEElements();
-
-        const electricImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Electric.png");
-        electricImage.height = "40px";
-        electricImage.width = "40px";
-        electricImage.left = 92;
-        electricImage.thickness = 0;
-        electricImage.cornerRadius = 5;
-        electricImage.isVisible = false;
-        filterBar.addControl(electricImage);
-        electricImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(electricImage, "Electric", "element");
-        });
-        electricImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Electric";
-        });
-        electricImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const etherImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Ether.png");
-        etherImage.height = "40px";
-        etherImage.width = "40px";
-        etherImage.left = 132;
-        etherImage.thickness = 0;
-        etherImage.cornerRadius = 5;
-        etherImage.isVisible = false;
-        filterBar.addControl(etherImage);
-        etherImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(etherImage, "Ether", "element");
-        });
-        etherImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Ether";
-        });
-        etherImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const zzzFireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Fire.png");
-        zzzFireImage.height = "40px";
-        zzzFireImage.width = "40px";
-        zzzFireImage.left = 172;
-        zzzFireImage.thickness = 0;
-        zzzFireImage.cornerRadius = 5;
-        zzzFireImage.isVisible = false;
-        filterBar.addControl(zzzFireImage);
-        zzzFireImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(zzzFireImage, "Fire", "element");
-        });
-        zzzFireImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Fire";
-        });
-        zzzFireImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const zzzIceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Ice.png");
-        zzzIceImage.height = "40px";
-        zzzIceImage.width = "40px";
-        zzzIceImage.left = 212;
-        zzzIceImage.thickness = 0;
-        zzzIceImage.cornerRadius = 5;
-        zzzIceImage.isVisible = false;
-        filterBar.addControl(zzzIceImage);
-        zzzIceImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(zzzIceImage, "Ice", "element");
-        });
-        zzzIceImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Ice";
-        });
-        zzzIceImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const zzzPhyscialImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Physical.png");
-        zzzPhyscialImage.height = "40px";
-        zzzPhyscialImage.width = "40px";
-        zzzPhyscialImage.left = 252;
-        zzzPhyscialImage.thickness = 0;
-        zzzPhyscialImage.cornerRadius = 5;
-        zzzPhyscialImage.isVisible = false;
-        filterBar.addControl(zzzPhyscialImage);
-        zzzPhyscialImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(zzzPhyscialImage, "Physical", "element");
-        });
-        zzzPhyscialImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Physical";
-        });
-        zzzPhyscialImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const anomalyImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Anomaly.png");
-        anomalyImage.height = "40px";
-        anomalyImage.width = "40px";
-        anomalyImage.left = 92;
-        anomalyImage.thickness = 0;
-        anomalyImage.cornerRadius = 5;
-        anomalyImage.isVisible = false;
-        filterBar2.addControl(anomalyImage);
-        anomalyImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(anomalyImage, "Anomaly", "weaponType");
-        });
-        anomalyImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Anomaly";
-        });
-        anomalyImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const attackImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Attack.png");
-        attackImage.height = "40px";
-        attackImage.width = "40px";
-        attackImage.left = 132;
-        attackImage.thickness = 0;
-        attackImage.cornerRadius = 5;
-        attackImage.isVisible = false;
-        filterBar2.addControl(attackImage);
-        attackImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(attackImage, "Attack", "weaponType");
-        });
-        attackImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Attack";
-        });
-        attackImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const defenseImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Defense.png");
-        defenseImage.height = "40px";
-        defenseImage.width = "40px";
-        defenseImage.left = 172;
-        defenseImage.thickness = 0;
-        defenseImage.cornerRadius = 5;
-        defenseImage.isVisible = false;
-        filterBar2.addControl(defenseImage);
-        defenseImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(defenseImage, "Defense", "weaponType");
-        });
-        defenseImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Defense";
-        });
-        defenseImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const stunImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Stun.png");
-        stunImage.height = "40px";
-        stunImage.width = "40px";
-        stunImage.left = 212;
-        stunImage.thickness = 0;
-        stunImage.cornerRadius = 5;
-        stunImage.isVisible = false;
-        filterBar2.addControl(stunImage);
-        stunImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(stunImage, "Stun", "weaponType");
-        });
-        stunImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Stun";
-        });
-        stunImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const supportImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Support.png");
-        supportImage.height = "40px";
-        supportImage.width = "40px";
-        supportImage.left = 252;
-        supportImage.thickness = 0;
-        supportImage.cornerRadius = 5;
-        supportImage.isVisible = false;
-        filterBar2.addControl(supportImage);
-        supportImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(supportImage, "Support", "weaponType");
-        });
-        supportImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Support";
-        });
-        supportImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const ruptureImage = gui.Button.CreateImageOnlyButton("but", "res/assets/ZZZ/Icon_Rupture.png");
-        ruptureImage.height = "40px";
-        ruptureImage.width = "40px";
-        ruptureImage.left = 292;
-        ruptureImage.thickness = 0;
-        ruptureImage.cornerRadius = 5;
-        ruptureImage.isVisible = false;
-        filterBar2.addControl(ruptureImage);
-        ruptureImage.onPointerClickObservable.add(function() {
-            checkIfInZZZFilter(ruptureImage, "Rupture", "weaponType");
-        });
-        ruptureImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Rupture";
-        });
-        ruptureImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        function hideZZZElements(): void {
-            zzzFourStarImage.isVisible = false;
-            zzzFiveStarImage.isVisible = false;
-            electricImage.isVisible = false;
-            etherImage.isVisible = false;
-            zzzFireImage.isVisible = false;
-            zzzIceImage.isVisible = false;
-            zzzPhyscialImage.isVisible = false;
-            anomalyImage.isVisible = false;
-            attackImage.isVisible = false;
-            defenseImage.isVisible = false;
-            stunImage.isVisible = false;
-            supportImage.isVisible = false;
-            ruptureImage.isVisible = false;
-            sortModeChanger.isVisible = false;
-        }
-
-        function showAllZZZElements(): void {
-            zzzFourStarImage.isVisible = true;
-            zzzFiveStarImage.isVisible = true;
-            electricImage.isVisible = true;
-            etherImage.isVisible = true;
-            zzzFireImage.isVisible = true;
-            zzzIceImage.isVisible = true;
-            zzzPhyscialImage.isVisible = true;
-            anomalyImage.isVisible = true;
-            attackImage.isVisible = true;
-            defenseImage.isVisible = true;
-            stunImage.isVisible = true;
-            supportImage.isVisible = true;
-            ruptureImage.isVisible = true;
-            sortModeChanger.isVisible = true;
-        }
-
-        function offZZZElementBG(): void {
-            electricImage.background = "rgba(0,0,0,0)";
-            etherImage.background = "rgba(0,0,0,0)";
-            zzzFireImage.background = "rgba(0,0,0,0)";
-            zzzIceImage.background = "rgba(0,0,0,0)";
-            zzzPhyscialImage.background = "rgba(0,0,0,0)";
-        }
-
-        function offStyleBG(): void {
-            anomalyImage.background = "rgba(0,0,0,0)";
-            attackImage.background = "rgba(0,0,0,0)";
-            defenseImage.background = "rgba(0,0,0,0)";
-            stunImage.background = "rgba(0,0,0,0)";
-            supportImage.background = "rgba(0,0,0,0)";
-            ruptureImage.background = "rgba(0,0,0,0)";
-        }
-
-        const aeroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Aero.png");
-        aeroImage.height = "40px";
-        aeroImage.width = "40px";
-        aeroImage.left = 52;
-        aeroImage.thickness = 0;
-        aeroImage.cornerRadius = 5;
-        filterBar.addControl(aeroImage);
-        aeroImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(aeroImage, "Aero", "element");
-        });
-        aeroImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Aero";
-        });
-        aeroImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const spectroImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Spectro.png");
-        spectroImage.height = "40px";
-        spectroImage.width = "40px";
-        spectroImage.left = 92;
-        spectroImage.thickness = 0;
-        spectroImage.cornerRadius = 5;
-        filterBar.addControl(spectroImage);
-        spectroImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(spectroImage, "Spectro", "element");
-        });
-        spectroImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Spectro";
-        });
-        spectroImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const electroWuwaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Electro.png");
-        electroWuwaImage.height = "40px";
-        electroWuwaImage.width = "40px";
-        electroWuwaImage.left = 132;
-        electroWuwaImage.thickness = 0;
-        electroWuwaImage.cornerRadius = 5;
-        filterBar.addControl(electroWuwaImage);
-        electroWuwaImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(electroWuwaImage, "Electro", "element");
-        });
-        electroWuwaImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Electro";
-        });
-        electroWuwaImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const havocImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Havoc.png");
-        havocImage.height = "40px";
-        havocImage.width = "40px";
-        havocImage.left = 172;
-        havocImage.thickness = 0;
-        havocImage.cornerRadius = 5;
-        filterBar.addControl(havocImage);
-        havocImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(havocImage, "Havoc", "element");
-        });
-        havocImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Havoc";
-        });
-        havocImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const glacioImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Glacio.png");
-        glacioImage.height = "40px";
-        glacioImage.width = "40px";
-        glacioImage.left = 212;
-        glacioImage.thickness = 0;
-        glacioImage.cornerRadius = 5;
-        filterBar.addControl(glacioImage);
-        glacioImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(glacioImage, "Glacio", "element");
-        });
-        glacioImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Glacio";
-        });
-        glacioImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const fusionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Fusion.png");
-        fusionImage.height = "40px";
-        fusionImage.width = "40px";
-        fusionImage.left = 252;
-        fusionImage.thickness = 0;
-        fusionImage.cornerRadius = 5;
-        filterBar.addControl(fusionImage);
-        fusionImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(fusionImage, "Fusion", "element");
-        });
-        fusionImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Fusion";
-        });
-        fusionImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const swordWuwaImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Sword_Icon.png");
-        swordWuwaImage.height = "40px";
-        swordWuwaImage.width = "40px";
-        swordWuwaImage.left = 92;
-        swordWuwaImage.thickness = 0;
-        swordWuwaImage.cornerRadius = 5;
-        filterBar2.addControl(swordWuwaImage);
-        swordWuwaImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(swordWuwaImage, "Sword", "weaponType");
-        });
-        swordWuwaImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Sword";
-        });
-        swordWuwaImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const rectifierImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Rectifier_Icon.png");
-        rectifierImage.height = "40px";
-        rectifierImage.width = "40px";
-        rectifierImage.left = 132;
-        rectifierImage.thickness = 0;
-        rectifierImage.cornerRadius = 5;
-        filterBar2.addControl(rectifierImage);
-        rectifierImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(rectifierImage, "Rectifier", "weaponType");
-        });
-        rectifierImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Rectifier";
-        });
-        rectifierImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const pistolsImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Pistols_Icon.png");
-        pistolsImage.height = "40px";
-        pistolsImage.width = "40px";
-        pistolsImage.left = 172;
-        pistolsImage.thickness = 0;
-        pistolsImage.cornerRadius = 5;
-        filterBar2.addControl(pistolsImage);
-        pistolsImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(pistolsImage, "Pistols", "weaponType");
-        });
-        pistolsImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Pistols";
-        });
-        pistolsImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const gauntletsImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Gauntlets_Icon.png");
-        gauntletsImage.height = "40px";
-        gauntletsImage.width = "40px";
-        gauntletsImage.left = 212;
-        gauntletsImage.thickness = 0;
-        gauntletsImage.cornerRadius = 5;
-        filterBar2.addControl(gauntletsImage);
-        gauntletsImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(gauntletsImage, "Gauntlets", "weaponType");
-        });
-        gauntletsImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Gauntlets";
-        });
-        gauntletsImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const broadbladeImage = gui.Button.CreateImageOnlyButton("but", "res/assets/WuWa/Broadblade_Icon.png");
-        broadbladeImage.height = "40px";
-        broadbladeImage.width = "40px";
-        broadbladeImage.left = 252;
-        broadbladeImage.thickness = 0;
-        broadbladeImage.cornerRadius = 5;
-        filterBar2.addControl(broadbladeImage);
-        broadbladeImage.onPointerClickObservable.add(function() {
-            checkIfInWuwaFilter(broadbladeImage, "Broadblade", "weaponType");
-        });
-        broadbladeImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Broadblade";
-        });
-        broadbladeImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        function hideWuwaElements(): void {
-            wuwaFourStarImage.isVisible = false;
-            wuwaFiveStarImage.isVisible = false;
-            aeroImage.isVisible = false;
-            spectroImage.isVisible = false;
-            electroWuwaImage.isVisible = false;
-            havocImage.isVisible = false;
-            glacioImage.isVisible = false;
-            fusionImage.isVisible = false;
-            swordWuwaImage.isVisible = false;
-            rectifierImage.isVisible = false;
-            pistolsImage.isVisible = false;
-            gauntletsImage.isVisible = false;
-            broadbladeImage.isVisible = false;
-            sortModeChanger.isVisible = false;
-            // searchImage.image!.source = "res/assets/search.png";
-        }
-
-        function showAllWuwaElements(): void {
-            wuwaFourStarImage.isVisible = true;
-            wuwaFiveStarImage.isVisible = true;
-            aeroImage.isVisible = true;
-            spectroImage.isVisible = true;
-            electroWuwaImage.isVisible = true;
-            havocImage.isVisible = true;
-            glacioImage.isVisible = true;
-            fusionImage.isVisible = true;
-            swordWuwaImage.isVisible = true;
-            rectifierImage.isVisible = true;
-            pistolsImage.isVisible = true;
-            gauntletsImage.isVisible = true;
-            broadbladeImage.isVisible = true;
-            sortModeChanger.isVisible = true;
-        }
-
-        function offWuwaElementBG(): void {
-            aeroImage.background = "rgba(0,0,0,0)";
-            spectroImage.background = "rgba(0,0,0,0)";
-            electroWuwaImage.background = "rgba(0,0,0,0)";
-            havocImage.background = "rgba(0,0,0,0)";
-            glacioImage.background = "rgba(0,0,0,0)";
-            fusionImage.background = "rgba(0,0,0,0)";
-        }
-
-        function offWuwaWeaponBG(): void {
-            swordWuwaImage.background = "rgba(0,0,0,0)";
-            rectifierImage.background = "rgba(0,0,0,0)";
-            pistolsImage.background = "rgba(0,0,0,0)";
-            gauntletsImage.background = "rgba(0,0,0,0)";
-            broadbladeImage.background = "rgba(0,0,0,0)";
-        }
-        hideWuwaElements();
-        sortModeChanger.isVisible = true;
 
         const myScrollViewer = new gui.ScrollViewer("scrollName");
         myScrollViewer.cornerRadiusX = 15;
