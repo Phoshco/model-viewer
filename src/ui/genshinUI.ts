@@ -50,11 +50,11 @@ export function createGenshinUI(params: {
     
     const rarity4Button = createIconButton("res/assets/Genshin/rarity_4.png", -188, () => {
         toggleFilter(rarity4Button, "rarity", "4", clearRarityBG);
-    }, "4★");
+    }, "");
     
     const rarity5Button = createIconButton("res/assets/Genshin/rarity_5.png", -148, () => {
         toggleFilter(rarity5Button, "rarity", "5", clearRarityBG);
-    }, "5★");
+    }, "");
     
     filterBar.addControl(rarity4Button);
     filterBar.addControl(rarity5Button);

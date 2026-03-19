@@ -84,6 +84,8 @@ import { createGenshinUI } from "./ui/genshinUI";
 import { createZzzUI } from "./ui/zzzUI";
 import { createNteUI } from "./ui/nteUI";
 import { createWuwaUI } from "./ui/wuwaUI";
+import { createHsrUI } from "./ui/hsrUI";
+import { createHnaUI } from "./ui/hnaUI";
 
 export class SceneBuilder implements ISceneBuilder {
     public async build(canvas: HTMLCanvasElement, engine: AbstractEngine, item: string): Promise<Scene> {
@@ -481,9 +483,6 @@ export class SceneBuilder implements ISceneBuilder {
         chosenCharName = chosenChar!.name;
         prevCharId = chosenChar!.id;
         charScreenElement = chosenChar!.element;
-        // if (firstTabMode == "ZZZ") {
-        //     charScreenMode = false;
-        // }
         if (firstTabMode == "HSR") {
             charScreenElement = "HSR";
         } else if (firstTabMode != "Genshin") {
@@ -1174,7 +1173,7 @@ export class SceneBuilder implements ISceneBuilder {
                 genshinButton.background = "rgb(64,68,70)";
                 if (tabMode == "HSR") {
                     hsrButton.background = charPanel.background;
-                    hideHSRElements();
+                    hsrUI.hide();
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     zzzUI.hide();
@@ -1183,7 +1182,7 @@ export class SceneBuilder implements ISceneBuilder {
                     wuwaUI.hide();
                 } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
-                    hideHNAElements();
+                    hnaUI.hide();
                 } else if (tabMode == "NTE") {
                     nteImage.background = "rgb(64,68,70)";
                     nteUI.hide();
@@ -1216,17 +1215,17 @@ export class SceneBuilder implements ISceneBuilder {
                     nteUI.hide();
                 } else {
                     hnaButton.background = charPanel.background;
-                    hideHNAElements();
+                    hnaUI.hide();
                 }
                 tabMode = "HSR";
                 if (sortModeKey == "id") {
-                    hsrSortModeChanger.image!.source = "res/assets/release.png";
+                    hsrUI.setSortModeSource("res/assets/release.png");
                 } else if (sortModeKey == "name") {
-                    hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
+                    hsrUI.setSortModeSource("res/assets/alphabet.png");
                 }
                 filteredArray = filterBy(hsrCharDataArray, hsrFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                showAllHSRElements();
+                hsrUI.showAll();
                 generateGrid(filteredArray);
             }
         }
@@ -1241,7 +1240,7 @@ export class SceneBuilder implements ISceneBuilder {
                     genshinButton.background = charPanel.background;
                     genshinUI.hide();
                 } else if (tabMode == "HSR") {
-                    hideHSRElements();
+                    hsrUI.hide();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "WuWa") {
                     tacetImage.background = "rgb(64,68,70)";
@@ -1251,7 +1250,7 @@ export class SceneBuilder implements ISceneBuilder {
                     nteUI.hide();
                 } else {
                     hnaButton.background = charPanel.background;
-                    hideHNAElements();
+                    hnaUI.hide();
                 }
                 tabMode = "ZZZ";
                 filteredArray = filterBy(zzzCharDataArray, zzzFilter);
@@ -1271,7 +1270,7 @@ export class SceneBuilder implements ISceneBuilder {
                     genshinButton.background = charPanel.background;
                     genshinUI.hide();
                 } else if (tabMode == "HSR") {
-                    hideHSRElements();
+                    hsrUI.hide();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
@@ -1286,7 +1285,7 @@ export class SceneBuilder implements ISceneBuilder {
                 tabMode = "HNA";
                 filteredArray = filterBy(hnaCharDataArray, hnaFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                showHNAElements();
+                hnaUI.showAll();
                 generateGrid(filteredArray);
             }
         }
@@ -1355,14 +1354,14 @@ export class SceneBuilder implements ISceneBuilder {
                     genshinButton.background = charPanel.background;
                     genshinUI.hide();
                 } else if (tabMode == "HSR") {
-                    hideHSRElements();
+                    hsrUI.hide();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     zzzUI.hide();
                 } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
-                    hideHNAElements();
+                    hnaUI.hide();
                 } else if (tabMode == "NTE") {
                     nteImage.background = "rgb(64,68,70)";
                     nteUI.hide();
@@ -1382,14 +1381,14 @@ export class SceneBuilder implements ISceneBuilder {
                     genshinButton.background = charPanel.background;
                     genshinUI.hide();
                 } else if (tabMode == "HSR") {
-                    hideHSRElements();
+                    hsrUI.hide();
                     hsrButton.background = charPanel.background;
                 } else if (tabMode == "ZZZ") {
                     zzzButton.background = charPanel.background;
                     zzzUI.hide();
                 } else if (tabMode == "HNA") {
                     hnaButton.background = charPanel.background;
-                    hideHNAElements();
+                    hnaUI.hide();
                 } else if (tabMode == "WuWa") {
                     tacetImage.background = "rgb(64,68,70)";
                     wuwaUI.hide();
@@ -1473,11 +1472,10 @@ export class SceneBuilder implements ISceneBuilder {
                     tacetImage.isVisible = false;
                     nteImage.isVisible = false;
                     genshinUI.hide();
-                    hideHSRElements();
+                    hsrUI.hide();
                     zzzUI.hide();
                     wuwaUI.hide();
-                    hideHNAElements();
-                    wuwaUI.hide();
+                    hnaUI.hide();
                     nteUI.hide();
                 }
                 tabMode = "None";
@@ -1537,71 +1535,20 @@ export class SceneBuilder implements ISceneBuilder {
             if (sortModeChanger.textBlock != null) {
                 if (sortModeKey == "id") {
                     sortModeKey = "name";
-                    hsrSortModeChanger.image!.source = "res/assets/release.png";
                     sortModeChanger.textBlock.text = " Name ";
+                    if (tabMode === "HSR") {
+                        hsrUI.setSortModeSource("res/assets/alphabet.png");
+                    }
                 } else {
                     sortModeKey = "id";
-                    hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
                     sortModeChanger.textBlock.text = " Release ";
+                    if (tabMode === "HSR") {
+                        hsrUI.setSortModeSource("res/assets/release.png");
+                    }
                 }
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
                 generateGrid(filteredArray);
             }
-        });
-
-        const hsrSortModeChanger = gui.Button.CreateImageOnlyButton("but", "res/assets/release.png");
-        hsrSortModeChanger.height = "40px";
-        hsrSortModeChanger.width = "40px";
-        hsrSortModeChanger.left = -278;
-        hsrSortModeChanger.thickness = 0;
-        filterBar.addControl(hsrSortModeChanger);
-        hsrSortModeChanger.onPointerClickObservable.add(() => {
-            if (sortModeKey == "id") {
-                sortModeKey = "name";
-                hsrSortModeChanger.image!.source = "res/assets/alphabet.png";
-                sortModeChanger.textBlock!.text = " Name ";
-            } else {
-                sortModeKey = "id";
-                hsrSortModeChanger.image!.source = "res/assets/release.png";
-                sortModeChanger.textBlock!.text = " Release ";
-            }
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-        hsrSortModeChanger.isVisible = false;
-
-        // 5star+tp -> 5star+bg -> 4star+bg -> 5star+tp
-        const hsrStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/rarity_5.png");
-        hsrStarImage.height = "40px";
-        hsrStarImage.width = "40px";
-        hsrStarImage.left = -238;
-        hsrStarImage.thickness = 0;
-        hsrStarImage.cornerRadius = 5;
-        filterBar.addControl(hsrStarImage);
-        hsrStarImage.isVisible = false;
-        hsrStarImage.onPointerClickObservable.add(function() {
-            const index = hsrFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) { // Object with the key exists
-                if (hsrFilter[index].value == "4") {
-                    hsrFilter.splice(index, 1);
-                    hsrStarImage.background = "rgba(0,0,0,0)";
-                    hsrStarImage.image!.source = "res/assets/HSR/rarity_5.png";
-                } else {
-                    hsrFilter[index].value = "4";
-                    hsrStarImage.background = charPanel.background;
-                    hsrStarImage.image!.source = "res/assets/HSR/rarity_4.png";
-                }
-            } else {
-                const newPush: { key: keyof HSRCharData; value: string } = {
-                    key: "rarity",
-                    value: "5"
-                };
-                hsrFilter.push(newPush);
-                hsrStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(hsrCharDataArray, hsrFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
         });
 
         const genshinUI = createGenshinUI({
@@ -1618,6 +1565,36 @@ export class SceneBuilder implements ISceneBuilder {
             }
         });
 
+        const hsrUI = createHsrUI({
+            filterBar,
+            filterBar2,
+            hoverCharName,
+            charPanel,
+            sortModeChanger,
+            filterArray: hsrFilter,
+            applyFilter: () => {
+                filteredArray = filterBy(hsrCharDataArray, hsrFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                generateGrid(filteredArray);
+            },
+            onSortModeChange: () => {
+                if (sortModeKey == "id") {
+                    sortModeKey = "name";
+                    if (sortModeChanger.textBlock) {
+                        sortModeChanger.textBlock.text = " Name ";
+                    }
+                } else {
+                    sortModeKey = "id";
+                    if (sortModeChanger.textBlock) {
+                        sortModeChanger.textBlock.text = " Release ";
+                    }
+                }
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                generateGrid(filteredArray);
+            }
+        });
+        hsrUI.hide();
+
         const zzzUI = createZzzUI({
             filterBar,
             filterBar2,
@@ -1632,6 +1609,21 @@ export class SceneBuilder implements ISceneBuilder {
             }
         });
         zzzUI.hide();
+
+        const hnaUI = createHnaUI({
+            filterBar,
+            filterBar2,
+            hoverCharName,
+            charPanel,
+            sortModeChanger,
+            filterArray: hnaFilter,
+            applyFilter: () => {
+                filteredArray = filterBy(hnaCharDataArray, hnaFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                generateGrid(filteredArray);
+            }
+        });
+        hnaUI.hide();
 
         const wuwaUI = createWuwaUI({
             filterBar,
@@ -1663,495 +1655,6 @@ export class SceneBuilder implements ISceneBuilder {
         });
         nteUI.hide();
         sortModeChanger.isVisible = true;
-
-        function checkIfInHSRFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof HSRCharData): void {
-            const index = hsrFilter.findIndex(obj => obj.key === theKey);
-            if (index !== -1) { // Object with the key exists
-                if (hsrFilter[index].value == theObjType) {
-                    hsrFilter.splice(index, 1);
-                    buttonObj.background = "rgba(0,0,0,0)";
-                } else {
-                    hsrFilter[index].value = theObjType;
-                    if (theKey.toString() == "element") {
-                        offHSRElementBG();
-                    } else {
-                        offPathBG();
-                    }
-                    buttonObj.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof HSRCharData; value: string } = {
-                    key: theKey,
-                    value: theObjType
-                };
-                hsrFilter.push(newPush);
-                buttonObj.background = charPanel.background;
-            }
-            filteredArray = filterBy(hsrCharDataArray, hsrFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        }
-
-        // WuWa filter toggles are managed within the wuwaUI controller (see ./ui/wuwaUI.ts).
-        function checkIfInHNAFilter(buttonObj: gui.Button, theObjType: string, theKey: keyof HNACharData): void {
-            const index = hnaFilter.findIndex(obj => obj.key === theKey);
-            if (index !== -1) { // Object with the key exists
-                if (hnaFilter[index].value == theObjType) {
-                    hnaFilter.splice(index, 1);
-                    buttonObj.background = "rgba(0,0,0,0)";
-                } else {
-                    hnaFilter[index].value = theObjType;
-                    if (theKey.toString() == "element") {
-                        offHNAElementBG();
-                    } else {
-                        offHNAWeaponBG();
-                    }
-                    buttonObj.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof HNACharData; value: string } = {
-                    key: theKey,
-                    value: theObjType
-                };
-                hnaFilter.push(newPush);
-                buttonObj.background = charPanel.background;
-            }
-            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        }
-        checkIfInHNAFilter;
-
-        const fireImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_fire.png");
-        fireImage.height = "40px";
-        fireImage.width = "40px";
-        fireImage.left = 52;
-        fireImage.thickness = 0;
-        fireImage.cornerRadius = 5;
-        fireImage.isVisible = false;
-        filterBar.addControl(fireImage);
-        fireImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(fireImage, "Fire", "element");
-        });
-        fireImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Fire";
-        });
-        fireImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const iceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_ice.png");
-        iceImage.height = "40px";
-        iceImage.width = "40px";
-        iceImage.left = 92;
-        iceImage.thickness = 0;
-        iceImage.cornerRadius = 5;
-        iceImage.isVisible = false;
-        filterBar.addControl(iceImage);
-        iceImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(iceImage, "Ice", "element");
-        });
-        iceImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Ice";
-        });
-        iceImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const imaginaryImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_imaginary.png");
-        imaginaryImage.height = "40px";
-        imaginaryImage.width = "40px";
-        imaginaryImage.left = 132;
-        imaginaryImage.thickness = 0;
-        imaginaryImage.cornerRadius = 5;
-        imaginaryImage.isVisible = false;
-        filterBar.addControl(imaginaryImage);
-        imaginaryImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(imaginaryImage, "Imaginary", "element");
-        });
-        imaginaryImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Imaginary";
-        });
-        imaginaryImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const lightningImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_lightning.png");
-        lightningImage.height = "40px";
-        lightningImage.width = "40px";
-        lightningImage.left = 172;
-        lightningImage.thickness = 0;
-        lightningImage.cornerRadius = 5;
-        lightningImage.isVisible = false;
-        filterBar.addControl(lightningImage);
-        lightningImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(lightningImage, "Lightning", "element");
-        });
-        lightningImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Lightning";
-        });
-        lightningImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const physicalImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_physical.png");
-        physicalImage.height = "40px";
-        physicalImage.width = "40px";
-        physicalImage.left = 212;
-        physicalImage.thickness = 0;
-        physicalImage.cornerRadius = 5;
-        physicalImage.isVisible = false;
-        filterBar.addControl(physicalImage);
-        physicalImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(physicalImage, "Physical", "element");
-        });
-        physicalImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Physical";
-        });
-        physicalImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const quantumImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_quantum.png");
-        quantumImage.height = "40px";
-        quantumImage.width = "40px";
-        quantumImage.left = 252;
-        quantumImage.thickness = 0;
-        quantumImage.cornerRadius = 5;
-        quantumImage.isVisible = false;
-        filterBar.addControl(quantumImage);
-        quantumImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(quantumImage, "Quantum", "element");
-        });
-        quantumImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Quantum";
-        });
-        quantumImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const windImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/element_wind.png");
-        windImage.height = "40px";
-        windImage.width = "40px";
-        windImage.left = 292;
-        windImage.thickness = 0;
-        windImage.cornerRadius = 5;
-        windImage.isVisible = false;
-        filterBar.addControl(windImage);
-        windImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(windImage, "Wind", "element");
-        });
-        windImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Wind";
-        });
-        windImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const abundanceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_abundance.png");
-        abundanceImage.height = "40px";
-        abundanceImage.width = "40px";
-        abundanceImage.left = -8;
-        abundanceImage.thickness = 0;
-        abundanceImage.cornerRadius = 5;
-        abundanceImage.isVisible = false;
-        filterBar2.addControl(abundanceImage);
-        abundanceImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(abundanceImage, "Abundance", "weaponType");
-        });
-        abundanceImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Abundance";
-        });
-        abundanceImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const destructionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_destruction.png");
-        destructionImage.height = "40px";
-        destructionImage.width = "40px";
-        destructionImage.left = 32;
-        destructionImage.thickness = 0;
-        destructionImage.cornerRadius = 5;
-        destructionImage.isVisible = false;
-        filterBar2.addControl(destructionImage);
-        destructionImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(destructionImage, "Destruction", "weaponType");
-        });
-        destructionImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Destruction";
-        });
-        destructionImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const eruditionImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_erudition.png");
-        eruditionImage.height = "40px";
-        eruditionImage.width = "40px";
-        eruditionImage.left = 72;
-        eruditionImage.thickness = 0;
-        eruditionImage.cornerRadius = 5;
-        eruditionImage.isVisible = false;
-        filterBar2.addControl(eruditionImage);
-        eruditionImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(eruditionImage, "Erudition", "weaponType");
-        });
-        eruditionImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Erudition";
-        });
-        eruditionImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const harmonyImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_harmony.png");
-        harmonyImage.height = "40px";
-        harmonyImage.width = "40px";
-        harmonyImage.left = 112;
-        harmonyImage.thickness = 0;
-        harmonyImage.cornerRadius = 5;
-        harmonyImage.isVisible = false;
-        filterBar2.addControl(harmonyImage);
-        harmonyImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(harmonyImage, "Harmony", "weaponType");
-        });
-        harmonyImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Harmony";
-        });
-        harmonyImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const huntImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_hunt.png");
-        huntImage.height = "40px";
-        huntImage.width = "40px";
-        huntImage.left = 152;
-        huntImage.thickness = 0;
-        huntImage.cornerRadius = 5;
-        huntImage.isVisible = false;
-        filterBar2.addControl(huntImage);
-        huntImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(huntImage, "Hunt", "weaponType");
-        });
-        huntImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Hunt";
-        });
-        huntImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const nihilityImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_nihility.png");
-        nihilityImage.height = "40px";
-        nihilityImage.width = "40px";
-        nihilityImage.left = 192;
-        nihilityImage.thickness = 0;
-        nihilityImage.cornerRadius = 5;
-        nihilityImage.isVisible = false;
-        filterBar2.addControl(nihilityImage);
-        nihilityImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(nihilityImage, "Nihility", "weaponType");
-        });
-        nihilityImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Nihility";
-        });
-        nihilityImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const preservationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_preservation.png");
-        preservationImage.height = "40px";
-        preservationImage.width = "40px";
-        preservationImage.left = 232;
-        preservationImage.thickness = 0;
-        preservationImage.cornerRadius = 5;
-        preservationImage.isVisible = false;
-        filterBar2.addControl(preservationImage);
-        preservationImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(preservationImage, "Preservation", "weaponType");
-        });
-        preservationImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Preservation";
-        });
-        preservationImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const remembranceImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_remembrance.png");
-        remembranceImage.height = "40px";
-        remembranceImage.width = "40px";
-        remembranceImage.left = 272;
-        remembranceImage.thickness = 0;
-        remembranceImage.cornerRadius = 5;
-        remembranceImage.isVisible = false;
-        filterBar2.addControl(remembranceImage);
-        remembranceImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(remembranceImage, "Remembrance", "weaponType");
-        });
-        remembranceImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Remembrance";
-        });
-        remembranceImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        const elationImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HSR/path_the_elation.png");
-        elationImage.height = "40px";
-        elationImage.width = "40px";
-        elationImage.left = 312;
-        elationImage.thickness = 0;
-        elationImage.cornerRadius = 5;
-        elationImage.isVisible = false;
-        filterBar2.addControl(elationImage);
-        elationImage.onPointerClickObservable.add(function() {
-            checkIfInHSRFilter(elationImage, "Elation", "weaponType");
-        });
-        elationImage.onPointerEnterObservable.add(function() {
-            hoverCharName.text = "Elation";
-        });
-        elationImage.onPointerOutObservable.add(function() {
-            hoverCharName.text = "";
-        });
-
-        function hideHSRElements(): void {
-            fireImage.isVisible = false;
-            iceImage.isVisible = false;
-            imaginaryImage.isVisible = false;
-            lightningImage.isVisible = false;
-            physicalImage.isVisible = false;
-            quantumImage.isVisible = false;
-            windImage.isVisible = false;
-            abundanceImage.isVisible = false;
-            destructionImage.isVisible = false;
-            eruditionImage.isVisible = false;
-            harmonyImage.isVisible = false;
-            huntImage.isVisible = false;
-            nihilityImage.isVisible = false;
-            preservationImage.isVisible = false;
-            remembranceImage.isVisible = false;
-            elationImage.isVisible = false;
-            hsrSortModeChanger.isVisible = false;
-            hsrStarImage.isVisible = false;
-        }
-
-        function showAllHSRElements(): void {
-            fireImage.isVisible = true;
-            iceImage.isVisible = true;
-            imaginaryImage.isVisible = true;
-            lightningImage.isVisible = true;
-            physicalImage.isVisible = true;
-            quantumImage.isVisible = true;
-            windImage.isVisible = true;
-            abundanceImage.isVisible = true;
-            destructionImage.isVisible = true;
-            eruditionImage.isVisible = true;
-            harmonyImage.isVisible = true;
-            huntImage.isVisible = true;
-            nihilityImage.isVisible = true;
-            preservationImage.isVisible = true;
-            remembranceImage.isVisible = true;
-            elationImage.isVisible = true;
-            hsrSortModeChanger.isVisible = true;
-            hsrStarImage.isVisible = true;
-        }
-
-
-        function offHSRElementBG(): void {
-            fireImage.background = "rgba(0,0,0,0)";
-            iceImage.background = "rgba(0,0,0,0)";
-            imaginaryImage.background = "rgba(0,0,0,0)";
-            lightningImage.background = "rgba(0,0,0,0)";
-            physicalImage.background = "rgba(0,0,0,0)";
-            quantumImage.background = "rgba(0,0,0,0)";
-            windImage.background = "rgba(0,0,0,0)";
-        }
-
-        function offPathBG(): void {
-            abundanceImage.background = "rgba(0,0,0,0)";
-            destructionImage.background = "rgba(0,0,0,0)";
-            eruditionImage.background = "rgba(0,0,0,0)";
-            harmonyImage.background = "rgba(0,0,0,0)";
-            huntImage.background = "rgba(0,0,0,0)";
-            nihilityImage.background = "rgba(0,0,0,0)";
-            preservationImage.background = "rgba(0,0,0,0)";
-            remembranceImage.background = "rgba(0,0,0,0)";
-            elationImage.background = "rgba(0,0,0,0)";
-        }
-
-        const hnaFourStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_4.png");
-        hnaFourStarImage.height = "40px";
-        hnaFourStarImage.width = "40px";
-        hnaFourStarImage.left = -188;
-        hnaFourStarImage.thickness = 0;
-        hnaFourStarImage.cornerRadius = 5;
-        hnaFourStarImage.isVisible = false;
-        filterBar.addControl(hnaFourStarImage);
-        hnaFourStarImage.onPointerClickObservable.add(function() {
-            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) {
-                if (hnaFilter[index].value == "4") {
-                    hnaFilter.splice(index, 1);
-                    hnaFourStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    hnaFilter[index].value = "4";
-                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
-                    hnaFourStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof HNACharData; value: string } = { key: "rarity", value: "4" };
-                hnaFilter.push(newPush);
-                hnaFourStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
-        const hnaFiveStarImage = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/rarity_5.png");
-        hnaFiveStarImage.height = "40px";
-        hnaFiveStarImage.width = "40px";
-        hnaFiveStarImage.left = -148;
-        hnaFiveStarImage.thickness = 0;
-        hnaFiveStarImage.cornerRadius = 5;
-        hnaFiveStarImage.isVisible = false;
-        filterBar.addControl(hnaFiveStarImage);
-        hnaFiveStarImage.onPointerClickObservable.add(function() {
-            const index = hnaFilter.findIndex(obj => obj.key === "rarity");
-            if (index !== -1) {
-                if (hnaFilter[index].value == "5") {
-                    hnaFilter.splice(index, 1);
-                    hnaFiveStarImage.background = "rgba(0,0,0,0)";
-                } else {
-                    hnaFilter[index].value = "5";
-                    hnaFourStarImage.background = "rgba(0,0,0,0)";
-                    hnaFiveStarImage.background = charPanel.background;
-                }
-            } else {
-                const newPush: { key: keyof HNACharData; value: string } = { key: "rarity", value: "5" };
-                hnaFilter.push(newPush);
-                hnaFiveStarImage.background = charPanel.background;
-            }
-            filteredArray = filterBy(hnaCharDataArray, hnaFilter);
-            filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-            generateGrid(filteredArray);
-        });
-
-        function hideHNAElements(): void {
-            hnaFourStarImage.isVisible = false;
-            hnaFiveStarImage.isVisible = false;
-            sortModeChanger.isVisible = false;
-        }
-
-        function showHNAElements(): void {
-            hnaFourStarImage.isVisible = true;
-            hnaFiveStarImage.isVisible = true;
-            sortModeChanger.isVisible = true;
-        }
-
-        function offHNAElementBG(): void {
-
-        }
-
-        function offHNAWeaponBG(): void {
-
-        }
 
         const myScrollViewer = new gui.ScrollViewer("scrollName");
         myScrollViewer.cornerRadiusX = 15;
@@ -3192,25 +2695,6 @@ export class SceneBuilder implements ISceneBuilder {
 
         // if you want to use inspector, uncomment following line.
         // Inspector.Show(scene, { });
-
-        // webxr experience for AR
-        // const webXrExperience = await scene.createDefaultXRExperienceAsync({
-        //     uiOptions: {
-        //         sessionMode: "immersive-ar",
-        //         referenceSpaceType: "local-floor"
-        //     }
-        // });
-
-        //if (webXrExperience.baseExperience !== undefined) {
-        // post process seems not working on immersive-ar
-        // webXrExperience.baseExperience.sessionManager.onXRFrameObservable.addOnce(() => {
-        //     defaultPipeline.addCamera(webXrExperience.baseExperience.camera);
-        // });
-        //    webXrExperience.baseExperience.sessionManager.worldScalingFactor = 15;
-        //}
-        // webXrExperience.baseExperience?.sessionManager.onXRSessionInit.add(() => {
-        //     defaultPipeline.addCamera(webXrExperience.baseExperience.camera);
-        // });
 
         return scene;
     }

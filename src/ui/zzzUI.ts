@@ -49,11 +49,11 @@ export function createZzzUI(params: {
 
     const rarity4Button = createIconButton("res/assets/ZZZ/Icon_AgentRank_A.png", -188, () => {
         toggleFilter(rarity4Button, "rarity", "4", clearRarityBG);
-    }, "A");
+    }, "");
 
     const rarity5Button = createIconButton("res/assets/ZZZ/Icon_AgentRank_S.png", -148, () => {
         toggleFilter(rarity5Button, "rarity", "5", clearRarityBG);
-    }, "S");
+    }, "");
 
     filterBar.addControl(rarity4Button);
     filterBar.addControl(rarity5Button);
