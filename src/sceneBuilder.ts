@@ -46,7 +46,9 @@ import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 // import { DepthOfFieldEffectBlurLevel } from "@babylonjs/core/PostProcesses";
 import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
 import { Scene } from "@babylonjs/core/scene";
-import * as gui from "@babylonjs/gui";
+// import * as gui from "@babylonjs/gui";
+import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
+import { TextBlock, Control, Button, Rectangle, StackPanel, InputText, ScrollViewer, Grid, Image } from "@babylonjs/gui";
 // import { Inspector } from "@babylonjs/inspector";
 import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMaterial";
 import type { MmdAnimation } from "babylon-mmd/esm/Loader/Animation/mmdAnimation";
@@ -270,7 +272,7 @@ export class SceneBuilder implements ISceneBuilder {
             scene.clearColor = new Color4(1, 1, 1, 1.0);
         }
 
-        const advancedTexture = gui.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        const advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
         advancedTexture.layer!.layerMask = 0x10000000;
         advancedTexture.idealWidth = 1000;
         advancedTexture.idealHeight = 1000;
@@ -298,7 +300,6 @@ export class SceneBuilder implements ISceneBuilder {
         const camera = new ArcRotateCamera("arcRotateCamera", 0, 0, 25 * worldScale, new Vector3(0, 10, 1), scene);
         camera.maxZ = 5000;
         camera.minZ = 0.1;
-        camera.parent = mmdRoot;
         camera.setPosition(defCamPos);
         camera.attachControl(canvas, false);
         camera.inertia = 0.8;
@@ -316,7 +317,6 @@ export class SceneBuilder implements ISceneBuilder {
         const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 25 * worldScale, new Vector3(0, 10, 1), scene);
         stillCamera.maxZ = 5000;
         stillCamera.minZ = 0.1;
-        stillCamera.parent = mmdRoot;
         stillCamera.setPosition(defCamPos);
         stillCamera.attachControl(canvas, false);
         stillCamera.inertia = 0.8;
@@ -767,35 +767,35 @@ export class SceneBuilder implements ISceneBuilder {
 
         // GUI
 
-        const debugblock = new gui.TextBlock();
+        const debugblock = new TextBlock();
         debugblock.widthInPixels = 100;
         debugblock.heightInPixels = 100;
         debugblock.left = 0;
         debugblock.text = "lol"; // `${mmdCameraRoot.position.y}`;
         debugblock.fontSize = 16;
-        debugblock.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        debugblock.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-        debugblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_BOTTOM;
+        debugblock.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        debugblock.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        debugblock.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         debugblock.color = "black";
         advancedTexture.addControl(debugblock);
         debugblock.isVisible = false;
 
-        const textblock = new gui.TextBlock();
+        const textblock = new TextBlock();
         textblock.widthInPixels = 100;
         textblock.heightInPixels = 50;
         textblock.left = 0;
         textblock.text = `${scene.activeCameras[0].name}`;
         textblock.fontSize = 16;
-        textblock.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        textblock.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-        textblock.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        textblock.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        textblock.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        textblock.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         textblock.color = "black";
         advancedTexture.addControl(textblock);
         textblock.isVisible = false;
         
         const iconWidthHeight = isMobile ? "100px" : "50px";
 
-        const disclaimerText = new gui.TextBlock();
+        const disclaimerText = new TextBlock();
         disclaimerText.resizeToFit = true;
         disclaimerText.left = 0;
         disclaimerText.top = 0;
@@ -803,9 +803,9 @@ export class SceneBuilder implements ISceneBuilder {
         disclaimerText.paddingRight = 10;
         disclaimerText.text = "Double click / tap to change camera mode.";
         disclaimerText.fontSize = isMobile ? 25 : 16;
-        disclaimerText.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_CENTER;
-        disclaimerText.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-        disclaimerText.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        disclaimerText.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+        disclaimerText.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        disclaimerText.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         if (bg_bool) {
             disclaimerText.color = "white";
         } else {
@@ -814,10 +814,10 @@ export class SceneBuilder implements ISceneBuilder {
         advancedTexture.addControl(disclaimerText);
         disclaimerText.isVisible = true;
 
-        const supportButton = gui.Button.CreateImageOnlyButton("but", "res/assets/support.png");
-        supportButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        const supportButton = Button.CreateImageOnlyButton("but", "res/assets/support.png");
+        supportButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
         supportButton.left = -10;
-        supportButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        supportButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         supportButton.top = isMobile ? "50px" : "30px";
         supportButton.width = iconWidthHeight;
         supportButton.height = iconWidthHeight;
@@ -827,10 +827,10 @@ export class SceneBuilder implements ISceneBuilder {
             window.open("https://ko-fi.com/phoshco", "_blank");
         });
 
-        const showButton = gui.Button.CreateImageOnlyButton("but", "res/assets/menu.png");
-        showButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        const showButton = Button.CreateImageOnlyButton("but", "res/assets/menu.png");
+        showButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         showButton.left = "10px";
-        showButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        showButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         showButton.top = "10px";
         showButton.width = iconWidthHeight;
         showButton.height = iconWidthHeight;
@@ -844,19 +844,19 @@ export class SceneBuilder implements ISceneBuilder {
             }
         });
 
-        let skinButton: gui.Button;
+        let skinButton: Button;
         function createSkinButton(visibility: boolean = false, nextSkinMode?: boolean, name?: string): void {
             if (skinButton != undefined) {
                 skinButton.dispose();
             }
-            skinButton = new gui.Button();
-            skinButton = gui.Button.CreateImageOnlyButton("but", "res/assets/alter.png");
+            skinButton = new Button();
+            skinButton = Button.CreateImageOnlyButton("but", "res/assets/alter.png");
             if (bg_bool) {
                 skinButton.image!.source = "res/assets/alter_light.png";
             }
-            skinButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            skinButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
             skinButton.left = isMobile ? "110px" : "60px";
-            skinButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+            skinButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
             skinButton.top = isMobile ? "110px" : "60px";
             skinButton.width = iconWidthHeight;
             skinButton.height = iconWidthHeight;
@@ -877,13 +877,13 @@ export class SceneBuilder implements ISceneBuilder {
         }
         let skinMode = false;
 
-        const darkButton = gui.Button.CreateImageOnlyButton("but", "res/assets/dark_mode.png");
+        const darkButton = Button.CreateImageOnlyButton("but", "res/assets/dark_mode.png");
         if (bg_bool) {
             darkButton.image!.source = "res/assets/light_mode.png";
         }
-        darkButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        darkButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         darkButton.left = isMobile ? "110px" : "60px";
-        darkButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        darkButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         darkButton.top = "10px";
         darkButton.width = iconWidthHeight;
         darkButton.height = iconWidthHeight;
@@ -920,10 +920,10 @@ export class SceneBuilder implements ISceneBuilder {
         }
         darkButton.onPointerClickObservable.add(changeDarkMode);
 
-        const charScreenModeButton = gui.Button.CreateImageOnlyButton("but", "res/assets/paimon.png");
-        charScreenModeButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        const charScreenModeButton = Button.CreateImageOnlyButton("but", "res/assets/paimon.png");
+        charScreenModeButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         charScreenModeButton.left = "10px";
-        charScreenModeButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        charScreenModeButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         charScreenModeButton.top = isMobile ? "110px" : "60px";
         charScreenModeButton.width = iconWidthHeight;
         charScreenModeButton.height = iconWidthHeight;
@@ -952,10 +952,10 @@ export class SceneBuilder implements ISceneBuilder {
             charScreenMode = !charScreenMode;
         });
 
-        const motionButton = gui.Button.CreateImageOnlyButton("but", "res/assets/note.png");
-        motionButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        const motionButton = Button.CreateImageOnlyButton("but", "res/assets/note.png");
+        motionButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         motionButton.left = "10px";
-        motionButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        motionButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         motionButton.top = isMobile ? "210px" : "110px";
         motionButton.width = iconWidthHeight;
         motionButton.height = iconWidthHeight;
@@ -975,10 +975,10 @@ export class SceneBuilder implements ISceneBuilder {
             changeMotion();
         });
 
-        const physicsButton = gui.Button.CreateImageOnlyButton("but", "res/assets/physics.png");
-        physicsButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        const physicsButton = Button.CreateImageOnlyButton("but", "res/assets/physics.png");
+        physicsButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         physicsButton.left = "10px";
-        physicsButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        physicsButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         physicsButton.top = isMobile ? "310px" : "160px";
         physicsButton.width = iconWidthHeight;
         physicsButton.height = iconWidthHeight;
@@ -992,16 +992,16 @@ export class SceneBuilder implements ISceneBuilder {
             changePhysics();
         });
 
-        const charNameText = new gui.TextBlock();
+        const charNameText = new TextBlock();
         // charNameText.widthInPixels = 100;
         charNameText.heightInPixels = isMobile ? 100 : 50;
         charNameText.left = isMobile ? "220px" : "120px";
         charNameText.top = "10px";
         charNameText.text = chosenCharName;
         charNameText.fontSize = isMobile ? 40 : 20;
-        charNameText.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        charNameText.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        charNameText.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
+        charNameText.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        charNameText.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        charNameText.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         if (bg_bool) {
             charNameText.color = "white";
         } else {
@@ -1011,7 +1011,7 @@ export class SceneBuilder implements ISceneBuilder {
         charNameText.isVisible = true;
 
         let isMouseInPanel = false;
-        const charPanel = new gui.Rectangle("charPanel");
+        const charPanel = new Rectangle("charPanel");
         charPanel.width = "720px";
         charPanel.height = "920px";
         charPanel.background = "rgb(44,48,50)";
@@ -1071,7 +1071,7 @@ export class SceneBuilder implements ISceneBuilder {
             }
         }
 
-        const containStack = new gui.Rectangle();
+        const containStack = new Rectangle();
         containStack.width = "700px";
         containStack.height = "900px";
         containStack.thickness = 0;
@@ -1079,18 +1079,18 @@ export class SceneBuilder implements ISceneBuilder {
         containStack.background = charPanel.background;
         charPanel.addControl(containStack);
 
-        const panel = new gui.StackPanel();
+        const panel = new StackPanel();
         panel.width = "700px";
         panel.height = "900px";
         containStack.addControl(panel);
 
-        const topBar = new gui.Rectangle();
+        const topBar = new Rectangle();
         topBar.width = "700px";
         topBar.height = "150px";
         topBar.thickness = 0;
         panel.addControl(topBar);
 
-        const genshinButton = gui.Button.CreateSimpleButton("but", "Genshin Impact");
+        const genshinButton = Button.CreateSimpleButton("but", "Genshin Impact");
         genshinButton.fontSize = 10;
         genshinButton.width = "175px";
         genshinButton.height = "50px";
@@ -1103,7 +1103,7 @@ export class SceneBuilder implements ISceneBuilder {
         genshinButton.cornerRadiusX = genshinButton.cornerRadiusY = 15;
         topBar.addControl(genshinButton);
 
-        const hsrButton = gui.Button.CreateSimpleButton("but", "Honkai: Star Rail");
+        const hsrButton = Button.CreateSimpleButton("but", "Honkai: Star Rail");
         hsrButton.fontSize = 10;
         hsrButton.width = "175px";
         hsrButton.height = "50px";
@@ -1116,7 +1116,7 @@ export class SceneBuilder implements ISceneBuilder {
         hsrButton.cornerRadiusX = hsrButton.cornerRadiusY = 15;
         topBar.addControl(hsrButton);
 
-        const zzzButton = gui.Button.CreateSimpleButton("but", "Zenless Zone Zero");
+        const zzzButton = Button.CreateSimpleButton("but", "Zenless Zone Zero");
         zzzButton.fontSize = 10;
         zzzButton.width = "175px";
         zzzButton.height = "50px";
@@ -1129,7 +1129,7 @@ export class SceneBuilder implements ISceneBuilder {
         zzzButton.cornerRadiusX = zzzButton.cornerRadiusY = 15;
         topBar.addControl(zzzButton);
 
-        const hnaButton = gui.Button.CreateSimpleButton("but", "Honkai: Nexus Anima");
+        const hnaButton = Button.CreateSimpleButton("but", "Honkai: Nexus Anima");
         hnaButton.fontSize = 10;
         hnaButton.width = "175px";
         hnaButton.height = "50px";
@@ -1293,7 +1293,7 @@ export class SceneBuilder implements ISceneBuilder {
             handleHNATabSwitch();
         });
 
-        const filterBar = new gui.Rectangle();
+        const filterBar = new Rectangle();
         filterBar.width = "700px";
         filterBar.height = "50px";
         filterBar.thickness = 0;
@@ -1301,7 +1301,7 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar.background = "rgb(64,68,70)";
         topBar.addControl(filterBar);
 
-        const filterBar2 = new gui.Rectangle();
+        const filterBar2 = new Rectangle();
         filterBar2.width = "700px";
         filterBar2.height = "50px";
         filterBar2.thickness = 0;
@@ -1310,19 +1310,19 @@ export class SceneBuilder implements ISceneBuilder {
         filterBar2.cornerRadiusW = filterBar2.cornerRadiusZ = 15;
         topBar.addControl(filterBar2);
 
-        const hoverCharName = new gui.TextBlock();
+        const hoverCharName = new TextBlock();
         hoverCharName.width = "150px";
         hoverCharName.height = "40px";
         hoverCharName.color = "white";
         hoverCharName.left = -48;
         hoverCharName.text = "";
         hoverCharName.fontSize = 16;
-        hoverCharName.textVerticalAlignment = gui.Control.VERTICAL_ALIGNMENT_CENTER;
-        hoverCharName.textHorizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        // hoverCharName.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        hoverCharName.textVerticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+        hoverCharName.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        // hoverCharName.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         filterBar.addControl(hoverCharName);
 
-        const searchBar = new gui.Rectangle();
+        const searchBar = new Rectangle();
         searchBar.width = "220px";
         searchBar.height = "40px";
         searchBar.background = charPanel.background;
@@ -1331,7 +1331,7 @@ export class SceneBuilder implements ISceneBuilder {
         searchBar.thickness = 0;
         filterBar2.addControl(searchBar);
 
-        const tacetImage = gui.Button.CreateImageOnlyButton("but", "res/assets/tacet.png");
+        const tacetImage = Button.CreateImageOnlyButton("but", "res/assets/tacet.png");
         tacetImage.height = "40px";
         tacetImage.width = "40px";
         tacetImage.left = -328;
@@ -1339,7 +1339,7 @@ export class SceneBuilder implements ISceneBuilder {
         tacetImage.cornerRadius = 5;
         filterBar2.addControl(tacetImage);
 
-        const nteImage = gui.Button.CreateImageOnlyButton("but", "res/assets/nte.png");
+        const nteImage = Button.CreateImageOnlyButton("but", "res/assets/nte.png");
         nteImage.height = "40px";
         nteImage.width = "40px";
         nteImage.left = -288;
@@ -1422,7 +1422,7 @@ export class SceneBuilder implements ISceneBuilder {
             hoverCharName.text = "";
         });
 
-        const searchTextbox = new gui.InputText();
+        const searchTextbox = new InputText();
         searchTextbox.placeholderText = "Find character...";
         searchTextbox.placeholderColor = "rgb(64,68,70)";
         searchTextbox.thickness = 0;
@@ -1484,7 +1484,7 @@ export class SceneBuilder implements ISceneBuilder {
             }
         });
 
-        const searchImage = gui.Button.CreateImageOnlyButton("but", "res/assets/search.png");
+        const searchImage = Button.CreateImageOnlyButton("but", "res/assets/search.png");
         searchImage.height = "40px";
         searchImage.width = "40px";
         searchImage.left = -90;
@@ -1492,7 +1492,7 @@ export class SceneBuilder implements ISceneBuilder {
         searchImage.cornerRadius = 5;
         searchBar.addControl(searchImage);
 
-        const clearTextImage = gui.Button.CreateImageOnlyButton("but", "res/assets/clear.png");
+        const clearTextImage = Button.CreateImageOnlyButton("but", "res/assets/clear.png");
         clearTextImage.height = "40px";
         clearTextImage.width = "40px";
         clearTextImage.left = 90;
@@ -1503,7 +1503,7 @@ export class SceneBuilder implements ISceneBuilder {
             searchTextbox.text = "";
         });
 
-        const sortImage = gui.Button.CreateImageOnlyButton("but", "res/assets/descending.png");
+        const sortImage = Button.CreateImageOnlyButton("but", "res/assets/descending.png");
         sortImage.height = "40px";
         sortImage.width = "40px";
         sortImage.left = -328;
@@ -1522,7 +1522,7 @@ export class SceneBuilder implements ISceneBuilder {
             sortModeAscending = !sortModeAscending;
         });
 
-        const sortModeChanger = gui.Button.CreateSimpleButton("but", " Release ");
+        const sortModeChanger = Button.CreateSimpleButton("but", " Release ");
         sortModeChanger.height = "40px";
         sortModeChanger.width = "90px";
         sortModeChanger.left = -258;
@@ -1656,7 +1656,7 @@ export class SceneBuilder implements ISceneBuilder {
         nteUI.hide();
         sortModeChanger.isVisible = true;
 
-        const myScrollViewer = new gui.ScrollViewer("scrollName");
+        const myScrollViewer = new ScrollViewer("scrollName");
         myScrollViewer.cornerRadiusX = 15;
         myScrollViewer.cornerRadiusY = 15;
         myScrollViewer.thickness = 0;
@@ -1695,14 +1695,14 @@ export class SceneBuilder implements ISceneBuilder {
             y_down = undefined;
         }
 
-        let grid = new gui.Grid();
+        let grid = new Grid();
         let rows = 10;
 
         function generateGrid<T extends {id: number, name: string, rarity: number, image: string}>(
             dataArray: T[]
         ): void {
             grid.dispose();
-            grid = new gui.Grid();
+            grid = new Grid();
             rows = Math.ceil(dataArray.length / 5) + 1;
             grid.removeRowDefinition;
 
@@ -1724,10 +1724,10 @@ export class SceneBuilder implements ISceneBuilder {
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < 5; j++) {
                     if (charIndex > dataArray.length - 1) {
-                        let charButton: gui.Button;
+                        let charButton: Button;
                         extraDataArray;
                         if (tabMode == "Genshin" || tabMode == "None") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "gi/Genshin/Paimon.png");
+                            charButton = Button.CreateImageOnlyButton("but", baseUrl + "gi/Genshin/Paimon.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Paimon";
                             });
@@ -1738,7 +1738,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else if (tabMode == "HSR") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "hsr/HSR/Pom-Pom.png");
+                            charButton = Button.CreateImageOnlyButton("but", baseUrl + "hsr/HSR/Pom-Pom.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Pom-Pom";
                             });
@@ -1749,7 +1749,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else if (tabMode == "ZZZ") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "zzz/ZZZ/Bangboo.png");
+                            charButton = Button.CreateImageOnlyButton("but", baseUrl + "zzz/ZZZ/Bangboo.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Bangboo";
                             });
@@ -1760,7 +1760,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else if (tabMode == "WuWa") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", baseUrl + "ww/WuWa/Abby.png");
+                            charButton = Button.CreateImageOnlyButton("but", baseUrl + "ww/WuWa/Abby.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Abby";
                             });
@@ -1771,7 +1771,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 }
                             });
                         } else if (tabMode == "HNA") {
-                            charButton = gui.Button.CreateImageOnlyButton("but", "res/assets/HNA/Puddlipup.png");
+                            charButton = Button.CreateImageOnlyButton("but", "res/assets/HNA/Puddlipup.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Puddlipup";
                             });
@@ -1782,7 +1782,7 @@ export class SceneBuilder implements ISceneBuilder {
                                 // }
                             });
                         } else {
-                            charButton = gui.Button.CreateImageOnlyButton("but", "res/assets/NTE/Taygedo.png");
+                            charButton = Button.CreateImageOnlyButton("but", "res/assets/NTE/Taygedo.png");
                             charButton.onPointerEnterObservable.add(function() {
                                 hoverCharName.text = "Taygedo";
                             });
@@ -1802,7 +1802,7 @@ export class SceneBuilder implements ISceneBuilder {
                         grid.addControl(charButton, i, j);
                     } else {
                         const selChar = dataArray[charIndex];
-                        const theBG = new gui.Rectangle();
+                        const theBG = new Rectangle();
                         theBG.cornerRadius = 10;
                         theBG.thickness = 0;
                         theBG.paddingBottom = theBG.paddingTop = theBG.paddingRight = theBG.paddingLeft = 5;
@@ -1813,7 +1813,7 @@ export class SceneBuilder implements ISceneBuilder {
                             theBG.background = "rgb(192,79,85)";
                         }
                         grid.addControl(theBG, i, j);
-                        const charButton = gui.Button.CreateImageOnlyButton("but", `${baseUrl}/${selChar.image}`);
+                        const charButton = Button.CreateImageOnlyButton("but", `${baseUrl}/${selChar.image}`);
                         charButton.thickness = 0;
                         charButton.cornerRadius = 10;
                         charButton.paddingBottom = charButton.paddingTop = charButton.paddingRight = charButton.paddingLeft = 5;
@@ -1833,9 +1833,9 @@ export class SceneBuilder implements ISceneBuilder {
                             }
                         });
                         if (findCharByName(allSkinCharDataArray, selChar.name)) {
-                            const skinCharButton = new gui.Image("but", "res/assets/skin_icon.png");
-                            skinCharButton.verticalAlignment = gui.Control.VERTICAL_ALIGNMENT_TOP;
-                            skinCharButton.horizontalAlignment = gui.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                            const skinCharButton = new Image("but", "res/assets/skin_icon.png");
+                            skinCharButton.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+                            skinCharButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
                             // skinCharButton.leftInPixels = grid.widthInPixels / 18;
                             // skinCharButton.topInPixels = -grid.widthInPixels / 18;
                             skinCharButton.paddingRight = skinCharButton.paddingTop = 10;
