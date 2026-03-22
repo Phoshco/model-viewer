@@ -1,6 +1,9 @@
 // Pure helpers extracted from sceneBuilder.ts — no logic changes.
 export const normalize = (str: string): string =>
-    str.toLowerCase().replace(/[^a-z]/g, "");
+    str
+        .replace(/%20/g, " ")
+        .toLowerCase()
+        .replace(/[^a-z0-9 ]/g, "");
 
 export const getFirstDigit = (num: number): number => {
     const str = Math.abs(num).toString();
