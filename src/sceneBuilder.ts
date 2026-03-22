@@ -283,23 +283,23 @@ export class SceneBuilder implements ISceneBuilder {
 
         const mmdRoot = new TransformNode("mmdRoot", scene);
         mmdRoot.scaling.scaleInPlace(worldScale);
-        mmdRoot.position.z = 10;
+        mmdRoot.position.z = 0;
 
         const mmdCameraRoot = new TransformNode("mmdRoot", scene);
         mmdCameraRoot.scaling.scaleInPlace(worldScale);
-        mmdCameraRoot.position.z = 10;
+        mmdCameraRoot.position.z = 0;
 
         // mmd camera for play mmd camera animation
         const mmdCamera = new MmdCamera("mmdCamera", new Vector3(0, 0, 0), scene);
         mmdCamera.maxZ = 5000;
         mmdCamera.minZ = 0.1;
-        mmdCamera.parent = mmdRoot;
+        // mmdCamera.parent = mmdCameraRoot;
         mmdCamera.layerMask = 1;
 
         const defCamPos = new Vector3(0, 10, -30).scaleInPlace(worldScale);
-        const camera = new ArcRotateCamera("arcRotateCamera", 0, 0, 25 * worldScale, new Vector3(0, 10, 1), scene);
+        const camera = new ArcRotateCamera("arcRotateCamera", 0, 0, 30 * worldScale, new Vector3(0, 10, 0), scene);
         camera.maxZ = 5000;
-        camera.minZ = 0.1;
+        // camera.minZ = 0;
         camera.setPosition(defCamPos);
         camera.attachControl(canvas, false);
         camera.inertia = 0.8;
@@ -314,9 +314,9 @@ export class SceneBuilder implements ISceneBuilder {
         }
         camera.layerMask = 1;
 
-        const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 25 * worldScale, new Vector3(0, 10, 1), scene);
+        const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 30 * worldScale, new Vector3(0, 10, 0), scene);
         stillCamera.maxZ = 5000;
-        stillCamera.minZ = 0.1;
+        // stillCamera.minZ = 0;
         stillCamera.setPosition(defCamPos);
         stillCamera.attachControl(canvas, false);
         stillCamera.inertia = 0.8;
@@ -2548,11 +2548,11 @@ export class SceneBuilder implements ISceneBuilder {
             scene.onBeforeAnimationsObservable.add(() => {
                 cameraPos = mmdCamera.position.y/10;
                 if (cameraPos < theHeight && 0 < cameraPos) {
-                    mmdCameraRoot.position.y = 10 * (0 - theDiff * (cameraPos / theHeight));
+                    mmdCameraRoot.position = new Vector3(mmdCameraRoot.position.x, 10 * (0 - theDiff * (cameraPos / theHeight)), -1);
                 } else if (cameraPos <= 0) {
-                    mmdCameraRoot.position.y = 0;
+                    mmdCameraRoot.position = new Vector3(mmdCameraRoot.position.x, 0, -1);
                 } else {
-                    mmdCameraRoot.position.y = 10 * (0 - theDiff);
+                    mmdCameraRoot.position = new Vector3(mmdCameraRoot.position.x, 10 * (0 - theDiff), -1);
                 }
                 debugblock.text = `${cameraPos}\n${mmdCameraRoot.position.y}\n${theHeight}\n${theDiff}`;
             });
@@ -2596,7 +2596,7 @@ export class SceneBuilder implements ISceneBuilder {
 
             if (scene.activeCameras![0] === mmdCamera) {
                 defaultPipeline.depthOfFieldEnabled = false;
-                camera.setTarget(new Vector3(0, 10 * worldScale, 1));
+                camera.setTarget(new Vector3(0, 10 * worldScale, 0));
                 camera.setPosition(defCamPos);
                 scene.activeCameras![0] = camera;
             } else {
