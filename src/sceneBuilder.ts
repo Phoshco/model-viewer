@@ -2365,9 +2365,12 @@ export class SceneBuilder implements ISceneBuilder {
                 mmdRuntime.setAudioPlayer(audioPlayer);
             }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
-                const isSpecialModel = ["Parayaya", "Denia", "Hiyuki"].some(name =>
+                let isSpecialModel = ["Parayaya", "Denia", "Hiyuki"].some(name =>
                     chosenChar.name.includes(name)
                 );
+                if ((chosenChar.name.includes("Mornye")) && (chosenChar.directory.includes("skin"))) {
+                    isSpecialModel = true;
+                }
 
                 const mmdModelOptions = {
                 loggingEnabled: true,
