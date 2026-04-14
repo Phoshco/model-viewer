@@ -489,6 +489,13 @@ export class SceneBuilder implements ISceneBuilder {
             charScreenElement = "Universal";
         }
 
+        // Update URL to reflect the loaded character (keep slug in address bar)
+        {
+            const urlBasePath = isLocal ? "" : "/model-viewer";
+            const charSlug = chosenCharName.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/ /g, "%20");
+            window.history.replaceState(null, "", urlBasePath + "/" + charSlug);
+        }
+
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
             promises.push(LoadAssetContainerAsync(
                 baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
@@ -960,19 +967,76 @@ export class SceneBuilder implements ISceneBuilder {
         motionButton.width = iconWidthHeight;
         motionButton.height = iconWidthHeight;
         motionButton.thickness = 0;
+        motionButton.cornerRadius = 10;
         advancedTexture.addControl(motionButton);
         if (bg_bool) {
             motionButton.image!.source = "res/assets/note_light.png";
         }
+        // Track selection panel — toggled by clicking the motionButton
+        const trackPanel = new Rectangle("trackPanel");
+        trackPanel.width = isMobile ? "400px" : "250px";
+        trackPanel.background = "rgb(44,48,50)";
+        trackPanel.cornerRadius = 10;
+        trackPanel.thickness = 1;
+        trackPanel.color = "white";
+        trackPanel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        trackPanel.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+        trackPanel.left = isMobile ? "110px" : "60px";
+        trackPanel.top = isMobile ? "210px" : "110px";
+        trackPanel.isVisible = false;
+        advancedTexture.addControl(trackPanel);
+
+        const trackScrollViewer = new ScrollViewer("trackScroll");
+        trackScrollViewer.thickness = 0;
+        trackScrollViewer.barSize = 8;
+        trackScrollViewer.barColor = "rgba(255,255,255,0.3)";
+        trackPanel.addControl(trackScrollViewer);
+
+        const trackStack = new StackPanel("trackStack");
+        trackStack.width = "100%";
+        trackScrollViewer.addControl(trackStack);
+
+        const trackItemHeight = isMobile ? 45 : 29;
+        const maxVisibleTracks = 7;
+        const panelHeight = Math.min(motionConfig.length, maxVisibleTracks) * trackItemHeight + 10;
+        trackPanel.height = `${panelHeight}px`;
+        trackScrollViewer.height = `${panelHeight}px`;
+
+        motionConfig.forEach((track) => {
+            const trackButton = Button.CreateSimpleButton("trackBtn", track.name);
+            trackButton.height = `${trackItemHeight}px`;
+            trackButton.width = "100%";
+            trackButton.color = "white";
+            trackButton.background = "transparent";
+            trackButton.thickness = 0;
+            trackButton.fontSize = isMobile ? 15 : 10;
+            if (trackButton.textBlock) {
+                trackButton.textBlock.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+                trackButton.textBlock.paddingLeft = "12px";
+            }
+            trackStack.addControl(trackButton);
+
+            trackButton.onPointerEnterObservable.add(() => {
+                trackButton.background = "rgb(64,68,70)";
+            });
+            trackButton.onPointerOutObservable.add(() => {
+                trackButton.background = "transparent";
+            });
+            trackButton.onPointerClickObservable.add(() => {
+                motionName = track.name;
+                audioPlayerFile = track.audioPlayerFile;
+                camMotionFile = track.camMotionFile;
+                modelMotionFile = track.modelMotionFile;
+                changeMotion();
+                trackPanel.isVisible = false;
+                motionButton.background = "rgba(0,0,0,0)";
+            });
+        });
+
+        // Click motionButton to toggle the track panel
         motionButton.onPointerClickObservable.add(function() {
-            // choose the next name in the motionConfig list using the current motionName as the starting point
-            const currentIndex = motionConfig.findIndex((item) => item.name === motionName);
-            const nextIndex = (currentIndex + 1) % motionConfig.length;
-            motionName = motionConfig[nextIndex].name;
-            audioPlayerFile = motionConfig.find((item) => item.name === motionName)!.audioPlayerFile;
-            camMotionFile = motionConfig.find((item) => item.name === motionName)!.camMotionFile;
-            modelMotionFile = motionConfig.find((item) => item.name === motionName)!.modelMotionFile;
-            changeMotion();
+            trackPanel.isVisible = !trackPanel.isVisible;
+            motionButton.background = trackPanel.isVisible ? "rgba(119, 119, 119, 0.5)" : "rgba(0,0,0,0)";
         });
 
         const physicsButton = Button.CreateImageOnlyButton("but", "res/assets/physics.png");
@@ -1951,6 +2015,14 @@ export class SceneBuilder implements ISceneBuilder {
             prevCharName = chosenCharName;
             chosenCharName = nextCharacter;
             charNameText.text = chosenCharName;
+
+            // Update URL to reflect the new character
+            {
+                const urlBasePath = isLocal ? "" : "/model-viewer";
+                const charSlugCC = chosenCharName.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/ /g, "%20");
+                window.history.replaceState(null, "", urlBasePath + "/" + charSlugCC);
+            }
+
             if (skinButton != undefined) {
                 skinButton.isVisible = false;
             }

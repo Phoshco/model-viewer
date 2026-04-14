@@ -42,12 +42,12 @@ window.onload = (): void => {
     const onlineBasePaths = ["model-viewer", "docs"];
 
     // Extract the base path and item
-    let basePath = "";
+    // let basePath = "";
     let item = "";
 
     // Local case: assume the URL format ends directly with the item
     if (isLocal) {
-        basePath = "/"; // If no base path, default to root
+        // basePath = "/"; // If no base path, default to root
         // console.log(basePath);
         item = fullPath.slice(1).replace(/\/$/, "") || ""; // Get the item after the last "/"
         console.log("Local: " + item);
@@ -59,7 +59,7 @@ window.onload = (): void => {
             if (fullPath.includes(base)) {
                 // Extract the base path and item, considering the folder structure
                 const baseIndex = fullPath.indexOf(base) + base.length;
-                basePath = fullPath.substring(0, fullPath.lastIndexOf("/"));
+                // basePath = fullPath.substring(0, fullPath.lastIndexOf("/"));
                 // console.log(basePath);
                 item = fullPath.slice(baseIndex + 1).replace(/\/$/, "") || "";
                 console.log("Online: " + item);
@@ -69,9 +69,9 @@ window.onload = (): void => {
     }
 
     // Redirect to the base path (without the item name)
-    if (item) {
-        window.history.replaceState(null, "", basePath); // Redirect to the base path without the item
-    }
+    // if (item) {
+    //     window.history.replaceState(null, "", basePath); // Redirect to the base path without the item
+    // }
 
     BaseRuntime.Create({
         canvas,
