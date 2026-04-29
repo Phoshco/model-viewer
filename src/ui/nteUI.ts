@@ -90,21 +90,31 @@ export function createNteUI(params: {
     filterBar.addControl(lakshanaButton);
     filterBar.addControl(psycheButton);
 
-    const buffButton = createIconButton("res/assets/NTE/role_buff.png", 172, () => {
-        toggleFilter(buffButton, "weaponType", "Buff", offWeaponBG);
-    }, "Buff");
+    const synthesisButton = createIconButton("res/assets/NTE/arc_Synthesis.png", 92, () => {
+        toggleFilter(synthesisButton, "weaponType", "Synthesis", offWeaponBG);
+    }, "Synthesis");
 
-    const damageButton = createIconButton("res/assets/NTE/role_damage.png", 212, () => {
-        toggleFilter(damageButton, "weaponType", "Damage", offWeaponBG);
-    }, "Damage");
+    const gasButton = createIconButton("res/assets/NTE/arc_Gas.png", 132, () => {
+        toggleFilter(gasButton, "weaponType", "Gas", offWeaponBG);
+    }, "Gas");
 
-    const survivalButton = createIconButton("res/assets/NTE/role_survival.png", 252, () => {
-        toggleFilter(survivalButton, "weaponType", "Survival", offWeaponBG);
-    }, "Survival");
+    const liquidButton = createIconButton("res/assets/NTE/arc_Liquid.png", 172, () => {
+        toggleFilter(liquidButton, "weaponType", "Liquid", offWeaponBG);
+    }, "Liquid");
 
-    filterBar2.addControl(buffButton);
-    filterBar2.addControl(damageButton);
-    filterBar2.addControl(survivalButton);
+    const plasmaButton = createIconButton("res/assets/NTE/arc_Plasma.png", 212, () => {
+        toggleFilter(plasmaButton, "weaponType", "Plasma", offWeaponBG);
+    }, "Plasma");
+
+    const solidButton = createIconButton("res/assets/NTE/arc_Solid.png", 252, () => {
+        toggleFilter(solidButton, "weaponType", "Solid", offWeaponBG);
+    }, "Solid");
+
+    filterBar2.addControl(synthesisButton);
+    filterBar2.addControl(gasButton);
+    filterBar2.addControl(liquidButton);
+    filterBar2.addControl(plasmaButton);
+    filterBar2.addControl(solidButton);
 
     function clearRarityBG(): void {
         rarity4Button.background = "rgba(0,0,0,0)";
@@ -121,9 +131,11 @@ export function createNteUI(params: {
     }
 
     function offWeaponBG(): void {
-        buffButton.background = "rgba(0,0,0,0)";
-        damageButton.background = "rgba(0,0,0,0)";
-        survivalButton.background = "rgba(0,0,0,0)";
+        synthesisButton.background = "rgba(0,0,0,0)";
+        gasButton.background = "rgba(0,0,0,0)";
+        liquidButton.background = "rgba(0,0,0,0)";
+        plasmaButton.background = "rgba(0,0,0,0)";
+        solidButton.background = "rgba(0,0,0,0)";
     }
 
     function toggleFilter(
@@ -159,9 +171,11 @@ export function createNteUI(params: {
             incantationButton,
             lakshanaButton,
             psycheButton,
-            buffButton,
-            damageButton,
-            survivalButton
+            synthesisButton,
+            gasButton,
+            liquidButton,
+            plasmaButton,
+            solidButton
         ];
         allControls.forEach(c => {
             c.isVisible = visible;
