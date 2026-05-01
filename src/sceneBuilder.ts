@@ -1,4 +1,4 @@
-const baseUrl = "http://127.0.0.1:8080/";
+const baseUrl = "https://phoshco.github.io/"; //"http://127.0.0.1:8080/";
 // for use loading screen, we need to import following module.
 import "@babylonjs/core/Loading/loadingScreen";
 // for cast shadow, we need to import following module.
