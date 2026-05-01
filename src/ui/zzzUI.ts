@@ -58,31 +58,36 @@ export function createZzzUI(params: {
     filterBar.addControl(rarity4Button);
     filterBar.addControl(rarity5Button);
 
-    const electricButton = createIconButton("res/assets/ZZZ/Icon_Electric.png", 92, () => {
+    const electricButton = createIconButton("res/assets/ZZZ/Icon_Electric.png", 52, () => {
         toggleFilter(electricButton, "element", "Electric", offElementBG);
     }, "Electric");
 
-    const etherButton = createIconButton("res/assets/ZZZ/Icon_Ether.png", 132, () => {
+    const etherButton = createIconButton("res/assets/ZZZ/Icon_Ether.png", 92, () => {
         toggleFilter(etherButton, "element", "Ether", offElementBG);
     }, "Ether");
 
-    const fireButton = createIconButton("res/assets/ZZZ/Icon_Fire.png", 172, () => {
+    const fireButton = createIconButton("res/assets/ZZZ/Icon_Fire.png", 132, () => {
         toggleFilter(fireButton, "element", "Fire", offElementBG);
     }, "Fire");
 
-    const iceButton = createIconButton("res/assets/ZZZ/Icon_Ice.png", 212, () => {
+    const iceButton = createIconButton("res/assets/ZZZ/Icon_Ice.png", 172, () => {
         toggleFilter(iceButton, "element", "Ice", offElementBG);
     }, "Ice");
 
-    const physicalButton = createIconButton("res/assets/ZZZ/Icon_Physical.png", 252, () => {
+    const physicalButton = createIconButton("res/assets/ZZZ/Icon_Physical.png", 212, () => {
         toggleFilter(physicalButton, "element", "Physical", offElementBG);
     }, "Physical");
+
+    const windButton = createIconButton("res/assets/ZZZ/Icon_Wind.png", 252, () => {
+        toggleFilter(windButton, "element", "Wind", offElementBG);
+    }, "Wind");
 
     filterBar.addControl(electricButton);
     filterBar.addControl(etherButton);
     filterBar.addControl(fireButton);
     filterBar.addControl(iceButton);
     filterBar.addControl(physicalButton);
+    filterBar.addControl(windButton);
 
     const anomalyButton = createIconButton("res/assets/ZZZ/Icon_Anomaly.png", 52, () => {
         toggleFilter(anomalyButton, "weaponType", "Anomaly", offStyleBG);
@@ -126,6 +131,7 @@ export function createZzzUI(params: {
         fireButton.background = "rgba(0,0,0,0)";
         iceButton.background = "rgba(0,0,0,0)";
         physicalButton.background = "rgba(0,0,0,0)";
+        windButton.background = "rgba(0,0,0,0)";
     }
 
     function offStyleBG(): void {
@@ -169,6 +175,7 @@ export function createZzzUI(params: {
             fireButton,
             iceButton,
             physicalButton,
+            windButton,
             anomalyButton,
             attackButton,
             defenseButton,
