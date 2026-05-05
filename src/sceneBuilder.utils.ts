@@ -1,9 +1,19 @@
-// Pure helpers extracted from sceneBuilder.ts — no logic changes.
+// Pure helpers shared by sceneBuilder.ts.
+export const decodePathItem = (str: string): string => {
+    try {
+        return decodeURIComponent(str);
+    } catch {
+        return str.replace(/%20/gi, " ");
+    }
+};
+
 export const normalize = (str: string): string =>
-    str
-        .replace(/%20/g, " ")
+    decodePathItem(str)
         .toLowerCase()
         .replace(/[^a-z0-9 ]/g, "");
+
+export const createCharacterSlug = (str: string): string =>
+    normalize(str).trim().replace(/ +/g, " ").replace(/ /g, "%20");
 
 export const getFirstDigit = (num: number): number => {
     const str = Math.abs(num).toString();
