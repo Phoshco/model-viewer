@@ -80,7 +80,7 @@ import { FirebaseInstance } from "./fb";
 // import { MmdPlayerControl } from "babylon-mmd/esm/Runtime/Util/mmdPlayerControl";
 import { mobileMmdPlayerControl } from "./mobileMmdPlayerControl";
 import type { BaseCharData, GenshinCharData, HSRCharData, ZZZCharData, WuwaCharData, HNACharData, NTECharData, ExtraCharData } from "./sceneBuilder.types";
-import { normalize, getFirstDigit, findCharByName, findCharById, findAllCharsByName, filterBy, sortBy } from "./sceneBuilder.utils";
+import { normalize, getFirstDigit, findCharByName, findCharById, findAllCharsByName, filterBy, sortBy, createCharacterSlug } from "./sceneBuilder.utils";
 import { afterBuildSingleMaterialDefault, afterBuildSingleMaterialSt } from "./sceneBuilder.materials";
 import { createGenshinUI } from "./ui/genshinUI";
 import { createZzzUI } from "./ui/zzzUI";
@@ -476,6 +476,7 @@ export class SceneBuilder implements ISceneBuilder {
         let prevCharName: string;
         let prevCharId: number;
         let chosenCharName = item;
+        const initialCharacterSlug = createCharacterSlug(chosenCharName);
         let chosenChar: BaseCharData | undefined;
         let tabMode = "Genshin";
         let firstTabMode = tabMode;
@@ -492,8 +493,10 @@ export class SceneBuilder implements ISceneBuilder {
         // Update URL to reflect the loaded character (keep slug in address bar)
         {
             const urlBasePath = isLocal ? "" : "/model-viewer";
-            const charSlug = chosenCharName.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/ /g, "%20");
-            window.history.replaceState(null, "", urlBasePath + "/" + charSlug);
+            const charSlug = createCharacterSlug(chosenCharName);
+            if (!initialCharacterSlug.startsWith(`${charSlug}%20`)) {
+                window.history.replaceState(null, "", urlBasePath + "/" + charSlug);
+            }
         }
 
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
@@ -2019,7 +2022,7 @@ export class SceneBuilder implements ISceneBuilder {
             // Update URL to reflect the new character
             {
                 const urlBasePath = isLocal ? "" : "/model-viewer";
-                const charSlugCC = chosenCharName.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/ /g, "%20");
+                const charSlugCC = createCharacterSlug(chosenCharName);
                 window.history.replaceState(null, "", urlBasePath + "/" + charSlugCC);
             }
 
