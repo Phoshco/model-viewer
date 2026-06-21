@@ -82,12 +82,17 @@ export function createZzzUI(params: {
         toggleFilter(windButton, "element", "Wind", offElementBG);
     }, "Wind");
 
+    const lumifluxButton = createIconButton("res/assets/ZZZ/Icon_Lumiflux.png", 292, () => {
+        toggleFilter(lumifluxButton, "element", "Lumiflux", offElementBG);
+    }, "Lumiflux");
+
     filterBar.addControl(electricButton);
     filterBar.addControl(etherButton);
     filterBar.addControl(fireButton);
     filterBar.addControl(iceButton);
     filterBar.addControl(physicalButton);
     filterBar.addControl(windButton);
+    filterBar.addControl(lumifluxButton);
 
     const anomalyButton = createIconButton("res/assets/ZZZ/Icon_Anomaly.png", 52, () => {
         toggleFilter(anomalyButton, "weaponType", "Anomaly", offStyleBG);
@@ -132,6 +137,7 @@ export function createZzzUI(params: {
         iceButton.background = "rgba(0,0,0,0)";
         physicalButton.background = "rgba(0,0,0,0)";
         windButton.background = "rgba(0,0,0,0)";
+        lumifluxButton.background = "rgba(0,0,0,0)";
     }
 
     function offStyleBG(): void {
@@ -176,6 +182,7 @@ export function createZzzUI(params: {
             iceButton,
             physicalButton,
             windButton,
+            lumifluxButton,
             anomalyButton,
             attackButton,
             defenseButton,
