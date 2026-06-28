@@ -2440,10 +2440,10 @@ export class SceneBuilder implements ISceneBuilder {
                 mmdRuntime.setAudioPlayer(audioPlayer);
             }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
-                let isSpecialModel = ["Parayaya","David", "Adam Smasher", "Xuanling", "Suisui"].some(name =>
+                let isSpecialModel = ["Parayaya","David", "Adam Smasher", "Suisui"].some(name =>
                     chosenChar.name.includes(name)
                 );
-                if ((chosenChar.name.includes("Mornye") || chosenChar.name.includes("Lynae") || chosenChar.name.includes("Chisa")) && (chosenChar.directory.includes("skin"))) {
+                if ((chosenChar.name.includes("Mornye")) && (chosenChar.directory.includes("skin"))) {
                     isSpecialModel = true;
                 }
 
