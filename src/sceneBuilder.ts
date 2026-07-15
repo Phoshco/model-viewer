@@ -2443,7 +2443,7 @@ export class SceneBuilder implements ISceneBuilder {
                 let isSpecialModel = ["Parayaya","David", "Adam Smasher", "Jingran", "Muyu"].some(name =>
                     chosenChar.name.includes(name)
                 );
-                if ((chosenChar.name.includes("Mornye") || chosenChar.name.includes("Sparxie")) && (chosenChar.directory.includes("skin"))) {
+                if ((chosenChar.name.includes("Mornye")) && (chosenChar.directory.includes("skin"))) {
                     isSpecialModel = true;
                 }
 
