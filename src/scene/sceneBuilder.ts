@@ -66,7 +66,7 @@ import { normalize, getFirstDigit, findCharByName, findCharById, findAllCharsByN
 import { afterBuildSingleMaterialDefault, afterBuildSingleMaterialSt } from "../sceneBuilder.materials";
 import type { SceneApi } from "./sceneApi";
 import { SceneStateStore, createInitialState } from "./sceneState";
-import type { TabMode, CharacterData } from "./sceneState";
+import type { TabMode, CharacterData, SceneState } from "./sceneState";
 
 export interface SceneBuildResult {
     scene: Scene;
@@ -1253,13 +1253,16 @@ export class SceneBuilder implements ISceneBuilder {
             },
             setFilter: (tab, key, value): void => {
                 const s = store.get();
-                const fieldName = (`${tab.charAt(0).toLowerCase()}${tab.slice(1)}Filter`) as keyof typeof s;
-                // Special handling for HNA/NTE since names are lowercased
-                const filterField = tab === "HNA" ? "hnaFilter" :
-                    tab === "NTE" ? "nteFilter" :
-                        tab === "WuWa" ? "wuwaFilter" :
-                            (`${tab.charAt(0).toLowerCase()}${tab.slice(1)}Filter`) as keyof SceneApi["state"];
-                void fieldName;
+                // Map tab name -> matching state field. Some tabs (HSR, ZZZ, HNA, NTE, WuWa)
+                // need explicit mapping because a naive lowercase-first-char transform
+                // would produce e.g. "hSRFilter" / "zZZFilter" which don't exist on state.
+                const filterField: keyof SceneState =
+                    tab === "Genshin" ? "genshinFilter" :
+                        tab === "HSR" ? "hsrFilter" :
+                            tab === "ZZZ" ? "zzzFilter" :
+                                tab === "WuWa" ? "wuwaFilter" :
+                                    tab === "HNA" ? "hnaFilter" :
+                                        "nteFilter";
                 const filterKey = filterField as keyof typeof s;
                 const cur = (s[filterKey] as { key: string; value: string }[]).slice();
                 const idx = cur.findIndex(e => e.key === key);
