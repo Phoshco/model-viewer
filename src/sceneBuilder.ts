@@ -248,6 +248,16 @@ export class SceneBuilder implements ISceneBuilder {
 
         // findCharById, findAllCharsByName, filterBy, sortBy moved to `./sceneBuilder.utils.ts`
 
+        // Some characters need to be loaded WITHOUT skeleton/morph building
+        // (their PMX files break otherwise). Kept in one place so the check is
+        // applied consistently at every LoadAssetContainerAsync site.
+        const isSpecialModelChar = (c: BaseCharData): boolean => {
+            const specialNames = ["Parayaya", "David", "Adam Smasher", "Muyu", "Nitsa"];
+            if (specialNames.some(name => c.name.includes(name))) return true;
+            if (c.name.includes("Mornye") && c.directory.includes("skin")) return true;
+            return false;
+        };
+
         const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         ///////////////
@@ -297,39 +307,28 @@ export class SceneBuilder implements ISceneBuilder {
         mmdCamera.layerMask = 1;
 
         const defCamPos = new Vector3(0, 10, -30).scaleInPlace(worldScale);
-        const camera = new ArcRotateCamera("arcRotateCamera", 0, 0, 30 * worldScale, new Vector3(0, 10, 0), scene);
-        camera.maxZ = 5000;
-        // camera.minZ = 0;
-        camera.setPosition(defCamPos);
-        camera.attachControl(canvas, false);
-        camera.inertia = 0.8;
-        camera.speed = 0.5 * worldScale;
-        camera.panningSensibility = 500;
-        camera.zoomToMouseLocation = true;
-        camera.wheelDeltaPercentage = 0.1;
-        camera.upperRadiusLimit = 100 * worldScale;
-        camera.lowerRadiusLimit = 1 * worldScale;
-        if (isMobile) {
-            camera.pinchDeltaPercentage = 0.002;
-        }
-        camera.layerMask = 1;
 
-        const stillCamera = new ArcRotateCamera("stillCamera", 0, 0, 30 * worldScale, new Vector3(0, 10, 0), scene);
-        stillCamera.maxZ = 5000;
-        // stillCamera.minZ = 0;
-        stillCamera.setPosition(defCamPos);
-        stillCamera.attachControl(canvas, false);
-        stillCamera.inertia = 0.8;
-        stillCamera.speed = 0.5 * worldScale;
-        stillCamera.panningSensibility = 500;
-        stillCamera.zoomToMouseLocation = true;
-        stillCamera.wheelDeltaPercentage = 0.1;
-        stillCamera.upperRadiusLimit = 100 * worldScale;
-        stillCamera.lowerRadiusLimit = 1 * worldScale;
-        if (isMobile) {
-            stillCamera.pinchDeltaPercentage = 0.002;
-        }
-        stillCamera.layerMask = 1;
+        const createArcCamera = (name: string): ArcRotateCamera => {
+            const cam = new ArcRotateCamera(name, 0, 0, 30 * worldScale, new Vector3(0, 10, 0), scene);
+            cam.maxZ = 5000;
+            cam.setPosition(defCamPos);
+            cam.attachControl(canvas, false);
+            cam.inertia = 0.8;
+            cam.speed = 0.5 * worldScale;
+            cam.panningSensibility = 500;
+            cam.zoomToMouseLocation = true;
+            cam.wheelDeltaPercentage = 0.1;
+            cam.upperRadiusLimit = 100 * worldScale;
+            cam.lowerRadiusLimit = 1 * worldScale;
+            if (isMobile) {
+                cam.pinchDeltaPercentage = 0.002;
+            }
+            cam.layerMask = 1;
+            return cam;
+        };
+
+        const camera = createArcCamera("arcRotateCamera");
+        const stillCamera = createArcCamera("stillCamera");
 
         // const guiCam = new ArcRotateCamera("guiCamera", 0, 0, 25 * worldScale, new Vector3(0, 10 * worldScale, 1), scene);
         const guiCam = new ArcRotateCamera("guiCamera", Math.PI / 2 + Math.PI / 7, Math.PI / 2, 100, new Vector3(0, 20, 0), scene);
@@ -397,7 +396,7 @@ export class SceneBuilder implements ISceneBuilder {
         particleSystem.renderingGroupId = 1;
 
         // create mmd runtime with physics (initialized later after audio player using updated wasm/physics APIs)
-        let mmdRuntime: MmdRuntime | any;
+        let mmdRuntime: MmdRuntime | MmdWasmRuntime;
         // let physicsRuntime: MultiPhysicsRuntime | undefined;
 
         // physics toggle: enable/disable physics via URL param `?physics=1` or set default here
@@ -417,21 +416,24 @@ export class SceneBuilder implements ISceneBuilder {
         audioPlayer.source = audioPlayerFile;
         // initialize wasm + physics + mmd runtime (updated babylon-mmd APIs)
         let wasmInstance: any | undefined;
+
+        // Helper: create an MMD runtime (with or without physics), register it against
+        // the scene, and attach the current audio player. Reads `audioPlayer` and
+        // `wasmInstance` via closure so callers always get the latest references.
+        const createMmdRuntime = (physicsOn: boolean): MmdRuntime | MmdWasmRuntime => {
+            const rt = physicsOn
+                ? new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene))
+                : new MmdRuntime(scene);
+            rt.loggingEnabled = true;
+            rt.register(scene);
+            rt.setAudioPlayer(audioPlayer);
+            return rt;
+        };
+
         if (physicsModeOn) {
             wasmInstance = await GetMmdWasmInstance(new MmdWasmInstanceTypeSPR());
-
-            mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene)); // use Bullet physics for rigid body simulation
-            mmdRuntime.loggingEnabled = true;
-            mmdRuntime.register(scene);
-            mmdRuntime.setAudioPlayer(audioPlayer);
-            // mmdRuntime.playAnimation();
-        } else {
-            // create runtime without physics
-            mmdRuntime = new MmdRuntime(scene);
-            mmdRuntime.loggingEnabled = true;
-            mmdRuntime.register(scene);
-            mmdRuntime.setAudioPlayer(audioPlayer);
         }
+        mmdRuntime = createMmdRuntime(physicsModeOn);
 
         // create youtube like player control
         let mmdPlayerControl = new mobileMmdPlayerControl(scene, mmdRuntime, audioPlayer, isMobile);
@@ -500,16 +502,21 @@ export class SceneBuilder implements ISceneBuilder {
         }
 
         if (chosenChar && chosenChar.directory && chosenChar.pmx) {
+            // Apply special-model overrides so URL-entry of characters like
+            // Parayaya/David/Adam Smasher/Jingran/Muyu/Nitsa/Mornye skins loads
+            // the same way as when they're selected from the character panel.
+            const initialMmdModelOptions = {
+                loggingEnabled: true,
+                materialBuilder: materialBuilder,
+                ...(isSpecialModelChar(chosenChar) ? { buildSkeleton: false, buildMorph: false } : {})
+            };
             promises.push(LoadAssetContainerAsync(
                 baseUrl + chosenChar.directory + "/" + chosenChar.pmx,
                 scene,
                 {
                     onProgress: (event) => updateLoadingText(2, `Loading model... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`),
                     pluginOptions: {
-                        mmdmodel: {
-                            loggingEnabled: true,
-                            materialBuilder: materialBuilder
-                        }
+                        mmdmodel: initialMmdModelOptions
                     }
                 }
             )
@@ -602,17 +609,29 @@ export class SceneBuilder implements ISceneBuilder {
         ground.receiveShadows = true;
         ground.parent = mmdRoot;
 
-        let mmdModel = mmdRuntime.createMmdModel(modelMesh);
+        // Wrap in try/catch: for "special" models loaded without skeleton/morph
+        // (isSpecialModelChar characters), createMmdModel throws a "Mesh validation
+        // failed" error. Panel-click path already handles this in createCharacter;
+        // this makes the URL-entry path behave the same way (load and display
+        // statically instead of crashing).
+        let mmdModel: any;
+        try {
+            mmdModel = mmdRuntime.createMmdModel(modelMesh);
+        } catch (error) {
+            console.error("Failed to create MMD model:", error);
+        }
         // const theCharAnimation = physicsModeOn
         //     ? new MmdWasmAnimation(loadResults[1], wasmInstance!, scene)
         //     : (loadResults[1] as MmdAnimation);
         let theCharAnimation = loadResults[1] as MmdAnimation | MmdWasmAnimation | undefined;
 
         // for scaling camera to model height
-        let headBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "頭");
+        // Guarded: if createMmdModel threw above (special models without skeleton),
+        // mmdModel is undefined and there are no bones to look up.
+        let headBone = mmdModel ? mmdModel.runtimeBones.find((bone: any) => bone.name === "頭") : undefined;
 
         // make sure directional light follow the model
-        let bodyBone = mmdModel.runtimeBones.find((bone: any) => bone.name === "センター");
+        let bodyBone = mmdModel ? mmdModel.runtimeBones.find((bone: any) => bone.name === "センター") : undefined;
         let boneWorldMatrix = new Matrix();
 
         if (headBone != undefined && bodyBone != undefined) {
@@ -1235,55 +1254,68 @@ export class SceneBuilder implements ISceneBuilder {
         filteredArray = filterBy(charDataArray, genshinFilter);
         sortModeKey = "id";
 
-        function handleGenshinTabSwitch(): void {
-            if (tabMode != "Genshin") {
+        // Tab-switch dispatch: for each tab we know the "active"/"inactive" background
+        // color and how to update the tab control. Text tabs (genshin/hsr/zzz/hna) go
+        // back to `charPanel.background` when inactive; image tabs (WuWa/NTE) go back
+        // to `"rgb(64,68,70)"` when inactive. This preserves the original per-branch
+        // behavior of the six former `handleXxxTabSwitch` functions.
+        interface TabDeactivator {
+            deactivate(): void;
+        }
+        const deactivateGenshinTab = (): void => {
+            genshinButton.background = charPanel.background;
+            genshinUI.hide();
+        };
+        const deactivateHsrTab = (): void => {
+            hsrUI.hide();
+            hsrButton.background = charPanel.background;
+        };
+        const deactivateZzzTab = (): void => {
+            zzzButton.background = charPanel.background;
+            zzzUI.hide();
+        };
+        const deactivateWuwaTab = (): void => {
+            tacetImage.background = "rgb(64,68,70)";
+            wuwaUI.hide();
+        };
+        const deactivateHnaTab = (): void => {
+            hnaButton.background = charPanel.background;
+            hnaUI.hide();
+        };
+        const deactivateNteTab = (): void => {
+            nteImage.background = "rgb(64,68,70)";
+            nteUI.hide();
+        };
+        const tabDeactivators: Record<string, TabDeactivator> = {
+            Genshin: { deactivate: deactivateGenshinTab },
+            HSR: { deactivate: deactivateHsrTab },
+            ZZZ: { deactivate: deactivateZzzTab },
+            WuWa: { deactivate: deactivateWuwaTab },
+            HNA: { deactivate: deactivateHnaTab },
+            NTE: { deactivate: deactivateNteTab }
+        };
+
+        // Unified tab-switch function. Preserves the original behavior:
+        //   1. If already on the target tab, do nothing.
+        //   2. Deactivate the currently-active tab (hide its UI + reset control bg).
+        //   3. Activate the target tab (set control bg + apply filter + sort + showAll + regenerate grid).
+        //   4. HSR has an extra step: sync `hsrUI` sort-mode icon with current `sortModeKey`.
+        function switchToTab(target: "Genshin" | "HSR" | "ZZZ" | "WuWa" | "HNA" | "NTE"): void {
+            if (tabMode == target) return;
+
+            // Deactivate current tab (if it has a deactivator registered).
+            const currentDeactivator = tabDeactivators[tabMode];
+            if (currentDeactivator) currentDeactivator.deactivate();
+
+            // Activate the target tab.
+            if (target == "Genshin") {
                 genshinButton.background = "rgb(64,68,70)";
-                if (tabMode == "HSR") {
-                    hsrButton.background = charPanel.background;
-                    hsrUI.hide();
-                } else if (tabMode == "ZZZ") {
-                    zzzButton.background = charPanel.background;
-                    zzzUI.hide();
-                } else if (tabMode == "WuWa") {
-                    tacetImage.background = "rgb(64,68,70)";
-                    wuwaUI.hide();
-                } else if (tabMode == "HNA") {
-                    hnaButton.background = charPanel.background;
-                    hnaUI.hide();
-                } else if (tabMode == "NTE") {
-                    nteImage.background = "rgb(64,68,70)";
-                    nteUI.hide();
-                }
                 tabMode = "Genshin";
                 filteredArray = filterBy(charDataArray, genshinFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
                 genshinUI.showAll();
-                generateGrid(filteredArray);
-            }
-        }
-        genshinButton.onPointerClickObservable.add(function() {
-            handleGenshinTabSwitch();
-        });
-
-        function handleHSRTabSwitch(): void {
-            if (tabMode != "HSR") {
+            } else if (target == "HSR") {
                 hsrButton.background = "rgb(64,68,70)";
-                if (tabMode == "Genshin") {
-                    genshinButton.background = charPanel.background;
-                    genshinUI.hide();
-                } else if (tabMode == "ZZZ") {
-                    zzzButton.background = charPanel.background;
-                    zzzUI.hide();
-                } else if (tabMode == "WuWa") {
-                    tacetImage.background = "rgb(64,68,70)";
-                    wuwaUI.hide();
-                } else if (tabMode == "NTE") {
-                    nteImage.background = "rgb(64,68,70)";
-                    nteUI.hide();
-                } else {
-                    hnaButton.background = charPanel.background;
-                    hnaUI.hide();
-                }
                 tabMode = "HSR";
                 if (sortModeKey == "id") {
                     hsrUI.setSortModeSource("res/assets/release.png");
@@ -1293,69 +1325,52 @@ export class SceneBuilder implements ISceneBuilder {
                 filteredArray = filterBy(hsrCharDataArray, hsrFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
                 hsrUI.showAll();
-                generateGrid(filteredArray);
-            }
-        }
-        hsrButton.onPointerClickObservable.add(function() {
-            handleHSRTabSwitch();
-        });
-
-        function handleZZZTabSwitch(): void {
-            if (tabMode != "ZZZ") {
+            } else if (target == "ZZZ") {
                 zzzButton.background = "rgb(64,68,70)";
-                if (tabMode == "Genshin") {
-                    genshinButton.background = charPanel.background;
-                    genshinUI.hide();
-                } else if (tabMode == "HSR") {
-                    hsrUI.hide();
-                    hsrButton.background = charPanel.background;
-                } else if (tabMode == "WuWa") {
-                    tacetImage.background = "rgb(64,68,70)";
-                    wuwaUI.hide();
-                } else if (tabMode == "NTE") {
-                    nteImage.background = "rgb(64,68,70)";
-                    nteUI.hide();
-                } else {
-                    hnaButton.background = charPanel.background;
-                    hnaUI.hide();
-                }
                 tabMode = "ZZZ";
                 filteredArray = filterBy(zzzCharDataArray, zzzFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
                 zzzUI.showAll();
-                generateGrid(filteredArray);
-            }
-        }
-        zzzButton.onPointerClickObservable.add(function() {
-            handleZZZTabSwitch();
-        });
-
-        function handleHNATabSwitch(): void {
-            if (tabMode != "HNA") {
+            } else if (target == "WuWa") {
+                tacetImage.background = charPanel.background;
+                tabMode = "WuWa";
+                filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                wuwaUI.showAll();
+            } else if (target == "HNA") {
                 hnaButton.background = "rgb(64,68,70)";
-                if (tabMode == "Genshin") {
-                    genshinButton.background = charPanel.background;
-                    genshinUI.hide();
-                } else if (tabMode == "HSR") {
-                    hsrUI.hide();
-                    hsrButton.background = charPanel.background;
-                } else if (tabMode == "ZZZ") {
-                    zzzButton.background = charPanel.background;
-                    zzzUI.hide();
-                } else if (tabMode == "WuWa") {
-                    tacetImage.background = "rgb(64,68,70)";
-                    wuwaUI.hide();
-                } else if (tabMode == "NTE") {
-                    nteImage.background = "rgb(64,68,70)";
-                    nteUI.hide();
-                }
                 tabMode = "HNA";
                 filteredArray = filterBy(hnaCharDataArray, hnaFilter);
                 filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
                 hnaUI.showAll();
-                generateGrid(filteredArray);
+            } else if (target == "NTE") {
+                nteImage.background = charPanel.background;
+                tabMode = "NTE";
+                filteredArray = filterBy(nteCharDataArray, nteFilter);
+                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
+                nteUI.showAll();
             }
+            generateGrid(filteredArray);
         }
+
+        // Thin wrappers kept so existing call sites (button handlers, searchTextbox
+        // reset, initial firstTabMode setup) continue to work without change.
+        function handleGenshinTabSwitch(): void { switchToTab("Genshin"); }
+        function handleHSRTabSwitch(): void { switchToTab("HSR"); }
+        function handleZZZTabSwitch(): void { switchToTab("ZZZ"); }
+        function handleWuwaTabSwitch(): void { switchToTab("WuWa"); }
+        function handleHNATabSwitch(): void { switchToTab("HNA"); }
+        function handleNTETabSwitch(): void { switchToTab("NTE"); }
+
+        genshinButton.onPointerClickObservable.add(function() {
+            handleGenshinTabSwitch();
+        });
+        hsrButton.onPointerClickObservable.add(function() {
+            handleHSRTabSwitch();
+        });
+        zzzButton.onPointerClickObservable.add(function() {
+            handleZZZTabSwitch();
+        });
         hnaButton.onPointerClickObservable.add(function() {
             handleHNATabSwitch();
         });
@@ -1413,60 +1428,6 @@ export class SceneBuilder implements ISceneBuilder {
         nteImage.thickness = 0;
         nteImage.cornerRadius = 5;
         filterBar2.addControl(nteImage);
-
-        function handleWuwaTabSwitch(): void {
-            if (tabMode != "WuWa") {
-                tacetImage.background = charPanel.background;
-                if (tabMode == "Genshin") {
-                    genshinButton.background = charPanel.background;
-                    genshinUI.hide();
-                } else if (tabMode == "HSR") {
-                    hsrUI.hide();
-                    hsrButton.background = charPanel.background;
-                } else if (tabMode == "ZZZ") {
-                    zzzButton.background = charPanel.background;
-                    zzzUI.hide();
-                } else if (tabMode == "HNA") {
-                    hnaButton.background = charPanel.background;
-                    hnaUI.hide();
-                } else if (tabMode == "NTE") {
-                    nteImage.background = "rgb(64,68,70)";
-                    nteUI.hide();
-                }
-                tabMode = "WuWa";
-                filteredArray = filterBy(wuwaCharDataArray, wuwaFilter);
-                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                wuwaUI.showAll();
-                generateGrid(filteredArray);
-            }
-        }
-
-        function handleNTETabSwitch(): void {
-            if (tabMode != "NTE") {
-                nteImage.background = charPanel.background;
-                if (tabMode == "Genshin") {
-                    genshinButton.background = charPanel.background;
-                    genshinUI.hide();
-                } else if (tabMode == "HSR") {
-                    hsrUI.hide();
-                    hsrButton.background = charPanel.background;
-                } else if (tabMode == "ZZZ") {
-                    zzzButton.background = charPanel.background;
-                    zzzUI.hide();
-                } else if (tabMode == "HNA") {
-                    hnaButton.background = charPanel.background;
-                    hnaUI.hide();
-                } else if (tabMode == "WuWa") {
-                    tacetImage.background = "rgb(64,68,70)";
-                    wuwaUI.hide();
-                }
-                tabMode = "NTE";
-                filteredArray = filterBy(nteCharDataArray, nteFilter);
-                filteredArray = sortBy(filteredArray, sortModeKey, sortModeAscending);
-                nteUI.showAll();
-                generateGrid(filteredArray);
-            }
-        }
 
         tacetImage.onPointerClickObservable.add(function() {
             handleWuwaTabSwitch();
@@ -2043,17 +2004,7 @@ export class SceneBuilder implements ISceneBuilder {
             mmdRuntime.unregister(scene);
 
             // recreate mmd runtime according to physics toggle. reuse existing physicsRuntime when possible
-            if (physicsModeOn) {
-                mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene)); // use Bullet physics for rigid body simulation
-                mmdRuntime.loggingEnabled = true;
-                mmdRuntime.register(scene);
-                mmdRuntime.setAudioPlayer(audioPlayer);
-            } else {
-                mmdRuntime = new MmdRuntime(scene);
-                mmdRuntime.loggingEnabled = true;
-                mmdRuntime.register(scene);
-                mmdRuntime.setAudioPlayer(audioPlayer);
-            }
+            mmdRuntime = createMmdRuntime(physicsModeOn);
 
             mmdRuntime.setAudioPlayer(audioPlayer);
 
@@ -2090,302 +2041,155 @@ export class SceneBuilder implements ISceneBuilder {
                 skinMode = false;
                 chosenChar = findCharByName(extraDataArray, chosenCharName);
                 await createCharacter(chosenChar);
-            } else if (firstDigit == 1 || tabMode == "Genshin") {
-                tabMode = "Genshin";
-                const skinChars = findAllCharsByName(genshinSkinDataArray, chosenCharName);
-                if (prevCharName == chosenCharName) {
-                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
-                        chosenChar = skinChars![0];
-                        skinMode = true;
-                        await createCharacter(chosenChar);
+            }
+            /*
+             * Per-tab skin-cycling dispatch.
+             *
+             * Each tab has a similar "same-character → cycle skin" flow with a few
+             * per-tab quirks:
+             *   - Genshin: samePrev check uses only prevCharName == chosenCharName.
+             *     Non-same path uses findCharByName on the main array.
+             *   - HSR/ZZZ/WuWa/HNA/NTE: samePrev check also requires
+             *     prevCharId == chosenChar?.id. Non-same path uses findCharById.
+             *   - "reset to normal" (last skin → normal) always uses findCharByName
+             *     on the main array. Previously HNA/NTE used the skin array here
+             *     (bug — reloaded a skin instead of the base character); fixed.
+             */
+            else {
+                interface SkinCycleConfig {
+                    tab: "Genshin" | "HSR" | "ZZZ" | "WuWa" | "HNA" | "NTE";
+                    mainArray: BaseCharData[];
+                    skinArray: BaseCharData[];
+                    // Array used for the "last skin → back to normal" branch.
+                    // Always the main array now (was skin array for HNA/NTE before fix).
+                    resetToNormalArray: BaseCharData[];
+                    // Genshin uses the looser prevCharName check; others also require
+                    // prevCharId == chosenChar?.id.
+                    samePrev: () => boolean;
+                    // Genshin uses findCharByName for the non-same path; others use
+                    // findCharById(nextId!).
+                    findForNonSame: () => BaseCharData | undefined;
+                }
 
-                        let isNextSkin = false;
-                        if (skinChars!.length > 1) {
-                            isNextSkin = true;
-                        }
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
-                        let isNextSkin = true;
-                        let prevI: number = 0;
-                        for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!.id === skinChars![i].id) {
-                                prevI = i;
-                            }
-                        }
-                        const temp = (prevI + 1) % skinChars!.length;
-                        if (temp == skinChars!.length - 1) {
-                            isNextSkin = false;
-                        }
-                        if (prevI == skinChars!.length - 1) {
-                            chosenChar = findCharByName(charDataArray, chosenCharName);
-                            skinMode = false;
-                        } else {
-                            chosenChar = skinChars![temp];
+                let cfg: SkinCycleConfig | undefined;
+                if (firstDigit == 1 || tabMode == "Genshin") {
+                    tabMode = "Genshin";
+                    cfg = {
+                        tab: "Genshin",
+                        mainArray: charDataArray,
+                        skinArray: genshinSkinDataArray,
+                        resetToNormalArray: charDataArray,
+                        samePrev: () => prevCharName == chosenCharName,
+                        findForNonSame: () => findCharByName(charDataArray, chosenCharName)
+                    };
+                } else if (firstDigit == 2 || tabMode == "HSR") {
+                    tabMode = "HSR";
+                    cfg = {
+                        tab: "HSR",
+                        mainArray: hsrCharDataArray,
+                        skinArray: hsrSkinDataArray,
+                        resetToNormalArray: hsrCharDataArray,
+                        samePrev: () => prevCharName == chosenCharName && prevCharId == chosenChar?.id,
+                        findForNonSame: () => findCharById(hsrCharDataArray, nextId!)
+                    };
+                } else if (firstDigit == 3 || tabMode == "ZZZ") {
+                    tabMode = "ZZZ";
+                    console.log("ZZZ character selected");
+                    cfg = {
+                        tab: "ZZZ",
+                        mainArray: zzzCharDataArray,
+                        skinArray: zzzSkinDataArray,
+                        resetToNormalArray: zzzCharDataArray,
+                        samePrev: () => prevCharName == chosenCharName && prevCharId == chosenChar?.id,
+                        findForNonSame: () => findCharById(zzzCharDataArray, nextId!)
+                    };
+                } else if (firstDigit == 4 || tabMode == "WuWa") {
+                    tabMode = "WuWa";
+                    cfg = {
+                        tab: "WuWa",
+                        mainArray: wuwaCharDataArray,
+                        skinArray: wuwaSkinDataArray,
+                        resetToNormalArray: wuwaCharDataArray,
+                        samePrev: () => prevCharName == chosenCharName && prevCharId == chosenChar?.id,
+                        findForNonSame: () => findCharById(wuwaCharDataArray, nextId!)
+                    };
+                } else if (firstDigit == 5 || tabMode == "HNA") {
+                    tabMode = "HNA";
+                    cfg = {
+                        tab: "HNA",
+                        mainArray: hnaCharDataArray,
+                        skinArray: hnaSkinDataArray,
+                        // Bug fix: previously used hnaSkinDataArray here, which meant
+                        // "last skin → reset to normal" was reloading a skin instead
+                        // of the base character. Now correctly uses the main array.
+                        resetToNormalArray: hnaCharDataArray,
+                        samePrev: () => prevCharName == chosenCharName && prevCharId == chosenChar?.id,
+                        findForNonSame: () => findCharById(hnaCharDataArray, nextId!)
+                    };
+                } else if (firstDigit == 6 || tabMode == "NTE") {
+                    tabMode = "NTE";
+                    cfg = {
+                        tab: "NTE",
+                        mainArray: nteCharDataArray,
+                        skinArray: nteSkinDataArray,
+                        // Bug fix: previously used nteSkinDataArray here, which meant
+                        // "last skin → reset to normal" was reloading a skin instead
+                        // of the base character. Now correctly uses the main array.
+                        resetToNormalArray: nteCharDataArray,
+                        samePrev: () => prevCharName == chosenCharName && prevCharId == chosenChar?.id,
+                        findForNonSame: () => findCharById(nteCharDataArray, nextId!)
+                    };
+                }
+
+                if (cfg) {
+                    const skinChars = findAllCharsByName(cfg.skinArray, chosenCharName);
+                    if (cfg.samePrev()) {
+                        if (skinChars!.length > 0 && !skinMode) {
+                            // normal → first skin (button will change back to normal)
+                            chosenChar = skinChars![0];
                             skinMode = true;
+                            await createCharacter(chosenChar);
+                            const isNextSkin = skinChars!.length > 1;
+                            createSkinButton(true, isNextSkin, chosenChar!.name);
+                        } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) {
+                            // skin → next skin (only when there is more than one skin)
+                            let isNextSkin = true;
+                            let prevI = 0;
+                            for (let i = 0; i < skinChars!.length; i++) {
+                                if (chosenChar!.id === skinChars![i].id) {
+                                    prevI = i;
+                                }
+                            }
+                            const temp = (prevI + 1) % skinChars!.length;
+                            if (temp == skinChars!.length - 1) {
+                                isNextSkin = false;
+                            }
+                            if (prevI == skinChars!.length - 1) {
+                                chosenChar = findCharByName(cfg.resetToNormalArray, chosenCharName);
+                                skinMode = false;
+                            } else {
+                                chosenChar = skinChars![temp];
+                                skinMode = true;
+                            }
+                            await createCharacter(chosenChar);
+                            createSkinButton(true, isNextSkin, chosenChar!.name);
+                        } else if (skinChars!.length > 0 && skinMode) {
+                            // skin → normal (button reverts to skin)
+                            skinMode = false;
+                            chosenChar = findCharByName(cfg.mainArray, chosenCharName);
+                            await createCharacter(chosenChar);
+                            createSkinButton(true, true, chosenChar!.name);
                         }
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
+                    } else {
+                        // Different character than previous: load fresh from main array.
                         skinMode = false;
-                        chosenChar = findCharByName(charDataArray, chosenCharName);
+                        chosenChar = cfg.findForNonSame();
                         await createCharacter(chosenChar);
-                        createSkinButton(true, true, chosenChar!.name);
+                        if (skinChars!.length > 0) {
+                            createSkinButton(true, true, chosenChar!.name);
+                        }
                     }
                 } else {
-                    skinMode = false;
-                    chosenChar = findCharByName(charDataArray, chosenCharName);
-                    await createCharacter(chosenChar);
-                    if (skinChars!.length > 0) {
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                }
-            } else if (firstDigit == 2 || tabMode == "HSR") {
-                tabMode = "HSR";
-                const skinChars = findAllCharsByName(hsrSkinDataArray, chosenCharName);
-                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
-                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
-                        chosenChar = skinChars![0];
-                        skinMode = true;
-                        await createCharacter(chosenChar);
-
-                        let isNextSkin = false;
-                        if (skinChars!.length > 1) {
-                            isNextSkin = true;
-                        }
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
-                        let isNextSkin = true;
-                        let prevI: number = 0;
-                        for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!.id === skinChars![i].id) {
-                                prevI = i;
-                            }
-                        }
-                        const temp = (prevI + 1) % skinChars!.length;
-                        if (temp == skinChars!.length - 1) {
-                            isNextSkin = false;
-                        }
-                        if (prevI == skinChars!.length - 1) {
-                            chosenChar = findCharByName(hsrCharDataArray, chosenCharName);
-                            skinMode = false;
-                        } else {
-                            chosenChar = skinChars![temp];
-                            skinMode = true;
-                        }
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
-                        skinMode = false;
-                        chosenChar = findCharByName(hsrCharDataArray, chosenCharName);
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                } else {
-                    skinMode = false;
-                    chosenChar = findCharById(hsrCharDataArray, nextId!);
-                    await createCharacter(chosenChar);
-                    if (skinChars!.length > 0) {
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                }
-            } else if (firstDigit == 3 || tabMode == "ZZZ") {
-                tabMode = "ZZZ";
-                console.log("ZZZ character selected");
-                const skinChars = findAllCharsByName(zzzSkinDataArray, chosenCharName);
-                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
-                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
-                        chosenChar = skinChars![0];
-                        skinMode = true;
-                        await createCharacter(chosenChar);
-
-                        let isNextSkin = false;
-                        if (skinChars!.length > 1) {
-                            isNextSkin = true;
-                        }
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
-                        let isNextSkin = true;
-                        let prevI: number = 0;
-                        for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!.id === skinChars![i].id) {
-                                prevI = i;
-                            }
-                        }
-                        const temp = (prevI + 1) % skinChars!.length;
-                        if (temp == skinChars!.length - 1) {
-                            isNextSkin = false;
-                        }
-                        if (prevI == skinChars!.length - 1) {
-                            chosenChar = findCharByName(zzzCharDataArray, chosenCharName);
-                            skinMode = false;
-                        } else {
-                            chosenChar = skinChars![temp];
-                            skinMode = true;
-                        }
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
-                        skinMode = false;
-                        chosenChar = findCharByName(zzzCharDataArray, chosenCharName);
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                } else {
-                    skinMode = false;
-                    chosenChar = findCharById(zzzCharDataArray, nextId!);
-                    await createCharacter(chosenChar);
-                    if (skinChars!.length > 0) {
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                }
-            } else if (firstDigit == 4 || tabMode == "WuWa") {
-                tabMode = "WuWa";
-                const skinChars = findAllCharsByName(wuwaSkinDataArray, chosenCharName);
-                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
-                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
-                        chosenChar = skinChars![0];
-                        skinMode = true;
-                        await createCharacter(chosenChar);
-
-                        let isNextSkin = false;
-                        if (skinChars!.length > 1) {
-                            isNextSkin = true;
-                        }
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
-                        let isNextSkin = true;
-                        let prevI: number = 0;
-                        for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!.id === skinChars![i].id) {
-                                prevI = i;
-                            }
-                        }
-                        const temp = (prevI + 1) % skinChars!.length;
-                        if (temp == skinChars!.length - 1) {
-                            isNextSkin = false;
-                        }
-                        if (prevI == skinChars!.length - 1) {
-                            chosenChar = findCharByName(wuwaCharDataArray, chosenCharName);
-                            skinMode = false;
-                        } else {
-                            chosenChar = skinChars![temp];
-                            skinMode = true;
-                        }
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
-                        skinMode = false;
-                        chosenChar = findCharByName(wuwaCharDataArray, chosenCharName);
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                } else {
-                    skinMode = false;
-                    chosenChar = findCharById(wuwaCharDataArray, nextId!);
-                    await createCharacter(chosenChar);
-                    if (skinChars!.length > 0) {
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                }
-            } else if (firstDigit == 5 || tabMode == "HNA") {
-                tabMode = "HNA";
-                const skinChars = findAllCharsByName(hnaSkinDataArray, chosenCharName);
-                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
-                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
-                        chosenChar = skinChars![0];
-                        skinMode = true;
-                        await createCharacter(chosenChar);
-
-                        let isNextSkin = false;
-                        if (skinChars!.length > 1) {
-                            isNextSkin = true;
-                        }
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
-                        let isNextSkin = true;
-                        let prevI: number = 0;
-                        for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!.id === skinChars![i].id) {
-                                prevI = i;
-                            }
-                        }
-                        const temp = (prevI + 1) % skinChars!.length;
-                        if (temp == skinChars!.length - 1) {
-                            isNextSkin = false;
-                        }
-                        if (prevI == skinChars!.length - 1) {
-                            chosenChar = findCharByName(hnaSkinDataArray, chosenCharName);
-                            skinMode = false;
-                        } else {
-                            chosenChar = skinChars![temp];
-                            skinMode = true;
-                        }
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
-                        skinMode = false;
-                        chosenChar = findCharByName(hnaCharDataArray, chosenCharName);
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                } else {
-                    skinMode = false;
-                    chosenChar = findCharById(hnaCharDataArray, nextId!);
-                    await createCharacter(chosenChar);
-                    if (skinChars!.length > 0) {
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                }
-            } else if (firstDigit == 6 || tabMode == "NTE") {
-                tabMode = "NTE";
-                const skinChars = findAllCharsByName(nteSkinDataArray, chosenCharName);
-                if (prevCharName == chosenCharName && prevCharId == chosenChar?.id) {
-                    if (skinChars!.length > 0 && !skinMode) { // normal to skin (button is to change back to normal)
-                        chosenChar = skinChars![0];
-                        skinMode = true;
-                        await createCharacter(chosenChar);
-
-                        let isNextSkin = false;
-                        if (skinChars!.length > 1) {
-                            isNextSkin = true;
-                        }
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode && skinChars!.length > 1) { // skin to skin if more than 1 skin
-                        let isNextSkin = true;
-                        let prevI: number = 0;
-                        for (let i = 0; i < skinChars!.length; i++) {
-                            if (chosenChar!.id === skinChars![i].id) {
-                                prevI = i;
-                            }
-                        }
-                        const temp = (prevI + 1) % skinChars!.length;
-                        if (temp == skinChars!.length - 1) {
-                            isNextSkin = false;
-                        }
-                        if (prevI == skinChars!.length - 1) {
-                            chosenChar = findCharByName(nteSkinDataArray, chosenCharName);
-                            skinMode = false;
-                        } else {
-                            chosenChar = skinChars![temp];
-                            skinMode = true;
-                        }
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, isNextSkin, chosenChar!.name);
-                    } else if (skinChars!.length > 0 && skinMode) { // skin to normal (button to change to skin)
-                        skinMode = false;
-                        chosenChar = findCharByName(nteCharDataArray, chosenCharName);
-                        await createCharacter(chosenChar);
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                } else {
-                    skinMode = false;
-                    chosenChar = findCharById(nteCharDataArray, nextId!);
-                    await createCharacter(chosenChar);
-                    if (skinChars!.length > 0) {
-                        createSkinButton(true, true, chosenChar!.name);
-                    }
-                }
-            } else {
                 tabMode = "None";
                 skinMode = false;
                 chosenChar = findCharByName(
@@ -2399,6 +2203,7 @@ export class SceneBuilder implements ISceneBuilder {
                     chosenCharName
                 );
                 await createCharacter(chosenChar);
+                }
             }
             resumePlayback();
         }
@@ -2430,27 +2235,13 @@ export class SceneBuilder implements ISceneBuilder {
             // ensure runtime is initialized (in case changeCharacter recreated/unregistered it)
             if (!mmdRuntime) {
                 console.log("Initializing MMD runtime...");
-                if (physicsModeOn) {
-                    mmdRuntime = new MmdWasmRuntime(wasmInstance, scene, new MmdWasmPhysics(scene)); 
-                } else {
-                    mmdRuntime = new MmdRuntime(scene);
-                }
-                mmdRuntime.loggingEnabled = true;
-                mmdRuntime.register(scene);
-                mmdRuntime.setAudioPlayer(audioPlayer);
+                mmdRuntime = createMmdRuntime(physicsModeOn);
             }
             if (chosenChar && chosenChar.directory && chosenChar.pmx) {
-                let isSpecialModel = ["Parayaya","David", "Adam Smasher", "Jingran", "Muyu", "Nitsa"].some(name =>
-                    chosenChar.name.includes(name)
-                );
-                if ((chosenChar.name.includes("Mornye")) && (chosenChar.directory.includes("skin"))) {
-                    isSpecialModel = true;
-                }
-
                 const mmdModelOptions = {
-                loggingEnabled: true,
-                materialBuilder: materialBuilder,
-                ...(isSpecialModel ? { buildSkeleton: false, buildMorph: false } : {})
+                    loggingEnabled: true,
+                    materialBuilder: materialBuilder,
+                    ...(isSpecialModelChar(chosenChar) ? { buildSkeleton: false, buildMorph: false } : {})
                 };
 
                 promises.push(LoadAssetContainerAsync(
@@ -2722,52 +2513,32 @@ export class SceneBuilder implements ISceneBuilder {
         }
         scene.onPointerMove = handlePointerMove;
 
-        if (firstTabMode == "Genshin") {
-            const skinChars = findAllCharsByName(genshinSkinDataArray, chosenCharName);
-            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                const chosenCharSk = skinChars![0];
-                skinMode = false;
-                createSkinButton(true, true, chosenCharSk!.name);
-            }
-        } else if (firstTabMode == "HSR") {
-            handleHSRTabSwitch();
-            const skinChars = findAllCharsByName(hsrSkinDataArray, chosenCharName);
-            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                const chosenCharSk = skinChars![0];
-                skinMode = false;
-                createSkinButton(true, true, chosenCharSk!.name);
-            }
-        } else if (firstTabMode == "ZZZ") {
-            handleZZZTabSwitch();
-            const skinChars = findAllCharsByName(zzzSkinDataArray, chosenCharName);
-            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                const chosenCharSk = skinChars![0];
-                skinMode = false;
-                createSkinButton(true, true, chosenCharSk!.name);
-            }
-        } else if (firstTabMode == "WuWa") {
-            handleWuwaTabSwitch();
-            const skinChars = findAllCharsByName(wuwaSkinDataArray, chosenCharName);
-            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                const chosenCharSk = skinChars![0];
-                skinMode = false;
-                createSkinButton(true, true, chosenCharSk!.name);
-            }
-        } else if (firstTabMode == "HNA") {
-            handleHNATabSwitch();
-            const skinChars = findAllCharsByName(hnaSkinDataArray, chosenCharName);
-            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                const chosenCharSk = skinChars![0];
-                skinMode = false;
-                createSkinButton(true, true, chosenCharSk!.name);
-            }
-        } else if (firstTabMode == "NTE") {
-            handleNTETabSwitch();
-            const skinChars = findAllCharsByName(nteSkinDataArray, chosenCharName);
-            if (skinChars!.length > 0) { // normal to skin (button is to change back to normal)
-                const chosenCharSk = skinChars![0];
-                skinMode = false;
-                createSkinButton(true, true, chosenCharSk!.name);
+        // Initial-tab setup: switch to the tab detected from the URL/character name,
+        // then — if the chosen character has any skins in that tab's skin-data array —
+        // create a skin button so the user can toggle to the first skin. Behaviour is
+        // identical to the previous 6-branch if/else. Genshin is the default tab, so
+        // no switch call is issued for it.
+        {
+            const initialSkinArrays: Record<string, BaseCharData[]> = {
+                Genshin: genshinSkinDataArray,
+                HSR: hsrSkinDataArray,
+                ZZZ: zzzSkinDataArray,
+                WuWa: wuwaSkinDataArray,
+                HNA: hnaSkinDataArray,
+                NTE: nteSkinDataArray
+            };
+            const skinArray = initialSkinArrays[firstTabMode];
+            if (skinArray) {
+                if (firstTabMode != "Genshin") {
+                    switchToTab(firstTabMode as "HSR" | "ZZZ" | "WuWa" | "HNA" | "NTE");
+                }
+                const skinChars = findAllCharsByName(skinArray, chosenCharName);
+                if (skinChars!.length > 0) {
+                    // normal → skin (button will toggle back to normal)
+                    const chosenCharSk = skinChars![0];
+                    skinMode = false;
+                    createSkinButton(true, true, chosenCharSk!.name);
+                }
             }
         }
 
