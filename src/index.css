@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    background-color: black;
+}
+
+#app {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#app * {
+    /* interactive elements opt in via .pointer-events-auto */
+}
+
+/*
+ * Fade UI elements while an animation is playing. Hover restores full opacity.
+ * Applied by adding .fadeable to Toolbar buttons, CharNameOverlay, DisclaimerText;
+ * the #app root gets .playing when the mmd runtime is playing.
+ */
+.fadeable {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#app.playing .fadeable {
+    opacity: 0.2;
+}
+
+#app.playing .fadeable:hover {
+    opacity: 1;
+}

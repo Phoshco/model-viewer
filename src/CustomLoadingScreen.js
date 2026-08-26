@@ -43,6 +43,9 @@ export class CustomLoadingScreen {
         this._loadingDiv.id = "babylonjsLoadingDiv";
         this._loadingDiv.style.opacity = "0";
         this._loadingDiv.style.transition = "opacity 1.5s ease";
+        // Above the Preact overlay (#app has z-index: 10) so the loading screen
+        // fully covers the toolbar icons, character name and disclaimer text.
+        this._loadingDiv.style.zIndex = "1000";
         this._loadingDiv.style.pointerEvents = "none";
         this._loadingDiv.style.display = "grid";
         this._loadingDiv.style.gridTemplateRows = "100%";

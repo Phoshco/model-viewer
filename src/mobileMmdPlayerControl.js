@@ -214,7 +214,11 @@ export class mobileMmdPlayerControl extends MmdPlayerControl {
                         fullscreenButton.style.color = "white";
                         fullscreenButton.style.backgroundColor = "rgba(0, 0, 0, 0)";
                         fullscreenButton.style.fontSize = "20px";
-                        fullscreenButton.innerHTML = '<img src="res/assets/maximise.png" alt="Fullscreen" style="width: 100%; height: 100%;">';
+                        // Resolve asset path against the actual bundle location so it works
+                        // under any deployment subpath (/, /model-viewer/, etc.).
+                        const _isGhPages = typeof window !== "undefined" && window.location.hostname.includes("github.io");
+                        const _resPrefix = _isGhPages ? "/model-viewer/" : "/";
+                        fullscreenButton.innerHTML = '<img src="' + _resPrefix + 'res/assets/maximise.png" alt="Fullscreen" style="width: 100%; height: 100%;">';
                         // fullscreenButton.innerText = "🗖";
                         fullscreenButton.onclick = () => {
                             if (ownerDocument.fullscreenElement)

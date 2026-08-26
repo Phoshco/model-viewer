@@ -1,10 +1,40 @@
 import { Engine } from "@babylonjs/core/Engines/engine";
+import { render, h } from "preact";
 
+import "./index.css";
 import { BaseRuntime } from "./baseRuntime";
-import { SceneBuilder } from "./sceneBuilder";
+import { SceneBuilder } from "./scene/sceneBuilder";
+import { App } from "./ui/App";
+
+/** Render a full-viewport error banner if boot fails, so we can debug on mobile. */
+function showBootError(err: unknown): void {
+    const el = document.createElement("pre");
+    el.style.cssText = "position:fixed;inset:0;color:#fff;background:#320000;padding:20px;font-size:14px;white-space:pre-wrap;z-index:99999;overflow:auto;pointer-events:auto;font-family:monospace;";
+    const stack = (err as { stack?: string; message?: string })?.stack || (err as { message?: string })?.message || String(err);
+    el.textContent = "Boot failed:\n\n" + stack;
+    document.body.appendChild(el);
+    console.error("Boot failed:", err);
+}
 
 window.onload = (): void => {
+    // Proactively unregister any service workers left over from previous versions.
+    // Old versions may have cached responses with strict COEP/COOP headers that
+    // block cross-origin character portraits. Wiping them fixes
+    // ERR_BLOCKED_BY_RESPONSE.NotSameOriginAfterDefaultedToSameOriginByCoep.
+    try {
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.getRegistrations().then((regs) => {
+                for (const r of regs) void r.unregister();
+            }).catch(() => { /* ignore */ });
+            if ("caches" in window) {
+                caches.keys().then((keys) => keys.forEach((k) => void caches.delete(k))).catch(() => { /* ignore */ });
+            }
+        }
+    } catch { /* ignore */ }
+
     const canvas = document.createElement("canvas");
+    // Keep the canvas in normal document flow so babylon-mmd's MmdPlayerControl
+    // can append its controls as a sibling and position them at the bottom.
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     canvas.style.display = "block";
@@ -15,67 +45,62 @@ window.onload = (): void => {
     const engine = new Engine(canvas, false, {
         preserveDrawingBuffer: false,
         stencil: false,
-        antialias: true, //false
+        antialias: true,
         alpha: false,
         premultipliedAlpha: false,
         powerPreference: "high-performance",
-        doNotHandleTouchAction: false, //true
+        doNotHandleTouchAction: false,
         doNotHandleContextLost: true,
         audioEngine: false
     }, true);
 
-    // Capture the full path from the URL
+    // Parse the character slug out of the URL.
+    // Rules:
+    //   - localhost / LAN IP: pathname is `/<slug>` (no subfolder)
+    //   - github.io deployment: pathname is `/model-viewer/<slug>`
     let fullPath = window.location.pathname;
-    console.log(fullPath);
-
-    // If the path ends with a "/", remove it to standardize the URL
+    console.log("pathname:", fullPath);
     if (fullPath.endsWith("/")) {
-        fullPath = fullPath.slice(0, -1); // Remove the trailing "/"
+        fullPath = fullPath.slice(0, -1);
     }
-
-    // Check for substrings to differentiate between local and online paths
-    const isLocal = window.location.hostname.includes("localhost");
-    // console.log(isLocal);
-    const isOnline = window.location.hostname.includes("github.io");
-
-    // Define potential subfolders for online URLs
-    const onlineBasePaths = ["model-viewer", "docs"];
-
-    // Extract the base path and item
-    // let basePath = "";
+    const isGithubPages = window.location.hostname.includes("github.io");
     let item = "";
-
-    // Local case: assume the URL format ends directly with the item
-    if (isLocal) {
-        // basePath = "/"; // If no base path, default to root
-        // console.log(basePath);
-        item = fullPath.slice(1).replace(/\/$/, "") || ""; // Get the item after the last "/"
-        console.log("Local: " + item);
-    } else if (isOnline) {
-    // {
-        // Online case: handle URLs that include subfolders like "model-viewer" or "docs"
-        // Check if the URL contains any of the online base paths
-        for (const base of onlineBasePaths) {
-            if (fullPath.includes(base)) {
-                // Extract the base path and item, considering the folder structure
-                const baseIndex = fullPath.indexOf(base) + base.length;
-                // basePath = fullPath.substring(0, fullPath.lastIndexOf("/"));
-                // console.log(basePath);
-                item = fullPath.slice(baseIndex + 1).replace(/\/$/, "") || "";
-                console.log("Online: " + item);
+    if (isGithubPages) {
+        const stripPrefixes = ["/model-viewer", "/docs"];
+        let stripped = fullPath;
+        for (const p of stripPrefixes) {
+            if (stripped.startsWith(p)) {
+                stripped = stripped.slice(p.length);
                 break;
             }
         }
+        item = stripped.replace(/^\/+/, "").replace(/\/$/, "");
+    } else {
+        item = fullPath.replace(/^\/+/, "").replace(/\/$/, "");
     }
+    console.log("slug:", item);
 
-    // Redirect to the base path (without the item name)
-    // if (item) {
-    //     window.history.replaceState(null, "", basePath); // Redirect to the base path without the item
-    // }
-
+    const sceneBuilder = new SceneBuilder();
     BaseRuntime.Create({
         canvas,
         engine,
-        sceneBuilder: new SceneBuilder()
-    }, item).then(runtime => runtime.run());
+        sceneBuilder
+    }, item).then(runtime => {
+        runtime.run();
+        const result = sceneBuilder.getResult();
+        if (result) {
+            const appEl = document.getElementById("app");
+            if (appEl) {
+                render(h(App, { api: result.api }), appEl);
+            }
+        }
+    }).catch(showBootError);
 };
+
+// Global handler for uncaught errors that happen after boot.
+window.addEventListener("error", (e): void => {
+    console.error("Uncaught error:", e.error);
+});
+window.addEventListener("unhandledrejection", (e): void => {
+    console.error("Unhandled rejection:", e.reason);
+});
