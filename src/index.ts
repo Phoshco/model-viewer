@@ -89,10 +89,16 @@ window.onload = (): void => {
         runtime.run();
         const result = sceneBuilder.getResult();
         if (result) {
-            const appEl = document.getElementById("app");
-            if (appEl) {
-                render(h(App, { api: result.api }), appEl);
+            // Some entry HTML files (e.g. an older cached 404.html served by
+            // GitHub Pages for /<slug> URLs) may not include the <div id="app">
+            // container. Create one on the fly so the UI still mounts.
+            let appEl = document.getElementById("app");
+            if (!appEl) {
+                appEl = document.createElement("div");
+                appEl.id = "app";
+                document.body.appendChild(appEl);
             }
+            render(h(App, { api: result.api }), appEl);
         }
     }).catch(showBootError);
 };
