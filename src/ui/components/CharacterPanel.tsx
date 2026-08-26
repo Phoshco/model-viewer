@@ -4,8 +4,9 @@ import { baseUrl, resUrl } from "../../config";
 import type { SceneApi } from "../../scene/sceneApi";
 import type { FilterEntry, SceneState, TabMode } from "../../scene/sceneState";
 import type { BaseCharData } from "../../sceneBuilder.types";
-import { filterBy, findCharByName, sortBy } from "../../sceneBuilder.utils";
+import { filterBy, sortBy } from "../../sceneBuilder.utils";
 import { useCharacterSearch } from "../hooks/useCharacterSearch";
+import { CharacterGrid } from "./CharacterGrid";
 import { getFiltersForTab } from "./filters/filterDefs";
 
 interface Props {
@@ -238,48 +239,16 @@ export function CharacterPanel({ api, state }: Props): JSX.Element | null {
                     </div>
                 )}
 
-                {/* Character grid */}
-                <div class="flex-1 overflow-y-auto p-2">
-                    <div class="grid grid-cols-4 sm:grid-cols-5 gap-2">
-                        {displayList.map((char): JSX.Element => {
-                            let bg = "rgb(123,92,144)";
-                            if (char.rarity === 5) bg = "rgb(146,109,69)";
-                            else if (char.rarity === 6) bg = "rgb(192,79,85)";
-                            const hasSkin = findCharByName(state.charData!.allSkins, char.name) !== undefined || skinNames.has(char.name);
-                            return (
-                                <button
-                                    key={char.id}
-                                    class="relative rounded-lg overflow-hidden aspect-square"
-                                    style={{ background: bg }}
-                                    onClick={async (): Promise<void> => await onCharClick(char)}
-                                    onMouseEnter={(): void => setHoverName(char.name)}
-                                    onMouseLeave={(): void => setHoverName("")}
-                                    title={char.name}
-                                >
-                                    <img src={`${baseUrl}${char.image}`} class="w-full h-full object-cover" />
-                                    {hasSkin && (
-                                        <img
-                                            src={resUrl("res/assets/skin_icon.png")}
-                                            class="absolute top-1 right-1 w-5 h-5"
-                                        />
-                                    )}
-                                </button>
-                            );
-                        })}
-                        {/* Extras cell */}
-                        {extras && state.searchQuery.trim() === "" && (
-                            <button
-                                class="relative rounded-lg overflow-hidden aspect-square bg-[rgb(64,68,70)]"
-                                onClick={async (): Promise<void> => await onExtraClick(extras.name)}
-                                onMouseEnter={(): void => setHoverName(extras.name)}
-                                onMouseLeave={(): void => setHoverName("")}
-                                title={extras.name}
-                            >
-                                <img src={extras.image} class="w-full h-full object-cover" />
-                            </button>
-                        )}
-                    </div>
-                </div>
+                {/* Character grid — memoized so hovers don't re-render / reset scroll */}
+                <CharacterGrid
+                    displayList={displayList}
+                    allSkins={state.charData.allSkins}
+                    skinNames={skinNames}
+                    extras={state.searchQuery.trim() === "" ? extras : undefined}
+                    onCharClick={onCharClick}
+                    onExtraClick={onExtraClick}
+                    setHoverName={setHoverName}
+                />
             </div>
         </div>
     );
