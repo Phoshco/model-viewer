@@ -748,6 +748,25 @@ export class SceneBuilder implements ISceneBuilder {
             let skinModeLocal = store.get().skinMode;
 
             if (same) {
+                // Re-derive tabMode from the character's actual ID. The user may have
+                // browsed to a different tab in the character panel without picking a
+                // character, which leaves `tabMode` out of sync with the currently
+                // displayed character. Reloading via physics-toggle would then pick the
+                // wrong background stage inside createCharacter(). Fix: force tabMode
+                // back to the tab that matches the loaded character.
+                const derivedTab: TabMode | undefined =
+                    firstDigit === 1 ? "Genshin" :
+                        firstDigit === 2 ? "HSR" :
+                            firstDigit === 3 ? "ZZZ" :
+                                firstDigit === 4 ? "WuWa" :
+                                    firstDigit === 5 ? "HNA" :
+                                        firstDigit === 6 ? "NTE" :
+                                            undefined;
+                if (derivedTab && tabMode !== derivedTab) {
+                    tabMode = derivedTab;
+                    store.set({ tabMode });
+                }
+
                 let skinChars: BaseCharData[] | undefined;
                 if (firstDigit === 1 || tabMode === "Genshin") skinChars = findAllCharsByName(genshinSkinDataArray, chosenChar!.name);
                 else if (firstDigit === 2 || tabMode === "HSR") skinChars = findAllCharsByName(hsrSkinDataArray, chosenChar!.name);

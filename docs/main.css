@@ -589,6 +589,9 @@ video {
 .aspect-square {
   aspect-ratio: 1 / 1;
 }
+.h-3 {
+  height: 0.75rem;
+}
 .h-5 {
   height: 1.25rem;
 }
@@ -684,6 +687,9 @@ video {
 .overflow-y-auto {
   overflow-y: auto;
 }
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -712,6 +718,12 @@ video {
 }
 .border-0 {
   border-width: 0px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-black\/30 {
+  border-color: rgb(0 0 0 / 0.3);
 }
 .bg-\[rgb\(44\2c 48\2c 50\)\] {
   --tw-bg-opacity: 1;
@@ -761,6 +773,9 @@ video {
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
 }
 .pr-12 {
   padding-right: 3rem;
@@ -897,6 +912,10 @@ body {
 
   .sm\:h-10 {
     height: 2.5rem;
+  }
+
+  .sm\:h-4 {
+    height: 1rem;
   }
 
   .sm\:h-6 {

@@ -25,7 +25,7 @@ function CharacterGridInner({
     displayList, allSkins, skinNames, extras, onCharClick, onExtraClick, setHoverName
 }: GridProps): JSX.Element {
     return (
-        <div class="flex-1 overflow-y-auto p-2">
+        <div class="flex-1 overflow-y-auto overflow-x-hidden p-2 pb-6">
             <div class="grid grid-cols-4 sm:grid-cols-5 gap-2">
                 {displayList.map((char): JSX.Element => {
                     let bg = "rgb(123,92,144)";

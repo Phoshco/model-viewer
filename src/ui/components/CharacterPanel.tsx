@@ -135,7 +135,7 @@ export function CharacterPanel({ api, state }: Props): JSX.Element | null {
             onClick={onBackdropClick}
         >
             <div
-                class="relative bg-[rgb(44,48,50)] text-white shadow-2xl flex flex-col
+                class="relative bg-[rgb(44,48,50)] text-white shadow-2xl flex flex-col overflow-hidden
                        w-full h-full rounded-none border-0
                        sm:w-[720px] sm:max-w-[95vw] sm:h-[920px] sm:max-h-[95vh] sm:rounded-2xl sm:border-2 sm:border-black"
                 onClick={(e): void => e.stopPropagation()}
@@ -249,6 +249,10 @@ export function CharacterPanel({ api, state }: Props): JSX.Element | null {
                     onExtraClick={onExtraClick}
                     setHoverName={setHoverName}
                 />
+
+                {/* Bottom gutter — visual thickness/framing to mirror the top bar
+                    and prevent grid items from appearing to clip out of the rounded border. */}
+                <div class="h-3 sm:h-4 bg-[rgb(64,68,70)] border-t border-black/30 shrink-0" />
             </div>
         </div>
     );
