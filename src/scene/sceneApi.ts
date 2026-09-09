@@ -16,6 +16,7 @@ export interface SceneApi {
     closeTrackPanel(): void;
     toggleTrackPanel(): void;
     openSupport(): void;
+    generateReferenceSheet(): Promise<void>;
     setSearchQuery(q: string): void;
     setTab(tab: "Genshin" | "HSR" | "ZZZ" | "WuWa" | "HNA" | "NTE"): void;
     setSortAscending(asc: boolean): void;

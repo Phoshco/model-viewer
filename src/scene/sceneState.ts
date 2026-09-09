@@ -38,6 +38,7 @@ export interface SceneState {
     motionName: string;
     isCharPanelOpen: boolean;
     isTrackPanelOpen: boolean;
+    isCapturing: boolean;
     // per-tab filters
     genshinFilter: FilterEntry[];
     hsrFilter: FilterEntry[];
@@ -93,6 +94,7 @@ export function createInitialState(isMobile: boolean): SceneState {
         motionName: "",
         isCharPanelOpen: false,
         isTrackPanelOpen: false,
+        isCapturing: false,
         genshinFilter: [{ key: "id", value: "1000" }],
         hsrFilter: [{ key: "id", value: "2000" }],
         zzzFilter: [{ key: "id", value: "3000" }],

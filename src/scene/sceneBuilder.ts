@@ -64,6 +64,8 @@ import { mobileMmdPlayerControl } from "../mobileMmdPlayerControl";
 import type { BaseCharData, GenshinCharData, HSRCharData, ZZZCharData, WuwaCharData, HNACharData, NTECharData, ExtraCharData } from "../sceneBuilder.types";
 import { normalize, getFirstDigit, findCharByName, findCharById, findAllCharsByName, createCharacterSlug } from "../sceneBuilder.utils";
 import { afterBuildSingleMaterialDefault, afterBuildSingleMaterialSt } from "../sceneBuilder.materials";
+import { getFiltersForTab } from "../ui/components/filters/filterDefs";
+import { generateReferenceSheet } from "./referenceSheet";
 import type { SceneApi } from "./sceneApi";
 import { SceneStateStore, createInitialState } from "./sceneState";
 import type { TabMode, CharacterData, SceneState } from "./sceneState";
@@ -1251,6 +1253,59 @@ export class SceneBuilder implements ISceneBuilder {
             },
             openSupport: (): void => {
                 window.open("https://ko-fi.com/phoshco", "_blank");
+            },
+            generateReferenceSheet: async (): Promise<void> => {
+                if (store.get().isCapturing) return;
+                store.set({ isCapturing: true });
+                try {
+                    // Compute the current head-bone world position (頭) for the
+                    // face shot; falls back to null when unavailable.
+                    let headWorldPos: Vector3 | null = null;
+                    if (headBone) {
+                        try {
+                            const m = new Matrix();
+                            headBone.getWorldMatrixToRef(m).multiplyToRef(modelMesh.getWorldMatrix(), m);
+                            headWorldPos = m.getTranslation();
+                        } catch { headWorldPos = null; }
+                    }
+                    // Resolve the game-specific element/weapon icon URLs from the
+                    // filter definitions so the specs panel can show icons instead
+                    // of game-inconsistent "Element"/"Weapon" labels.
+                    const elementVal = chosenChar?.element ?? charScreenElement;
+                    const weaponVal = chosenChar?.weaponType ?? "";
+                    const gf = getFiltersForTab(tabMode);
+                    const elementIconPath = gf.element.find(f => f.value === elementVal)?.icon;
+                    const weaponIconPath = gf.weapon.find(f => f.value === weaponVal)?.icon;
+                    await generateReferenceSheet({
+                        scene,
+                        engine,
+                        captureCamera: stillCamera,
+                        mmdRuntime,
+                        pipeline: defaultPipeline,
+                        modelMeshes: modelMesh?.metadata?.meshes ? [...modelMesh.metadata.meshes] : [],
+                        headWorldPos,
+                        characterName: chosenCharName,
+                        element: elementVal,
+                        weaponType: weaponVal,
+                        elementIcon: elementIconPath ? resUrl(elementIconPath) : "",
+                        weaponIcon: weaponIconPath ? resUrl(weaponIconPath) : "",
+                        rarity: chosenChar?.rarity ?? 0,
+                        game: ({
+                            Genshin: "Genshin Impact",
+                            HSR: "Honkai: Star Rail",
+                            ZZZ: "Zenless Zone Zero",
+                            WuWa: "Wuthering Waves",
+                            HNA: "Honkai: Nexus Anima",
+                            NTE: "Neverness to Everness"
+                        } as Record<string, string>)[tabMode] ?? "",
+                        modelUrl: typeof window !== "undefined" ? window.location.href : "",
+                        darkMode: bg_bool
+                    });
+                } catch (error) {
+                    console.error("Failed to generate reference sheet:", error);
+                } finally {
+                    store.set({ isCapturing: false });
+                }
             },
             setSearchQuery: (q: string): void => {
                 store.set({ searchQuery: q });

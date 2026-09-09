@@ -39,8 +39,8 @@ export const genshinFilters: GameFilters = {
 
 export const hsrFilters: GameFilters = {
     rarity: [
-        { icon: "res/assets/HSR/rarity_5.png", key: "rarity", value: "5", label: "5★" },
-        { icon: "res/assets/HSR/rarity_4.png", key: "rarity", value: "4", label: "4★" }
+        { icon: "res/assets/HSR/rarity_4.png", key: "rarity", value: "4", label: "4★" },
+        { icon: "res/assets/HSR/rarity_5.png", key: "rarity", value: "5", label: "5★" }
     ],
     element: [
         { icon: "res/assets/HSR/element_fire.png", key: "element", value: "Fire", label: "Fire" },
