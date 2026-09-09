@@ -100,6 +100,23 @@ export function Toolbar({ api, state }: Props): JSX.Element {
                 alt="physics"
             />
 
+            {/* Reference sheet capture */}
+            <img
+                src={resUrl(state.darkMode ? "res/assets/reference_light.png" : "res/assets/reference.png")}
+                class={btnStyle}
+                style={​{
+                    position: "absolute",
+                    left: `${gap}px`,
+                    top: topAt(4),
+                    opacity: state.isCapturing ? 0.4 : 1,
+                    pointerEvents: state.isCapturing ? "none" : "auto"
+                }}
+                onClick={async (): Promise<void> => {
+                    if (!state.isCapturing) await api.generateReferenceSheet();
+                }}
+                alt="reference sheet"
+            />
+
             {/* Support button (top right) */}
             <img
                 src={resUrl("res/assets/support.png")}
