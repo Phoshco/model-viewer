@@ -175,7 +175,7 @@ export class SceneBuilder implements ISceneBuilder {
 
         // Some characters need to be loaded WITHOUT skeleton/morph building
         const isSpecialModelChar = (c: BaseCharData): boolean => {
-            const specialNames = ["Parayaya", "David", "Adam Smasher", "Muyu", "Nitsa", "Hsin"];
+            const specialNames = ["Parayaya", "David", "Adam Smasher", "Muyu", "Nitsa"];
             if (specialNames.some(name => c.name.includes(name))) return true;
             if (c.name.includes("Mornye") && c.directory.includes("skin")) return true;
             return false;
