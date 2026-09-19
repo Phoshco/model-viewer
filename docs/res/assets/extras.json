@@ -6,7 +6,7 @@
         "element": "Universal",
         "gender": "Others",
         "rarity": 5,
-        "directory": "res/chars/Genshin/Paimon",
+        "directory": "gi/chars/Paimon",
         "image": "Genshin/Paimon.png",
         "pmx": "派蒙1.0.pmx"
     },
@@ -17,7 +17,7 @@
         "element": "Universal",
         "gender": "Others",
         "rarity": 5,
-        "directory": "res/chars/HSR/Pom-Pom",
+        "directory": "hsr/chars/Pom-Pom",
         "image": "HSR/Pom-Pom.png",
         "pmx": "Pom-Pom.pmx"
     },
@@ -28,7 +28,7 @@
         "element": "Universal",
         "gender": "Others",
         "rarity": 5,
-        "directory": "res/chars/ZZZ/Bangboo",
+        "directory": "zzz/chars/Bangboo",
         "image": "ZZZ/Bangboo.png",
         "pmx": "邦布.pmx"
     },
@@ -39,7 +39,7 @@
         "element": "Universal",
         "gender": "Others",
         "rarity": 5,
-        "directory": "res/chars/WuWa/Abby",
+        "directory": "ww/chars/Abby",
         "image": "WuWa/Abby.png",
         "pmx": "Abby.pmx"
     }
