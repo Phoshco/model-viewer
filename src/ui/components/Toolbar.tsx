@@ -34,12 +34,11 @@ export function Toolbar({ api, state }: Props): JSX.Element {
             {/* Dark mode toggle */}
             <img
                 src={resUrl(state.darkMode ? "res/assets/light_mode.png" : "res/assets/dark_mode.png")}
-                class={btnStyle}
+                class={`${btnStyle}${state.charScreenMode ? " is-inactive" : ""}`}
                 style={{
                     position: "absolute",
                     left: `${gap + step}px`,
                     top: topAt(0),
-                    opacity: state.charScreenMode ? 0.4 : 1,
                     pointerEvents: state.charScreenMode ? "none" : "auto"
                 }}
                 onClick={(): void => {
@@ -108,7 +107,6 @@ export function Toolbar({ api, state }: Props): JSX.Element {
                     position: "absolute",
                     left: `${gap}px`,
                     top: topAt(4),
-                    opacity: state.isCapturing ? 0.4 : 1,
                     pointerEvents: state.isCapturing ? "none" : "auto"
                 }}
                 onClick={async (): Promise<void> => {

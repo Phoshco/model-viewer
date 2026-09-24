@@ -890,6 +890,22 @@ body {
     opacity: 1;
 }
 
+/*
+ * Inactive/disabled toolbar button: dimmed via CSS (so it composes with the
+ * play-fade above instead of being overridden by an inline opacity).
+ */
+.fadeable.is-inactive {
+    opacity: 0.4;
+}
+
+#app.playing .fadeable.is-inactive {
+    opacity: 0.2;
+}
+
+#app.playing .fadeable.is-inactive:hover {
+    opacity: 0.4;
+}
+
 .hover\:bg-\[rgb\(64\2c 68\2c 70\)\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(64 68 70 / var(--tw-bg-opacity, 1));

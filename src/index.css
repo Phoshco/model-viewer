@@ -45,3 +45,19 @@ body {
 #app.playing .fadeable:hover {
     opacity: 1;
 }
+
+/*
+ * Inactive/disabled toolbar button: dimmed via CSS (so it composes with the
+ * play-fade above instead of being overridden by an inline opacity).
+ */
+.fadeable.is-inactive {
+    opacity: 0.4;
+}
+
+#app.playing .fadeable.is-inactive {
+    opacity: 0.2;
+}
+
+#app.playing .fadeable.is-inactive:hover {
+    opacity: 0.4;
+}

@@ -40,6 +40,11 @@ const POSE_FRONT: CapturePose = { key: "front", label: "Front", alpha: -HALF_PI,
 // zoomed onto the head bone — so it can never end up behind the head.
 // Portrait aspect so it fills the tall right-hand FACE panel.
 const POSE_FACE: CapturePose = { key: "face", label: "Face", alpha: -HALF_PI, beta: HALF_PI, frame: "face", aspect: 0.62 };
+// Extra oblique face angles shown beneath the main Face tile (one cheek each).
+const POSES_FACE_EXTRA: CapturePose[] = [
+    { key: "face14", label: "1/4 Face", alpha: -HALF_PI - Math.PI / 8, beta: HALF_PI, frame: "face", aspect: 0.62 },
+    { key: "face34", label: "3/4 Face", alpha: -HALF_PI + Math.PI / 5, beta: HALF_PI, frame: "face", aspect: 0.62 }
+];
 // Ordered turnaround thumbnails shown in the side strip.
 const POSES_TURNAROUND: CapturePose[] = [
     { key: "front34", label: "3/4 Front", alpha: -HALF_PI - Math.PI / 5, beta: HALF_PI, frame: "full", aspect: 0.52 },
@@ -55,7 +60,9 @@ const POSES_TURNAROUND: CapturePose[] = [
 const POSES_DETAIL: CapturePose[] = [
     { key: "feet", label: "Footwear", alpha: -HALF_PI - Math.PI / 5, beta: HALF_PI, frame: "feet", aspect: 1 },
     { key: "frontDetail", label: "Front Detail", alpha: -HALF_PI + Math.PI / 5, beta: HALF_PI, frame: "mid", aspect: 0.72 },
+    { key: "frontDetail34", label: "3/4 Front Detail", alpha: -HALF_PI - Math.PI / 5, beta: HALF_PI, frame: "mid", aspect: 0.72 },
     { key: "backDetail", label: "Back Detail", alpha: HALF_PI + Math.PI / 5, beta: HALF_PI, frame: "mid", aspect: 0.72 },
+    { key: "backDetail34", label: "3/4 Back Detail", alpha: HALF_PI - Math.PI / 5, beta: HALF_PI, frame: "mid", aspect: 0.72 },
     { key: "headBack", label: "Back of Head", alpha: HALF_PI, beta: HALF_PI, frame: "head", aspect: 1 }
 ];
 
@@ -265,7 +272,7 @@ export async function generateReferenceSheet(ctx: ReferenceSheetContext): Promis
         scene.render();
         const bounds = computeModelBounds(ctx.modelMeshes);
 
-        const all: CapturePose[] = [POSE_FRONT, ...POSES_TURNAROUND, POSE_FACE, ...POSES_DETAIL];
+        const all: CapturePose[] = [POSE_FRONT, ...POSES_TURNAROUND, POSE_FACE, ...POSES_FACE_EXTRA, ...POSES_DETAIL];
         for (const pose of all) {
             const tile = await capturePose(ctx, pose, bounds);
             tiles.set(pose.key, tile);
@@ -615,14 +622,30 @@ async function composeAndOpen(ctx: ReferenceSheetContext, tiles: Map<string, Cap
         drawCaption(g, t, pose.label, cx + cellW / 2, cy + cellH - 32);
     }
 
-    // Face column: single tall FACE callout filling the body height.
-    drawPanel(g, t, faceX, bodyTop, faceColW, bodyH);
-    drawGrid(g, t, faceX, bodyTop, faceColW, bodyH);
+    // Face column: big Face on top, then a 2-up row of oblique face angles.
+    const faceGap = 24;
+    const faceMainH = Math.round(bodyH * 0.58);
+    drawPanel(g, t, faceX, bodyTop, faceColW, faceMainH);
+    drawGrid(g, t, faceX, bodyTop, faceColW, faceMainH);
     const faceImg = imgById.get("face");
-    if (faceImg) drawContained(g, faceImg, faceX + 18, bodyTop + 18, faceColW - 36, bodyH - 70);
-    drawCaption(g, t, POSE_FACE.label, faceX + faceColW / 2, bodyBottom - 40);
+    if (faceImg) drawContained(g, faceImg, faceX + 18, bodyTop + 18, faceColW - 36, faceMainH - 60);
+    drawCaption(g, t, POSE_FACE.label, faceX + faceColW / 2, bodyTop + faceMainH - 32);
 
-    // --- Bottom detail strip: 4 zoomed-in callouts across the full width ---
+    // Two smaller oblique face tiles beneath the main Face.
+    const faceSubTop = bodyTop + faceMainH + faceGap;
+    const faceSubH = bodyBottom - faceSubTop;
+    const faceSubW = (faceColW - faceGap) / 2;
+    for (let i = 0; i < POSES_FACE_EXTRA.length; i++) {
+        const pose = POSES_FACE_EXTRA[i];
+        const fx = faceX + i * (faceSubW + faceGap);
+        drawPanel(g, t, fx, faceSubTop, faceSubW, faceSubH);
+        drawGrid(g, t, fx, faceSubTop, faceSubW, faceSubH);
+        const img = imgById.get(pose.key);
+        if (img) drawContained(g, img, fx + 12, faceSubTop + 12, faceSubW - 24, faceSubH - 50);
+        drawCaption(g, t, pose.label, fx + faceSubW / 2, faceSubTop + faceSubH - 30);
+    }
+
+    // --- Bottom detail strip: zoomed-in callouts across the full width ---
     const detailGap = 28;
     const detailCount = POSES_DETAIL.length;
     const detailW = (W - pad * 2 - detailGap * (detailCount - 1)) / detailCount;
