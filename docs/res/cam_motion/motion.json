@@ -34,6 +34,12 @@
       "audioPlayerFile": "res/cam_motion/Show/Show.mp3",
       "camMotionFile": "res/cam_motion/Show/唱_camera.bvmd",
       "modelMotionFile": "res/cam_motion/Show/唱.bvmd"
+    },
+    {
+      "name": "I Want You Back",
+      "audioPlayerFile": "res/cam_motion/IWYB/Bgm.wav",
+      "camMotionFile": "res/cam_motion/IWYB/cam by ok mmdout.bvmd",
+      "modelMotionFile": "res/cam_motion/IWYB/MMD_Motion_IWYB.bvmd"
     }
   ]
   
