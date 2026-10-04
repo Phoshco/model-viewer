@@ -87,6 +87,11 @@ export function CharacterPanel({ api, state }: Props): JSX.Element | null {
 
     const onCharClick = async (char: BaseCharData): Promise<void> => {
         api.closeCharPanel();
+        // "Add second" mode: the pick is loaded beside the current character.
+        if (state.secondPickMode) {
+            await api.addSecondCharacter(char.name, char.id);
+            return;
+        }
         if (state.chosenCharName !== char.name) {
             await api.changeCharacter(char.name, char.id);
         } else if (state.chosenCharId !== char.id && !state.skinMode) {
@@ -97,6 +102,10 @@ export function CharacterPanel({ api, state }: Props): JSX.Element | null {
     const onExtraClick = async (name: string): Promise<void> => {
         if (name !== "Paimon" && name !== "Pom-Pom" && name !== "Bangboo" && name !== "Abby") return;
         api.closeCharPanel();
+        if (state.secondPickMode) {
+            await api.addSecondCharacter(name, 0);
+            return;
+        }
         if (state.chosenCharName !== name) {
             await api.changeCharacter(name, 0);
         }

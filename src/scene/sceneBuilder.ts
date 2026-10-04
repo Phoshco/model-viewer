@@ -334,9 +334,31 @@ export class SceneBuilder implements ISceneBuilder {
         engine.displayLoadingUI();
 
         let loadingTexts: string[] = [];
+        // Parses a step string like "Loading model... 123/456 (72%)" into its
+        // label ("Loading model…") and percent (72). Strings without a percent
+        // (e.g. "...Done") count as complete.
+        const parseStep = (text: string): { label: string; percent: number } => {
+            const match = /\((\d+)%\)/.exec(text);
+            const percent = match ? Number(match[1]) : 100;
+            // Label = everything before the counts/percent, trimmed, with a
+            // trailing ellipsis for a cleaner look.
+            let label = text.replace(/\s*\d+\/\d+.*$/, "").replace(/\.{3}\s*$/, "").trim();
+            if (!label) label = "Loading";
+            return { label: label + "…", percent };
+        };
         const updateLoadingText = (updateIndex: number, text: string): void => {
             loadingTexts[updateIndex] = text;
-            customLoadingScreen.loadingTextDiv.innerHTML = "<br/><br/><br/><br/>" + loadingTexts.join("<br/><br/>");
+            // Aggregate percent = average across all known steps so the bar fills
+            // smoothly to 100% as the parallel loads complete.
+            const steps = loadingTexts.filter((t) => typeof t === "string" && t.length > 0);
+            let total = 0;
+            for (const s of steps) total += parseStep(s).percent;
+            const aggregate = steps.length > 0 ? Math.round(total / steps.length) : 0;
+            // Label follows the step that was just updated.
+            const { label } = parseStep(text);
+            customLoadingScreen.setProgress(label, aggregate);
+            // Keep the hidden text node in sync for backward-compat.
+            customLoadingScreen.loadingTextDiv.innerHTML = loadingTexts.join("<br/><br/>");
         };
 
         let promises: Promise<any>[] = [];
@@ -374,6 +396,8 @@ export class SceneBuilder implements ISceneBuilder {
         } else if (firstTabMode != "Genshin") {
             charScreenElement = "Universal";
         }
+        // Tint the loading spinner + progress bar to match the character element.
+        customLoadingScreen.setAccentColor(charScreenElement);
 
         {
             const basePath = urlBasePath();
@@ -665,6 +689,8 @@ export class SceneBuilder implements ISceneBuilder {
 
             loadingTexts = [];
             engine.displayLoadingUI();
+            // Element doesn't change on a motion swap; reapply current accent.
+            customLoadingScreen.setAccentColor(charScreenElement);
             promises = [];
 
             promises.push(safeLoadBvmd("motion", camMotionFile, (event: any) => updateLoadingText(0, `Loading camera... ${event.loaded}/${event.total} (${Math.floor(event.loaded * 100 / event.total)}%)`)));
@@ -678,6 +704,17 @@ export class SceneBuilder implements ISceneBuilder {
                 }
                 const modelAnimationHandle = mmdModel.createRuntimeAnimation(theCharAnimation as any);
                 mmdModel.setRuntimeAnimation(modelAnimationHandle);
+                // Rebind the new motion to the second character too, so both
+                // dance to the newly selected song instead of only the primary.
+                if (secondMmdModel) {
+                    try {
+                        const secondHandle = secondMmdModel.createRuntimeAnimation(theCharAnimation as any);
+                        secondMmdModel.setRuntimeAnimation(secondHandle);
+                        secondCharAnimation = theCharAnimation;
+                    } catch (error) {
+                        console.error("Failed to rebind second character animation:", error);
+                    }
+                }
             }
 
             if (loadResults[0]) {
@@ -707,13 +744,25 @@ export class SceneBuilder implements ISceneBuilder {
             prevCharName = "";
             prevCharId = -1;
 
+            // Preserve the second character across the physics reload: remember
+            // it, let changeCharacter rebuild the primary, then re-add it.
+            const keepSecondName = store.get().secondCharName;
+
             await changeCharacter(currentCharName, currentCharId, true);
+
+            if (keepSecondName) {
+                const secondChar = resolveCharByNameOrId(keepSecondName);
+                if (secondChar) await addSecondCharacter(secondChar);
+            }
         }
 
         let firstDigitGlobal = 0;
 
         async function changeCharacter(nextCharacter?: string, nextId?: number, same?: boolean): Promise<void> {
             if (!nextCharacter) return;
+            // Changing the primary always collapses back to a single character,
+            // so remove any added second character first (revert to prior state).
+            removeSecondCharacter();
             if (mmdRuntime.isAnimationPlaying) {
                 previousModelState.wasAnimationPlaying = true;
             }
@@ -975,6 +1024,8 @@ export class SceneBuilder implements ISceneBuilder {
                 charScreenMode = true;
                 charScreenElement = chosenCharLocal.element;
             }
+            // Tint the loading spinner + progress bar to match this character.
+            customLoadingScreen.setAccentColor(charScreenElement);
             store.set({ charScreenMode });
 
             if (charScreenMode) {
@@ -1090,6 +1141,170 @@ export class SceneBuilder implements ISceneBuilder {
             store.set({ chosenCharId: chosenCharLocal.id });
         }
 
+        // ---- Secondary character (add beside / remove) ----------------------
+        // Shares the same mmdRuntime as the primary. Kept in separate slots so
+        // the primary character, camera-follow and animation logic are untouched.
+        let secondModelMesh: MmdMesh | undefined;
+        let secondMmdModel: any;
+        let secondModelRes: Awaited<ReturnType<typeof LoadAssetContainerAsync>> | undefined;
+        let secondCharAnimation: MmdAnimation | MmdWasmAnimation | undefined;
+        // Half the side-by-side separation (world units). The primary stays put;
+        // the second is placed at +2*HALF_GAP, and the camera is centered on the
+        // midpoint (+HALF_GAP). So the two characters end up 2*HALF_GAP apart.
+        const SECOND_CHAR_HALF_GAP = 8 * worldScale;
+        let primaryOrigX = 0;
+        // While a second character is shown, slide the camera root sideways so
+        // the view sits at the midpoint between the two characters. The MMD
+        // camera animation frames the camera-root's local origin, so shifting
+        // the root by +HALF_GAP (the primary was moved to -HALF_GAP) recenters
+        // the framing on the pair's midpoint. Re-applied every frame because the
+        // height-tracking block above rewrites position.x each frame.
+        let cameraCenterOffsetX = 0;
+        let cameraCenterActive = false;
+        scene.onBeforeRenderObservable.add(() => {
+            if (cameraCenterActive) {
+                mmdCameraRoot.position.x = cameraCenterOffsetX;
+            }
+        });
+
+        // Resolve a character's data by id (preferred) or name across all the
+        // main / skin / extra arrays. Used for the second character.
+        function resolveCharByNameOrId(name: string, id?: number): BaseCharData | undefined {
+            const pools: BaseCharData[] = [
+                ...(allCharDataArray as BaseCharData[]),
+                ...(allSkinCharDataArray as BaseCharData[]),
+                ...(extraDataArray as BaseCharData[])
+            ];
+            let found: BaseCharData | undefined;
+            if (id && id !== 0) found = pools.find((c) => c.id === id);
+            if (!found) found = findCharByName(pools, name);
+            return found;
+        }
+
+        async function addSecondCharacter(secondChar?: BaseCharData): Promise<void> {
+            // Guard: need a valid char, a loaded primary, and no existing second.
+            if (!secondChar || !secondChar.directory || !secondChar.pmx) return;
+            if (secondModelMesh) return;
+            if (!modelMesh) return;
+
+            engine.displayLoadingUI();
+            customLoadingScreen.setAccentColor(secondChar.element ?? charScreenElement);
+
+            // createCharacter() freezes all materials and blocks the material
+            // dirty mechanism after load. Re-enable both so the newly loaded
+            // second model's materials compile correctly.
+            scene.blockMaterialDirtyMechanism = false;
+            scene.unfreezeMaterials();
+
+            const secondModelOptions = {
+                loggingEnabled: true,
+                materialBuilder: materialBuilder,
+                ...(isSpecialModelChar(secondChar) ? { buildSkeleton: false, buildMorph: false } : {})
+            };
+
+            try {
+                secondModelRes = await LoadAssetContainerAsync(
+                    baseUrl + secondChar.directory + "/" + secondChar.pmx,
+                    scene,
+                    {
+                        onProgress: (event) => customLoadingScreen.setProgress(
+                            "Adding " + secondChar.name + "…",
+                            Math.floor(event.loaded * 100 / Math.max(1, event.total))
+                        ),
+                        pluginOptions: { mmdmodel: secondModelOptions }
+                    }
+                );
+            } catch (error) {
+                console.error("Failed to load second character:", error);
+                engine.hideLoadingUI();
+                return;
+            }
+
+            secondModelRes.addAllToScene();
+            secondModelMesh = secondModelRes.rootNodes[0] as MmdMesh;
+            secondModelMesh.parent = mmdRoot;
+
+            // Keep the PRIMARY where it is (its world matrix is frozen by
+            // createCharacter, so moving it is unreliable). Place the second
+            // beside it at +2*HALF_GAP; the pair's midpoint is primaryOrigX +
+            // HALF_GAP, which the cameras are centered on below.
+            primaryOrigX = modelMesh.position.x;
+            const pairMidX = primaryOrigX + SECOND_CHAR_HALF_GAP;
+            secondModelMesh.position.x = primaryOrigX + SECOND_CHAR_HALF_GAP * 2;
+
+            // Slide the camera root to the pair's midpoint. The MMD camera
+            // animation frames the root's local origin, which was pinned to the
+            // primary (at primaryOrigX), so shifting the root by +HALF_GAP moves
+            // the framed point to the midpoint. Re-applied every frame.
+            cameraCenterOffsetX = pairMidX;
+            cameraCenterActive = true;
+            mmdCameraRoot.position.x = pairMidX;
+            // Recenter the free-look (orbit) cameras' pivot on the midpoint too.
+            camera.setTarget(new Vector3(pairMidX, 10 * worldScale, 0));
+            stillCamera.target = new Vector3(pairMidX, 10 * worldScale, 1);
+
+            shadowGenerator.addShadowCaster(secondModelMesh);
+            for (const mesh of secondModelMesh.metadata.meshes) mesh.receiveShadows = true;
+
+            try {
+                secondMmdModel = mmdRuntime.createMmdModel(secondModelMesh);
+            } catch (error) {
+                console.error("Failed to create second MMD model:", error);
+            }
+
+            // Bind the same model motion so both characters animate in sync.
+            if (secondMmdModel && theCharAnimation) {
+                try {
+                    // theCharAnimation is already a wasm animation when physicsModeOn
+                    // (converted in createCharacter), so it can be reused directly.
+                    const handle = secondMmdModel.createRuntimeAnimation(theCharAnimation as any);
+                    secondMmdModel.setRuntimeAnimation(handle);
+                    secondCharAnimation = theCharAnimation;
+                    // Only re-evaluate if playback has actually progressed; otherwise
+                    // leave BOTH models in their default (T-pose) rest state, matching
+                    // a normal fresh load. Force-seeking frame 0 would snap both into
+                    // the animation's first-frame pose instead of the T-pose.
+                    if (mmdRuntime.currentFrameTime > 0 || mmdRuntime.isAnimationPlaying) {
+                        mmdRuntime.seekAnimation(mmdRuntime.currentFrameTime, true);
+                    }
+                } catch (error) {
+                    console.error("Failed to bind second character animation:", error);
+                }
+            }
+
+            store.set({ secondCharName: secondChar.name });
+            // Restore perf optimizations once the second model has rendered.
+            scene.onAfterRenderObservable.addOnce(() => {
+                engine.hideLoadingUI();
+                scene.freezeMaterials();
+                scene.blockMaterialDirtyMechanism = true;
+            });
+        }
+
+        function removeSecondCharacter(): void {
+            if (!secondModelMesh) return;
+            try {
+                if (secondMmdModel) mmdRuntime.destroyMmdModel(secondMmdModel);
+            } catch (error) {
+                console.error("Failed to destroy second MMD model:", error);
+            }
+            try {
+                shadowGenerator.removeShadowCaster(secondModelMesh);
+            } catch { /* no-op */ }
+            secondModelMesh.dispose(false, true);
+            secondModelMesh = undefined;
+            secondMmdModel = undefined;
+            secondModelRes = undefined;
+            secondCharAnimation = undefined;
+            // Recenter the cameras back on the single (unmoved) primary character.
+            cameraCenterActive = false;
+            cameraCenterOffsetX = 0;
+            mmdCameraRoot.position.x = primaryOrigX;
+            camera.setTarget(new Vector3(primaryOrigX, 10 * worldScale, 0));
+            stillCamera.target = new Vector3(primaryOrigX, 10 * worldScale, 1);
+            store.set({ secondCharName: "" });
+        }
+
         // for scaling camera to model height
         {
             mmdCamera.parent = mmdCameraRoot;
@@ -1155,6 +1370,12 @@ export class SceneBuilder implements ISceneBuilder {
                 if (mmdRuntime.isAnimationPlaying) {
                     mmdRuntime.pauseAnimation();
                 } else {
+                    // If the animation has reached (or passed) its end, rewind to
+                    // the start so spacebar restarts playback instead of doing
+                    // nothing (playAnimation() alone has nothing left to play).
+                    if (mmdRuntime.currentFrameTime >= mmdRuntime.animationFrameTimeDuration - 1e-6) {
+                        mmdRuntime.seekAnimation(0, true);
+                    }
                     mmdRuntime.playAnimation();
                 }
             }
@@ -1164,6 +1385,7 @@ export class SceneBuilder implements ISceneBuilder {
         // Suppress reference-unused warnings
         void allSkinCharDataArray;
         void extraDataArray;
+        void secondCharAnimation;
         void createCharacter;
         void changePhysics;
         void changeMotion;
@@ -1206,6 +1428,19 @@ export class SceneBuilder implements ISceneBuilder {
             state: store,
             changeCharacter: async (name: string, id?: number): Promise<void> => {
                 await changeCharacter(name, id ?? 0, false);
+            },
+            beginAddSecondCharacter: (): void => {
+                // Arm "add second" mode and open the panel; next pick is added.
+                store.set({ secondPickMode: true, isCharPanelOpen: true });
+            },
+            addSecondCharacter: async (name: string, id?: number): Promise<void> => {
+                store.set({ secondPickMode: false });
+                const found = resolveCharByNameOrId(name, id);
+                if (!found) return;
+                await addSecondCharacter(found);
+            },
+            removeSecondCharacter: async (): Promise<void> => {
+                removeSecondCharacter();
             },
             changeMotion: async (trackName: string): Promise<void> => {
                 const track = motionConfig.find(t => t.name === trackName);

@@ -46,10 +46,19 @@ const POSES_FACE_EXTRA: CapturePose[] = [
     { key: "face34", label: "3/4 Face", alpha: -HALF_PI + Math.PI / 5, beta: HALF_PI, frame: "face", aspect: 0.62 }
 ];
 // Ordered turnaround thumbnails shown in the side strip.
+// Drawn as a 2-row x 3-column grid (filled left-to-right, top-to-bottom):
+//   Top row:    3/4 Front, 1/4 Front, Side
+//   Bottom row: 3/4 Back,  1/4 Back,  Back
+// The 1/4 views orbit to the OPPOSITE side from the 3/4 views (same approach as
+// the working "1/4 Face" / "3/4 Face" pair, which flip sign so each shows a
+// different side). Keeping them on the same side only ~13.5 deg apart made the
+// 1/4 and 3/4 shots look near-identical.
 const POSES_TURNAROUND: CapturePose[] = [
     { key: "front34", label: "3/4 Front", alpha: -HALF_PI - Math.PI / 5, beta: HALF_PI, frame: "full", aspect: 0.52 },
+    { key: "front14", label: "1/4 Front", alpha: -HALF_PI + Math.PI / 8, beta: HALF_PI, frame: "full", aspect: 0.52 },
     { key: "side", label: "Side", alpha: -Math.PI, beta: HALF_PI, frame: "full", aspect: 0.52 },
     { key: "back34", label: "3/4 Back", alpha: HALF_PI - Math.PI / 5, beta: HALF_PI, frame: "full", aspect: 0.52 },
+    { key: "back14", label: "1/4 Back", alpha: HALF_PI + Math.PI / 8, beta: HALF_PI, frame: "full", aspect: 0.52 },
     { key: "back", label: "Back", alpha: HALF_PI, beta: HALF_PI, frame: "full", aspect: 0.52 }
 ];
 
@@ -588,7 +597,7 @@ async function composeAndOpen(ctx: ReferenceSheetContext, tiles: Map<string, Cap
     const bodyH = bodyBottom - bodyTop;
 
     // --- Layout columns ---
-    // Left: hero FRONT panel. Middle: turnaround strip (2x2). Right: face + notes.
+    // Left: hero FRONT panel. Middle: turnaround strip (3x2). Right: face + notes.
     const heroW = 720;
     const faceColW = 520;
     const gap = 28;
@@ -605,14 +614,17 @@ async function composeAndOpen(ctx: ReferenceSheetContext, tiles: Map<string, Cap
     if (heroImg) drawContained(g, heroImg, heroX + 20, bodyTop + 20, heroW - 40, bodyH - 70);
     drawCaption(g, t, POSE_FRONT.label, heroX + heroW / 2, bodyBottom - 40);
 
-    // Turnaround strip: 2x2 grid of the four turnaround views.
+    // Turnaround strip: grid of the turnaround views, filled left-to-right,
+    // top-to-bottom. 3 columns x 2 rows for the six front/back/side angles.
     const cellGap = 24;
-    const cellW = (stripW - cellGap) / 2;
-    const cellH = (bodyH - cellGap) / 2;
+    const turnCols = 3;
+    const turnRows = Math.ceil(POSES_TURNAROUND.length / turnCols);
+    const cellW = (stripW - cellGap * (turnCols - 1)) / turnCols;
+    const cellH = (bodyH - cellGap * (turnRows - 1)) / turnRows;
     for (let i = 0; i < POSES_TURNAROUND.length; i++) {
         const pose = POSES_TURNAROUND[i];
-        const col = i % 2;
-        const row = Math.floor(i / 2);
+        const col = i % turnCols;
+        const row = Math.floor(i / turnCols);
         const cx = stripX + col * (cellW + cellGap);
         const cy = bodyTop + row * (cellH + cellGap);
         drawPanel(g, t, cx, cy, cellW, cellH);

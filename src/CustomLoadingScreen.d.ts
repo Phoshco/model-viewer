@@ -30,6 +30,17 @@ export declare class CustomLoadingScreen implements ILoadingScreen {
      */
     hideLoadingUI(): void;
     /**
+     * Sets the accent color used by the spinner + progress bar. Accepts an
+     * element name (e.g. "Pyro", "HSR") or a raw CSS color ("#rrggbb").
+     */
+    setAccentColor(elementOrColor: string): void;
+    /**
+     * Updates the progress panel: a step label + a determinate progress bar.
+     * @param label text shown above the bar
+     * @param percent 0..100 fill amount
+     */
+    setProgress(label: string, percent: number): void;
+    /**
      * Gets or sets the text to display while loading
      */
     set loadingUIText(text: string);

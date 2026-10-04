@@ -69,6 +69,22 @@ export function Toolbar({ api, state }: Props): JSX.Element {
                 />
             )}
 
+            {/* Add / remove second character (＋ when none, − when one is added) */}
+            <img
+                src={resUrl(
+                    state.secondCharName
+                        ? (state.darkMode ? "res/assets/delete_light.png" : "res/assets/delete.png")
+                        : (state.darkMode ? "res/assets/add_light.png" : "res/assets/add.png")
+                )}
+                class={btnStyle}
+                style={​{ position: "absolute", left: `${gap + step}px`, top: topAt(2) }}
+                onClick={async (): Promise<void> => {
+                    if (state.secondCharName) await api.removeSecondCharacter();
+                    else api.beginAddSecondCharacter();
+                }}
+                alt={state.secondCharName ? "remove second character" : "add second character"}
+            />
+
             {/* Motion selector */}
             <img
                 src={resUrl(state.darkMode ? "res/assets/note_light.png" : "res/assets/note.png")}
@@ -99,18 +115,19 @@ export function Toolbar({ api, state }: Props): JSX.Element {
                 alt="physics"
             />
 
-            {/* Reference sheet capture */}
+            {/* Reference sheet capture — disabled while a second character is
+                added (the sheet only captures the primary character). */}
             <img
                 src={resUrl(state.darkMode ? "res/assets/reference_light.png" : "res/assets/reference.png")}
-                class={btnStyle}
+                class={`${btnStyle}${(state.isCapturing || state.secondCharName) ? " is-inactive" : ""}`}
                 style={​{
                     position: "absolute",
                     left: `${gap}px`,
                     top: topAt(4),
-                    pointerEvents: state.isCapturing ? "none" : "auto"
+                    pointerEvents: (state.isCapturing || state.secondCharName) ? "none" : "auto"
                 }}
                 onClick={async (): Promise<void> => {
-                    if (!state.isCapturing) await api.generateReferenceSheet();
+                    if (!state.isCapturing && !state.secondCharName) await api.generateReferenceSheet();
                 }}
                 alt="reference sheet"
             />

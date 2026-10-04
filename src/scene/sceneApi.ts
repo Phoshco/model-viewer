@@ -3,6 +3,12 @@ import type { SceneStateStore } from "./sceneState";
 export interface SceneApi {
     state: SceneStateStore;
     changeCharacter(name: string, id?: number): Promise<void>;
+    // Opens the character panel in "add second" mode (next pick is added beside).
+    beginAddSecondCharacter(): void;
+    // Loads a second character beside the current one.
+    addSecondCharacter(name: string, id?: number): Promise<void>;
+    // Removes the second character and reverts to the single-character state.
+    removeSecondCharacter(): Promise<void>;
     changeMotion(trackName: string): Promise<void>;
     togglePhysics(): Promise<void>;
     setDarkMode(dark: boolean): void;
