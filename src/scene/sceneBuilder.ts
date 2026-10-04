@@ -1151,8 +1151,13 @@ export class SceneBuilder implements ISceneBuilder {
         // Half the side-by-side separation (world units). The primary stays put;
         // the second is placed at +2*HALF_GAP, and the camera is centered on the
         // midpoint (+HALF_GAP). So the two characters end up 2*HALF_GAP apart.
-        const SECOND_CHAR_HALF_GAP = 8 * worldScale;
+        const SECOND_CHAR_HALF_GAP = 7 * worldScale;
         let primaryOrigX = 0;
+        // Cached primary vertical-framing values (theHeight/theDiff) so they can
+        // be restored when the second character is removed. In 2-char mode the
+        // framing switches to the TALLER character's head height.
+        let primaryTheHeight = 0;
+        let primaryTheDiff = 0;
         // While a second character is shown, slide the camera root sideways so
         // the view sits at the midpoint between the two characters. The MMD
         // camera animation frames the camera-root's local origin, so shifting
@@ -1252,6 +1257,30 @@ export class SceneBuilder implements ISceneBuilder {
                 console.error("Failed to create second MMD model:", error);
             }
 
+            // Vertical framing: use the TALLER of the two characters. Cache the
+            // primary's current theHeight/theDiff (so removal can restore them),
+            // then measure the second's head-bone world height and, if it's
+            // taller, switch the framing to it using the same formula the primary
+            // uses (head Y / 10, with a 1.85 reference).
+            primaryTheHeight = theHeight;
+            primaryTheDiff = theDiff;
+            const secondHeadBone = secondMmdModel
+                ? secondMmdModel.runtimeBones.find((bone: any) => bone.name === "頭")
+                : undefined;
+            if (secondHeadBone && secondModelMesh) {
+                const secondHeadMatrix = new Matrix();
+                scene.onBeforeDrawPhaseObservable.addOnce(() => {
+                    secondHeadBone.getWorldMatrixToRef(secondHeadMatrix)
+                        .multiplyToRef(secondModelMesh!.getWorldMatrix(), secondHeadMatrix);
+                    const secondHeadY = secondHeadMatrix.getTranslation().y;
+                    const secondHeight = secondHeadY / 10;
+                    if (secondHeight > theHeight) {
+                        theHeight = secondHeight;
+                        theDiff = 1.85 - secondHeight;
+                    }
+                });
+            }
+
             // Bind the same model motion so both characters animate in sync.
             if (secondMmdModel && theCharAnimation) {
                 try {
@@ -1296,6 +1325,9 @@ export class SceneBuilder implements ISceneBuilder {
             secondMmdModel = undefined;
             secondModelRes = undefined;
             secondCharAnimation = undefined;
+            // Restore the primary's vertical framing (theHeight/theDiff).
+            theHeight = primaryTheHeight;
+            theDiff = primaryTheDiff;
             // Recenter the cameras back on the single (unmoved) primary character.
             cameraCenterActive = false;
             cameraCenterOffsetX = 0;
