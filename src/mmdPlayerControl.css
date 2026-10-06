@@ -1,0 +1,158 @@
+/*
+ * Modern styling for the MMD bottom playbar.
+ *
+ * The playbar DOM is created imperatively in `mobileMmdPlayerControl.js`
+ * (it lives in Babylon's engine container, outside the React/Tailwind #app
+ * tree), so everything here is scoped under `.mmd-playbar` and must not leak.
+ *
+ * Design: a translucent, blurred dark panel anchored to the bottom with an
+ * accent-filled progress slider, circular icon buttons with hover highlights,
+ * and tabular-numeral time readouts.
+ */
+
+.mmd-playbar {
+    --mmd-accent: #e5e7eb;
+    --mmd-accent-strong: #ffffff;
+    --mmd-track: rgba(255, 255, 255, 0.22);
+    --mmd-fg: #f3f4f6;
+    --mmd-fg-dim: rgba(243, 244, 246, 0.55);
+}
+
+/* Inner gradient / panel surface. */
+.mmd-playbar__inner {
+    box-sizing: border-box;
+    background: linear-gradient(
+        to top,
+        rgba(10, 10, 14, 0.78) 0%,
+        rgba(10, 10, 14, 0.55) 55%,
+        rgba(10, 10, 14, 0) 100%
+    );
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    padding: 10px 14px 12px;
+    gap: 6px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ---- Range sliders (time / volume / speed) ---- */
+.mmd-playbar__slider {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 5px;
+    border: none;
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(
+        to right,
+        var(--mmd-accent-strong) 0%,
+        var(--mmd-accent-strong) var(--mmd-fill, 0%),
+        var(--mmd-track) var(--mmd-fill, 0%),
+        var(--mmd-track) 100%
+    );
+    transition: height 0.15s ease;
+}
+
+.mmd-playbar__slider--time {
+    height: 5px;
+}
+
+.mmd-playbar__slider:hover {
+    height: 7px;
+}
+
+/* WebKit / Chromium thumb */
+.mmd-playbar__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--mmd-accent-strong);
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.mmd-playbar__slider:hover::-webkit-slider-thumb,
+.mmd-playbar__slider:active::-webkit-slider-thumb {
+    transform: scale(1.25);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.18);
+}
+
+/* Firefox thumb + track */
+.mmd-playbar__slider::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--mmd-accent-strong);
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.mmd-playbar__slider:hover::-moz-range-thumb,
+.mmd-playbar__slider:active::-moz-range-thumb {
+    transform: scale(1.25);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.18);
+}
+
+.mmd-playbar__slider::-moz-range-track {
+    height: 5px;
+    border-radius: 999px;
+    background: transparent;
+}
+
+/* ---- Icon buttons (play / sound / fullscreen) ---- */
+.mmd-playbar__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--mmd-fg);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease, color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mmd-playbar__btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--mmd-accent-strong);
+}
+
+.mmd-playbar__btn:active {
+    transform: scale(0.9);
+}
+
+.mmd-playbar__btn svg {
+    width: 55%;
+    height: 55%;
+    display: block;
+    pointer-events: none;
+    fill: currentColor;
+}
+
+/* ---- Time / speed text ---- */
+.mmd-playbar__time {
+    color: var(--mmd-fg);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.2px;
+    user-select: none;
+}
+
+.mmd-playbar__time--total {
+    color: var(--mmd-fg-dim);
+}
+
+.mmd-playbar__speed-label {
+    color: var(--mmd-fg);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+}

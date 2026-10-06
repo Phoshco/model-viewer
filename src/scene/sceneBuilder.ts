@@ -1411,6 +1411,27 @@ export class SceneBuilder implements ISceneBuilder {
                     mmdRuntime.playAnimation();
                 }
             }
+
+            // Frame-step seeking with the arrow keys. Previously this only
+            // "worked" when the time-slider <input> happened to be the focused
+            // element (native range inputs step on arrow keys), which is why it
+            // behaved inconsistently. Handle it explicitly here so it works
+            // regardless of focus, as long as no panel/text field is active.
+            if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
+                if (store.get().isCharPanelOpen) return;
+                // Don't hijack arrows while the user is typing in a field.
+                const active = document.activeElement as HTMLElement | null;
+                if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.isContentEditable)) {
+                    return;
+                }
+                e.preventDefault();
+                // Larger jump with Shift for quick scrubbing.
+                const step = e.shiftKey ? 30 : 1;
+                const delta = e.code === "ArrowLeft" ? -step : step;
+                const duration = mmdRuntime.animationFrameTimeDuration;
+                const next = Math.max(0, Math.min(duration, mmdRuntime.currentFrameTime + delta));
+                mmdRuntime.seekAnimation(next, true);
+            }
         }
         document.body.addEventListener("keydown", handleKeyDown);
 
