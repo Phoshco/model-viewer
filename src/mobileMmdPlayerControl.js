@@ -333,7 +333,7 @@ export class mobileMmdPlayerControl extends MmdPlayerControl {
                         speedSlider.style.width = "80px";
                         speedSlider.type = "range";
                         speedSlider.min = "0.07";
-                        speedSlider.max = "1";
+                        speedSlider.max = "2";
                         speedSlider.step = "0.01";
                         speedSlider.id = "sLi";
                         speedSlider.value = mmdRuntime.timeScale.toString();

@@ -296,7 +296,12 @@ export class SceneBuilder implements ISceneBuilder {
         let modelMotionFile = motionConfig.find((item) => item.name === motionName)!.modelMotionFile;
 
         let audioPlayer = new StreamAudioPlayer(scene);
-        audioPlayer.preservesPitch = false;
+        // Keep the audio at its original pitch when the speed slider slows
+        // playback (otherwise the browser pitches it down with playbackRate,
+        // producing a "slowed/deepened" effect).
+        audioPlayer.preservesPitch = true;
+        // Start at 50% volume by default (the slider reads this on creation).
+        audioPlayer.volume = 0.5;
         audioPlayer.source = audioPlayerFile;
         let wasmInstance: any | undefined;
 
@@ -679,7 +684,8 @@ export class SceneBuilder implements ISceneBuilder {
             audioPlayer.dispose();
 
             audioPlayer = new StreamAudioPlayer(scene);
-            audioPlayer.preservesPitch = false;
+            // Preserve pitch across speed changes (see initial setup above).
+            audioPlayer.preservesPitch = true;
             audioPlayer.source = audioPlayerFile;
             mmdRuntime.setAudioPlayer(audioPlayer);
             mmdPlayerControl.dispose();
