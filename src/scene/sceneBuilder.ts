@@ -177,6 +177,7 @@ export class SceneBuilder implements ISceneBuilder {
         const isSpecialModelChar = (c: BaseCharData): boolean => {
             const specialNames = ["Parayaya", "David", "Adam Smasher", "Muyu", "Nitsa", "Aha"];
             if (specialNames.some(name => c.name.includes(name))) return true;
+            if (c.name.includes("Parayaya, the Sovereign of Love and Hate")) return false;
             if ((c.name.includes("Mornye") || c.name.includes("gibberish")) && c.directory.includes("skin")) return true;
             return false;
         };
