@@ -41,6 +41,9 @@ export interface SceneState {
     physicsModeOn: boolean;
     isPlaying: boolean;
     motionName: string;
+    // True when the current motion track supplies a full-screen video background.
+    // While active, the dark-mode and char-screen (Paimon) toolbar buttons are disabled.
+    videoBgActive: boolean;
     isCharPanelOpen: boolean;
     isTrackPanelOpen: boolean;
     isCapturing: boolean;
@@ -99,6 +102,7 @@ export function createInitialState(isMobile: boolean): SceneState {
         physicsModeOn: false,
         isPlaying: false,
         motionName: "",
+        videoBgActive: false,
         isCharPanelOpen: false,
         isTrackPanelOpen: false,
         isCapturing: false,
