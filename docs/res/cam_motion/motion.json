@@ -40,6 +40,13 @@
       "audioPlayerFile": "res/cam_motion/IWYB/Bgm.wav",
       "camMotionFile": "res/cam_motion/IWYB/cam by ok mmdout.bvmd",
       "modelMotionFile": "res/cam_motion/IWYB/MMD_Motion_IWYB.bvmd"
+    },
+    {
+      "name": "お気に召すまま",
+      "audioPlayerFile": "res/cam_motion/お気に召すまま/お気に召すまま.wav",
+      "camMotionFile": "res/cam_motion/お気に召すまま/TDA Cam.bvmd",
+      "modelMotionFile": "res/cam_motion/お気に召すまま/TDA Motion.bvmd",
+      "videoFile": "res/cam_motion/お気に召すまま/TDA PV.mp4"
     }
   ]
   

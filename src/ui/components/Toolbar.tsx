@@ -31,29 +31,31 @@ export function Toolbar({ api, state }: Props): JSX.Element {
                 alt="menu"
             />
 
-            {/* Dark mode toggle */}
+            {/* Dark mode toggle — disabled in char-screen mode and while a video
+                background is active (the video covers the stage entirely). */}
             <img
                 src={resUrl(state.darkMode ? "res/assets/light_mode.png" : "res/assets/dark_mode.png")}
-                class={`${btnStyle}${state.charScreenMode ? " is-inactive" : ""}`}
+                class={`${btnStyle}${(state.charScreenMode || state.videoBgActive) ? " is-inactive" : ""}`}
                 style={{
                     position: "absolute",
                     left: `${gap + step}px`,
                     top: topAt(0),
-                    pointerEvents: state.charScreenMode ? "none" : "auto"
+                    pointerEvents: (state.charScreenMode || state.videoBgActive) ? "none" : "auto"
                 }}
                 onClick={(): void => {
-                    if (!state.charScreenMode) api.toggleDarkMode();
+                    if (!state.charScreenMode && !state.videoBgActive) api.toggleDarkMode();
                 }}
                 alt="dark mode"
             />
 
-            {/* Char screen mode toggle (paimon) */}
+            {/* Char screen mode toggle (paimon) — disabled while a video background
+                is active, since the video replaces the character-sphere stage. */}
             {state.tabMode !== "WuWa" && state.tabMode !== "NTE" && (
                 <img
                     src={resUrl("res/assets/paimon.png")}
-                    class={btnStyle}
-                    style={{ position: "absolute", left: `${gap}px`, top: topAt(1) }}
-                    onClick={(): void => api.toggleCharScreenMode()}
+                    class={`${btnStyle}${state.videoBgActive ? " is-inactive" : ""}`}
+                    style={{ position: "absolute", left: `${gap}px`, top: topAt(1), pointerEvents: state.videoBgActive ? "none" : "auto" }}
+                    onClick={(): void => { if (!state.videoBgActive) api.toggleCharScreenMode(); }}
                     alt="char screen"
                 />
             )}

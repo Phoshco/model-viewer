@@ -32,6 +32,7 @@ import { LoadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
+import { VideoTexture } from "@babylonjs/core/Materials/Textures/videoTexture";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
@@ -295,6 +296,9 @@ export class SceneBuilder implements ISceneBuilder {
         let audioPlayerFile = motionConfig.find((item) => item.name === motionName)!.audioPlayerFile;
         let camMotionFile = motionConfig.find((item) => item.name === motionName)!.camMotionFile;
         let modelMotionFile = motionConfig.find((item) => item.name === motionName)!.modelMotionFile;
+        // Optional per-track full-screen video background (e.g. an MMD PV). Only some
+        // tracks declare it, so it is read defensively and may be undefined.
+        let videoFile: string | undefined = (motionConfig.find((item) => item.name === motionName) as { videoFile?: string }).videoFile;
 
         let audioPlayer = new StreamAudioPlayer(scene);
         // Keep the audio at its original pitch when the speed slider slows
@@ -594,21 +598,63 @@ export class SceneBuilder implements ISceneBuilder {
             layer.texture = dark_bg;
         }
 
+        // Active full-screen video-background texture (null when the current track
+        // has no `videoFile`). Driven in tight sync with the MMD timeline below.
+        let videoBgTexture: VideoTexture | undefined;
+
+        // Scale a background texture's UVs so it "covers" the canvas (same behaviour
+        // the layer scaling achieves for the static stage images), preserving aspect.
+        // NOTE: this assumes a square (1:1) source texture, which is true for the
+        // hoyo stage PNGs. Non-square sources (video) use coverVideoUVs() instead.
+        function coverTextureUVs(tex: Texture): void {
+            const canvasAspectRatio = canvas.width / canvas.height;
+            if (canvasAspectRatio > 1) {
+                tex.uScale = 1; tex.vScale = 1 / layer.scale.y;
+                tex.uOffset = 0; tex.vOffset = (1 - tex.vScale) * 0.5;
+            } else {
+                tex.uScale = 1 / layer.scale.x; tex.vScale = 1;
+                tex.uOffset = (1 - tex.uScale) * 0.5; tex.vOffset = 0;
+            }
+        }
+
+        // "Cover" fit for the video texture, accounting for the video's own aspect
+        // ratio (e.g. 16:9). The Layer stretches its texture to fill the screen, so we
+        // crop via UVs: fit the limiting axis and center-crop the other. The Layer's
+        // scale is left at 1 (the video path does not use the square-source trick).
+        function coverVideoUVs(tex: VideoTexture): void {
+            const videoEl = tex.video;
+            const vw = videoEl.videoWidth || 16;
+            const vh = videoEl.videoHeight || 9;
+            const screenAspect = canvas.width / canvas.height;
+            const videoAspect = vw / vh;
+            if (screenAspect > videoAspect) {
+                // Screen is wider than the video → fit width, crop top/bottom.
+                tex.uScale = 1; tex.uOffset = 0;
+                tex.vScale = videoAspect / screenAspect;
+                tex.vOffset = (1 - tex.vScale) * 0.5;
+            } else {
+                // Screen is taller/narrower → fit height, crop left/right.
+                tex.vScale = 1; tex.vOffset = 0;
+                tex.uScale = screenAspect / videoAspect;
+                tex.uOffset = (1 - tex.uScale) * 0.5;
+            }
+        }
+
         const resizeObserver = new ResizeObserver(() => {
             const canvasAspectRatio = canvas.width / canvas.height;
             if (canvasAspectRatio > 1) {
                 layer.scale.y = canvasAspectRatio;
                 layer.scale.x = 1;
-                light_bg.uScale = 1; light_bg.vScale = 1 / layer.scale.y;
-                light_bg.uOffset = 0; light_bg.vOffset = (1 - light_bg.vScale) * 0.5;
-                dark_bg.uScale = 1; dark_bg.vScale = 1 / layer.scale.y;
-                dark_bg.uOffset = 0; dark_bg.vOffset = (1 - dark_bg.vScale) * 0.5;
             } else {
                 layer.scale.y = 1; layer.scale.x = 1 / canvasAspectRatio;
-                light_bg.uScale = 1 / layer.scale.x; light_bg.vScale = 1;
-                light_bg.uOffset = (1 - light_bg.uScale) * 0.5; light_bg.vOffset = 0;
-                dark_bg.uScale = 1 / layer.scale.x; dark_bg.vScale = 1;
-                dark_bg.uOffset = (1 - dark_bg.uScale) * 0.5; dark_bg.vOffset = 0;
+            }
+            coverTextureUVs(light_bg);
+            coverTextureUVs(dark_bg);
+            if (videoBgTexture) {
+                // The video needs the Layer at 1:1; the image path above may have set
+                // layer.scale, so reset it before applying the aspect-aware crop.
+                layer.scale.x = 1; layer.scale.y = 1;
+                coverVideoUVs(videoBgTexture);
             }
         });
         resizeObserver.observe(canvas);
@@ -677,6 +723,11 @@ export class SceneBuilder implements ISceneBuilder {
             wasMuted: false
         };
 
+        // If the randomly-selected initial track ships a video PV, switch the
+        // background over to it now (otherwise this is a no-op and the static
+        // hoyo stage image stays). `applyBackground` is hoisted (function decl).
+        if (videoFile) applyBackground();
+
         async function changeMotion(): Promise<void> {
             mmdRuntime.pauseAnimation();
             mmdCamera.storeState();
@@ -734,6 +785,10 @@ export class SceneBuilder implements ISceneBuilder {
                 cameraEyePosition
             );
             mmdRuntime.addAnimatable(mmdCamera);
+
+            // Swap the background to match the newly selected track (video PV or the
+            // static stage image). Reads the closure `videoFile` set by the caller.
+            applyBackground();
 
             engine.hideLoadingUI();
         }
@@ -1031,6 +1086,12 @@ export class SceneBuilder implements ISceneBuilder {
                 charScreenMode = true;
                 charScreenElement = chosenCharLocal.element;
             }
+            // A video background replaces the character-sphere stage entirely, so
+            // while one is active never enter char-screen mode (otherwise the sphere
+            // + particles would load on top of / instead of the video).
+            if (videoFile) {
+                charScreenMode = false;
+            }
             // Tint the loading spinner + progress bar to match this character.
             customLoadingScreen.setAccentColor(charScreenElement);
             store.set({ charScreenMode });
@@ -1146,6 +1207,11 @@ export class SceneBuilder implements ISceneBuilder {
             });
 
             store.set({ chosenCharId: chosenCharLocal.id });
+
+            // Rebuilding the character tears down / re-sets the stage, so re-assert the
+            // background. If a video PV is active this reattaches it (changing character
+            // or skin previously dropped the video back to the static stage image).
+            applyBackground();
         }
 
         // ---- Secondary character (add beside / remove) ----------------------
@@ -1469,6 +1535,93 @@ export class SceneBuilder implements ISceneBuilder {
             store.set({ darkMode: bg_bool });
         }
 
+        // Applies the background for the currently selected track:
+        //  - If the track declares a `videoFile`, build a muted/looping VideoTexture
+        //    and show it full-screen (audio still comes from the StreamAudioPlayer).
+        //  - Otherwise, restore the static hoyo stage image for the current dark mode.
+        // While a video background is active the dark-mode and char-screen (Paimon)
+        // toolbar buttons are disabled (see `videoBgActive` in the store).
+        function applyBackground(): void {
+            if (videoBgTexture) {
+                videoBgTexture.dispose();
+                videoBgTexture = undefined;
+            }
+
+            if (videoFile) {
+                // A video PV replaces the character sphere / particles entirely, so
+                // collapse out of char-screen mode first (its button is disabled too).
+                if (store.get().charScreenMode) {
+                    if (modelMeshSt) modelMeshSt.setEnabled(false);
+                    if (!isMobile) particleSystem.stop();
+                    charScreenMode = false;
+                    store.set({ charScreenMode: false });
+                }
+
+                videoBgTexture = new VideoTexture(
+                    "videoBg",
+                    resUrl(videoFile),
+                    scene,
+                    true,
+                    // invertY=false: the background Layer expects an upright texture;
+                    // true flips the PV upside down.
+                    false,
+                    undefined,
+                    // Muted so autoplay is allowed; the .wav drives the actual audio.
+                    { autoPlay: false, loop: false, muted: true, autoUpdateTexture: true }
+                );
+                const videoEl = videoBgTexture.video;
+                videoEl.muted = true;
+                videoEl.loop = false;
+                // The video Layer renders at 1:1 and the PV is center-cropped via UVs
+                // (coverVideoUVs) using its real aspect ratio — avoids the vertical
+                // stretch you'd get from the square-source image math.
+                layer.scale.x = 1; layer.scale.y = 1;
+                const tex = videoBgTexture;
+                coverVideoUVs(tex);
+                // videoWidth/Height are 0 until metadata loads; re-fit once known.
+                videoEl.addEventListener("loadedmetadata", () => {
+                    if (videoBgTexture === tex) coverVideoUVs(tex);
+                }, { once: true });
+                layer.texture = videoBgTexture;
+                scene.clearColor = new Color4(0, 0, 0, 1.0);
+                store.set({ videoBgActive: true });
+            } else {
+                // Restore the square-source image "cover" scaling for the stage PNGs.
+                const canvasAspectRatio = canvas.width / canvas.height;
+                if (canvasAspectRatio > 1) {
+                    layer.scale.y = canvasAspectRatio; layer.scale.x = 1;
+                } else {
+                    layer.scale.y = 1; layer.scale.x = 1 / canvasAspectRatio;
+                }
+                coverTextureUVs(light_bg);
+                coverTextureUVs(dark_bg);
+                layer.texture = bg_bool ? dark_bg : light_bg;
+                scene.clearColor = bg_bool
+                    ? new Color4(0.001, 0.001, 0.001, 1.0)
+                    : new Color4(1, 1, 1, 1.0);
+                store.set({ videoBgActive: false });
+            }
+        }
+
+        // Tight video<->timeline sync. MMD animations run at 30 fps, so the timeline
+        // position in seconds is currentFrameTime / 30. Every frame we nudge the video
+        // element to match (only when drifted past a small threshold, to avoid stutter),
+        // and mirror the play/pause state of the MMD runtime.
+        scene.onBeforeRenderObservable.add(() => {
+            if (!videoBgTexture) return;
+            const videoEl = videoBgTexture.video;
+            if (videoEl.readyState < 1) return; // metadata not loaded yet
+            const targetTime = mmdRuntime.currentFrameTime / 30;
+            if (Number.isFinite(targetTime) && Math.abs(videoEl.currentTime - targetTime) > 0.12) {
+                try { videoEl.currentTime = targetTime; } catch { /* seeking not ready */ }
+            }
+            if (mmdRuntime.isAnimationPlaying) {
+                if (videoEl.paused) void videoEl.play().catch(() => { /* autoplay blocked */ });
+            } else if (!videoEl.paused) {
+                videoEl.pause();
+            }
+        });
+
         function toggleCharScreenMode(): void {
             const s = store.get();
             if (s.charScreenMode) {
@@ -1509,6 +1662,7 @@ export class SceneBuilder implements ISceneBuilder {
                 audioPlayerFile = track.audioPlayerFile;
                 camMotionFile = track.camMotionFile;
                 modelMotionFile = track.modelMotionFile;
+                videoFile = (track as { videoFile?: string }).videoFile;
                 store.set({ motionName, isTrackPanelOpen: false });
                 await changeMotion();
             },
