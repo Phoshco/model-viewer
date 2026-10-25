@@ -84,7 +84,8 @@ export const zzzFilters: GameFilters = {
         { icon: "res/assets/ZZZ/Icon_Defense.png", key: "weaponType", value: "Defense", label: "Defense" },
         { icon: "res/assets/ZZZ/Icon_Stun.png", key: "weaponType", value: "Stun", label: "Stun" },
         { icon: "res/assets/ZZZ/Icon_Support.png", key: "weaponType", value: "Support", label: "Support" },
-        { icon: "res/assets/ZZZ/Icon_Rupture.png", key: "weaponType", value: "Rupture", label: "Rupture" }
+        { icon: "res/assets/ZZZ/Icon_Rupture.png", key: "weaponType", value: "Rupture", label: "Rupture" },
+        { icon: "res/assets/ZZZ/Icon_Armorer.png", key: "weaponType", value: "Armorer", label: "Armorer" }
     ]
 };
 
