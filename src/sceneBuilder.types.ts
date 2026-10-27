@@ -9,6 +9,7 @@ export interface BaseCharData {
     directory: string;
     image: string;
     pmx: string;
+    exception?: boolean;   // when true, load WITHOUT skeleton/morph building
 }
 
 export interface GenshinCharData extends BaseCharData {

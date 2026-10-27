@@ -174,14 +174,9 @@ export class SceneBuilder implements ISceneBuilder {
             return [fallbackItem, tabModeLocal];
         };
 
-        // Some characters need to be loaded WITHOUT skeleton/morph building
-        const isSpecialModelChar = (c: BaseCharData): boolean => {
-            const specialNames = ["Parayaya", "David", "Adam Smasher", "Muyu", "Nitsa", "Aha", "Lily"];
-            if (specialNames.some(name => c.name.includes(name))) return true;
-            if (c.name.includes("Parayaya, the Sovereign of Love and Hate")) return false;
-            if ((c.name.includes("Mornye") || c.name.includes("Hiyuki")) && c.directory.includes("skin")) return true;
-            return false;
-        };
+        // Some characters need to be loaded WITHOUT skeleton/morph building.
+        // This is driven per-object via an optional "exception" key in the character JSON.
+        const isSpecialModelChar = (c: BaseCharData): boolean => c.exception === true;
 
         const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
