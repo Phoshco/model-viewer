@@ -21,9 +21,12 @@ import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.fragment";
 import "babylon-mmd/esm/Loader/Shaders/textureAlphaChecker.vertex";
 
 import type { IPointerEvent } from "@babylonjs/core";
+import { PointerEventTypes } from "@babylonjs/core/Events/pointerEvents";
+import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { MirrorTexture, ParticleSystem, Plane } from "@babylonjs/core";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
+import { GizmoManager } from "@babylonjs/core/Gizmos/gizmoManager";
 import { Layer } from "@babylonjs/core/Layers";
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
@@ -33,10 +36,13 @@ import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imagePro
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
 import { VideoTexture } from "@babylonjs/core/Materials/Textures/videoTexture";
+import { Space } from "@babylonjs/core/Maths/math.axis";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
-import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { Matrix, Quaternion, Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
+import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import { UtilityLayerRenderer } from "@babylonjs/core/Rendering/utilityLayerRenderer";
 import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
 import { Scene } from "@babylonjs/core/scene";
 import { ShadowOnlyMaterial } from "@babylonjs/materials/shadowOnly/shadowOnlyMaterial";
@@ -505,6 +511,257 @@ export class SceneBuilder implements ISceneBuilder {
             console.error("Failed to create MMD model:", error);
         }
 
+        // ── Interactive joint posing ──────────────────────────────────────────
+        // A curated humanoid subset of MMD bone names kept editable so the scene
+        // isn't cluttered with 100+ handles. Names absent on a given model are
+        // simply skipped.
+        const POSABLE_BONE_NAMES: readonly string[] = [
+            "センター", "上半身", "上半身2", "下半身", "首", "頭",
+            "左肩", "左腕", "左ひじ", "左手首",
+            "右肩", "右腕", "右ひじ", "右手首",
+            "左足", "左ひざ", "左足首",
+            "右足", "右ひざ", "右足首"
+        ];
+        interface PoseHandle { mesh: ReturnType<typeof CreateSphere>; bone: any }
+
+        // Controller encapsulating the gizmo + per-bone handle spheres. It is
+        // rebuilt whenever the primary model is (re)created and disposed when the
+        // model goes away, so there are no leaks across character switches.
+        class PoseController {
+            private _handles: PoseHandle[] = [];
+            private _utilLayer: UtilityLayerRenderer | null = null;
+            private _gizmoManager: GizmoManager | null = null;
+            private _syncObserver: ReturnType<Scene["onBeforeRenderObservable"]["add"]> | null = null;
+            private _pointerObserver: ReturnType<Scene["onPrePointerObservable"]["add"]> | null = null;
+            private _dragging = false;
+            private _enabled = false;
+            private _mesh: MmdMesh | null = null;
+            private _model: any = null;
+            private readonly _tmpMatrix = new Matrix();
+            private readonly _tmpQuat = new Quaternion();
+            // Saved scene state so pose mode can be entered/exited non-destructively.
+            private _savedSkip: [boolean, boolean, boolean] | null = null;
+
+            public get hasBones(): boolean { return this._handles.length > 0; }
+
+            // Build handle spheres for the posable bones of the given model.
+            public attach(model: any, mesh: MmdMesh): void {
+                this.dispose();
+                if (!model || !model.runtimeBones) return;
+                const util = new UtilityLayerRenderer(scene);
+                // The main scene drives rendering via `scene.activeCameras` and never
+                // sets `scene.activeCamera`, so the utility layer has no camera to
+                // render/pick with by default. Pin it to the orbit camera (the one
+                // used for posing); enable() also makes that camera active.
+                util.setRenderCamera(camera);
+                util.pickingEnabled = true;
+                // Overlay mode: the utility layer renders on top and its pointer bridge
+                // picks the utility scene and notifies `utilityLayerScene.onPointerObservable`
+                // directly. We listen there (see below) rather than on the main scene,
+                // which is unreliable in this app's multi-camera / picking-skipped setup.
+                util.utilityLayerScene.autoClearDepthAndStencil = true;
+                util.pickUtilitySceneFirst = true;
+                util.processAllEvents = true;
+                this._utilLayer = util;
+                this._mesh = mesh;
+                this._model = model;
+
+                const handleMat = new StandardMaterial("poseHandleMat", util.utilityLayerScene);
+                handleMat.disableLighting = true;
+                handleMat.emissiveColor = new Color3(0.2, 0.7, 1.0);
+                handleMat.alpha = 0.85;
+
+                for (const bone of model.runtimeBones) {
+                    if (!POSABLE_BONE_NAMES.includes(bone.name)) continue;
+                    const sphere = CreateSphere(`poseHandle_${bone.name}`, { diameter: 0.35 * worldScale, segments: 8 }, util.utilityLayerScene);
+                    sphere.material = handleMat;
+                    sphere.isPickable = true;
+                    sphere.rotationQuaternion = new Quaternion();
+                    sphere.setEnabled(false);
+                    this._handles.push({ mesh: sphere, bone });
+                }
+
+                if (this._handles.length === 0) { this.dispose(); return; }
+
+                // `thickness` (2nd arg) makes the rotation rings chunkier so they're
+                // easy to grab.
+                const gm = new GizmoManager(scene, 3, util);
+                // The utility layer's pointer bridge doesn't reliably forward picks to
+                // the main scene in this app's multi-camera / picking-skipped setup, so
+                // we attach the gizmo manually (see the pointer observer below) instead
+                // of relying on usePointerToAttachGizmos.
+                gm.usePointerToAttachGizmos = false;
+                // Rotation only — translation is intentionally disabled.
+                gm.rotationGizmoEnabled = true;
+
+                const rot = gm.gizmos.rotationGizmo;
+                if (rot) {
+                    rot.scaleRatio = 1.3;
+                    // While dragging, the gizmo owns the handle's rotation; map that
+                    // orientation onto the attached bone in world space.
+                    rot.updateGizmoRotationToMatchAttachedMesh = true;
+                    rot.onDragStartObservable.add(() => { this._dragging = true; });
+                    rot.onDragEndObservable.add(() => { this._dragging = false; });
+                    rot.onDragObservable.add(() => {
+                        const attached = rot.attachedMesh;
+                        if (!attached || !attached.rotationQuaternion) return;
+                        const handle = this._handles.find(h => h.mesh === attached);
+                        if (!handle) return;
+                        try {
+                            handle.bone.linkedBone.setRotationQuaternion(attached.rotationQuaternion, Space.WORLD, mesh);
+                        } catch (error) {
+                            console.error("Failed to apply pose rotation:", error);
+                        }
+                    });
+                }
+                this._gizmoManager = gm;
+
+                // Manual attach on the main scene's PRE-pointer observable (fires for
+                // every pointer event regardless of the scene's picking-skip flags).
+                //
+                //  • POINTERDOWN on a handle  → attach the rotation gizmo immediately.
+                //  • POINTERDOWN on empty space → remember it as a *candidate* detach,
+                //    but only actually detach on POINTERUP IF the pointer barely moved.
+                //    This lets a click-and-drag on empty space orbit the camera while
+                //    keeping the current gizmo visible; only a genuine click hides it.
+                const handleSet = new Set<AbstractMesh>(this._handles.map(h => h.mesh));
+                const CLICK_SLOP = 5; // px of movement allowed for a "click" vs a drag
+                let downX = 0, downY = 0;
+                let pendingDetach = false;
+                this._pointerObserver = scene.onPrePointerObservable.add((pi) => {
+                    if (!this._enabled) return;
+                    if (this._dragging || gm.isDragging) return;
+                    if (pi.type === PointerEventTypes.POINTERDOWN) {
+                        downX = scene.pointerX; downY = scene.pointerY;
+                        const p = util.utilityLayerScene.pick(
+                            scene.pointerX, scene.pointerY,
+                            (m): boolean => handleSet.has(m), false, camera
+                        );
+                        const picked = p && p.hit ? p.pickedMesh : null;
+                        if (picked && handleSet.has(picked)) {
+                            gm.attachToMesh(picked);
+                            pendingDetach = false;
+                        } else {
+                            // Defer: decide at POINTERUP whether this was a click.
+                            pendingDetach = true;
+                        }
+                    } else if (pi.type === PointerEventTypes.POINTERUP) {
+                        if (pendingDetach) {
+                            const moved = Math.abs(scene.pointerX - downX) + Math.abs(scene.pointerY - downY);
+                            if (moved <= CLICK_SLOP) gm.attachToMesh(null);
+                            pendingDetach = false;
+                        }
+                    }
+                });
+            }
+            // Keep handle world positions glued to their bones every frame.
+            private _sync = (): void => {
+                const mesh = this._mesh;
+                if (!mesh) return;
+                const meshWorld = mesh.getWorldMatrix();
+                for (const h of this._handles) {
+                    h.bone.getWorldMatrixToRef(this._tmpMatrix).multiplyToRef(meshWorld, this._tmpMatrix);
+                    this._tmpMatrix.getTranslationToRef(h.mesh.position);
+                    // Don't fight the gizmo while the user is actively dragging.
+                    if (!this._dragging) {
+                        Quaternion.FromRotationMatrixToRef(this._tmpMatrix, this._tmpQuat);
+                        h.mesh.rotationQuaternion!.copyFrom(this._tmpQuat);
+                    }
+                }
+            };
+
+            public enable(): void {
+                if (this._enabled || this._handles.length === 0) return;
+                this._enabled = true;
+
+                // Switch to the orbit (non-MMD) camera — the same one double-click
+                // activates when leaving the MMD camera — so the user can orbit while
+                // posing and the gizmo picks against a camera that is actually active.
+                if (scene.activeCameras && scene.activeCameras[0] !== camera) {
+                    defaultPipeline.depthOfFieldEnabled = false;
+                    camera.setTarget(new Vector3(0, 10 * worldScale, 0));
+                    camera.setPosition(defCamPos);
+                    scene.activeCameras[0] = camera;
+                }
+                if (this._utilLayer) this._utilLayer.setRenderCamera(camera);
+
+                // The post-load perf pass disables scene picking; re-enable it while
+                // posing so the GizmoManager can resolve clicks on the handles.
+                this._savedSkip = [scene.skipPointerDownPicking, scene.skipPointerMovePicking, scene.skipPointerUpPicking];
+                scene.skipPointerDownPicking = false;
+                scene.skipPointerMovePicking = false;
+                scene.skipPointerUpPicking = false;
+
+                for (const h of this._handles) h.mesh.setEnabled(true);
+                this._sync();
+                this._syncObserver = scene.onBeforeRenderObservable.add(this._sync);
+            }
+
+            public disable(): void {
+                if (!this._enabled) return;
+                this._enabled = false;
+                if (this._syncObserver) { scene.onBeforeRenderObservable.remove(this._syncObserver); this._syncObserver = null; }
+                if (this._gizmoManager) this._gizmoManager.attachToMesh(null);
+                for (const h of this._handles) h.mesh.setEnabled(false);
+                // Restore the scene's pointer-picking optimizations.
+                if (this._savedSkip) {
+                    [scene.skipPointerDownPicking, scene.skipPointerMovePicking, scene.skipPointerUpPicking] = this._savedSkip;
+                    this._savedSkip = null;
+                }
+            }
+
+            // Clear all manual joint edits. Behavior depends on animation progress:
+            //  • At the start of the timeline (frame 0) → restore the character's
+            //    DEFAULT/rest pose (bind pose), not the animation's frame-0 pose.
+            //  • Mid-animation → restore the current animation frame's pose.
+            public resetPose(): void {
+                const atStart = mmdRuntime.currentFrameTime <= 1e-6;
+                if (atStart && this._model && typeof this._model._resetPose === "function") {
+                    try {
+                        // MmdModel._resetPose() sets every bone to its rest translation
+                        // + identity rotation and marks the skeleton dirty. Paused, the
+                        // runtime won't re-evaluate an animation over it, so it sticks.
+                        this._model._resetPose();
+                    } catch (error) {
+                        console.error("Failed to reset to default pose:", error);
+                    }
+                } else {
+                    // Reset edited bones, then force the runtime to re-evaluate the
+                    // current frame so the animated pose is pushed onto the mesh even
+                    // while paused.
+                    for (const h of this._handles) {
+                        const lb = h.bone.linkedBone;
+                        try { lb.rotationQuaternion = Quaternion.Identity(); } catch { /* skip */ }
+                        try { lb.getRestMatrix().getTranslationToRef(lb.position); } catch { /* skip */ }
+                    }
+                    try {
+                        void mmdRuntime.seekAnimation(mmdRuntime.currentFrameTime, true);
+                    } catch { /* animation may be absent; the rest reset above still stands */ }
+                }
+                // Drop the gizmo so it re-reads the reset pose on next selection.
+                if (this._gizmoManager) this._gizmoManager.attachToMesh(null);
+            }
+
+            public dispose(): void {
+                this.disable();
+                if (this._pointerObserver) {
+                    scene.onPrePointerObservable.remove(this._pointerObserver);
+                    this._pointerObserver = null;
+                }
+                if (this._gizmoManager) { this._gizmoManager.dispose(); this._gizmoManager = null; }
+                for (const h of this._handles) h.mesh.dispose();
+                this._handles = [];
+                if (this._utilLayer) { this._utilLayer.dispose(); this._utilLayer = null; }
+                this._mesh = null;
+                this._model = null;
+            }
+        }
+        // A mutable holder so character reloads can swap in a freshly-built
+        // controller without the store/api closures needing to be recreated.
+        const poseState: { controller: PoseController } = { controller: new PoseController() };
+        poseState.controller.attach(mmdModel, modelMesh);
+        // ──────────────────────────────────────────────────────────────────────
+
         let theCharAnimation = loadResults[1] as MmdAnimation | MmdWasmAnimation | undefined;
 
         let headBone = mmdModel ? mmdModel.runtimeBones.find((bone: any) => bone.name === "頭") : undefined;
@@ -690,8 +947,23 @@ export class SceneBuilder implements ISceneBuilder {
             skinMode: false,
             physicsModeOn,
             motionName,
-            charData
+            charData,
+            canPose: poseState.controller.hasBones
         });
+
+        // Enter/exit interactive joint-posing mode. Freezes the animation on
+        // entry so manual joint edits aren't overwritten each frame. No-op when
+        // the model has no skeleton or a second character is present.
+        function setPoseMode(on: boolean): void {
+            if (on) {
+                if (!poseState.controller.hasBones || store.get().secondCharName) return;
+                if (mmdRuntime.isAnimationPlaying) mmdRuntime.pauseAnimation();
+                poseState.controller.enable();
+            } else {
+                poseState.controller.disable();
+            }
+            store.set({ poseModeOn: on });
+        }
 
         // Determine if initial character has any skins → enable skin button
         {
@@ -1143,6 +1415,13 @@ export class SceneBuilder implements ISceneBuilder {
             bodyBone = mmdModel ? mmdModel.runtimeBones.find((bone: any) => bone.name === "センター") : undefined;
             boneWorldMatrix = new Matrix();
 
+            // Rebuild the joint-posing controller for the freshly created model and
+            // leave pose mode (handles belonged to the previous model).
+            poseState.controller.dispose();
+            poseState.controller = new PoseController();
+            poseState.controller.attach(mmdModel, modelMesh);
+            store.set({ poseModeOn: false, canPose: poseState.controller.hasBones });
+
             if (headBone != undefined && bodyBone != undefined) {
                 if (theCharAnimation) {
                     if (physicsModeOn) {
@@ -1369,7 +1648,10 @@ export class SceneBuilder implements ISceneBuilder {
                 }
             }
 
-            store.set({ secondCharName: secondChar.name });
+            // Posing is single-character only: exit pose mode and disable the
+            // toolbar button while a second character is present.
+            poseState.controller.disable();
+            store.set({ secondCharName: secondChar.name, poseModeOn: false, canPose: false });
             // Restore perf optimizations once the second model has rendered.
             scene.onAfterRenderObservable.addOnce(() => {
                 engine.hideLoadingUI();
@@ -1402,7 +1684,8 @@ export class SceneBuilder implements ISceneBuilder {
             mmdCameraRoot.position.x = primaryOrigX;
             camera.setTarget(new Vector3(primaryOrigX, 10 * worldScale, 0));
             stillCamera.target = new Vector3(primaryOrigX, 10 * worldScale, 1);
-            store.set({ secondCharName: "" });
+            // Posing becomes available again now that the primary is alone.
+            store.set({ secondCharName: "", canPose: poseState.controller.hasBones });
         }
 
         // for scaling camera to model height
@@ -1663,6 +1946,12 @@ export class SceneBuilder implements ISceneBuilder {
             },
             togglePhysics: async (): Promise<void> => {
                 await changePhysics();
+            },
+            togglePoseMode: (): void => {
+                setPoseMode(!store.get().poseModeOn);
+            },
+            resetPose: (): void => {
+                poseState.controller.resetPose();
             },
             setDarkMode: (dark: boolean): void => {
                 setDarkMode(dark);

@@ -11,6 +11,12 @@ export interface SceneApi {
     removeSecondCharacter(): Promise<void>;
     changeMotion(trackName: string): Promise<void>;
     togglePhysics(): Promise<void>;
+    // Toggles interactive joint-posing mode. No-op when the current model has
+    // no posable skeleton (see SceneState.canPose).
+    togglePoseMode(): void;
+    // Clears all manual joint rotations, restoring the model's current
+    // animation/rest pose.
+    resetPose(): void;
     setDarkMode(dark: boolean): void;
     toggleDarkMode(): void;
     toggleCharScreenMode(): void;

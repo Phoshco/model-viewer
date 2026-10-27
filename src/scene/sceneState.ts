@@ -39,6 +39,12 @@ export interface SceneState {
     skinMode: boolean;
     hasSkinButton: boolean;
     physicsModeOn: boolean;
+    // True while interactive joint-posing mode is active (rotation gizmos shown).
+    poseModeOn: boolean;
+    // True when the current primary model exposes a skeleton that can be posed.
+    // Special/exception models (loaded without a skeleton) and multi-character
+    // scenes set this to false so the pose toolbar button is disabled.
+    canPose: boolean;
     isPlaying: boolean;
     motionName: string;
     // True when the current motion track supplies a full-screen video background.
@@ -100,6 +106,8 @@ export function createInitialState(isMobile: boolean): SceneState {
         skinMode: false,
         hasSkinButton: false,
         physicsModeOn: false,
+        poseModeOn: false,
+        canPose: false,
         isPlaying: false,
         motionName: "",
         videoBgActive: false,
