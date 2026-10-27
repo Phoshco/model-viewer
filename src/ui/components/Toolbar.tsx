@@ -87,8 +87,11 @@ export function Toolbar({ api, state }: Props): JSX.Element {
                 alt={state.secondCharName ? "remove second character" : "add second character"}
             />
 
-            {/* Motion selector */}
+            {/* Motion selector. `data-track-toggle` lets TrackPanel's outside-click
+                handler ignore clicks on this button (so it toggles cleanly instead
+                of close-then-reopen). */}
             <img
+                data-track-toggle
                 src={resUrl(state.darkMode ? "res/assets/note_light.png" : "res/assets/note.png")}
                 class={btnStyle}
                 style={{
@@ -133,6 +136,47 @@ export function Toolbar({ api, state }: Props): JSX.Element {
                 }}
                 alt="reference sheet"
             />
+
+            {/* Joint pose mode toggle — only enabled when the current model has a
+                posable skeleton, no second character is present, and physics is off
+                (the physics solver drives the bones, so posing is a physics-off
+                feature). */}
+            {(() => {
+                const poseDisabled = !state.canPose || !!state.secondCharName || state.physicsModeOn;
+                return (
+                    <img
+                        src={resUrl(state.darkMode ? "res/assets/pose_light.png" : "res/assets/pose.png")}
+                        class={`${btnStyle}${poseDisabled ? " is-inactive" : ""}`}
+                        style={​{
+                            position: "absolute",
+                            left: `${gap + step}px`,
+                            top: topAt(3),
+                            background: state.poseModeOn ? "rgba(119,119,119,0.5)" : "transparent",
+                            borderRadius: "10px",
+                            pointerEvents: poseDisabled ? "none" : "auto"
+                        }}
+                        onClick={(): void => { if (!poseDisabled) api.togglePoseMode(); }}
+                        alt="pose mode"
+                    />
+                );
+            })()}
+
+            {/* Reset pose — only shown while pose mode is active. Placed directly
+                below the pose toggle (right column) so it never collides with the
+                conditionally-shown skin button (right column, row 1). */}
+            {state.poseModeOn && state.canPose && (
+                <img
+                    src={resUrl(state.darkMode ? "res/assets/clear.png" : "res/assets/clear_light.png")}
+                    class={btnStyle}
+                    style={​{
+                        position: "absolute",
+                        left: `${gap + step}px`,
+                        top: topAt(4)
+                    }}
+                    onClick={(): void => api.resetPose()}
+                    alt="reset pose"
+                />
+            )}
 
             {/* Support button (top right) */}
             <img
