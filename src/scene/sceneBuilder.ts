@@ -539,6 +539,17 @@ export class SceneBuilder implements ISceneBuilder {
             private _model: any = null;
             private readonly _tmpMatrix = new Matrix();
             private readonly _tmpQuat = new Quaternion();
+            // Scratch + drag-bookkeeping state for local-space posing. We apply joint
+            // rotations in the bone's LOCAL space (the space the MMD runtime actually
+            // reads) instead of Space.WORLD, which relies on the Babylon bone's cached
+            // matrices + mesh scale and can collapse deeper bones (e.g. an elbow's
+            // forearm "disappears"). The new local rotation is derived purely from
+            // rotation MATRICES (L_new = W_new * P^-1), mirroring how `_sync` builds a
+            // handle's world orientation, so the math is correct regardless of
+            // quaternion-composition conventions.
+            private readonly _dragParentWorldRotInv = new Matrix();
+            private readonly _tmpMatrixA = new Matrix();
+            private readonly _tmpQuatA = new Quaternion();
             // Saved scene state so pose mode can be entered/exited non-destructively.
             private _savedSkip: [boolean, boolean, boolean] | null = null;
 
@@ -597,10 +608,18 @@ export class SceneBuilder implements ISceneBuilder {
                 const rot = gm.gizmos.rotationGizmo;
                 if (rot) {
                     rot.scaleRatio = 1.3;
-                    // While dragging, the gizmo owns the handle's rotation; map that
-                    // orientation onto the attached bone in world space.
+                    // While dragging, the gizmo owns the handle's world rotation.
                     rot.updateGizmoRotationToMatchAttachedMesh = true;
-                    rot.onDragStartObservable.add(() => { this._dragging = true; });
+                    // On grab, snapshot the inverse world rotation of the bone's PARENT
+                    // frame so the handle's world rotation can be converted into a pure
+                    // LOCAL rotation during the drag.
+                    rot.onDragStartObservable.add(() => {
+                        this._dragging = true;
+                        const attached = rot.attachedMesh;
+                        const handle = attached ? this._handles.find(h => h.mesh === attached) : null;
+                        if (!attached || !handle) return;
+                        this._captureParentWorldRotationInv(handle);
+                    });
                     rot.onDragEndObservable.add(() => { this._dragging = false; });
                     rot.onDragObservable.add(() => {
                         const attached = rot.attachedMesh;
@@ -608,7 +627,18 @@ export class SceneBuilder implements ISceneBuilder {
                         const handle = this._handles.find(h => h.mesh === attached);
                         if (!handle) return;
                         try {
-                            handle.bone.linkedBone.setRotationQuaternion(attached.rotationQuaternion, Space.WORLD, mesh);
+                            // L_new = W_new * P^-1, done with rotation matrices so it
+                            // matches `_sync`'s convention exactly (world = local*parent,
+                            // Babylon's row-major `child.multiply(parent)` order). W_new is
+                            // the handle's current world rotation; P^-1 is the parent
+                            // frame's inverse world rotation captured at drag start.
+                            Matrix.FromQuaternionToRef(attached.rotationQuaternion, this._tmpMatrixA);
+                            this._tmpMatrixA.multiplyToRef(this._dragParentWorldRotInv, this._tmpMatrixA);
+                            Quaternion.FromRotationMatrixToRef(this._tmpMatrixA, this._tmpQuatA);
+                            this._tmpQuatA.normalize();
+                            // Applied in LOCAL space — never touches the mesh's scaled
+                            // world matrix, so no scale can leak into the bone transform.
+                            handle.bone.linkedBone.setRotationQuaternion(this._tmpQuatA, Space.LOCAL);
                         } catch (error) {
                             console.error("Failed to apply pose rotation:", error);
                         }
@@ -669,6 +699,29 @@ export class SceneBuilder implements ISceneBuilder {
                     }
                 }
             };
+
+            // Capture the INVERSE of the given bone's PARENT-frame world rotation into
+            // `_dragParentWorldRotInv` (rotation only; translation and scale discarded).
+            // Used at drag start so that, during the drag, the handle's world rotation
+            // W can be converted into a pure LOCAL rotation via L = W * P^-1. Falls back
+            // to the mesh's world rotation for a bone with no parent (a root bone).
+            private _captureParentWorldRotationInv(handle: PoseHandle): void {
+                const mesh = this._mesh;
+                if (!mesh) { Matrix.IdentityToRef(this._dragParentWorldRotInv); return; }
+                const parentBone = handle.bone.parentBone;
+                if (parentBone) {
+                    // parentWorld = parentBoneWorld * meshWorld (child*parent order).
+                    parentBone.getWorldMatrixToRef(this._tmpMatrix).multiplyToRef(mesh.getWorldMatrix(), this._tmpMatrix);
+                } else {
+                    this._tmpMatrix.copyFrom(mesh.getWorldMatrix());
+                }
+                // Reduce to a pure rotation (drop translation + any uniform scale) so the
+                // inverse is just the transpose-equivalent rotation, never singular.
+                Quaternion.FromRotationMatrixToRef(this._tmpMatrix, this._tmpQuatA);
+                this._tmpQuatA.normalize();
+                Matrix.FromQuaternionToRef(this._tmpQuatA, this._dragParentWorldRotInv);
+                this._dragParentWorldRotInv.invert();
+            }
 
             public enable(): void {
                 if (this._enabled || this._handles.length === 0) return;
